@@ -9,7 +9,7 @@ export interface Player {
   pob: string;
   positions: string[];
   preferredFoot: string;
-  squadNumber: string;
+  squadNumber: number;
   height: number;
   weight: number;
   nationalities: string[];

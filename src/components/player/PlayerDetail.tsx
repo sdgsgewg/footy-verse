@@ -13,7 +13,7 @@ const PlayerData = ({
   children,
 }: {
   label: string;
-  value?: string;
+  value?: string | number;
   children?: React.ReactNode;
 }) => {
   return (
