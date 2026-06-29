@@ -1,16 +1,26 @@
 const clubImages = {
+  AjaxAmsterdam:
+    "https://res.cloudinary.com/db9uk6mya/image/upload/v1782718342/ajax-amsterdam_vxbg92.png",
   AlmereCity:
     "https://res.cloudinary.com/db9uk6mya/image/upload/v1740369018/almere-city_kql1kq.png",
   BangkokUnited:
     "https://res.cloudinary.com/db9uk6mya/image/upload/v1740369019/bangkok-united_pkxyl2.png",
+  Bhayangkara:
+    "https://res.cloudinary.com/db9uk6mya/image/upload/v1782719768/bhayangkara_hy1clq.png",
   Blackpool:
     "https://res.cloudinary.com/db9uk6mya/image/upload/v1740369019/blackpool_pwa9z7.png",
   Borneo:
     "https://res.cloudinary.com/db9uk6mya/image/upload/v1740369020/borneo_gfulcd.png",
+  BorussiaMonchengladbach:
+    "https://res.cloudinary.com/db9uk6mya/image/upload/v1782718700/borussia-monchengladbach_sqh5aa.png",
   BrisbaneRoar:
     "https://res.cloudinary.com/db9uk6mya/image/upload/v1740369020/brisbane-roar_bl7zoe.png",
+  BuriramUnited:
+    "https://res.cloudinary.com/db9uk6mya/image/upload/v1782719316/buriram-united_se9uuz.png",
   Copenhagen:
     "https://res.cloudinary.com/db9uk6mya/image/upload/v1740369021/copenhagen_qwd9xj.png",
+  Cremonese:
+    "https://res.cloudinary.com/db9uk6mya/image/upload/v1782718339/cremonese_hwykwl.png",
   Dallas:
     "https://res.cloudinary.com/db9uk6mya/image/upload/v1740369021/dallas_wp714l.png",
   DewaUnited:
@@ -19,14 +29,20 @@ const clubImages = {
     "https://res.cloudinary.com/db9uk6mya/image/upload/v1740369023/fcv-dender-eh_zxjoem.png",
   GoAheadEagles:
     "https://res.cloudinary.com/db9uk6mya/image/upload/v1740369024/go-ahead-eagles_xhagun.png",
+  IpswichTown:
+    "https://res.cloudinary.com/db9uk6mya/image/upload/v1782718340/ipswich-town_xxh0bn.png",
   JohorDarulTazim:
     "https://res.cloudinary.com/db9uk6mya/image/upload/v1740369024/johor-darul-ta_zim_zt2bvr.png",
   KASEupen:
     "https://res.cloudinary.com/db9uk6mya/image/upload/v1740369025/kas-eupen_d2wivd.png",
+  Lille:
+    "https://res.cloudinary.com/db9uk6mya/image/upload/v1782719316/lille_e0s4vo.png",
   LommelSK:
     "https://res.cloudinary.com/db9uk6mya/image/upload/v1740369026/lommel-sk_rc0pav.png",
   MalutUnited:
     "https://res.cloudinary.com/db9uk6mya/image/upload/v1740369027/malut-united_c5fnqk.png",
+  MelbourneCity:
+    "https://res.cloudinary.com/db9uk6mya/image/upload/v1782719452/melbourne-city_xpnfyi.png",
   NECNijmegen:
     "https://res.cloudinary.com/db9uk6mya/image/upload/v1740369027/nec-nijmegen_a2cmea.png",
   OxfordUnited:
@@ -44,6 +60,8 @@ const clubImages = {
   PersisSolo:
     "https://res.cloudinary.com/db9uk6mya/image/upload/v1740369033/persis-solo_lz5fk9.png",
   Port: "https://res.cloudinary.com/db9uk6mya/image/upload/v1740369033/port_yr9ekp.png",
+  Sassuolo:
+    "https://res.cloudinary.com/db9uk6mya/image/upload/v1782718702/sassuolo_z4qzox.png",
   SwanseaCity:
     "https://res.cloudinary.com/db9uk6mya/image/upload/v1740383280/swansea-city_otgc4r.png",
   Twente:
@@ -52,6 +70,8 @@ const clubImages = {
     "https://res.cloudinary.com/db9uk6mya/image/upload/v1740369059/utrecht_jyjncl.png",
   Venezia:
     "https://res.cloudinary.com/db9uk6mya/image/upload/v1740369146/venezia_ko3m1i.png",
+  WillemII:
+    "https://res.cloudinary.com/db9uk6mya/image/upload/v1782719315/willem-ii_aylbzt.png",
   WolverhamptonWanderersU21:
     "https://res.cloudinary.com/db9uk6mya/image/upload/v1740369149/wolves_ocd7gr.png",
   YokohamaFMarinos:

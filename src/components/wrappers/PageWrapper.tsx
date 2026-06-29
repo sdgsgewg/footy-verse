@@ -1,4 +1,4 @@
-import AudioBubble from "../audio/AudioBubble";
+// import AudioBubble from "../audio/AudioBubble";
 import ScrollToTop from "../ScrollToTop";
 
 const PageWrapper = ({ children }: { children: React.ReactNode }) => {
@@ -7,7 +7,7 @@ const PageWrapper = ({ children }: { children: React.ReactNode }) => {
       <ScrollToTop />
 
       {/* Audio UI */}
-      <AudioBubble />
+      {/* <AudioBubble /> */}
 
       {children}
     </div>

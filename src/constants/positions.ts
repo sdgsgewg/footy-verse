@@ -1,0 +1,15 @@
+export const POSITIONS = {
+  GOALKEEPER: "Goalkeeper",
+  CENTRE_BACK: "Centre Back",
+  RIGHT_BACK: "Right Back",
+  LEFT_BACK: "Left Back",
+  DEFENSIVE_MIDFIELD: "Defensive Midfield",
+  CENTRAL_MIDFIELD: "Central Midfield",
+  RIGHT_MIDFIELD: "Right Midfield",
+  LEFT_MIDFIELD: "Left Midfield",
+  ATTACKING_MIDFIELD: "Attacking Midfield",
+  RIGHT_WINGER: "Right Winger",
+  LEFT_WINGER: "Left Winger",
+  SECOND_STRIKER: "Second Striker",
+  CENTRE_FORWARD: "Centre Forward",
+};
