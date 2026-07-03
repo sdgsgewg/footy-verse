@@ -1,0 +1,16 @@
+{
+  "home": "Home",
+  "teams": {
+    "base": "Teams",
+    "indonesia": "Indonesia",
+    "arsenal": "Arsenal"
+  },
+  "manage": {
+    "base": "Manage",
+    "players": "Players",
+    "clubs": "Clubs",
+    "nationalities": "Nationalities",
+    "positions": "Positions"
+  },
+  "about": "About"
+}

@@ -1,0 +1,44 @@
+{
+  "clubs": {
+    "title": "Manage Clubs",
+    "subtitle": "Add, edit, or delete clubs",
+    "form": {
+      "labels": {
+        "image": "Club Image",
+        "name": "Club Name"
+      },
+      "placeholder": {
+        "name": "Input name"
+      },
+      "confirm": {
+        "delete": "Are you sure you want to delete this club?"
+      },
+      "success": {
+        "add": "Successfully added new club: ",
+        "edit": "Successfully updated club: ",
+        "delete": "Successfully deleted club: "
+      },
+      "errors": {
+        "add": {
+          "empty": "Please enter a name for the new club.",
+          "duplicate": "A club with this name already exists.",
+          "failed": "Failed to add club."
+        },
+        "edit": {
+          "empty": "Please enter a name for the club.",
+          "duplicate": "A club with this name already exists.",
+          "failed": "Failed to update club."
+        },
+        "delete": {
+          "failed": "Failed to delete club."
+        }
+      }
+    },
+    "columns": {
+      "name": "Name"
+    },
+    "actions": {
+      "addNew": "Add New Club"
+    }
+  }
+}

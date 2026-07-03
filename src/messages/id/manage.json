@@ -1,0 +1,44 @@
+{
+  "clubs": {
+    "title": "Kelola Klub",
+    "subtitle": "Tambah, edit, atau hapus klub.",
+    "form": {
+      "labels": {
+        "image": "Gambar Klub",
+        "name": "Nama Klub"
+      },
+      "placeholder": {
+        "name": "Input nama"
+      },
+      "confirm": {
+        "delete": "Apakah kamu yakin ingin menghapus klub ini?"
+      },
+      "success": {
+        "add": "Berhasil menambahkan klub baru: ",
+        "edit": "Berhasil memperbarui klub: ",
+        "delete": "Berhasil menghapus klub: "
+      },
+      "errors": {
+        "add": {
+          "empty": "Silakan masukkan nama untuk klub baru.",
+          "duplicate": "Klub dengan nama ini sudah ada.",
+          "failed": "Gagal menambahkan klub."
+        },
+        "edit": {
+          "empty": "Silakan masukkan nama untuk klub.",
+          "duplicate": "Klub dengan nama ini sudah ada.",
+          "failed": "Gagal memperbarui klub."
+        },
+        "delete": {
+          "failed": "Gagal menghapus klub."
+        }
+      }
+    },
+    "columns": {
+      "name": "Nama"
+    },
+    "actions": {
+      "addNew": "Tambah Klub Baru"
+    }
+  }
+}

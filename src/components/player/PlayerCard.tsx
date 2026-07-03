@@ -38,8 +38,9 @@ export default function PlayerCard({
       ] || "/assets/img/flags/default.png";
   }
 
-  const { image, name, firstName, lastName, slug, positions, squadNumber } =
-    player;
+  const { image, name, slug, positions, squadNumber } = player;
+
+  const [firstName, lastName] = name.split(" ");
 
   return (
     <div

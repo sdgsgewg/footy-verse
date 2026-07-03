@@ -1,0 +1,68 @@
+{
+  "actions": {
+    "add": "Add",
+    "create": "Create",
+    "update": "Update",
+    "edit": "Edit",
+    "delete": "Delete",
+    "cancel": "Cancel",
+    "apply": "Apply",
+    "retry": "Retry"
+  },
+
+  "states": {
+    "creating": "Creating...",
+    "updating": "Updating...",
+    "emptyData": "No data available. Use the daily input tab to add records.",
+    "loadOlderData": "Load Older Data...",
+    "loading": "Loading..."
+  },
+
+  "ui": {
+    "toggleTheme": "Toggle theme",
+    "switchLanguage": "Switch language",
+    "entry": "Entry"
+  },
+
+  "table": {
+    "actions": "Actions",
+    "noData": "No records found."
+  },
+
+  "filter": {
+    "allCategory": "All Categories",
+    "all": "All",
+    "apply": "Apply"
+  },
+
+  "feedback": {
+    "connectionIssue": {
+      "title": "Your internet connection looks unstable",
+      "description": "We couldn't load the data. Please check your connection and try again.",
+      "saveFailed": "We couldn't save the data because the internet connection looks unstable. Please try again once it recovers.",
+      "actionFailed": "We couldn't complete the action because the internet connection looks unstable. Please try again once it recovers."
+    }
+  },
+  "auth": {
+    "login": "Sign In",
+    "register": "Sign Up",
+    "logout": "Sign Out",
+    "email": "Email Address",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "dontHaveAccount": "Don't have an account?",
+    "alreadyHaveAccount": "Already have an account?",
+    "signingIn": "Signing in...",
+    "signingUp": "Signing up...",
+    "loginSuccess": "Successfully signed in!",
+    "registerSuccess": "Successfully registered! Please check your email for a verification link.",
+    "passwordsDoNotMatch": "Passwords do not match.",
+    "invalidEmail": "Please enter a valid email address.",
+    "passwordMinLength": "Password must be at least 6 characters.",
+    "welcomeBack": "Welcome Back",
+    "createNewAccount": "Create an Account",
+    "loginDescription": "Enter your credentials to access the management panel.",
+    "registerDescription": "Sign up to begin managing clubs and players.",
+    "errorOccurred": "An error occurred. Please try again."
+  }
+}

@@ -5,6 +5,7 @@ export const CLUBS = {
   OXFORD_UNITED: "Oxford United",
 
   // Germany
+  STUTTGART: "Stuttgart",
   BORUSSIA_MONCHENGLADBACH: "Borussia Monchengladbach",
 
   //   Italy
@@ -18,6 +19,7 @@ export const CLUBS = {
   AJAX_AMSTERDAM: "Ajax Amsterdam",
   NEC_NIJMEGEN: "NEC Nijmegen",
   TWENTE: "Twente",
+  AZ_ALKMAAR: "AZ Alkmaar",
   GO_AHEAD_EAGLES: "Go Ahead Eagles",
   FORTUNA_SITTARD: "Fortuna Sittard",
   WILLEM_II: "Willem II",

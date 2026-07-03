@@ -1,0 +1,16 @@
+{
+  "home": "Beranda",
+  "teams": {
+    "base": "Tim",
+    "indonesia": "Indonesia",
+    "arsenal": "Arsenal"
+  },
+  "manage": {
+    "base": "Kelola",
+    "players": "Pemain",
+    "clubs": "Klub",
+    "nationalities": "Kebangsaan",
+    "positions": "Posisi"
+  },
+  "about": "Tentang"
+}

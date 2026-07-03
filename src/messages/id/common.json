@@ -1,0 +1,69 @@
+{
+  "actions": {
+    "add": "Tambah",
+    "create": "Buat",
+    "update": "Perbarui",
+    "edit": "Edit",
+    "delete": "Hapus",
+    "cancel": "Batal",
+    "apply": "Terapkan",
+    "retry": "Coba Lagi"
+  },
+
+  "states": {
+    "creating": "Membuat...",
+    "updating": "Memperbarui...",
+    "emptyData": "No data available. Use the daily input tab to add records.",
+    "loadOlderData": "Muat Data Lama...",
+    "loading": "Memuat..."
+  },
+
+  "ui": {
+    "toggleTheme": "Ganti tema",
+    "switchLanguage": "Ganti bahasa",
+    "entry": "Entri"
+  },
+
+  "table": {
+    "actions": "Aksi",
+    "noData": "Tidak ada data yang ditemukan."
+  },
+
+  "filter": {
+    "allCategory": "Semua Kategori",
+    "selectCategory": "Pilih Kategori:",
+    "all": "Semua",
+    "apply": "Terapkan"
+  },
+
+  "feedback": {
+    "connectionIssue": {
+      "title": "Koneksi internet tidak stabil",
+      "description": "Data gagal dimuat. Periksa koneksi internet Anda lalu coba lagi.",
+      "saveFailed": "Gagal menyimpan data karena koneksi internet tidak stabil. Coba lagi setelah koneksi membaik.",
+      "actionFailed": "Operasi gagal karena koneksi internet tidak stabil. Coba lagi setelah koneksi membaik."
+    }
+  },
+  "auth": {
+    "login": "Masuk",
+    "register": "Daftar",
+    "logout": "Keluar",
+    "email": "Alamat Email",
+    "password": "Kata Sandi",
+    "confirmPassword": "Konfirmasi Kata Sandi",
+    "dontHaveAccount": "Belum punya akun?",
+    "alreadyHaveAccount": "Sudah punya akun?",
+    "signingIn": "Masuk...",
+    "signingUp": "Mendaftar...",
+    "loginSuccess": "Berhasil masuk!",
+    "registerSuccess": "Pendaftaran berhasil! Silakan periksa email Anda untuk tautan verifikasi.",
+    "passwordsDoNotMatch": "Kata sandi tidak cocok.",
+    "invalidEmail": "Masukkan alamat email yang valid.",
+    "passwordMinLength": "Kata sandi harus minimal 6 karakter.",
+    "welcomeBack": "Selamat Datang Kembali",
+    "createNewAccount": "Buat Akun Baru",
+    "loginDescription": "Masukkan kredensial Anda untuk mengakses panel manajemen.",
+    "registerDescription": "Daftar untuk mulai mengelola klub dan pemain.",
+    "errorOccurred": "Terjadi kesalahan. Silakan coba lagi."
+  }
+}

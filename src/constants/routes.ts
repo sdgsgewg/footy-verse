@@ -1,0 +1,21 @@
+export const ROUTES = {
+  AUTH: {
+    LOGIN: "/login",
+    REGISTER: "/register",
+    FORGOT_PASSWORD: "/forgot-password",
+    RESET_PASSWORD: "/reset-password",
+    EMAIL_VERIFICATION: "/email-verification",
+    COMPLETE_PROFILE: "/complete-profile",
+  },
+  HOME: "/",
+  TEAMS: {
+    INDONESIA: "/nation/indonesia/men/players/",
+    ARSENAL: "/club/arsenal/men/players/",
+  },
+  MANAGE: {
+    PLAYERS: "/manage/players",
+    CLUBS: "/manage/clubs",
+    NATIONALITIES: "/manage/nationalities",
+    POSITIONS: "/manage/positions",
+  },
+};

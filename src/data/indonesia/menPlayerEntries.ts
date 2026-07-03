@@ -840,6 +840,54 @@ export const menReservePlayerEntries: Player[] = [
   },
 
   // Attacking Midfield
+  {
+    id: uuidv4(),
+    image:
+      "https://res.cloudinary.com/db9uk6mya/image/upload/v1782911592/laurin-ulrich_c93y2x.png",
+    name: "Laurin Ulrich",
+    firstName: "Laurin",
+    lastName: "Ulrich",
+    slug: slugify("Laurin Ulrich"),
+    dob: "January 31, 2005",
+    pob: "Heidenheim an der Brenz, Germany",
+    positions: [
+      POSITIONS.ATTACKING_MIDFIELD,
+      POSITIONS.CENTRAL_MIDFIELD,
+      POSITIONS.LEFT_WINGER,
+    ],
+    preferredFoot: "Right",
+    squadNumber: 8,
+    height: 1.8,
+    weight: 76,
+    nationalities: [NATIONALITIES.INDONESIA, NATIONALITIES.GERMANY],
+    club: CLUBS.STUTTGART,
+    marketValue: 3.5,
+    isCalledUp: true,
+  },
+  {
+    id: uuidv4(),
+    image:
+      "https://res.cloudinary.com/db9uk6mya/image/upload/v1782912071/julian-oerip_hm7cdk.png",
+    name: "Julian Oerip",
+    firstName: "Julian",
+    lastName: "Oerip",
+    slug: slugify("Julian Oerip"),
+    dob: "October 26, 2006",
+    pob: "Alkmaar, Netherlands",
+    positions: [
+      POSITIONS.ATTACKING_MIDFIELD,
+      POSITIONS.CENTRAL_MIDFIELD,
+      POSITIONS.LEFT_WINGER,
+    ],
+    preferredFoot: "Right",
+    squadNumber: 10,
+    height: 1.79,
+    weight: 75,
+    nationalities: [NATIONALITIES.INDONESIA, NATIONALITIES.NETHERLANDS],
+    club: CLUBS.AZ_ALKMAAR,
+    marketValue: 0.3,
+    isCalledUp: true,
+  },
 
   // FORWARDS
 
