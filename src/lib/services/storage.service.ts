@@ -19,6 +19,12 @@ async function createStorageClient() {
   return createServerClient();
 }
 
+// PLAYERS
+
+
+// CLUBS
+
+
 export async function uploadClubImage(file: File, clubName: string) {
   const supabase = await createStorageClient();
 
@@ -42,7 +48,7 @@ export async function uploadClubImage(file: File, clubName: string) {
   return filePath;
 }
 
-function getStoragePath(filePathOrUrl: string) {
+function getClubStoragePath(filePathOrUrl: string) {
   if (!filePathOrUrl) return null;
 
   if (!URL.canParse(filePathOrUrl)) {
@@ -70,7 +76,7 @@ function getStoragePath(filePathOrUrl: string) {
 
 export async function deleteClubImage(filePath: string) {
   const supabase = await createStorageClient();
-  const storagePath = getStoragePath(filePath);
+  const storagePath = getClubStoragePath(filePath);
 
   if (!storagePath) {
     return;
@@ -100,7 +106,7 @@ export async function tryDeleteClubImage(filePath: string | null) {
 
 export async function renameClubImage(oldPath: string, newClubName: string) {
   const supabase = await createStorageClient();
-  const oldStoragePath = getStoragePath(oldPath);
+  const oldStoragePath = getClubStoragePath(oldPath);
 
   if (!oldStoragePath) {
     return oldPath;
@@ -121,3 +127,106 @@ export async function renameClubImage(oldPath: string, newClubName: string) {
   return newFileName;
 }
 
+// NATIONALITIES
+
+export async function uploadNationalityImage(file: File, nationalityName: string) {
+  const supabase = await createStorageClient();
+
+  const slug = slugify(nationalityName);
+
+  const extension = file.name.split(".").pop() || "png";
+
+  const fileName = `${slug}-${Date.now()}-${crypto.randomUUID()}.${extension}`;
+  const filePath = fileName;
+
+  const { error } = await supabase.storage
+    .from(STORAGE_BUCKETS.NATIONALITIES)
+    .upload(filePath, file, {
+      upsert: false,
+    });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return filePath;
+}
+
+function getNationalityStoragePath(filePathOrUrl: string) {
+  if (!filePathOrUrl) return null;
+
+  if (!URL.canParse(filePathOrUrl)) {
+    return filePathOrUrl.replace(`${STORAGE_BUCKETS.NATIONALITIES}/`, "");
+  }
+
+  const url = new URL(filePathOrUrl);
+  const bucketPaths = [
+    `/storage/v1/object/public/${STORAGE_BUCKETS.NATIONALITIES}/`,
+    `/storage/v1/object/sign/${STORAGE_BUCKETS.NATIONALITIES}/`,
+    `/storage/v1/object/${STORAGE_BUCKETS.NATIONALITIES}/`,
+  ];
+  const bucketPath = bucketPaths.find((path) => url.pathname.includes(path));
+
+  if (!bucketPath) {
+    return null;
+  }
+
+  const bucketIndex = url.pathname.indexOf(bucketPath);
+
+  return decodeURIComponent(
+    url.pathname.slice(bucketIndex + bucketPath.length),
+  );
+}
+
+export async function deleteNationalityImage(filePath: string) {
+  const supabase = await createStorageClient();
+  const storagePath = getNationalityStoragePath(filePath);
+
+  if (!storagePath) {
+    return;
+  }
+
+  const { error } = await supabase.storage
+    .from(STORAGE_BUCKETS.NATIONALITIES)
+    .remove([storagePath]);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+}
+
+export async function tryDeleteNationalityImage(filePath: string | null) {
+  if (!filePath) return;
+
+  try {
+    await deleteNationalityImage(filePath);
+  } catch (error) {
+    console.warn("Failed to delete nationality image from bucket", {
+      filePath,
+      error,
+    });
+  }
+}
+
+export async function renameNationalityImage(oldPath: string, newNationalityName: string) {
+  const supabase = await createStorageClient();
+  const oldStoragePath = getNationalityStoragePath(oldPath);
+
+  if (!oldStoragePath) {
+    return oldPath;
+  }
+
+  const slug = slugify(newNationalityName);
+  const extension = oldStoragePath.split(".").pop() || "png";
+  const newFileName = `${slug}-${Date.now()}-${crypto.randomUUID()}.${extension}`;
+
+  const { error } = await supabase.storage
+    .from(STORAGE_BUCKETS.NATIONALITIES)
+    .move(oldStoragePath, newFileName);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return newFileName;
+}

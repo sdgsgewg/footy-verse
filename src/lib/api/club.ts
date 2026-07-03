@@ -5,7 +5,6 @@ import {
 } from "../validations/clubs.schema";
 import { Club } from "../repositories/clubs.repo";
 
-// clubs
 export const fetchClubs = async () => {
   const { data } = await apiClient.get<{ success: boolean; data: Club[] }>("/clubs");
 

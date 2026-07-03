@@ -1,4 +1,46 @@
 {
+  "players": {
+    "title": "Kelola Pemain",
+    "subtitle": "Tambah, edit, atau hapus pemain.",
+    "form": {
+      "labels": {
+        "name": "Nama Pemain"
+      },
+      "placeholder": {
+        "name": "Input nama"
+      },
+      "confirm": {
+        "delete": "Apakah kamu yakin ingin menghapus pemain ini?"
+      },
+      "success": {
+        "add": "Berhasil menambahkan pemain baru: ",
+        "edit": "Berhasil memperbarui pemain: ",
+        "delete": "Berhasil menghapus pemain: "
+      },
+      "errors": {
+        "add": {
+          "empty": "Silakan masukkan nama untuk pemain baru.",
+          "duplicate": "Pemain dengan nama ini sudah ada.",
+          "failed": "Gagal menambahkan pemain."
+        },
+        "edit": {
+          "empty": "Silakan masukkan nama untuk pemain.",
+          "duplicate": "Pemain dengan nama ini sudah ada.",
+          "failed": "Gagal memperbarui pemain."
+        },
+        "delete": {
+          "failed": "Gagal menghapus pemain."
+        }
+      }
+    },
+    "columns": {
+      "name": "Nama"
+    },
+    "actions": {
+      "addNew": "Tambah Pemain Baru"
+    }
+  },
+
   "clubs": {
     "title": "Kelola Klub",
     "subtitle": "Tambah, edit, atau hapus klub.",
@@ -39,6 +81,92 @@
     },
     "actions": {
       "addNew": "Tambah Klub Baru"
+    }
+  },
+
+  "nationalities": {
+    "title": "Kelola Kebangsaan",
+    "subtitle": "Tambah, edit, atau hapus kebangsaan.",
+    "form": {
+      "labels": {
+        "image": "Gambar Kebangsaan",
+        "name": "Nama Kebangsaan"
+      },
+      "placeholder": {
+        "image": "Input gambar kebangsaan",
+        "name": "Input nama kebangsaan"
+      },
+      "confirm": {
+        "delete": "Apakah kamu yakin ingin menghapus kebangsaan ini?"
+      },
+      "success": {
+        "add": "Berhasil menambahkan kebangsaan baru: ",
+        "edit": "Berhasil memperbarui kebangsaan: ",
+        "delete": "Berhasil menghapus kebangsaan: "
+      },
+      "errors": {
+        "add": {
+          "empty": "Silakan masukkan nama untuk kebangsaan baru.",
+          "duplicate": "Kebangsaan dengan nama ini sudah ada.",
+          "failed": "Gagal menambahkan kebangsaan."
+        },
+        "edit": {
+          "empty": "Silakan masukkan nama untuk kebangsaan.",
+          "duplicate": "Kebangsaan dengan nama ini sudah ada.",
+          "failed": "Gagal memperbarui kebangsaan."
+        },
+        "delete": {
+          "failed": "Gagal menghapus kebangsaan."
+        }
+      }
+    },
+    "columns": {
+      "name": "Nama"
+    },
+    "actions": {
+      "addNew": "Tambah Kebangsaan Baru"
+    }
+  },
+
+  "positions": {
+    "title": "Kelola Posisi",
+    "subtitle": "Tambah, edit, atau hapus posisi.",
+    "form": {
+      "labels": {
+        "name": "Nama Posisi"
+      },
+      "placeholder": {
+        "name": "Input nama"
+      },
+      "confirm": {
+        "delete": "Apakah kamu yakin ingin menghapus posisi ini?"
+      },
+      "success": {
+        "add": "Berhasil menambahkan posisi baru: ",
+        "edit": "Berhasil memperbarui posisi: ",
+        "delete": "Berhasil menghapus posisi: "
+      },
+      "errors": {
+        "add": {
+          "empty": "Silakan masukkan nama untuk posisi baru.",
+          "duplicate": "Posisi dengan nama ini sudah ada.",
+          "failed": "Gagal menambahkan posisi."
+        },
+        "edit": {
+          "empty": "Silakan masukkan nama untuk posisi.",
+          "duplicate": "Posisi dengan nama ini sudah ada.",
+          "failed": "Gagal memperbarui posisi."
+        },
+        "delete": {
+          "failed": "Gagal menghapus posisi."
+        }
+      }
+    },
+    "columns": {
+      "name": "Nama"
+    },
+    "actions": {
+      "addNew": "Tambah Posisi Baru"
     }
   }
 }

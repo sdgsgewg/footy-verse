@@ -13,3 +13,15 @@ export function getClubImageUrl(path: string | null) {
 
   return publicUrl;
 }
+
+export function getNationalityImageUrl(path: string | null) {
+  if (!path) return null;
+
+  const supabase = createClient();
+
+  const {
+    data: { publicUrl },
+  } = supabase.storage.from(STORAGE_BUCKETS.NATIONALITIES).getPublicUrl(path);
+
+  return publicUrl;
+}
