@@ -2,7 +2,7 @@
 
 import ConnectionErrorAlert from "@/components/feedback/ConnectionErrorAlert";
 import { CrudPage } from "@/components/templates/CrudPage";
-import { useNationalityData } from "@/hooks/nationalities/useNationalityData";
+import { useNationalityData } from "@/hooks/manage/nationalities/useNationalityData";
 import { isLikelyConnectionError } from "@/lib/utils/error";
 import { useTranslations } from "next-intl";
 

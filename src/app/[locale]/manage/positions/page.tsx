@@ -2,15 +2,15 @@
 
 import ConnectionErrorAlert from "@/components/feedback/ConnectionErrorAlert";
 import { CrudPage } from "@/components/templates/CrudPage";
-import { useClubData } from "@/hooks/manage/clubs/useClubData";
+import { usePositionData } from "@/hooks/manage/positions/usePositionData";
 import { isLikelyConnectionError } from "@/lib/utils/error";
 import { useTranslations } from "next-intl";
 
-export default function ClubsManagementPage() {
-  const t = useTranslations("manage.clubs");
+export default function PositionsManagementPage() {
+  const t = useTranslations("manage.positions");
 
   const {
-    clubs,
+    positions,
     loading,
     retrying,
     isEditing,
@@ -25,18 +25,12 @@ export default function ClubsManagementPage() {
     resetForm,
     loadError,
     retryLoad,
-  } = useClubData();
+  } = usePositionData();
 
   return (
     <CrudPage
       title={t("title")}
       formFields={[
-        {
-          name: "image",
-          label: t("form.labels.image"),
-          placeholder: t("form.labels.image"),
-          type: "image",
-        },
         {
           name: "name",
           label: t("form.labels.name"),
@@ -45,7 +39,7 @@ export default function ClubsManagementPage() {
         },
       ]}
       columns={[{ key: "name", label: t("columns.name") }]}
-      data={clubs}
+      data={positions}
       form={form}
       setForm={setForm}
       canSubmit={canSubmit}
