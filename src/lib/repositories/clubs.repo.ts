@@ -2,20 +2,19 @@ import { slugify } from "@/common/utils/slug.util";
 import { type Tables } from "@/lib/database.types";
 import { createClient } from "@/utils/supabase/server";
 import {
+  clubsQuerySchema,
   createClubSchema,
   updateClubSchema,
 } from "../validations/clubs.schema";
-import { renameClubImage, tryDeleteClubImage } from "../services/storage.service";
+import { renameImage, tryDeleteImage } from "../services/storage.service";
 import z from "zod";
+import { STORAGE_BUCKETS } from "../storage";
 
 export type Club = Tables<"clubs">;
 export type ClubCreateInput = z.infer<typeof createClubSchema>;
 export type ClubUpdateInput = z.infer<typeof updateClubSchema>;
 
-type GetClubsParams = {
-  name?: string;
-  slug?: string;
-};
+type GetClubsParams = z.infer<typeof clubsQuerySchema>;
 
 async function getSupabase() {
   return createClient();
@@ -70,7 +69,9 @@ export async function getClubsRepo(params: GetClubsParams): Promise<Club[]> {
 
   let query = supabase
     .from("clubs")
-    .select("id, image, name, slug, created_at, updated_at")
+    .select(
+      "id, image, name, slug, club_type, parent_club_id, nation_id, created_at, updated_at",
+    )
     .order("name");
 
   if (params.name) {
@@ -89,7 +90,9 @@ export async function getClubByIdRepo(id: string): Promise<Club | null> {
 
   const { data, error } = await supabase
     .from("clubs")
-    .select("id, image, name, slug, created_at, updated_at")
+    .select(
+      "id, image, name, slug, club_type, parent_club_id, nation_id, created_at, updated_at",
+    )
     .eq("id", id)
     .maybeSingle();
 
@@ -111,7 +114,9 @@ export async function createClubRepo(club: ClubCreateInput): Promise<Club> {
   const { data, error } = await supabase
     .from("clubs")
     .insert({ ...club, slug })
-    .select("id, image, name, slug, created_at, updated_at")
+    .select(
+      "id, image, name, slug, club_type, parent_club_id, nation_id, created_at, updated_at",
+    )
     .single();
 
   if (error) throw error;
@@ -137,14 +142,22 @@ export async function updateClubRepo(
 
   // If the club name has changed and the image is still the same (no new upload),
   // we rename the file in the storage bucket to reflect the new name's slug.
-  if (oldClub.name !== club.name && oldClub.image && oldClub.image === club.image) {
-    finalImage = await renameClubImage(oldClub.image, club.name);
+  if (
+    oldClub.name !== club.name &&
+    oldClub.image &&
+    oldClub.image === club.image
+  ) {
+    finalImage = await renameImage(
+      oldClub.image,
+      club.name,
+      STORAGE_BUCKETS.CLUBS,
+    );
   }
 
   // To comply with RLS policies where deleting the old image requires the database
   // record to still reference the old path, we delete the old image before updating.
   if (oldClub.image && oldClub.image !== club.image) {
-    await tryDeleteClubImage(oldClub.image);
+    await tryDeleteImage(oldClub.image, STORAGE_BUCKETS.CLUBS);
   }
 
   const { data, error } = await supabase
@@ -156,7 +169,9 @@ export async function updateClubRepo(
       updated_at: new Date().toISOString(),
     })
     .eq("id", id)
-    .select("id, image, name, slug, created_at, updated_at")
+    .select(
+      "id, image, name, slug, club_type, parent_club_id, nation_id, created_at, updated_at",
+    )
     .single();
 
   if (error) throw error;
@@ -170,7 +185,7 @@ export async function deleteClubRepo(id: string): Promise<void> {
   const club = await getClubByIdRepo(id);
 
   if (club?.image) {
-    await tryDeleteClubImage(club.image);
+    await tryDeleteImage(club.image, STORAGE_BUCKETS.CLUBS);
   }
 
   const { error } = await supabase.from("clubs").delete().eq("id", id);

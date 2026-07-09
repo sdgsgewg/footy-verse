@@ -55,7 +55,7 @@ export const usePositionData = (): UsePositionDataReturn => {
     error,
     refetch,
   } = useQuery({
-    queryKey: queryKeys.clubs(),
+    queryKey: queryKeys.positions(),
     queryFn: fetchPositions,
     ...queryConfig,
   });
@@ -83,7 +83,7 @@ export const usePositionData = (): UsePositionDataReturn => {
   const createMutation = useMutation({
     mutationFn: createPosition,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.clubs() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.positions() });
       alert(`${tPositions("form.success.add")} ${form.name}`);
       resetForm();
     },
@@ -106,7 +106,7 @@ export const usePositionData = (): UsePositionDataReturn => {
     mutationFn: ({ id, data }: { id: string; data: unknown }) =>
       updatePosition(id, data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.clubs() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.positions() });
       alert(`${tPositions("form.success.edit")} ${form.name}`);
       resetForm();
     },
@@ -128,7 +128,7 @@ export const usePositionData = (): UsePositionDataReturn => {
   const deleteMutation = useMutation({
     mutationFn: ({ id }: { id: string; name: string }) => deletePosition(id),
     onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.clubs() });
+      queryClient.invalidateQueries({ queryKey: queryKeys.positions() });
       alert(`${tPositions("form.success.delete")} ${variables.name}`);
     },
     onError: (error) => {

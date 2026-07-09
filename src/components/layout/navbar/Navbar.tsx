@@ -52,7 +52,7 @@ const Navbar = () => {
   ];
 
   const manageLinks: NavLink[] = [
-    { name: tManage("players"), path: ROUTES.MANAGE.PLAYERS },
+    { name: tManage("players"), path: ROUTES.MANAGE.PLAYERS.BASE },
     { name: tManage("clubs"), path: ROUTES.MANAGE.CLUBS },
     { name: tManage("nationalities"), path: ROUTES.MANAGE.NATIONALITIES },
     { name: tManage("positions"), path: ROUTES.MANAGE.POSITIONS },

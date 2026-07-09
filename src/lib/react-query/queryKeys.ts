@@ -1,29 +1,10 @@
 export const queryKeys = {
-  //   categories: () => ["categories"] as const,
-
-  //   items: () => ["items"] as const,
-
-  //   categoriesWithItems: () => ["categoriesWithItems"] as const,
-
-  //   records: (date: string) => ["records", date] as const,
-
-  //   performance: (params: {
-  //     timeFrame: string;
-  //     categoryId?: string;
-  //     periodLimit?: number;
-  //     startPeriod?: string;
-  //     endPeriod?: string;
-  //   }) =>
-  //     [
-  //       "performance",
-  //       params.timeFrame,
-  //       params.categoryId ?? "all",
-  //       params.periodLimit?.toString() ?? "10",
-  //       params.startPeriod ?? "",
-  //       params.endPeriod ?? "",
-  //     ] as const,
+  players: () => ["players"] as const,
+  player: (id: string) => ["players", id] as const,
 
   clubs: () => ["clubs"] as const,
 
   nationalities: () => ["nationalities"] as const,
+
+  positions: () => ["positions"] as const,
 };

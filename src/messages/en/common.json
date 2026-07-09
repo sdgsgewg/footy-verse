@@ -2,6 +2,7 @@
   "actions": {
     "add": "Add",
     "create": "Create",
+    "view": "View",
     "update": "Update",
     "edit": "Edit",
     "delete": "Delete",

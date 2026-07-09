@@ -2,6 +2,7 @@
   "actions": {
     "add": "Tambah",
     "create": "Buat",
+    "view": "Lihat",
     "update": "Perbarui",
     "edit": "Edit",
     "delete": "Hapus",

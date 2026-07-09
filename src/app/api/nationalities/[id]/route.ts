@@ -1,44 +1,28 @@
+import { isFormDataRequest } from "@/lib/api/request";
+import { errorResponse, noContentResponse, successResponse } from "@/lib/api/response";
 import {
   deleteNationalityService,
   getNationalityByIdService,
   updateNationalityService,
 } from "@/lib/services/nationalities.service";
-import {
-  tryDeleteNationalityImage,
-  uploadNationalityImage,
-} from "@/lib/services/storage.service";
-import { NextResponse } from "next/server";
-import { ZodError } from "zod";
+import { tryDeleteImage, uploadImage } from "@/lib/services/storage.service";
+import { STORAGE_BUCKETS } from "@/lib/storage";
 
 type NationalityRouteContext = {
   params: Promise<{ id: string }>;
 };
 
-function errorResponse(error: unknown) {
-  const message =
-    error instanceof ZodError
-      ? error.issues.map((issue) => issue.message).join(", ")
-      : error instanceof Error
-        ? error.message
-        : "Internal Server Error";
-
-  return NextResponse.json({ error: message }, { status: 400 });
-}
-
-function isFormDataRequest(request: Request) {
-  return request.headers.get("content-type")?.includes("multipart/form-data");
-}
-
 export async function GET(_request: Request, context: NationalityRouteContext) {
   try {
     const { id } = await context.params;
+
     const data = await getNationalityByIdService(id);
 
     if (!data) {
-      return NextResponse.json({ error: "Nationality not found" }, { status: 404 });
+      return errorResponse(new Error("Nationality not found"), 404);
     }
 
-    return NextResponse.json({ success: true, data });
+    return successResponse(data);
   } catch (error: unknown) {
     return errorResponse(error);
   }
@@ -47,35 +31,37 @@ export async function GET(_request: Request, context: NationalityRouteContext) {
 export async function PUT(request: Request, context: NationalityRouteContext) {
   try {
     const { id } = await context.params;
+
     if (!isFormDataRequest(request)) {
       const body = await request.json();
       const data = await updateNationalityService(id, body);
 
-      return NextResponse.json({ success: true, data });
+      return successResponse(data);
     }
 
-    const formData = await request.formData();
     const currentNationality = await getNationalityByIdService(id);
 
     if (!currentNationality) {
-      return NextResponse.json({ error: "Nationality not found" }, { status: 404 });
+      return errorResponse(new Error("Nationality not found"), 404);
     }
 
+    const formData = await request.formData();
     const name = String(formData.get("name") ?? "");
     const file = formData.get("image");
+
     let image = currentNationality.image;
 
     if (file instanceof File && file.size > 0) {
-      image = await uploadNationalityImage(file, name);
+      image = await uploadImage(file, name, STORAGE_BUCKETS.NATIONALITIES);
     }
 
     try {
       const data = await updateNationalityService(id, { name, image });
 
-      return NextResponse.json({ success: true, data });
+      return successResponse(data);
     } catch (error) {
       if (image && image !== currentNationality.image) {
-        await tryDeleteNationalityImage(image);
+        await tryDeleteImage(image, STORAGE_BUCKETS.NATIONALITIES);
       }
 
       throw error;
@@ -85,13 +71,17 @@ export async function PUT(request: Request, context: NationalityRouteContext) {
   }
 }
 
-export async function DELETE(_request: Request, context: NationalityRouteContext) {
+export async function DELETE(
+  _request: Request,
+  context: NationalityRouteContext,
+) {
   try {
     const { id } = await context.params;
 
     await deleteNationalityService(id);
 
-    return NextResponse.json({ success: true });
+    // return successResponse(null);
+    return noContentResponse();
   } catch (error: unknown) {
     return errorResponse(error);
   }

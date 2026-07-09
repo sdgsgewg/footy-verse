@@ -1,4 +1,4 @@
-import PlayerDetail from "@/components/player/PlayerDetail";
+import PlayerDetail from "@/components/players/PlayerDetail";
 
 const PlayerPage = () => {
   return <PlayerDetail />;

@@ -1,24 +1,13 @@
+import { isFormDataRequest } from "@/lib/api/request";
+import {
+  createdResponse,
+  errorResponse,
+  successResponse,
+} from "@/lib/api/response";
 import {
   createPositionService,
   getPositionsService,
 } from "@/lib/services/positions.service";
-import { NextResponse } from "next/server";
-import { ZodError } from "zod";
-
-function errorResponse(error: unknown) {
-  const message =
-    error instanceof ZodError
-      ? error.issues.map((issue) => issue.message).join(", ")
-      : error instanceof Error
-        ? error.message
-        : "Internal Server Error";
-
-  return NextResponse.json({ error: message }, { status: 400 });
-}
-
-function isFormDataRequest(request: Request) {
-  return request.headers.get("content-type")?.includes("multipart/form-data");
-}
 
 export async function GET(request: Request) {
   try {
@@ -30,7 +19,7 @@ export async function GET(request: Request) {
 
     const data = await getPositionsService(query);
 
-    return NextResponse.json({ success: true, data });
+    return successResponse(data);
   } catch (error: unknown) {
     return errorResponse(error);
   }
@@ -42,7 +31,7 @@ export async function POST(request: Request) {
       const body = await request.json();
       const data = await createPositionService(body);
 
-      return NextResponse.json({ success: true, data }, { status: 201 });
+      return createdResponse(data);
     }
 
     const formData = await request.formData();
@@ -51,7 +40,10 @@ export async function POST(request: Request) {
     try {
       const data = await createPositionService({ name });
 
-      return NextResponse.json({ success: true, data }, { status: 201 });
+      return createdResponse({
+        success: true,
+        data,
+      });
     } catch (error) {
       throw error;
     }

@@ -1,28 +1,15 @@
+import { isFormDataRequest } from "@/lib/api/request";
+import {
+  createdResponse,
+  errorResponse,
+  successResponse,
+} from "@/lib/api/response";
 import {
   createNationalityService,
   getNationalitiesService,
 } from "@/lib/services/nationalities.service";
-import {
-  tryDeleteNationalityImage,
-  uploadNationalityImage,
-} from "@/lib/services/storage.service";
-import { NextResponse } from "next/server";
-import { ZodError } from "zod";
-
-function errorResponse(error: unknown) {
-  const message =
-    error instanceof ZodError
-      ? error.issues.map((issue) => issue.message).join(", ")
-      : error instanceof Error
-        ? error.message
-        : "Internal Server Error";
-
-  return NextResponse.json({ error: message }, { status: 400 });
-}
-
-function isFormDataRequest(request: Request) {
-  return request.headers.get("content-type")?.includes("multipart/form-data");
-}
+import { tryDeleteImage, uploadImage } from "@/lib/services/storage.service";
+import { STORAGE_BUCKETS } from "@/lib/storage";
 
 export async function GET(request: Request) {
   try {
@@ -35,7 +22,7 @@ export async function GET(request: Request) {
 
     const data = await getNationalitiesService(query);
 
-    return NextResponse.json({ success: true, data });
+    return successResponse(data);
   } catch (error: unknown) {
     return errorResponse(error);
   }
@@ -47,7 +34,7 @@ export async function POST(request: Request) {
       const body = await request.json();
       const data = await createNationalityService(body);
 
-      return NextResponse.json({ success: true, data }, { status: 201 });
+      return createdResponse(data);
     }
 
     const formData = await request.formData();
@@ -55,20 +42,20 @@ export async function POST(request: Request) {
     const file = formData.get("image");
 
     if (!(file instanceof File) || file.size === 0) {
-      return NextResponse.json(
-        { error: "Nationality image is required" },
-        { status: 400 },
-      );
+      return errorResponse(new Error("Nationality image is required"));
     }
 
-    const image = await uploadNationalityImage(file, name);
+    const image = await uploadImage(file, name, STORAGE_BUCKETS.NATIONALITIES);
 
     try {
       const data = await createNationalityService({ name, image });
 
-      return NextResponse.json({ success: true, data }, { status: 201 });
+      return createdResponse({
+        success: true,
+        data,
+      });
     } catch (error) {
-      await tryDeleteNationalityImage(image);
+      await tryDeleteImage(image, STORAGE_BUCKETS.NATIONALITIES);
 
       throw error;
     }

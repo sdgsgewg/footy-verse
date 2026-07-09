@@ -1,9 +1,10 @@
 import { slugify } from "@/common/utils/slug.util";
 import { type Tables } from "@/lib/database.types";
 import { createClient } from "@/utils/supabase/server";
-import { renameNationalityImage, tryDeleteNationalityImage } from "../services/storage.service";
+import { renameImage, tryDeleteImage } from "../services/storage.service";
 import z from "zod";
 import { createNationalitySchema, updateNationalitySchema } from "../validations/nationalities.schema";
+import { STORAGE_BUCKETS } from "../storage";
 
 export type Nationality = Tables<"nationalities">;
 export type NationalityCreateInput = z.infer<typeof createNationalitySchema>;
@@ -135,13 +136,13 @@ export async function updateNationalityRepo(
   // If the nationality name has changed and the image is still the same (no new upload),
   // we rename the file in the storage bucket to reflect the new name's slug.
   if (oldNationality.name !== nationality.name && oldNationality.image && oldNationality.image === nationality.image) {
-    finalImage = await renameNationalityImage(oldNationality.image, nationality.name);
+    finalImage = await renameImage(oldNationality.image, nationality.name, STORAGE_BUCKETS.NATIONALITIES);
   }
 
   // To comply with RLS policies where deleting the old image requires the database
   // record to still reference the old path, we delete the old image before updating.
   if (oldNationality.image && oldNationality.image !== nationality.image) {
-    await tryDeleteNationalityImage(oldNationality.image);
+    await tryDeleteImage(oldNationality.image, STORAGE_BUCKETS.NATIONALITIES);
   }
 
   const { data, error } = await supabase
@@ -167,7 +168,7 @@ export async function deleteNationalityRepo(id: string): Promise<void> {
   const nationality = await getNationalityByIdRepo(id);
 
   if (nationality?.image) {
-    await tryDeleteNationalityImage(nationality.image);
+    await tryDeleteImage(nationality.image, STORAGE_BUCKETS.NATIONALITIES);
   }
 
   const { error } = await supabase.from("nationalities").delete().eq("id", id);

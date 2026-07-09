@@ -13,7 +13,11 @@ export const ROUTES = {
     ARSENAL: "/club/arsenal/men/players/",
   },
   MANAGE: {
-    PLAYERS: "/manage/players",
+    PLAYERS: {
+      BASE: "/manage/players",
+      CREATE: "/manage/players/create",
+      EDIT: "/manage/players/edit",
+    },
     CLUBS: "/manage/clubs",
     NATIONALITIES: "/manage/nationalities",
     POSITIONS: "/manage/positions",

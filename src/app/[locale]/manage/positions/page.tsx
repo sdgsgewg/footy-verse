@@ -1,7 +1,7 @@
 "use client";
 
 import ConnectionErrorAlert from "@/components/feedback/ConnectionErrorAlert";
-import { CrudPage } from "@/components/templates/CrudPage";
+import { CrudPage } from "@/components/templates/crud/CrudPage";
 import { usePositionData } from "@/hooks/manage/positions/usePositionData";
 import { isLikelyConnectionError } from "@/lib/utils/error";
 import { useTranslations } from "next-intl";

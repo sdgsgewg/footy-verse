@@ -1,7 +1,7 @@
 import React from "react";
 import { ChevronDown } from "lucide-react";
 
-interface InputDropdownProps {
+interface InputSelectProps {
   label: string;
   name: string;
   placeholder?: string;
@@ -11,7 +11,7 @@ interface InputDropdownProps {
   className?: string;
 }
 
-const InputDropdown: React.FC<InputDropdownProps> = ({
+const InputSelect: React.FC<InputSelectProps> = ({
   label,
   name,
   placeholder,
@@ -55,4 +55,4 @@ const InputDropdown: React.FC<InputDropdownProps> = ({
   );
 };
 
-export default InputDropdown;
+export default InputSelect;

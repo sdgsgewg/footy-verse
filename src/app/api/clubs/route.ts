@@ -2,27 +2,14 @@ import {
   createClubService,
   getClubsService,
 } from "@/lib/services/clubs.service";
+import { tryDeleteImage, uploadImage } from "@/lib/services/storage.service";
+import { STORAGE_BUCKETS } from "@/lib/storage";
+import { isFormDataRequest } from "@/lib/api/request";
 import {
-  tryDeleteClubImage,
-  uploadClubImage,
-} from "@/lib/services/storage.service";
-import { NextResponse } from "next/server";
-import { ZodError } from "zod";
-
-function errorResponse(error: unknown) {
-  const message =
-    error instanceof ZodError
-      ? error.issues.map((issue) => issue.message).join(", ")
-      : error instanceof Error
-        ? error.message
-        : "Internal Server Error";
-
-  return NextResponse.json({ error: message }, { status: 400 });
-}
-
-function isFormDataRequest(request: Request) {
-  return request.headers.get("content-type")?.includes("multipart/form-data");
-}
+  createdResponse,
+  errorResponse,
+  successResponse,
+} from "@/lib/api/response";
 
 export async function GET(request: Request) {
   try {
@@ -35,8 +22,8 @@ export async function GET(request: Request) {
 
     const data = await getClubsService(query);
 
-    return NextResponse.json({ success: true, data });
-  } catch (error: unknown) {
+    return successResponse(data);
+  } catch (error) {
     return errorResponse(error);
   }
 }
@@ -47,7 +34,7 @@ export async function POST(request: Request) {
       const body = await request.json();
       const data = await createClubService(body);
 
-      return NextResponse.json({ success: true, data }, { status: 201 });
+      return createdResponse(data);
     }
 
     const formData = await request.formData();
@@ -55,24 +42,27 @@ export async function POST(request: Request) {
     const file = formData.get("image");
 
     if (!(file instanceof File) || file.size === 0) {
-      return NextResponse.json(
-        { error: "Club image is required" },
-        { status: 400 },
-      );
+      return errorResponse(new Error("Club image is required"));
     }
 
-    const image = await uploadClubImage(file, name);
+    const image = await uploadImage(file, name, STORAGE_BUCKETS.CLUBS);
 
     try {
-      const data = await createClubService({ name, image });
+      const data = await createClubService({
+        name,
+        image,
+      });
 
-      return NextResponse.json({ success: true, data }, { status: 201 });
+      return createdResponse({
+        success: true,
+        data,
+      });
     } catch (error) {
-      await tryDeleteClubImage(image);
+      await tryDeleteImage(image, STORAGE_BUCKETS.CLUBS);
 
       throw error;
     }
-  } catch (error: unknown) {
+  } catch (error) {
     return errorResponse(error);
   }
 }
