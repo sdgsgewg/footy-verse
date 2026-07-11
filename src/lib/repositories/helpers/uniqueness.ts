@@ -14,7 +14,7 @@ export async function ensureUniqueRecord({
 }: {
   table: Table;
   name: string;
-  slug: string;
+  slug?: string;
   ignoreId?: string;
 }) {
   const supabase = await getSupabase();
@@ -34,18 +34,20 @@ export async function ensureUniqueRecord({
     throw new Error(`${table} name already exists`);
   }
 
-  let slugQuery = supabase.from(table).select("id").eq("slug", slug).limit(1);
+  if (slug) {
+    let slugQuery = supabase.from(table).select("id").eq("slug", slug).limit(1);
 
-  if (ignoreId) {
-    slugQuery = slugQuery.neq("id", ignoreId);
-  }
+    if (ignoreId) {
+      slugQuery = slugQuery.neq("id", ignoreId);
+    }
 
-  const { data: existingSlug, error: slugError } =
-    await slugQuery.maybeSingle();
+    const { data: existingSlug, error: slugError } =
+      await slugQuery.maybeSingle();
 
-  if (slugError) throw slugError;
+    if (slugError) throw slugError;
 
-  if (existingSlug) {
-    throw new Error(`${table} slug already exists`);
+    if (existingSlug) {
+      throw new Error(`${table} slug already exists`);
+    }
   }
 }

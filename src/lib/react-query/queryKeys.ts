@@ -8,4 +8,6 @@ export const queryKeys = {
   nationalities: () => ["nationalities"] as const,
 
   positions: () => ["positions"] as const,
+
+  seasons: () => ["seasons"] as const,
 };

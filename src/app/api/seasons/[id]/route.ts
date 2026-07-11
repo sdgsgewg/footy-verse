@@ -4,22 +4,22 @@ import {
   successResponse,
 } from "@/lib/api/response";
 import {
-  deletePositionService,
-  getPositionByIdService,
-  updatePositionService,
-} from "@/lib/services/positions.service";
+  deleteSeasonService,
+  getSeasonByIdService,
+  updateSeasonService,
+} from "@/lib/services/seasons.service";
 
-type PositionRouteContext = {
+type SeasonRouteContext = {
   params: Promise<{ id: string }>;
 };
 
-export async function GET(_request: Request, context: PositionRouteContext) {
+export async function GET(_request: Request, context: SeasonRouteContext) {
   try {
     const { id } = await context.params;
-    const data = await getPositionByIdService(id);
+    const data = await getSeasonByIdService(id);
 
     if (!data) {
-      return errorResponse(new Error("Position not found"), 404);
+      return errorResponse(new Error("Season not found"), 404);
     }
 
     return successResponse(data);
@@ -28,12 +28,12 @@ export async function GET(_request: Request, context: PositionRouteContext) {
   }
 }
 
-export async function PUT(request: Request, context: PositionRouteContext) {
+export async function PUT(request: Request, context: SeasonRouteContext) {
   try {
     const { id } = await context.params;
 
     const body = await request.json();
-    const data = await updatePositionService(id, body);
+    const data = await updateSeasonService(id, body);
 
     return successResponse(data);
   } catch (error: unknown) {
@@ -41,11 +41,11 @@ export async function PUT(request: Request, context: PositionRouteContext) {
   }
 }
 
-export async function DELETE(_request: Request, context: PositionRouteContext) {
+export async function DELETE(_request: Request, context: SeasonRouteContext) {
   try {
     const { id } = await context.params;
 
-    await deletePositionService(id);
+    await deleteSeasonService(id);
 
     return noContentResponse();
   } catch (error: unknown) {

@@ -10,7 +10,10 @@
     "players": "Players",
     "clubs": "Clubs",
     "nationalities": "Nationalities",
-    "positions": "Positions"
+    "positions": "Positions",
+    "seasons": "Seasons",
+    "regions": "Regions",
+    "competitions": "Competitions"
   },
   "about": "About"
 }

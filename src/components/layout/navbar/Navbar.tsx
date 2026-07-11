@@ -56,6 +56,7 @@ const Navbar = () => {
     { name: tManage("clubs"), path: ROUTES.MANAGE.CLUBS.BASE },
     { name: tManage("nationalities"), path: ROUTES.MANAGE.NATIONALITIES },
     { name: tManage("positions"), path: ROUTES.MANAGE.POSITIONS },
+    { name: tManage("seasons"), path: ROUTES.MANAGE.SEASONS },
   ];
 
   const closeMobileMenu = () => setMobileMenuOpen(false);

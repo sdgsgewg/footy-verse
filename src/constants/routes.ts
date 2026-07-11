@@ -25,5 +25,12 @@ export const ROUTES = {
     },
     NATIONALITIES: "/manage/nationalities",
     POSITIONS: "/manage/positions",
+    SEASONS: "/manage/seasons",
+    REGIONS: "/manage/regions",
+    COMPETITIONS: {
+      BASE: "/manage/competitions",
+      CREATE: "/manage/competitions/create",
+      EDIT: "/manage/competitions/edit",
+    },
   },
 };

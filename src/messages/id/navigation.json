@@ -10,7 +10,10 @@
     "players": "Pemain",
     "clubs": "Klub",
     "nationalities": "Kebangsaan",
-    "positions": "Posisi"
+    "positions": "Posisi",
+    "seasons": "Musim",
+    "regions": "Zona Wilayah",
+    "competitions": "Kompetisi"
   },
   "about": "Tentang"
 }

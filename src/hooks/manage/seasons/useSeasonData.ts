@@ -6,36 +6,36 @@ import { queryKeys } from "@/lib/react-query/queryKeys";
 import { queryConfig } from "@/lib/react-query/queryConfig";
 import { isLikelyConnectionError } from "@/lib/utils/error";
 import {
-  createPosition,
-  deletePosition,
-  fetchPositions,
-  updatePosition,
-} from "@/lib/api/position";
-import { PositionListItem, UpsertPositionInput } from "@/types/position";
+  createSeason,
+  deleteSeason,
+  fetchSeasons,
+  updateSeason,
+} from "@/lib/api/season";
+import { SeasonListItem, UpsertSeasonInput } from "@/types/season";
 
-interface UsePositionDataReturn {
-  positions: PositionListItem[];
+interface UseSeasonDataReturn {
+  seasons: SeasonListItem[];
   loading: boolean;
   retrying: boolean;
   isEditing: boolean;
   buttonText: string;
   isSubmitting: boolean;
-  form: UpsertPositionInput;
-  setForm: React.Dispatch<React.SetStateAction<UpsertPositionInput>>;
+  form: UpsertSeasonInput;
+  setForm: React.Dispatch<React.SetStateAction<UpsertSeasonInput>>;
   canSubmit: boolean;
   handleSubmit: () => Promise<void>;
-  handleEdit: (item: PositionListItem) => void;
-  handleDelete: (item: PositionListItem) => Promise<void>;
+  handleEdit: (item: SeasonListItem) => void;
+  handleDelete: (item: SeasonListItem) => Promise<void>;
   resetForm: () => void;
   loadError: unknown | null;
   retryLoad: () => void;
 }
 
-export const usePositionData = (): UsePositionDataReturn => {
-  const tPositions = useTranslations("manage.positions");
+export const useSeasonData = (): UseSeasonDataReturn => {
+  const tSeasons = useTranslations("manage.seasons");
+  const tCommon = useTranslations("common");
   const tCommonActions = useTranslations("common.actions");
   const tCommonStates = useTranslations("common.states");
-  const tCommon = useTranslations("common");
 
   const queryClient = useQueryClient();
   const hasDuplicateError = (error: unknown) =>
@@ -49,40 +49,40 @@ export const usePositionData = (): UsePositionDataReturn => {
         : undefined;
 
   const {
-    data: positions = [],
-    isLoading: isLoadingPositions,
+    data: seasons = [],
+    isLoading: isLoadingSeasons,
     isRefetching,
     error,
     refetch,
   } = useQuery({
-    queryKey: queryKeys.positions(),
-    queryFn: fetchPositions,
+    queryKey: queryKeys.seasons(),
+    queryFn: fetchSeasons,
     ...queryConfig,
   });
 
-  const emptyPositionForm: UpsertPositionInput = {
+  const emptySeasonForm: UpsertSeasonInput = {
     id: "",
     name: "",
   };
   const [initialForm, setInitialForm] =
-    useState<UpsertPositionInput>(emptyPositionForm);
-  const [form, setForm] = useState<UpsertPositionInput>(emptyPositionForm);
+    useState<UpsertSeasonInput>(emptySeasonForm);
+  const [form, setForm] = useState<UpsertSeasonInput>(emptySeasonForm);
 
   const createMutation = useMutation({
-    mutationFn: createPosition,
+    mutationFn: createSeason,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.positions() });
-      alert(`${tPositions("form.success.add")} ${form.name}`);
+      queryClient.invalidateQueries({ queryKey: queryKeys.seasons() });
+      alert(`${tSeasons("form.success.add")} ${form.name}`);
       resetForm();
     },
     onError: (error: unknown) => {
       if (isLikelyConnectionError(error)) {
         alert(tCommon("feedback.connectionIssue.actionFailed"));
       } else if (hasDuplicateError(error)) {
-        alert(`${tPositions("form.errors.add.duplicate")}`);
+        alert(`${tSeasons("form.errors.add.duplicate")}`);
       } else {
         alert(
-          [tPositions("form.errors.add.failed"), getErrorMessage(error)]
+          [tSeasons("form.errors.add.failed"), getErrorMessage(error)]
             .filter(Boolean)
             .join(": "),
         );
@@ -92,20 +92,20 @@ export const usePositionData = (): UsePositionDataReturn => {
 
   const updateMutation = useMutation({
     mutationFn: ({ id, data }: { id: string; data: unknown }) =>
-      updatePosition(id, data),
+      updateSeason(id, data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.positions() });
-      alert(`${tPositions("form.success.edit")} ${form.name}`);
+      queryClient.invalidateQueries({ queryKey: queryKeys.seasons() });
+      alert(`${tSeasons("form.success.edit")} ${form.name}`);
       resetForm();
     },
     onError: (error: unknown) => {
       if (isLikelyConnectionError(error)) {
         alert(tCommon("feedback.connectionIssue.actionFailed"));
       } else if (hasDuplicateError(error)) {
-        alert(`${tPositions("form.errors.edit.duplicate")}`);
+        alert(`${tSeasons("form.errors.edit.duplicate")}`);
       } else {
         alert(
-          [tPositions("form.errors.edit.failed"), getErrorMessage(error)]
+          [tSeasons("form.errors.edit.failed"), getErrorMessage(error)]
             .filter(Boolean)
             .join(": "),
         );
@@ -114,16 +114,16 @@ export const usePositionData = (): UsePositionDataReturn => {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: ({ id }: { id: string; name: string }) => deletePosition(id),
+    mutationFn: ({ id }: { id: string; name: string }) => deleteSeason(id),
     onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.positions() });
-      alert(`${tPositions("form.success.delete")} ${variables.name}`);
+      queryClient.invalidateQueries({ queryKey: queryKeys.seasons() });
+      alert(`${tSeasons("form.success.delete")} ${variables.name}`);
     },
     onError: (error) => {
       alert(
         isLikelyConnectionError(error)
           ? tCommon("feedback.connectionIssue.actionFailed")
-          : [tPositions("form.errors.delete.failed"), getErrorMessage(error)]
+          : [tSeasons("form.errors.delete.failed"), getErrorMessage(error)]
               .filter(Boolean)
               .join(": "),
       );
@@ -157,7 +157,7 @@ export const usePositionData = (): UsePositionDataReturn => {
   }, [form, initialForm, isEditing]);
 
   const handleSubmit = async () => {
-    const payload: UpsertPositionInput = {
+    const payload: UpsertSeasonInput = {
       name: form.name,
     };
 
@@ -171,7 +171,7 @@ export const usePositionData = (): UsePositionDataReturn => {
     }
   };
 
-  const handleEdit = (item: PositionListItem) => {
+  const handleEdit = (item: SeasonListItem) => {
     const mapped = {
       id: item.id ?? "",
       name: item.name,
@@ -182,8 +182,8 @@ export const usePositionData = (): UsePositionDataReturn => {
     setIsEditing(true);
   };
 
-  const handleDelete = async (item: PositionListItem) => {
-    if (!confirm(`${tPositions("form.confirm.delete")}`)) return;
+  const handleDelete = async (item: SeasonListItem) => {
+    if (!confirm(`${tSeasons("form.confirm.delete")}`)) return;
 
     deleteMutation.mutate({
       id: item.id,
@@ -196,13 +196,13 @@ export const usePositionData = (): UsePositionDataReturn => {
       id: "",
       name: "",
     });
-    setInitialForm(emptyPositionForm);
+    setInitialForm(emptySeasonForm);
     setIsEditing(false);
   };
 
   return {
-    positions,
-    loading: isLoadingPositions,
+    seasons,
+    loading: isLoadingSeasons,
     retrying: isRefetching,
     isEditing,
     buttonText,

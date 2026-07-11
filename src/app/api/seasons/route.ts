@@ -4,9 +4,9 @@ import {
   successResponse,
 } from "@/lib/api/response";
 import {
-  createPositionService,
-  getPositionsService,
-} from "@/lib/services/positions.service";
+  createSeasonService,
+  getSeasonsService,
+} from "@/lib/services/seasons.service";
 
 export async function GET(request: Request) {
   try {
@@ -16,7 +16,7 @@ export async function GET(request: Request) {
       name: searchParams.get("name") || undefined,
     };
 
-    const data = await getPositionsService(query);
+    const data = await getSeasonsService(query);
 
     return successResponse(data);
   } catch (error: unknown) {
@@ -27,7 +27,7 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const data = await createPositionService(body);
+    const data = await createSeasonService(body);
 
     return createdResponse(data);
   } catch (error: unknown) {

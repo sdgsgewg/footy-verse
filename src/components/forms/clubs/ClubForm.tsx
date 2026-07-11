@@ -9,7 +9,7 @@ import { ClubDetailResponse } from "@/types/club";
 import InputText from "@/components/ui/InputText";
 import InputSelect from "@/components/ui/InputSelect";
 import { ClubType } from "@/enums/ClubType";
-import { useNationalities } from "@/hooks/manage/nationalities";
+import { useNationalityData } from "@/hooks/manage/nationalities/useNationalityData";
 
 interface Props {
   mode: "create" | "edit";
@@ -26,7 +26,7 @@ const ClubForm = ({ mode, club, loading = false, onSubmit }: Props) => {
   const { form, setForm, canSubmit, buildPayload } = useClubForm(club);
 
   const { clubs } = useClubs();
-  const { nationalities } = useNationalities();
+  const { nationalities } = useNationalityData();
 
   const isCreate = mode === "create";
 

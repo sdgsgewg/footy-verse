@@ -249,5 +249,47 @@
     "actions": {
       "addNew": "Tambah Posisi Baru"
     }
+  },
+
+  "seasons": {
+    "title": "Kelola Musim",
+    "subtitle": "Tambah, edit, atau hapus musim.",
+    "form": {
+      "labels": {
+        "name": "Nama Musim"
+      },
+      "placeholder": {
+        "name": "Input nama"
+      },
+      "confirm": {
+        "delete": "Apakah kamu yakin ingin menghapus musim ini?"
+      },
+      "success": {
+        "add": "Berhasil menambahkan musim baru: ",
+        "edit": "Berhasil memperbarui musim: ",
+        "delete": "Berhasil menghapus musim: "
+      },
+      "errors": {
+        "add": {
+          "empty": "Silakan masukkan nama untuk musim baru.",
+          "duplicate": "Musim dengan nama ini sudah ada.",
+          "failed": "Gagal menambahkan musim."
+        },
+        "edit": {
+          "empty": "Silakan masukkan nama untuk musim.",
+          "duplicate": "Musim dengan nama ini sudah ada.",
+          "failed": "Gagal memperbarui musim."
+        },
+        "delete": {
+          "failed": "Gagal menghapus musim."
+        }
+      }
+    },
+    "columns": {
+      "name": "Nama"
+    },
+    "actions": {
+      "addNew": "Tambah Musim Baru"
+    }
   }
 }

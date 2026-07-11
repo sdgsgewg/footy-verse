@@ -15,44 +15,12 @@ export const fetchPositions = async (): Promise<PositionListItem[]> => {
 };
 
 export const createPosition = async (payload: unknown) => {
-  if (payload instanceof FormData) {
-    const response = await fetch("/api/positions", {
-      method: "POST",
-      body: payload,
-    });
-
-    if (!response.ok) {
-      const data = await response.json().catch(() => null);
-
-      throw new Error(data?.error ?? "Failed to create position");
-    }
-
-    return;
-  }
-
   const parsed = createPositionSchema.parse(payload); // validation
-
   await apiClient.post("/positions", parsed);
 };
 
 export const updatePosition = async (id: string, payload: unknown) => {
-  if (payload instanceof FormData) {
-    const response = await fetch(`/api/positions/${id}`, {
-      method: "PUT",
-      body: payload,
-    });
-
-    if (!response.ok) {
-      const data = await response.json().catch(() => null);
-
-      throw new Error(data?.error ?? "Failed to update club");
-    }
-
-    return;
-  }
-
   const parsed = updatePositionSchema.parse(payload); // validation
-
   await apiClient.put(`/positions/${id}`, parsed);
 };
 
