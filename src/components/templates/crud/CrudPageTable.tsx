@@ -4,20 +4,22 @@ import { Database } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { ReactNode } from "react";
 import { CrudActionRow } from "./CrudActionRow";
+import TableSkeleton from "@/components/ui/TableSkeleton";
 
 export const CrudPageTable = <TData extends CrudRow>({
-  columns,
+  loading,
   data,
+  columns,
   onView,
   onEdit,
   onDelete,
 }: Pick<
   CrudPageProps<TData, CrudForm>,
-  "columns" | "data" | "onView" | "onEdit" | "onDelete"
+  "loading" | "data" | "columns" | "onView" | "onEdit" | "onDelete"
 >) => {
   const tCommonTable = useTranslations("common.table");
 
-  const getValue = (obj: CrudRow, path: string): ReactNode | null => {
+  const getValue = (obj: TData, path: string): ReactNode | null => {
     const value = path.split(".").reduce<unknown>((acc, key) => {
       if (!acc || typeof acc !== "object") return undefined;
 
@@ -38,6 +40,14 @@ export const CrudPageTable = <TData extends CrudRow>({
 
     return null;
   };
+
+  if (loading) {
+    return (
+      <div className="lg:col-span-8">
+        <TableSkeleton columnCount={columns.length} rowCount={5} />
+      </div>
+    );
+  }
 
   return (
     <div className="lg:col-span-8">

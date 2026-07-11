@@ -2,13 +2,25 @@
 
 import Image from "next/image";
 import { useEffect, useRef } from "react";
+import Label from "../forms/fields/Label";
 
 interface Props {
+  name: string;
+  label: string;
+  required?: boolean;
+  readOnly?: boolean;
   value?: string;
   onChange: (file: File) => void;
 }
 
-export default function ImageUpload({ value, onChange }: Props) {
+export default function ImageUpload({
+  name,
+  label,
+  required,
+  readOnly,
+  value,
+  onChange,
+}: Props) {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -26,6 +38,8 @@ export default function ImageUpload({ value, onChange }: Props) {
 
   return (
     <div className="space-y-4">
+      <Label label={label} required={required} readOnly={readOnly} />
+
       {value && (
         <div className="relative h-40 w-40 overflow-hidden rounded-lg border">
           <Image
@@ -39,6 +53,7 @@ export default function ImageUpload({ value, onChange }: Props) {
       )}
 
       <input
+        name={name}
         type="file"
         accept="image/*"
         onChange={handleFileChange}

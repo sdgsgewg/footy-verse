@@ -1,5 +1,4 @@
 import type { Dispatch, SetStateAction } from "react";
-import TableSkeleton from "../../ui/TableSkeleton";
 import { CrudForm, CrudPageProps, CrudRow } from "@/types/crud";
 import { CrudPageHeader } from "./CrudPageHeader";
 import { CrudPageForm } from "./CrudPageForm";
@@ -48,19 +47,14 @@ export function CrudPage<TData extends CrudRow, TForm extends CrudForm>(
         />
 
         {/* TABLE SECTION */}
-        {loading ? (
-          <div className="lg:col-span-8">
-            <TableSkeleton columnCount={columns.length} rowCount={5} />
-          </div>
-        ) : (
-          <CrudPageTable
-            data={data as CrudRow[]}
-            columns={columns}
-            onView={onView as (item: CrudRow) => void}
-            onEdit={onEdit as (item: CrudRow) => void}
-            onDelete={onDelete as (item: CrudRow) => void}
-          />
-        )}
+        <CrudPageTable
+          loading={loading}
+          data={data as CrudRow[]}
+          columns={columns}
+          onView={onView as (item: CrudRow) => void}
+          onEdit={onEdit as (item: CrudRow) => void}
+          onDelete={onDelete as (item: CrudRow) => void}
+        />
       </div>
     </div>
   );

@@ -1,8 +1,8 @@
 import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { useDeletePlayer } from "./useDeletePlayer";
-import { PlayerWithDetails } from "@/lib/repositories/players.repo";
 import { ROUTES } from "@/constants/routes";
+import { PlayerDetailResponse } from "@/types/player";
 
 export function usePlayerActions() {
   const tPlayers = useTranslations("manage.players");
@@ -16,15 +16,15 @@ export function usePlayerActions() {
     router.push(`/${locale}/${ROUTES.MANAGE.PLAYERS.CREATE}`);
   };
 
-  const handleView = (player: PlayerWithDetails) => {
+  const handleView = (player: PlayerDetailResponse) => {
     router.push(`/${locale}/${ROUTES.MANAGE.PLAYERS.BASE}/${player.id}`);
   };
 
-  const handleEdit = (player: PlayerWithDetails) => {
+  const handleEdit = (player: PlayerDetailResponse) => {
     router.push(`/${locale}/${ROUTES.MANAGE.PLAYERS.EDIT}/${player.id}`);
   };
 
-  const handleDelete = (player: PlayerWithDetails) => {
+  const handleDelete = (player: PlayerDetailResponse) => {
     if (!confirm(`${tPlayers("form.confirm.delete")}`)) return;
 
     deleteMutation.mutate({

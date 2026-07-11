@@ -11,6 +11,7 @@ import {
   noContentResponse,
   successResponse,
 } from "@/lib/api/response";
+import { getClubInputFromFormData } from "@/lib/clubs/form-data";
 
 type ClubRouteContext = {
   params: Promise<{ id: string }>;
@@ -19,7 +20,6 @@ type ClubRouteContext = {
 export async function GET(_request: Request, context: ClubRouteContext) {
   try {
     const { id } = await context.params;
-
     const data = await getClubByIdService(id);
 
     if (!data) {
@@ -38,7 +38,6 @@ export async function PUT(request: Request, context: ClubRouteContext) {
 
     if (!isFormDataRequest(request)) {
       const body = await request.json();
-
       const data = await updateClubService(id, body);
 
       return successResponse(data);
@@ -51,20 +50,21 @@ export async function PUT(request: Request, context: ClubRouteContext) {
     }
 
     const formData = await request.formData();
-    const name = String(formData.get("name") ?? "");
-    const file = formData.get("image");
+
+    const body = getClubInputFromFormData(formData);
 
     let image = currentClub.image;
 
+    const file = formData.get("image");
+
     if (file instanceof File && file.size > 0) {
-      image = await uploadImage(file, name, STORAGE_BUCKETS.CLUBS);
+      image = await uploadImage(file, body.name, STORAGE_BUCKETS.CLUBS);
     }
 
+    body.image = image;
+
     try {
-      const data = await updateClubService(id, {
-        name,
-        image,
-      });
+      const data = await updateClubService(id, body);
 
       return successResponse(data);
     } catch (error) {

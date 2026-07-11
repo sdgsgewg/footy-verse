@@ -4,16 +4,14 @@ interface LabelProps {
   label: string;
   required?: boolean;
   optional?: boolean;
-  readonly?: boolean;
+  readOnly?: boolean;
 }
 
-const Label = ({ label, required, optional = false, readonly }: LabelProps) => {
+const Label = ({ label, required, optional = false, readOnly }: LabelProps) => {
   return (
     <span className="flex gap-1 text-sm font-medium">
-      <span className="text-muted-foreground ml-1">
-        {label}
-      </span>
-      {!readonly &&
+      <span className="text-muted-foreground ml-1">{label}</span>
+      {!readOnly &&
         (required ? (
           <span className="text-red-500">*</span>
         ) : optional ? (

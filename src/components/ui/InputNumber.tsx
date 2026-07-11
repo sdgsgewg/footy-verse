@@ -1,10 +1,16 @@
 import React from "react";
+import Label from "../forms/fields/Label";
 
 interface InputNumberProps {
   label: string;
   name: string;
   placeholder?: string;
   value: number | null | undefined;
+  required?: boolean;
+  readOnly?: boolean;
+  min?: number;
+  max?: number;
+  step?: number;
   decimal?: boolean;
   onChange: (value: number | null) => void;
   className?: string;
@@ -15,17 +21,25 @@ const InputNumber: React.FC<InputNumberProps> = ({
   name,
   placeholder,
   value,
+  required,
+  readOnly,
+  min,
+  max,
+  step,
   decimal = false,
   onChange,
 }) => {
+  const modifiedStep = step ? step : decimal ? "0.01" : "1";
+
   return (
     <div key={name} className="flex flex-col gap-2">
-      <label className="text-sm font-medium text-muted-foreground ml-1">
-        {label}
-      </label>
+      <Label label={label} required={required} readOnly={readOnly} />
       <input
         type="number"
-        step={decimal ? "0.01" : "1"}
+        readOnly={readOnly}
+        min={min}
+        max={max}
+        step={modifiedStep}
         placeholder={placeholder || ""}
         value={value !== null && value !== undefined ? value : ""}
         onChange={(e) => {

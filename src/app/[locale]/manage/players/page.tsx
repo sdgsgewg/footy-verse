@@ -1,14 +1,13 @@
 "use client";
 
 import ConnectionErrorAlert from "@/components/feedback/ConnectionErrorAlert";
+import ManagePageWrapper from "@/components/manage/ManagePageWrapper";
 import { CrudPageHeader, CrudPageTable } from "@/components/templates/crud";
-import { Button } from "@/components/ui/button";
-import TableSkeleton from "@/components/ui/TableSkeleton";
+import CrudPageManagement from "@/components/templates/crud/CrudPageManagement";
 import { usePlayers } from "@/hooks/manage/players";
 import { usePlayerActions } from "@/hooks/manage/players/usePlayerActions";
 import { isLikelyConnectionError } from "@/lib/utils/error";
 import { CrudColumn, CrudRow } from "@/types/crud";
-import { PlusCircle } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 export default function PlayersManagementPage() {
@@ -30,40 +29,20 @@ export default function PlayersManagementPage() {
   ) : undefined;
 
   return (
-    <div className="space-y-8">
+    <ManagePageWrapper>
       <CrudPageHeader title={t("title")} />
       {headerContent}
 
-      {/* Add Button */}
-      <div>
-        <Button
-          variant="default"
-          size="lg"
-          onClick={handleCreate}
-          disabled={loading}
-          className="flex-1"
-        >
-          <PlusCircle className="w-4 h-4" />
-          {`Add`}
-        </Button>
-      </div>
+      <CrudPageManagement onCreate={handleCreate} loading={loading} />
 
-      {/* TABLE SECTION */}
-      <div className="">
-        {loading ? (
-          <div className="">
-            <TableSkeleton columnCount={columns.length} rowCount={5} />
-          </div>
-        ) : (
-          <CrudPageTable
-            data={players as CrudRow[]}
-            columns={columns}
-            onView={handleView as unknown as (item: CrudRow) => void}
-            onEdit={handleEdit as unknown as (item: CrudRow) => void}
-            onDelete={handleDelete as unknown as (item: CrudRow) => void}
-          />
-        )}
-      </div>
-    </div>
+      <CrudPageTable
+        loading={loading}
+        data={players as CrudRow[]}
+        columns={columns}
+        onView={handleView as unknown as (item: CrudRow) => void}
+        onEdit={handleEdit as unknown as (item: CrudRow) => void}
+        onDelete={handleDelete as unknown as (item: CrudRow) => void}
+      />
+    </ManagePageWrapper>
   );
 }

@@ -1,5 +1,10 @@
 import { isFormDataRequest } from "@/lib/api/request";
-import { errorResponse, noContentResponse, successResponse } from "@/lib/api/response";
+import {
+  errorResponse,
+  noContentResponse,
+  successResponse,
+} from "@/lib/api/response";
+import { getNationalityInputFromFormData } from "@/lib/nationalities/form-data";
 import {
   deleteNationalityService,
   getNationalityByIdService,
@@ -15,7 +20,6 @@ type NationalityRouteContext = {
 export async function GET(_request: Request, context: NationalityRouteContext) {
   try {
     const { id } = await context.params;
-
     const data = await getNationalityByIdService(id);
 
     if (!data) {
@@ -46,17 +50,21 @@ export async function PUT(request: Request, context: NationalityRouteContext) {
     }
 
     const formData = await request.formData();
-    const name = String(formData.get("name") ?? "");
-    const file = formData.get("image");
+
+    const body = getNationalityInputFromFormData(formData);
 
     let image = currentNationality.image;
 
+    const file = formData.get("image");
+
     if (file instanceof File && file.size > 0) {
-      image = await uploadImage(file, name, STORAGE_BUCKETS.NATIONALITIES);
+      image = await uploadImage(file, body.name, STORAGE_BUCKETS.NATIONALITIES);
     }
 
+    body.image = image;
+
     try {
-      const data = await updateNationalityService(id, { name, image });
+      const data = await updateNationalityService(id, body);
 
       return successResponse(data);
     } catch (error) {

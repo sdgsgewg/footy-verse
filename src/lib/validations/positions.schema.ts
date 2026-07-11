@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const positionIdSchema = z.string().uuid();
 
-const positionMutationSchema = z.object({
+export const positionMutationSchema = z.object({
   name: z.string().min(1).max(255),
 });
 

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
@@ -6,33 +6,30 @@ import { queryKeys } from "@/lib/react-query/queryKeys";
 import { queryConfig } from "@/lib/react-query/queryConfig";
 import { isLikelyConnectionError } from "@/lib/utils/error";
 import { getNationalityImageUrl } from "@/lib/get-image-url";
-import { Nationality } from "@/lib/repositories/nationalities.repo";
-import { createNationality, deleteNationality, fetchNationalities, updateNationality } from "@/lib/api/nationality";
-
-type UpsertNationality = {
-  id?: string;
-  name: string;
-
-  image: string | null; // path database
-  imageUrl: string | null; // public URL untuk preview
-
-  imageFile: File | null; // file yang dipilih user
-  previewUrl: string | null; // URL untuk preview sementara sebelum diupload
-};
+import {
+  createNationality,
+  deleteNationality,
+  fetchNationalities,
+  updateNationality,
+} from "@/lib/api/nationality";
+import {
+  NationalityListItem,
+  UpsertNationalityInput,
+} from "@/types/nationality";
 
 interface UseNationalityDataReturn {
-  nationalities: Nationality[];
+  nationalities: NationalityListItem[];
   loading: boolean;
   retrying: boolean;
   isEditing: boolean;
   buttonText: string;
   isSubmitting: boolean;
-  form: UpsertNationality;
-  setForm: React.Dispatch<React.SetStateAction<UpsertNationality>>;
-  canSubmit: () => boolean;
+  form: UpsertNationalityInput;
+  setForm: React.Dispatch<React.SetStateAction<UpsertNationalityInput>>;
+  canSubmit: boolean;
   handleSubmit: () => Promise<void>;
-  handleEdit: (item: Nationality) => void;
-  handleDelete: (item: Nationality) => Promise<void>;
+  handleEdit: (item: NationalityListItem) => void;
+  handleDelete: (item: NationalityListItem) => Promise<void>;
   resetForm: () => void;
   loadError: unknown | null;
   retryLoad: () => void;
@@ -67,32 +64,20 @@ export const useNationalityData = (): UseNationalityDataReturn => {
     ...queryConfig,
   });
 
-  const [initialForm, setInitialForm] = useState<UpsertNationality | null>(null);
-  const [form, setForm] = useState<UpsertNationality>({
+  const emptyNationalityForm: UpsertNationalityInput = {
     id: "",
-    name: "",
+
     image: null,
     imageUrl: null,
     imageFile: null,
     previewUrl: null,
-  });
 
-  const canSubmit = (): boolean => {
-    const isFilled = form.name.trim().length > 0;
-
-    if (!isFilled) return false;
-
-    if (!isEditing) return form.imageFile != null;
-
-    if (!initialForm) return false;
-
-    const isChanged =
-      form.name !== initialForm.name ||
-      form.image !== initialForm.image ||
-      form.imageFile != null;
-
-    return isChanged;
+    name: "",
   };
+  const [initialForm, setInitialForm] =
+    useState<UpsertNationalityInput>(emptyNationalityForm);
+  const [form, setForm] =
+    useState<UpsertNationalityInput>(emptyNationalityForm);
 
   const createMutation = useMutation({
     mutationFn: createNationality,
@@ -149,7 +134,10 @@ export const useNationalityData = (): UseNationalityDataReturn => {
       alert(
         isLikelyConnectionError(error)
           ? tCommon("feedback.connectionIssue.actionFailed")
-          : [tNationalities("form.errors.delete.failed"), getErrorMessage(error)]
+          : [
+              tNationalities("form.errors.delete.failed"),
+              getErrorMessage(error),
+            ]
               .filter(Boolean)
               .join(": "),
       );
@@ -167,6 +155,24 @@ export const useNationalityData = (): UseNationalityDataReturn => {
     : isEditing
       ? tCommonActions("update")
       : tCommonActions("create");
+
+  const canSubmit = useMemo(() => {
+    const isFilled = form.name.trim().length > 0;
+
+    if (!isFilled) return false;
+
+    if (!isEditing) {
+      return form.imageFile != null;
+    }
+
+    if (!initialForm) return false;
+
+    return (
+      form.name !== initialForm.name ||
+      form.image !== initialForm.image ||
+      form.imageFile != null
+    );
+  }, [form, initialForm, isEditing]);
 
   const handleSubmit = async () => {
     const payload = new FormData();
@@ -187,7 +193,7 @@ export const useNationalityData = (): UseNationalityDataReturn => {
     }
   };
 
-  const handleEdit = (item: Nationality) => {
+  const handleEdit = (item: NationalityListItem) => {
     const mapped = {
       id: item.id ?? "",
       name: item.name,
@@ -202,7 +208,7 @@ export const useNationalityData = (): UseNationalityDataReturn => {
     setIsEditing(true);
   };
 
-  const handleDelete = async (item: Nationality) => {
+  const handleDelete = async (item: NationalityListItem) => {
     if (!confirm(`${tNationalities("form.confirm.delete")}`)) return;
 
     deleteMutation.mutate({
@@ -212,15 +218,8 @@ export const useNationalityData = (): UseNationalityDataReturn => {
   };
 
   const resetForm = () => {
-    setForm({
-      id: "",
-      name: "",
-      image: null,
-      imageUrl: null,
-      imageFile: null,
-      previewUrl: null,
-    });
-    setInitialForm(null);
+    setForm(emptyNationalityForm);
+    setInitialForm(emptyNationalityForm);
     setIsEditing(false);
   };
 

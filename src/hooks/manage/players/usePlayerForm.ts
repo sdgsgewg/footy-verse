@@ -2,10 +2,9 @@ import { useMemo, useState } from "react";
 
 import { PreferredFoot } from "@/enums/PreferredFoot";
 import { getPlayerImageUrl } from "@/lib/get-image-url";
-import { PlayerWithDetails } from "@/lib/repositories/players.repo";
-import { UpsertPlayer } from "@/types/players/UpsertPlayer";
+import { PlayerDetailResponse, UpsertPlayerInput } from "@/types/player";
 
-const emptyPlayerForm: UpsertPlayer = {
+const emptyPlayerForm: UpsertPlayerInput = {
   id: "",
 
   image: null,
@@ -23,12 +22,11 @@ const emptyPlayerForm: UpsertPlayer = {
   weight: 0,
   market_value: 0,
 
-  player_positions: [],
-  player_careers: [],
-  player_national_teams: [],
+  positions: [],
+  national_teams: [],
 };
 
-function mapPlayer(player: PlayerWithDetails): UpsertPlayer {
+function mapPlayer(player: PlayerDetailResponse): UpsertPlayerInput {
   return {
     id: player.id,
 
@@ -47,19 +45,12 @@ function mapPlayer(player: PlayerWithDetails): UpsertPlayer {
     weight: player.weight,
     market_value: player.market_value,
 
-    player_positions: player.positions.map((position) => ({
+    positions: player.positions.map((position) => ({
       position_id: position.position_id,
       display_order: position.display_order,
     })),
 
-    player_careers: player.careers.map((career) => ({
-      club_id: career.club_id,
-      joined_at: career.joined_at,
-      left_at: career.left_at,
-      is_current: career.is_current,
-    })),
-
-    player_national_teams: player.national_teams.map((nation) => ({
+    national_teams: player.national_teams.map((nation) => ({
       nation_id: nation.nation_id,
       start_date: nation.start_date,
       end_date: nation.end_date,
@@ -69,7 +60,7 @@ function mapPlayer(player: PlayerWithDetails): UpsertPlayer {
   };
 }
 
-export function usePlayerForm(player?: PlayerWithDetails) {
+export function usePlayerForm(player?: PlayerDetailResponse) {
   const initialValue = useMemo(
     () => (player ? mapPlayer(player) : emptyPlayerForm),
     [player],
@@ -86,7 +77,7 @@ export function usePlayerForm(player?: PlayerWithDetails) {
       form.name.trim().length > 0 &&
       form.dob.trim().length > 0 &&
       form.pob.trim().length > 0 &&
-      form.player_positions.length > 0 &&
+      form.positions.length > 0 &&
       form.height > 0 &&
       form.weight > 0 &&
       form.market_value > 0;
@@ -107,12 +98,10 @@ export function usePlayerForm(player?: PlayerWithDetails) {
       form.height !== initialForm.height ||
       form.weight !== initialForm.weight ||
       form.market_value !== initialForm.market_value ||
-      JSON.stringify(form.player_positions) !==
-        JSON.stringify(initialForm.player_positions) ||
-      JSON.stringify(form.player_careers) !==
-        JSON.stringify(initialForm.player_careers) ||
-      JSON.stringify(form.player_national_teams) !==
-        JSON.stringify(initialForm.player_national_teams) ||
+      JSON.stringify(form.positions) !==
+        JSON.stringify(initialForm.positions) ||
+      JSON.stringify(form.national_teams) !==
+        JSON.stringify(initialForm.national_teams) ||
       form.image !== initialForm.image ||
       form.imageFile != null
     );
@@ -129,17 +118,19 @@ export function usePlayerForm(player?: PlayerWithDetails) {
     payload.append("weight", String(form.weight));
     payload.append("market_value", String(form.market_value));
 
-    payload.append("positions", JSON.stringify(form.player_positions));
-    payload.append("clubs", JSON.stringify(form.player_careers));
-    payload.append(
-      "nationalities",
-      JSON.stringify(
-        form.player_national_teams.map((item) => ({
-          ...item,
-          end_date: item.end_date || null,
-        })),
-      ),
-    );
+    payload.append("positions", JSON.stringify(form.positions));
+
+    if (form.national_teams) {
+      payload.append(
+        "nationalities",
+        JSON.stringify(
+          form.national_teams.map((item) => ({
+            ...item,
+            end_date: item.end_date || null,
+          })),
+        ),
+      );
+    }
 
     if (form.image) {
       payload.append("existingImage", form.image);

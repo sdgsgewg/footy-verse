@@ -5,24 +5,37 @@ import InputSelect from "@/components/ui/InputSelect";
 import InputText from "@/components/ui/InputText";
 import PlayerPositionSelector from "@/components/ui/PlayerPositionSelector";
 import { PreferredFoot } from "@/enums/PreferredFoot";
-import { Position } from "@/lib/repositories/positions.repo";
-import { UpsertPlayer } from "@/types/players/UpsertPlayer";
+import { UpsertPlayerInput } from "@/types/player";
+import { PositionListItem } from "@/types/position";
 import { useTranslations } from "next-intl";
 import React, { Dispatch, SetStateAction } from "react";
 
 interface Props {
-  form: UpsertPlayer;
-  setForm: Dispatch<SetStateAction<UpsertPlayer>>;
-  positions: Position[];
+  form: UpsertPlayerInput;
+  setForm: Dispatch<SetStateAction<UpsertPlayerInput>>;
+  positions: PositionListItem[];
 }
 
 const PlayerPersonalSection = ({ form, setForm, positions }: Props) => {
   const t = useTranslations("manage.players");
 
+  const preferredFootOptions = [
+    {
+      id: PreferredFoot.LEFT,
+      name: t("form.options.preferredFoot.left"),
+    },
+    {
+      id: PreferredFoot.RIGHT,
+      name: t("form.options.preferredFoot.right"),
+    },
+  ];
+
   return (
-    <div className="lg:grid-cols-6 space-y-5">
+    <div className="space-y-5">
       {/* Image */}
       <ImageUpload
+        label={t("form.labels.image")}
+        name="image"
         value={(form.previewUrl ?? form.imageUrl) as string}
         onChange={(file) =>
           setForm((prev) => ({
@@ -47,11 +60,11 @@ const PlayerPersonalSection = ({ form, setForm, positions }: Props) => {
         label={t("form.labels.positions")}
         placeholder={t("form.placeholders.positions")}
         options={positions}
-        value={form.player_positions}
-        onChange={(player_positions) =>
+        value={form.positions}
+        onChange={(positions) =>
           setForm({
             ...form,
-            player_positions,
+            positions,
           })
         }
       />
@@ -97,16 +110,7 @@ const PlayerPersonalSection = ({ form, setForm, positions }: Props) => {
         label={t("form.labels.preferredFoot")}
         name="preferred_foot"
         placeholder={t("form.placeholders.preferredFoot")}
-        options={[
-          {
-            id: PreferredFoot.LEFT,
-            name: t("form.options.preferredFoot.left"),
-          },
-          {
-            id: PreferredFoot.RIGHT,
-            name: t("form.options.preferredFoot.right"),
-          },
-        ]}
+        options={preferredFootOptions}
         value={form.preferred_foot || ""}
         onChange={(value) =>
           setForm({ ...form, preferred_foot: value as PreferredFoot })

@@ -124,6 +124,8 @@ export const CrudPageForm = ({
               return (
                 <ImageUpload
                   key={field.name}
+                  label={field.label}
+                  name={field.name}
                   value={(form.previewUrl ?? form.imageUrl) as string}
                   onChange={(file) =>
                     setForm((prev) => ({
@@ -144,7 +146,7 @@ export const CrudPageForm = ({
               variant="default"
               size="lg"
               onClick={onSubmit}
-              disabled={isSubmitting || !canSubmit()}
+              disabled={isSubmitting || !canSubmit}
               className="flex-1"
             >
               <Save className="w-4 h-4" />

@@ -1,6 +1,5 @@
-import { getMainPosition, getOtherPositions } from "@/lib/players/player.util";
-import { PlayerPosition } from "@/lib/repositories/players.repo";
-import React from "react";
+import { getMainPosition, getOtherPositions } from "@/lib/players/formatter";
+import { PlayerPosition } from "@/types/player";
 
 interface PlayerPositionSectionProps {
   positions: PlayerPosition[];

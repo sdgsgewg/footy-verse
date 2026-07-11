@@ -10,6 +10,7 @@ import {
   errorResponse,
   successResponse,
 } from "@/lib/api/response";
+import { getClubInputFromFormData } from "@/lib/clubs/form-data";
 
 export async function GET(request: Request) {
   try {
@@ -17,7 +18,6 @@ export async function GET(request: Request) {
 
     const query = {
       name: searchParams.get("name") || undefined,
-      slug: searchParams.get("slug") || undefined,
     };
 
     const data = await getClubsService(query);
@@ -38,20 +38,21 @@ export async function POST(request: Request) {
     }
 
     const formData = await request.formData();
-    const name = String(formData.get("name") ?? "");
+
+    const body = getClubInputFromFormData(formData);
+
     const file = formData.get("image");
 
     if (!(file instanceof File) || file.size === 0) {
       return errorResponse(new Error("Club image is required"));
     }
 
-    const image = await uploadImage(file, name, STORAGE_BUCKETS.CLUBS);
+    const image = await uploadImage(file, body.name, STORAGE_BUCKETS.CLUBS);
+
+    body.image = image;
 
     try {
-      const data = await createClubService({
-        name,
-        image,
-      });
+      const data = await createClubService(body);
 
       return createdResponse({
         success: true,

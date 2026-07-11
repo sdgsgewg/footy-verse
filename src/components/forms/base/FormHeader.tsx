@@ -10,7 +10,7 @@ interface Props {
   onSubmit: () => void;
 }
 
-const PlayerFormHeader = ({
+const FormHeader = ({
   loading = false,
   isCreate,
   canSubmit,
@@ -30,17 +30,19 @@ const PlayerFormHeader = ({
 
   return (
     <div className="flex flex-row items-center justify-between p-6 bg-muted/20 border-b border-border/50">
-      {isCreate ? (
-        <>
-          <Plus className="w-4 h-4" />
-          {tCommonActions("add")} {tCommonUi("entry")}
-        </>
-      ) : (
-        <>
-          <Pencil className="w-4 h-4" />
-          {tCommonActions("edit")} {tCommonUi("entry")}
-        </>
-      )}
+      <div className=" flex items-center gap-2">
+        {isCreate ? (
+          <>
+            <Plus className="w-4 h-4" />
+            {tCommonActions("add")} {tCommonUi("entry")}
+          </>
+        ) : (
+          <>
+            <Pencil className="w-4 h-4" />
+            {tCommonActions("edit")} {tCommonUi("entry")}
+          </>
+        )}
+      </div>
 
       <div className="">
         <Button
@@ -58,4 +60,4 @@ const PlayerFormHeader = ({
   );
 };
 
-export default PlayerFormHeader;
+export default FormHeader;

@@ -3,10 +3,24 @@ import {
   createClubSchema,
   updateClubSchema,
 } from "../validations/clubs.schema";
-import { Club } from "../repositories/clubs.repo";
+import { ClubDetailResponse, ClubListItem } from "@/types/club";
 
-export const fetchClubs = async () => {
-  const { data } = await apiClient.get<{ success: boolean; data: Club[] }>("/clubs");
+export const fetchClubs = async (): Promise<ClubListItem[]> => {
+  const { data } = await apiClient.get<{
+    success: boolean;
+    data: ClubListItem[];
+  }>("/clubs");
+
+  return data.data;
+};
+
+export const fetchClubById = async (
+  id: string,
+): Promise<ClubDetailResponse> => {
+  const { data } = await apiClient.get<{
+    success: boolean;
+    data: ClubDetailResponse;
+  }>(`/clubs/${id}`);
 
   return data.data;
 };

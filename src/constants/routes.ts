@@ -18,7 +18,11 @@ export const ROUTES = {
       CREATE: "/manage/players/create",
       EDIT: "/manage/players/edit",
     },
-    CLUBS: "/manage/clubs",
+    CLUBS: {
+      BASE: "/manage/clubs",
+      CREATE: "/manage/clubs/create",
+      EDIT: "/manage/clubs/edit",
+    },
     NATIONALITIES: "/manage/nationalities",
     POSITIONS: "/manage/positions",
   },

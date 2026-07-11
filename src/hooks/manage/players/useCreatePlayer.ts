@@ -1,5 +1,3 @@
-// hooks/manage/players/useCreatePlayer.ts
-
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";

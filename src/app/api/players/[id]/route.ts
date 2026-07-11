@@ -20,7 +20,7 @@ export async function GET(_request: Request, context: PlayerRouteContext) {
     const data = await getPlayerByIdService(id);
 
     if (!data) {
-      return NextResponse.json({ error: "Player not found" }, { status: 404 });
+      return errorResponse(new Error("Player not found"), 404);
     }
 
     return successResponse(data);

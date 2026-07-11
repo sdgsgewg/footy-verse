@@ -3,10 +3,13 @@ import {
   createNationalitySchema,
   updateNationalitySchema,
 } from "../validations/nationalities.schema";
-import { Nationality } from "../repositories/nationalities.repo";
+import { NationalityListItem } from "@/types/nationality";
 
-export const fetchNationalities = async () => {
-  const { data } = await apiClient.get<{ success: boolean; data: Nationality[] }>("/nationalities");
+export const fetchNationalities = async (): Promise<NationalityListItem[]> => {
+  const { data } = await apiClient.get<{
+    success: boolean;
+    data: NationalityListItem[];
+  }>("/nationalities");
 
   return data.data;
 };

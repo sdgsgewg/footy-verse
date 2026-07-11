@@ -1,7 +1,6 @@
-import {
-  PlayerPosition,
-  PlayerWithDetails,
-} from "../repositories/players.repo";
+import { PlayerDetailResponse, PlayerPosition } from "@/types/player";
+
+// For Detail Page
 
 function calculateAge(dob: string) {
   const birthDate = new Date(dob); // Mengubah string jadi objek Date
@@ -38,7 +37,7 @@ export function getOtherPositions(positions: PlayerPosition[]) {
     .sort((a, b) => a.display_order - b.display_order);
 }
 
-export function getDateOfBirth(player: PlayerWithDetails) {
+export function getDateOfBirth(player: PlayerDetailResponse) {
   const age = calculateAge(player.dob);
   const dob = player.dob;
   return `${dob} (${age})`;
@@ -52,7 +51,7 @@ export function getWeight(weight: number) {
   return `${weight} kg`;
 }
 
-export function getCurrentClub(player: PlayerWithDetails) {
+export function getCurrentClub(player: PlayerDetailResponse) {
   const current = player.careers.find((career) => career.left_at == null);
 
   if (current) {

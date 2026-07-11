@@ -3,12 +3,12 @@ import {
   createPlayerSchema,
   updatePlayerSchema,
 } from "../validations/players.schema";
-import { PlayerWithDetails } from "../repositories/players.repo";
+import { PlayerDetailResponse, PlayerListItem } from "@/types/player";
 
-export const fetchPlayers = async (): Promise<PlayerWithDetails[]> => {
+export const fetchPlayers = async (): Promise<PlayerListItem[]> => {
   const { data } = await apiClient.get<{
     success: boolean;
-    data: PlayerWithDetails[];
+    data: PlayerListItem[];
   }>("/players");
 
   return data.data;
@@ -16,10 +16,10 @@ export const fetchPlayers = async (): Promise<PlayerWithDetails[]> => {
 
 export const fetchPlayerById = async (
   id: string,
-): Promise<PlayerWithDetails> => {
+): Promise<PlayerDetailResponse> => {
   const { data } = await apiClient.get<{
     success: boolean;
-    data: PlayerWithDetails;
+    data: PlayerDetailResponse;
   }>(`/players/${id}`);
 
   return data.data;

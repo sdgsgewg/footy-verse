@@ -4,6 +4,7 @@ import {
   errorResponse,
   successResponse,
 } from "@/lib/api/response";
+import { getNationalityInputFromFormData } from "@/lib/nationalities/form-data";
 import {
   createNationalityService,
   getNationalitiesService,
@@ -17,7 +18,6 @@ export async function GET(request: Request) {
 
     const query = {
       name: searchParams.get("name") || undefined,
-      slug: searchParams.get("slug") || undefined,
     };
 
     const data = await getNationalitiesService(query);
@@ -38,17 +38,25 @@ export async function POST(request: Request) {
     }
 
     const formData = await request.formData();
-    const name = String(formData.get("name") ?? "");
+
+    const body = getNationalityInputFromFormData(formData);
+
     const file = formData.get("image");
 
     if (!(file instanceof File) || file.size === 0) {
       return errorResponse(new Error("Nationality image is required"));
     }
 
-    const image = await uploadImage(file, name, STORAGE_BUCKETS.NATIONALITIES);
+    const image = await uploadImage(
+      file,
+      body.name,
+      STORAGE_BUCKETS.NATIONALITIES,
+    );
+
+    body.image = image;
 
     try {
-      const data = await createNationalityService({ name, image });
+      const data = await createNationalityService(body);
 
       return createdResponse({
         success: true,

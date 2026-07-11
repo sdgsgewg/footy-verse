@@ -1,10 +1,13 @@
 import React from "react";
+import Label from "../forms/fields/Label";
 
 interface InputDateProps {
   label: string;
   name: string;
   placeholder?: string;
   value: string;
+  required?: boolean;
+  readOnly?: boolean;
   onChange: (value: string) => void;
   className?: string;
 }
@@ -14,17 +17,18 @@ const InputDate: React.FC<InputDateProps> = ({
   name,
   placeholder,
   value,
+  required,
+  readOnly,
   onChange,
 }) => {
   return (
     <div key={name} className="flex flex-col gap-2">
-      <label className="text-sm font-medium text-muted-foreground ml-1">
-        {label}
-      </label>
+      <Label label={label} required={required} readOnly={readOnly} />
       <input
         type="date"
         placeholder={placeholder || ""}
         value={value || ""}
+        disabled={readOnly}
         onChange={(e) => {
           const v = e.target.value;
           if (!v) {

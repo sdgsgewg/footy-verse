@@ -2,10 +2,10 @@
 
 import ManagePageLayout from "@/components/layout/ManagePageLayout";
 
-export default function CreatePlayerLayout({
-  children,
-}: {
+interface Props {
   children: React.ReactNode;
-}) {
+}
+
+export default function CreatePlayerLayout({ children }: Props) {
   return <ManagePageLayout>{children}</ManagePageLayout>;
 }

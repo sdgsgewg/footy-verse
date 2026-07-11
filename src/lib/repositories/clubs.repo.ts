@@ -1,76 +1,40 @@
 import { slugify } from "@/common/utils/slug.util";
-import { type Tables } from "@/lib/database.types";
 import { createClient } from "@/utils/supabase/server";
-import {
-  clubsQuerySchema,
-  createClubSchema,
-  updateClubSchema,
-} from "../validations/clubs.schema";
 import { renameImage, tryDeleteImage } from "../services/storage.service";
-import z from "zod";
 import { STORAGE_BUCKETS } from "../storage";
-
-export type Club = Tables<"clubs">;
-export type ClubCreateInput = z.infer<typeof createClubSchema>;
-export type ClubUpdateInput = z.infer<typeof updateClubSchema>;
-
-type GetClubsParams = z.infer<typeof clubsQuerySchema>;
+import { ensureUniqueRecord } from "./helpers/uniqueness";
+import {
+  Club,
+  ClubCreateInput,
+  ClubDetailResponse,
+  ClubListItem,
+  ClubUpdateInput,
+  GetClubsParams,
+} from "@/types/club";
 
 async function getSupabase() {
   return createClient();
 }
 
-async function ensureUniqueClub(params: {
-  name: string;
-  slug: string;
-  ignoreId?: string;
-}) {
-  const supabase = await getSupabase();
-
-  let nameQuery = supabase
-    .from("clubs")
-    .select("id")
-    .eq("name", params.name)
-    .limit(1);
-
-  if (params.ignoreId) {
-    nameQuery = nameQuery.neq("id", params.ignoreId);
-  }
-
-  const { data: existingName, error: nameError } =
-    await nameQuery.maybeSingle();
-
-  if (nameError) throw nameError;
-  if (existingName) {
-    throw new Error("Club name already exists");
-  }
-
-  let slugQuery = supabase
-    .from("clubs")
-    .select("id")
-    .eq("slug", params.slug)
-    .limit(1);
-
-  if (params.ignoreId) {
-    slugQuery = slugQuery.neq("id", params.ignoreId);
-  }
-
-  const { data: existingSlug, error: slugError } =
-    await slugQuery.maybeSingle();
-
-  if (slugError) throw slugError;
-  if (existingSlug) {
-    throw new Error("Club slug already exists");
-  }
-}
-
-export async function getClubsRepo(params: GetClubsParams): Promise<Club[]> {
+export async function getClubsRepo(
+  params: GetClubsParams,
+): Promise<ClubListItem[]> {
   const supabase = await getSupabase();
 
   let query = supabase
     .from("clubs")
     .select(
-      "id, image, name, slug, club_type, parent_club_id, nation_id, created_at, updated_at",
+      `
+      *,
+      nation:nationalities!clubs_nation_id_fkey(
+        id,
+        name
+      ),
+      parent_club:clubs!parent_club_id(
+        id,
+        name
+      )
+      `,
     )
     .order("name");
 
@@ -82,16 +46,30 @@ export async function getClubsRepo(params: GetClubsParams): Promise<Club[]> {
 
   if (error) throw error;
 
-  return data ?? [];
+  return (data ?? []).map((club) => ({
+    ...club,
+  }));
 }
 
-export async function getClubByIdRepo(id: string): Promise<Club | null> {
+export async function getClubByIdRepo(
+  id: string,
+): Promise<ClubDetailResponse | null> {
   const supabase = await getSupabase();
 
   const { data, error } = await supabase
     .from("clubs")
     .select(
-      "id, image, name, slug, club_type, parent_club_id, nation_id, created_at, updated_at",
+      `
+      *,
+      nation:nationalities!clubs_nation_id_fkey(
+        id,
+        name
+      ),
+      parent_club:clubs!parent_club_id(
+        id,
+        name
+      )
+    `,
     )
     .eq("id", id)
     .maybeSingle();
@@ -104,19 +82,18 @@ export async function getClubByIdRepo(id: string): Promise<Club | null> {
 export async function createClubRepo(club: ClubCreateInput): Promise<Club> {
   const supabase = await getSupabase();
 
-  await ensureUniqueClub({
-    name: club.name,
-    slug: slugify(club.name),
-  });
-
   const slug = slugify(club.name);
+
+  await ensureUniqueRecord({
+    table: "clubs",
+    name: club.name,
+    slug,
+  });
 
   const { data, error } = await supabase
     .from("clubs")
     .insert({ ...club, slug })
-    .select(
-      "id, image, name, slug, club_type, parent_club_id, nation_id, created_at, updated_at",
-    )
+    .select(`*`)
     .single();
 
   if (error) throw error;
@@ -136,7 +113,12 @@ export async function updateClubRepo(
     throw new Error("Club not found");
   }
 
-  await ensureUniqueClub({ name: club.name, slug, ignoreId: id });
+  await ensureUniqueRecord({
+    table: "clubs",
+    name: club.name,
+    slug,
+    ignoreId: id,
+  });
 
   let finalImage = club.image;
 
@@ -169,9 +151,7 @@ export async function updateClubRepo(
       updated_at: new Date().toISOString(),
     })
     .eq("id", id)
-    .select(
-      "id, image, name, slug, club_type, parent_club_id, nation_id, created_at, updated_at",
-    )
+    .select("*")
     .single();
 
   if (error) throw error;

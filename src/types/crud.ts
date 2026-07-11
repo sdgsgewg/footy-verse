@@ -17,8 +17,6 @@ export type CrudColumn = {
 
 export type CrudRow = {
   id: string;
-  name?: string;
-  [key: string]: unknown;
 };
 
 export type CrudForm = {
@@ -32,7 +30,7 @@ export type CrudPageProps<TData extends CrudRow, TForm extends CrudForm> = {
   data: TData[];
   form: TForm;
   setForm: Dispatch<SetStateAction<TForm>>;
-  canSubmit: () => boolean;
+  canSubmit: boolean;
   onSubmit: () => void;
   onView?: (item: TData) => void;
   onEdit: (item: TData) => void;

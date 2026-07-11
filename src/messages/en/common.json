@@ -8,7 +8,8 @@
     "delete": "Delete",
     "cancel": "Cancel",
     "apply": "Apply",
-    "retry": "Retry"
+    "retry": "Retry",
+    "back": "Back"
   },
 
   "states": {

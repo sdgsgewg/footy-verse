@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const nationalityIdSchema = z.string().uuid();
 
-const nationalityMutationSchema = z.object({
+export const nationalityMutationSchema = z.object({
   image: z.string().nullable().optional(),
   name: z.string().min(1).max(255),
 });

@@ -1,31 +1,31 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { queryKeys } from "@/lib/react-query/queryKeys";
 import { queryConfig } from "@/lib/react-query/queryConfig";
 import { isLikelyConnectionError } from "@/lib/utils/error";
-import { Position } from "@/lib/repositories/positions.repo";
-import { createPosition, deletePosition, fetchPositions, updatePosition } from "@/lib/api/position";
-
-type UpsertPosition = {
-  id?: string;
-  name: string;
-};
+import {
+  createPosition,
+  deletePosition,
+  fetchPositions,
+  updatePosition,
+} from "@/lib/api/position";
+import { PositionListItem, UpsertPositionInput } from "@/types/position";
 
 interface UsePositionDataReturn {
-  positions: Position[];
+  positions: PositionListItem[];
   loading: boolean;
   retrying: boolean;
   isEditing: boolean;
   buttonText: string;
   isSubmitting: boolean;
-  form: UpsertPosition;
-  setForm: React.Dispatch<React.SetStateAction<UpsertPosition>>;
-  canSubmit: () => boolean;
+  form: UpsertPositionInput;
+  setForm: React.Dispatch<React.SetStateAction<UpsertPositionInput>>;
+  canSubmit: boolean;
   handleSubmit: () => Promise<void>;
-  handleEdit: (item: Position) => void;
-  handleDelete: (item: Position) => Promise<void>;
+  handleEdit: (item: PositionListItem) => void;
+  handleDelete: (item: PositionListItem) => Promise<void>;
   resetForm: () => void;
   loadError: unknown | null;
   retryLoad: () => void;
@@ -60,25 +60,13 @@ export const usePositionData = (): UsePositionDataReturn => {
     ...queryConfig,
   });
 
-  const [initialForm, setInitialForm] = useState<UpsertPosition | null>(null);
-  const [form, setForm] = useState<UpsertPosition>({
+  const emptyPositionForm: UpsertPositionInput = {
     id: "",
     name: "",
-  });
-
-  const canSubmit = (): boolean => {
-    const isFilled = form.name.trim().length > 0;
-
-    if (!isFilled) return false;
-
-    if (!isEditing) return true;
-
-    if (!initialForm) return false;
-
-    const isChanged = form.name !== initialForm.name;
-
-    return isChanged;
   };
+  const [initialForm, setInitialForm] =
+    useState<UpsertPositionInput>(emptyPositionForm);
+  const [form, setForm] = useState<UpsertPositionInput>(emptyPositionForm);
 
   const createMutation = useMutation({
     mutationFn: createPosition,
@@ -154,6 +142,34 @@ export const usePositionData = (): UsePositionDataReturn => {
       ? tCommonActions("update")
       : tCommonActions("create");
 
+  // const canSubmit = (): boolean => {
+  //   const isFilled = form.name.trim().length > 0;
+
+  //   if (!isFilled) return false;
+
+  //   if (!isEditing) return true;
+
+  //   if (!initialForm) return false;
+
+  //   const isChanged = form.name !== initialForm.name;
+
+  //   return isChanged;
+  // };
+
+  const canSubmit = useMemo(() => {
+    const isFilled = form.name.trim().length > 0;
+
+    if (!isFilled) return false;
+
+    if (!isEditing) return true;
+
+    if (!initialForm) return false;
+
+    const isChanged = form.name !== initialForm.name;
+
+    return isChanged;
+  }, [form, initialForm, isEditing]);
+
   const handleSubmit = async () => {
     const payload = new FormData();
 
@@ -169,7 +185,7 @@ export const usePositionData = (): UsePositionDataReturn => {
     }
   };
 
-  const handleEdit = (item: Position) => {
+  const handleEdit = (item: PositionListItem) => {
     const mapped = {
       id: item.id ?? "",
       name: item.name,
@@ -180,7 +196,7 @@ export const usePositionData = (): UsePositionDataReturn => {
     setIsEditing(true);
   };
 
-  const handleDelete = async (item: Position) => {
+  const handleDelete = async (item: PositionListItem) => {
     if (!confirm(`${tPositions("form.confirm.delete")}`)) return;
 
     deleteMutation.mutate({
@@ -194,7 +210,7 @@ export const usePositionData = (): UsePositionDataReturn => {
       id: "",
       name: "",
     });
-    setInitialForm(null);
+    setInitialForm(emptyPositionForm);
     setIsEditing(false);
   };
 

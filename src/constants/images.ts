@@ -5,5 +5,7 @@ export const IMAGES = {
       "https://wmghprjdobvoxthkdlnh.supabase.co/storage/v1/object/public/common/not-found.png",
     DEFAULT:
       "https://wmghprjdobvoxthkdlnh.supabase.co/storage/v1/object/public/common/default.png",
+    DEFAULT_PLAYER:
+      "https://wmghprjdobvoxthkdlnh.supabase.co/storage/v1/object/public/common/default-player.png",
   },
 };
