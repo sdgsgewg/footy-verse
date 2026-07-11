@@ -37,6 +37,7 @@ import {
 } from "@/components/ui/popover";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 
 export interface PositionOption {
   id: string;
@@ -75,6 +76,9 @@ const PlayerPositionSelector = <TPosition extends PositionOption>({
   onChange,
 }: PlayerPositionSelectorProps<TPosition>) => {
   const [open, setOpen] = React.useState(false);
+
+  const tForm = useTranslations("manage.players.form.positions");
+  const tCommonActions = useTranslations("common.actions");
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -190,7 +194,7 @@ const PlayerPositionSelector = <TPosition extends PositionOption>({
             className="text-muted-foreground"
           >
             <RotateCcw className="size-3" />
-            Clear
+            {tCommonActions("clear")}
           </Button>
         )}
       </div>
@@ -246,7 +250,7 @@ const PlayerPositionSelector = <TPosition extends PositionOption>({
         {selectedPositions.length === 0 ? (
           <div className="mt-3 flex min-h-24 flex-col items-center justify-center gap-2 rounded-lg border border-dashed bg-muted/20 px-4 py-6 text-center text-sm text-muted-foreground">
             <ListOrdered className="size-5" />
-            <span>Add at least one position, then drag to set priority.</span>
+            <span>{tForm("instruction")}</span>
           </div>
         ) : (
           <DndContext

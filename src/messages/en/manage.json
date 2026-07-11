@@ -12,6 +12,13 @@
       "subtitle": "Edit Player"
     },
     "form": {
+      "positions": {
+        "instruction": "Add at least one position, then drag to set priority."
+      },
+      "nationalTeams": {
+        "title": "National Team History",
+        "noData": "No national team history added."
+      },
       "labels": {
         "image": "Player Image",
         "name": "Player Name",
@@ -21,7 +28,14 @@
         "height": "Height (cm)",
         "weight": "Weight (kg)",
         "preferredFoot": "Preferred Foot",
-        "marketValue": "Market Value (million euro)"
+        "marketValue": "Market Value (million euro)",
+        "nationalTeams": {
+          "nation": "Nation",
+          "label": "Label",
+          "startDate": "Start Date",
+          "endDate": "End Date",
+          "shirtNumber": "Shirt Number"
+        }
       },
       "placeholders": {
         "image": "Choose Image",
@@ -32,7 +46,14 @@
         "height": "Input Height (cm)",
         "weight": "Input Weight (kg)",
         "preferredFoot": "Select Preferred Foot",
-        "marketValue": "Input Market Value (million euro)"
+        "marketValue": "Input Market Value (million euro)",
+        "nationalTeams": {
+          "nation": "Select Nation",
+          "label": "Input Label",
+          "startDate": "Select Start Date",
+          "endDate": "Select End Date",
+          "shirtNumber": "Input Shirt Number"
+        }
       },
       "validation": {
         "id": {

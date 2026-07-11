@@ -5,6 +5,8 @@
     "view": "View",
     "update": "Update",
     "edit": "Edit",
+    "remove": "Remove",
+    "clear": "Clear",
     "delete": "Delete",
     "cancel": "Cancel",
     "apply": "Apply",

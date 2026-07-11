@@ -8,6 +8,8 @@ import InputNumber from "@/components/ui/InputNumber";
 import InputSelect from "@/components/ui/InputSelect";
 import { UpsertPlayerInput } from "@/types/player";
 import { NationalityListItem } from "@/types/nationality";
+import InputText from "@/components/ui/InputText";
+import { useTranslations } from "next-intl";
 
 type NationalTeam = NonNullable<UpsertPlayerInput["national_teams"]>[number];
 
@@ -18,6 +20,13 @@ interface Props {
 }
 
 const PlayerNationalTeamSection = ({ form, setForm, nationalities }: Props) => {
+  const tForm = useTranslations("manage.players.form.nationalTeams");
+  const tCommonActions = useTranslations("common.actions");
+  const tLabels = useTranslations("manage.players.form.labels.nationalTeams");
+  const tPlaceholders = useTranslations(
+    "manage.players.form.placeholders.nationalTeams",
+  );
+
   const addNationalTeam = () => {
     setForm((prev) => ({
       ...prev,
@@ -25,9 +34,9 @@ const PlayerNationalTeamSection = ({ form, setForm, nationalities }: Props) => {
         ...(prev.national_teams ?? []),
         {
           nation_id: "",
+          label: "",
           start_date: "",
           end_date: "",
-          label: "",
           shirt_number: 1,
         },
       ],
@@ -64,7 +73,7 @@ const PlayerNationalTeamSection = ({ form, setForm, nationalities }: Props) => {
   return (
     <div className="rounded-xl border border-border p-4 space-y-5">
       <div className="flex items-center justify-between">
-        <h2 className="text-lg font-semibold">National Team History</h2>
+        <h2 className="text-lg font-semibold">{tForm("title")}</h2>
 
         <Button
           type="button"
@@ -73,22 +82,24 @@ const PlayerNationalTeamSection = ({ form, setForm, nationalities }: Props) => {
           onClick={addNationalTeam}
         >
           <Plus className="w-4 h-4 mr-2" />
-          Add
+          {tCommonActions("add")}
         </Button>
       </div>
 
       {form.national_teams && form.national_teams.length === 0 && (
         <div className="rounded-xl border border-dashed p-6 text-center text-muted-foreground">
-          No national team history added.
+          {tForm("noData")}
         </div>
       )}
 
       {form.national_teams &&
         form.national_teams.map((item, index) => (
           <div key={index} className="rounded-xl border p-4 space-y-4">
+            {/* Nation */}
             <InputSelect
-              label="National Team"
+              label={tLabels("nation")}
               name={`nationality-${index}`}
+              placeholder={tPlaceholders("nation") || ""}
               options={nationalities}
               value={item.nation_id}
               onChange={(value) =>
@@ -96,9 +107,20 @@ const PlayerNationalTeamSection = ({ form, setForm, nationalities }: Props) => {
               }
             />
 
+            {/* Label */}
+            <InputText
+              label={tLabels("label")}
+              name={`label-${index}`}
+              placeholder={tPlaceholders("label") || ""}
+              value={(form.name as string) ?? ""}
+              onChange={(value) => setForm({ ...form, name: value })}
+              required
+            />
+
             <InputDate
-              label="Start Date"
+              label={tLabels("startDate")}
               name={`start-date-${index}`}
+              placeholder={tPlaceholders("startDate") || ""}
               value={item.start_date}
               onChange={(value) =>
                 updateNationalTeam(index, "start_date", value)
@@ -106,15 +128,17 @@ const PlayerNationalTeamSection = ({ form, setForm, nationalities }: Props) => {
             />
 
             <InputDate
-              label="End Date"
+              label={tLabels("endDate")}
               name={`end-date-${index}`}
+              placeholder={tPlaceholders("endDate") || ""}
               value={item.end_date ?? ""}
               onChange={(value) => updateNationalTeam(index, "end_date", value)}
             />
 
             <InputNumber
-              label="Shirt Number"
+              label={tLabels("shirtNumber")}
               name={`shirt-number-${index}`}
+              placeholder={tPlaceholders("shirtNumber") || ""}
               value={item.shirt_number}
               onChange={(value) =>
                 updateNationalTeam(index, "shirt_number", value ?? 1)
@@ -129,7 +153,7 @@ const PlayerNationalTeamSection = ({ form, setForm, nationalities }: Props) => {
                 onClick={() => removeNationalTeam(index)}
               >
                 <Trash2 className="w-4 h-4 mr-2" />
-                Remove
+                {tCommonActions("remove")}
               </Button>
             </div>
           </div>

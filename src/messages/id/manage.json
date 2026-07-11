@@ -12,16 +12,30 @@
       "subtitle": "Edit Pemain"
     },
     "form": {
+      "positions": {
+        "instruction": "Tambahkan minimal satu posisi, lalu seret untuk mengatur prioritas."
+      },
+      "nationalTeams": {
+        "title": "Riwayat Tim Nasional",
+        "noData": "Belum ada riwayat tim nasional yang ditambahkan."
+      },
       "labels": {
         "image": "Gambar Pemain",
         "name": "Nama Pemain",
-        "positions": "Posis",
+        "positions": "Posisi",
         "dob": "Tanggal Lahir",
         "pob": "Tempat Lahir",
         "height": "Tinggi (cm)",
         "weight": "Berat (kg)",
         "preferredFoot": "Kaki Dominan",
-        "marketValue": "Nilai Pasar"
+        "marketValue": "Nilai Pasar",
+        "nationalTeams": {
+          "nation": "Negara",
+          "label": "Label",
+          "startDate": "Tanggal Mulai",
+          "endDate": "Tanggal Akhir",
+          "shirtNumber": "Nomor Baju"
+        }
       },
       "placeholders": {
         "image": "Pilih Gambar",
@@ -32,7 +46,14 @@
         "height": "Masukkan tinggi (cm)",
         "weight": "Masukkan berat (kg)",
         "preferredFoot": "Pilih kaki dominan",
-        "marketValue": "Masukkan nilai pasar"
+        "marketValue": "Masukkan nilai pasar",
+        "nationalTeams": {
+          "nation": "Pilih Negara",
+          "label": "Masukkan label",
+          "startDate": "Pilih tanggal mulai",
+          "endDate": "Pilih tanggal akhir",
+          "shirtNumber": "Masukkan nomor baju"
+        }
       },
       "options": {
         "preferredFoot": {

@@ -5,9 +5,9 @@ export const playerNationalTeamIdSchema = z.string().uuid();
 
 export const playerNationalTeamMutationSchema = z.object({
   nation_id: z.string().uuid(),
+  label: z.string(),
   start_date: z.string(),
   end_date: nullableDate.optional(),
-  label: z.string(),
   shirt_number: z.number().int().min(1).max(99),
 });
 
