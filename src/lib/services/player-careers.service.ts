@@ -17,8 +17,8 @@ export async function getPlayerCareersService(playerId: string) {
   return getPlayerCareersRepo(playerId);
 }
 
-export async function getPlayerCareerByIdService(id: string) {
-  const parsedId = playerCareerIdSchema.parse(id);
+export async function getPlayerCareerByIdService(careerId: string) {
+  const parsedId = playerCareerIdSchema.parse(careerId);
 
   return getPlayerCareerByIdRepo(parsedId);
 }
@@ -34,19 +34,19 @@ export async function createPlayerCareerService(
 }
 
 export async function updatePlayerCareerService(
-  id: string,
+  careerId: string,
   playerId: string,
   input: unknown,
 ) {
-  const parsedId = playerCareerIdSchema.parse(id);
+  const parsedId = playerCareerIdSchema.parse(careerId);
   const parsedPlayerId = playerIdSchema.parse(playerId);
   const parsed = updatePlayerCareerSchema.parse(input);
 
   return updatePlayerCareerRepo(parsedId, parsedPlayerId, parsed);
 }
 
-export async function deletePlayerCareerService(id: string) {
-  const parsedId = playerCareerIdSchema.parse(id);
+export async function deletePlayerCareerService(careerId: string) {
+  const parsedId = playerCareerIdSchema.parse(careerId);
 
   await deletePlayerCareerRepo(parsedId);
 }

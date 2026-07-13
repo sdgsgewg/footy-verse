@@ -9,43 +9,48 @@ import {
   UpsertPlayerCareerInput,
 } from "@/types/player-career";
 
-const baseRoute = "/player-careers";
-
-export const fetchPlayerCareers = async (): Promise<PlayerCareerListItem[]> => {
+export const fetchPlayerCareers = async (
+  playerId: string,
+): Promise<PlayerCareerListItem[]> => {
   const { data } = await apiClient.get<{
     success: boolean;
     data: PlayerCareerListItem[];
-  }>(baseRoute);
+  }>(`/players/${playerId}/careers`);
 
   return data.data;
 };
 
 export const fetchPlayerCareerById = async (
-  id: string,
+  careerId: string,
+  playerId: string,
 ): Promise<PlayerCareerDetailResponse> => {
   const { data } = await apiClient.get<{
     success: boolean;
     data: PlayerCareerDetailResponse;
-  }>(`${baseRoute}/${id}`);
+  }>(`/players/${playerId}/careers/${careerId}`);
 
   return data.data;
 };
 
-export const createPlayerCareer = async (payload: UpsertPlayerCareerInput) => {
+export const createPlayerCareer = async (
+  playerId: string,
+  payload: UpsertPlayerCareerInput,
+) => {
   const parsed = createPlayerCareerSchema.parse(payload); // validation
 
-  await apiClient.post(baseRoute, parsed);
+  await apiClient.post(`/players/${playerId}/careers`, parsed);
 };
 
 export const updatePlayer = async (
-  id: string,
+  careerId: string,
+  playerId: string,
   payload: UpsertPlayerCareerInput,
 ) => {
   const parsed = updatePlayerCareerSchema.parse(payload); // validation
 
-  await apiClient.put(`${baseRoute}/${id}`, parsed);
+  await apiClient.put(`/players/${playerId}/careers/${careerId}`, parsed);
 };
 
-export const deletePlayer = async (id: string) => {
-  await apiClient.delete(`${baseRoute}/${id}`);
+export const deletePlayer = async (careerId: string, playerId: string) => {
+  await apiClient.delete(`/players/${playerId}/careers/${careerId}`);
 };

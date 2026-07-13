@@ -7,6 +7,7 @@ async function getMessages(locale: string) {
     navigation: (await import(`./messages/${locale}/navigation.json`)).default,
     footer: (await import(`./messages/${locale}/footer.json`)).default,
     common: (await import(`./messages/${locale}/common.json`)).default,
+    auth: (await import(`./messages/${locale}/auth.json`)).default,
     home: (await import(`./messages/${locale}/home.json`)).default,
     manage: (await import(`./messages/${locale}/manage.json`)).default,
     entities: (await import(`./messages/${locale}/entities.json`)).default,
