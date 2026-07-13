@@ -4,18 +4,18 @@ import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { User } from "@supabase/supabase-js";
 import { createClient } from "@/utils/supabase/client";
 import { Profile } from "@/types/profile";
+import { useRouter } from "next/navigation";
+import { Role } from "@/enums/Role";
 
 interface AuthContextType {
   user: User | null;
   profile: Profile | null;
-  loading: boolean;
+  isAuthenticated: boolean;
+  canManage: boolean;
+  signOut: () => Promise<void>;
 }
 
-const AuthContext = createContext<AuthContextType>({
-  user: null,
-  profile: null,
-  loading: true,
-});
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 interface AuthProviderProps {
   children: React.ReactNode;
@@ -29,10 +29,23 @@ export function AuthProvider({
   initialProfile,
 }: AuthProviderProps) {
   const supabase = useMemo(() => createClient(), []);
+  const router = useRouter();
 
   const [user, setUser] = useState<User | null>(initialUser);
   const [profile, setProfile] = useState<Profile | null>(initialProfile);
-  const [loading, setLoading] = useState(false);
+
+  const isAuthenticated = !!user;
+
+  const canManage =
+    profile?.role === Role.ADMIN || profile?.role === Role.EDITOR;
+
+  const signOut = async () => {
+    try {
+      await supabase.auth.signOut();
+    } finally {
+      router.refresh();
+    }
+  };
 
   useEffect(() => {
     const {
@@ -64,7 +77,9 @@ export function AuthProvider({
       value={{
         user,
         profile,
-        loading,
+        isAuthenticated,
+        canManage,
+        signOut,
       }}
     >
       {children}
@@ -73,5 +88,11 @@ export function AuthProvider({
 }
 
 export function useAuth() {
-  return useContext(AuthContext);
+  const context = useContext(AuthContext);
+
+  if (!context) {
+    throw new Error("useAuth must be used within AuthProvider");
+  }
+
+  return context;
 }
