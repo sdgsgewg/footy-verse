@@ -1,8 +1,8 @@
 import { useMemo, useState } from "react";
-
 import { PreferredFoot } from "@/enums/PreferredFoot";
-import { getPlayerImageUrl } from "@/lib/get-image-url";
 import { PlayerDetailResponse, UpsertPlayerInput } from "@/types/player";
+import { STORAGE_BUCKETS } from "@/lib/storage";
+import { getImageUrl } from "@/lib/images/image-url";
 
 const emptyPlayerForm: UpsertPlayerInput = {
   id: "",
@@ -31,7 +31,7 @@ function mapPlayer(player: PlayerDetailResponse): UpsertPlayerInput {
     id: player.id,
 
     image: player.image,
-    imageUrl: getPlayerImageUrl(player.image),
+    imageUrl: getImageUrl(STORAGE_BUCKETS.PLAYERS, player.image),
     imageFile: null,
     previewUrl: null,
 

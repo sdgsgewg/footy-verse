@@ -1,7 +1,8 @@
 import { useMemo, useState } from "react";
-import { getClubImageUrl } from "@/lib/get-image-url";
 import { ClubType } from "@/enums/ClubType";
 import { Club, UpsertClubInput } from "@/types/club";
+import { getImageUrl } from "@/lib/images/image-url";
+import { STORAGE_BUCKETS } from "@/lib/storage";
 
 const emptyClubForm: UpsertClubInput = {
   id: "",
@@ -23,7 +24,7 @@ function mapClub(club: Club): UpsertClubInput {
     id: club.id,
 
     image: club.image,
-    imageUrl: getClubImageUrl(club.image),
+    imageUrl: getImageUrl(STORAGE_BUCKETS.CLUBS, club.image),
     imageFile: null,
     previewUrl: null,
 

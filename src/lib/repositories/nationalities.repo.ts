@@ -1,4 +1,4 @@
-import { slugify } from "@/common/utils/slug.util";
+import { slugify } from "@/utils/string";
 import { createClient } from "@/utils/supabase/server";
 import { renameImage, tryDeleteImage } from "../services/storage.service";
 import { STORAGE_BUCKETS } from "../storage";

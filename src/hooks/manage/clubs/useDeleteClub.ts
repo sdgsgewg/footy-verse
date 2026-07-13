@@ -1,42 +1,22 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useTranslations } from "next-intl";
-import { queryKeys } from "@/lib/react-query/queryKeys";
-import { isLikelyConnectionError } from "@/lib/utils/error";
 import { deleteClub } from "@/lib/api/club";
+import { useCrudMutation } from "../useCrudMutation";
+import { queryKeys } from "@/lib/react-query/queryKeys";
 
 interface DeleteClubPayload {
   id: string;
-  name: string;
+  data: unknown;
 }
 
 export function useDeleteClub() {
-  const queryClient = useQueryClient();
+  return useCrudMutation<DeleteClubPayload>({
+    mutationFn: ({ id }) => deleteClub(id),
 
-  const tClubs = useTranslations("manage.clubs");
-  const tCommon = useTranslations("common");
+    queryKey: queryKeys.clubs(),
 
-  return useMutation({
-    mutationFn: ({ id }: DeleteClubPayload) => deleteClub(id),
+    entityKey: "club",
 
-    onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.clubs(),
-      });
+    action: "delete",
 
-      alert(`${tClubs("form.success.delete")} ${variables.name}`);
-    },
-
-    onError: (error: unknown) => {
-      const message = isLikelyConnectionError(error)
-        ? tCommon("feedback.connectionIssue.actionFailed")
-        : [
-            tClubs("form.errors.delete.failed"),
-            error instanceof Error ? error.message : undefined,
-          ]
-            .filter(Boolean)
-            .join(": ");
-
-      alert(message);
-    },
+    getPayload: ({ data }) => data,
   });
 }

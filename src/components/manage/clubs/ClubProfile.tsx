@@ -1,7 +1,8 @@
 import RecordData from "@/components/shared/RecordData";
 import { IMAGES } from "@/constants/images";
 import { ClubType, ClubTypeLabels } from "@/enums/ClubType";
-import { getClubImageUrl, getNationalityImageUrl } from "@/lib/get-image-url";
+import { getImageUrl } from "@/lib/images/image-url";
+import { STORAGE_BUCKETS } from "@/lib/storage";
 import { ClubDetailResponse } from "@/types/club";
 import Image from "next/image";
 import React from "react";
@@ -34,7 +35,8 @@ const ClubProfile = ({ club }: Props) => {
             <div key={nation?.id} className="flex flex-row items-center gap-2">
               <Image
                 src={
-                  getNationalityImageUrl(nation.image) ?? IMAGES.COMMON.DEFAULT
+                  getImageUrl(STORAGE_BUCKETS.NATIONALITIES, nation.image) ??
+                  IMAGES.COMMON.DEFAULT
                 }
                 alt={nation.name}
                 width={24}
@@ -52,7 +54,10 @@ const ClubProfile = ({ club }: Props) => {
         <RecordData label="Parent Club">
           <div className="flex flex-row items-center gap-2">
             <Image
-              src={getClubImageUrl(parent_club.image) ?? IMAGES.COMMON.DEFAULT}
+              src={
+                getImageUrl(STORAGE_BUCKETS.CLUBS, parent_club.image) ??
+                IMAGES.COMMON.DEFAULT
+              }
               alt={parent_club.name ?? "-"}
               className="w-4 h-4"
               width={16}

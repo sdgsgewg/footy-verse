@@ -1,4 +1,4 @@
-import { slugify } from "@/common/utils/slug.util";
+import { slugify } from "@/utils/string";
 import { Player } from "@/interface/Player";
 import { v4 as uuidv4 } from "uuid";
 

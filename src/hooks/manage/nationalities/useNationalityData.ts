@@ -1,26 +1,16 @@
 import { useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
-import { queryKeys } from "@/lib/react-query/queryKeys";
-import { queryConfig } from "@/lib/react-query/queryConfig";
-import { isLikelyConnectionError } from "@/lib/utils/error";
-import { getNationalityImageUrl } from "@/lib/get-image-url";
-import {
-  createNationality,
-  deleteNationality,
-  fetchNationalities,
-  updateNationality,
-} from "@/lib/api/nationality";
 import {
   NationalityListItem,
   UpsertNationalityInput,
 } from "@/types/nationality";
+import { getImageUrl } from "@/lib/images/image-url";
+import { STORAGE_BUCKETS } from "@/lib/storage";
+import { useDeleteNationality } from "./useDeleteNationality";
+import { useUpdateNationality } from "./useUpdateNationality";
+import { useCreateNationality } from "./useCreateNationality";
 
 interface UseNationalityDataReturn {
-  nationalities: NationalityListItem[];
-  loading: boolean;
-  retrying: boolean;
   isEditing: boolean;
   buttonText: string;
   isSubmitting: boolean;
@@ -31,38 +21,14 @@ interface UseNationalityDataReturn {
   handleEdit: (item: NationalityListItem) => void;
   handleDelete: (item: NationalityListItem) => Promise<void>;
   resetForm: () => void;
-  loadError: unknown | null;
-  retryLoad: () => void;
 }
 
 export const useNationalityData = (): UseNationalityDataReturn => {
-  const tNationalities = useTranslations("manage.nationalities");
+  const t = useTranslations("");
   const tCommonActions = useTranslations("common.actions");
   const tCommonStates = useTranslations("common.states");
-  const tCommon = useTranslations("common");
 
-  const queryClient = useQueryClient();
-  const hasDuplicateError = (error: unknown) =>
-    axios.isAxiosError<{ error?: string }>(error) &&
-    error.response?.data?.error?.includes("exists");
-  const getErrorMessage = (error: unknown) =>
-    axios.isAxiosError<{ error?: string }>(error)
-      ? error.response?.data?.error
-      : error instanceof Error
-        ? error.message
-        : undefined;
-
-  const {
-    data: nationalities = [],
-    isLoading: isLoadingNationalities,
-    isRefetching,
-    error,
-    refetch,
-  } = useQuery({
-    queryKey: queryKeys.nationalities(),
-    queryFn: fetchNationalities,
-    ...queryConfig,
-  });
+  const [isEditing, setIsEditing] = useState(false);
 
   const emptyNationalityForm: UpsertNationalityInput = {
     id: "",
@@ -79,74 +45,23 @@ export const useNationalityData = (): UseNationalityDataReturn => {
   const [form, setForm] =
     useState<UpsertNationalityInput>(emptyNationalityForm);
 
-  const createMutation = useMutation({
-    mutationFn: createNationality,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.nationalities() });
-      alert(`${tNationalities("form.success.add")} ${form.name}`);
-      resetForm();
-    },
-    onError: (error: unknown) => {
-      if (isLikelyConnectionError(error)) {
-        alert(tCommon("feedback.connectionIssue.actionFailed"));
-      } else if (hasDuplicateError(error)) {
-        alert(`${tNationalities("form.errors.add.duplicate")}`);
-      } else {
-        alert(
-          [tNationalities("form.errors.add.failed"), getErrorMessage(error)]
-            .filter(Boolean)
-            .join(": "),
-        );
-      }
-    },
+  const resetForm = () => {
+    setForm(emptyNationalityForm);
+    setInitialForm(emptyNationalityForm);
+    setIsEditing(false);
+  };
+
+  const createMutation = useCreateNationality(() => {
+    resetForm();
   });
 
-  const updateMutation = useMutation({
-    mutationFn: ({ id, data }: { id: string; data: unknown }) =>
-      updateNationality(id, data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.nationalities() });
-      alert(`${tNationalities("form.success.edit")} ${form.name}`);
-      resetForm();
-    },
-    onError: (error: unknown) => {
-      if (isLikelyConnectionError(error)) {
-        alert(tCommon("feedback.connectionIssue.actionFailed"));
-      } else if (hasDuplicateError(error)) {
-        alert(`${tNationalities("form.errors.edit.duplicate")}`);
-      } else {
-        alert(
-          [tNationalities("form.errors.edit.failed"), getErrorMessage(error)]
-            .filter(Boolean)
-            .join(": "),
-        );
-      }
-    },
+  const updateMutation = useUpdateNationality(() => {
+    resetForm();
   });
 
-  const deleteMutation = useMutation({
-    mutationFn: ({ id }: { id: string; name: string }) => deleteNationality(id),
-    onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.nationalities() });
-      alert(`${tNationalities("form.success.delete")} ${variables.name}`);
-    },
-    onError: (error) => {
-      alert(
-        isLikelyConnectionError(error)
-          ? tCommon("feedback.connectionIssue.actionFailed")
-          : [
-              tNationalities("form.errors.delete.failed"),
-              getErrorMessage(error),
-            ]
-              .filter(Boolean)
-              .join(": "),
-      );
-    },
-  });
+  const deleteMutation = useDeleteNationality();
 
   const isSubmitting = createMutation.isPending || updateMutation.isPending;
-
-  const [isEditing, setIsEditing] = useState(false);
 
   const buttonText = isSubmitting
     ? isEditing
@@ -155,6 +70,37 @@ export const useNationalityData = (): UseNationalityDataReturn => {
     : isEditing
       ? tCommonActions("update")
       : tCommonActions("create");
+
+  const handleEdit = (item: NationalityListItem) => {
+    const mapped = {
+      id: item.id ?? "",
+      name: item.name,
+      image: item.image ?? null,
+      imageUrl: getImageUrl(STORAGE_BUCKETS.NATIONALITIES, item.image ?? null),
+      imageFile: null,
+      previewUrl: null,
+    };
+
+    setForm(mapped);
+    setInitialForm(mapped);
+    setIsEditing(true);
+  };
+
+  const handleDelete = async (item: NationalityListItem) => {
+    if (
+      !confirm(
+        `${t(`common.crud.confirm.delete`, {
+          entity: t(`entities.nationality`),
+        })}`,
+      )
+    )
+      return;
+
+    deleteMutation.mutate({
+      id: item.id,
+      data: item,
+    });
+  };
 
   const canSubmit = useMemo(() => {
     const isFilled = form.name.trim().length > 0;
@@ -193,40 +139,7 @@ export const useNationalityData = (): UseNationalityDataReturn => {
     }
   };
 
-  const handleEdit = (item: NationalityListItem) => {
-    const mapped = {
-      id: item.id ?? "",
-      name: item.name,
-      image: item.image ?? null,
-      imageUrl: getNationalityImageUrl(item.image ?? null),
-      imageFile: null,
-      previewUrl: null,
-    };
-
-    setForm(mapped);
-    setInitialForm(mapped);
-    setIsEditing(true);
-  };
-
-  const handleDelete = async (item: NationalityListItem) => {
-    if (!confirm(`${tNationalities("form.confirm.delete")}`)) return;
-
-    deleteMutation.mutate({
-      id: item.id,
-      name: item.name,
-    });
-  };
-
-  const resetForm = () => {
-    setForm(emptyNationalityForm);
-    setInitialForm(emptyNationalityForm);
-    setIsEditing(false);
-  };
-
   return {
-    nationalities,
-    loading: isLoadingNationalities,
-    retrying: isRefetching,
     isEditing,
     buttonText,
     isSubmitting,
@@ -237,9 +150,5 @@ export const useNationalityData = (): UseNationalityDataReturn => {
     handleEdit,
     handleDelete,
     resetForm,
-    loadError: error ?? null,
-    retryLoad: () => {
-      void refetch();
-    },
   };
 };

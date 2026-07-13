@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 
 export default function LoginPage() {
-  const t = useTranslations("common.auth");
+  const t = useTranslations("auth");
   const router = useRouter();
   const searchParams = useSearchParams();
   const next = searchParams.get("next") ?? "/manage/clubs";

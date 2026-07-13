@@ -2,7 +2,6 @@ import React from "react";
 import RecordData from "../shared/RecordData";
 import PlayerPositionSection from "./PlayerPositionSection";
 import Image from "next/image";
-import { getClubImageUrl, getNationalityImageUrl } from "@/lib/get-image-url";
 import { IMAGES } from "@/constants/images";
 import {
   formatMarketValue,
@@ -12,6 +11,8 @@ import {
   getWeight,
 } from "@/lib/players/formatter";
 import { PlayerDetailResponse } from "@/types/player";
+import { getImageUrl } from "@/lib/images/image-url";
+import { STORAGE_BUCKETS } from "@/lib/storage";
 
 interface Props {
   player: PlayerDetailResponse;
@@ -54,8 +55,10 @@ const PlayerProfile = ({ player }: Props) => {
             >
               <Image
                 src={
-                  getNationalityImageUrl(pnt.nationality.image) ??
-                  IMAGES.COMMON.DEFAULT
+                  getImageUrl(
+                    STORAGE_BUCKETS.NATIONALITIES,
+                    pnt.nationality.image,
+                  ) ?? IMAGES.COMMON.DEFAULT
                 }
                 alt={pnt.nationality.name}
                 width={24}
@@ -73,7 +76,10 @@ const PlayerProfile = ({ player }: Props) => {
         <RecordData label="Club">
           <div className="flex flex-row items-center gap-2">
             <Image
-              src={getClubImageUrl(currentClub.image) ?? IMAGES.COMMON.DEFAULT}
+              src={
+                getImageUrl(STORAGE_BUCKETS.CLUBS, currentClub.image) ??
+                IMAGES.COMMON.DEFAULT
+              }
               alt={currentClub.name ?? "-"}
               className="w-4 h-4"
               width={16}

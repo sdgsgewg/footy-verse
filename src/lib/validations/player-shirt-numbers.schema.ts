@@ -1,10 +1,9 @@
-import { nullableDate } from "@/utils/date";
+import { nullableDate } from "@/lib/validations/helpers";
 import { z } from "zod";
 
 export const playerShirtNumberIdSchema = z.string().uuid();
 
 export const playerShirtNumberMutationSchema = z.object({
-  player_career_id: z.string().uuid(),
   shirt_number: z.number().min(1).max(99),
   start_date: z.string(),
   end_date: nullableDate.optional(),

@@ -2,23 +2,29 @@
   "players": {
     "title": "Kelola Pemain",
     "subtitle": "Tambah, edit, atau hapus pemain.",
+
     "notFound": "Pemain Tidak Ditemukan",
+
     "create": {
       "title": "Buat Pemain",
       "subtitle": "Buat pemain baru"
     },
+
     "edit": {
       "title": "Edit Pemain",
-      "subtitle": "Edit Pemain"
+      "subtitle": "Edit pemain"
     },
+
     "form": {
       "positions": {
         "instruction": "Tambahkan minimal satu posisi, lalu seret untuk mengatur prioritas."
       },
+
       "nationalTeams": {
         "title": "Riwayat Tim Nasional",
         "noData": "Belum ada riwayat tim nasional yang ditambahkan."
       },
+
       "labels": {
         "image": "Gambar Pemain",
         "name": "Nama Pemain",
@@ -37,6 +43,7 @@
           "shirtNumber": "Nomor Baju"
         }
       },
+
       "placeholders": {
         "image": "Pilih Gambar",
         "name": "Masukkan nama",
@@ -55,39 +62,130 @@
           "shirtNumber": "Masukkan nomor baju"
         }
       },
+
       "options": {
-        "preferredFoot": {
-          "right": "Kanan",
-          "left": "Kiri"
-        }
-      },
-      "confirm": {
-        "delete": "Apakah kamu yakin ingin menghapus pemain ini?"
-      },
-      "success": {
-        "add": "Berhasil menambahkan pemain baru: ",
-        "edit": "Berhasil memperbarui pemain: ",
-        "delete": "Berhasil menghapus pemain: "
-      },
-      "errors": {
-        "add": {
-          "empty": "Silakan masukkan nama untuk pemain baru.",
-          "duplicate": "Pemain dengan nama ini sudah ada.",
-          "failed": "Gagal menambahkan pemain."
-        },
-        "edit": {
-          "empty": "Silakan masukkan nama untuk pemain.",
-          "duplicate": "Pemain dengan nama ini sudah ada.",
-          "failed": "Gagal memperbarui pemain."
-        },
-        "delete": {
-          "failed": "Gagal menghapus pemain."
+        "transferType": {
+          "transfer": "Transfer",
+          "loan": "Loan",
+          "loanReturn": "Loan Return",
+          "free": "Free",
+          "released": "Released",
+          "youthPromotion": "Youth Promotion",
+          "retired": "Retired"
         }
       }
     },
+
     "columns": {
-      "name": "Nama"
+      "club": "Club",
+      "joinedAt": "Join Date",
+      "leftAt": "Left Date"
     },
+
+    "actions": {
+      "addNew": "Add New Player Career"
+    }
+  },
+
+  "playerCareers": {
+    "title": "Kelola Karir Pemain",
+    "subtitle": "Tambah, edit, atau hapus karir pemain.",
+
+    "notFound": "Karier Pemain Tidak Ditemukan",
+
+    "create": {
+      "title": "Buat Karir Pemain",
+      "subtitle": "Buat karir pemain baru"
+    },
+
+    "edit": {
+      "title": "Edit Karir Pemain",
+      "subtitle": "Edit karir pemain"
+    },
+
+    "form": {
+      "contracts": {
+        "title": "Riwayat Kontrak",
+        "instruction": "Mohon tambahkan minimal satu kontrak"
+      },
+
+      "shirtNumbers": {
+        "title": "Riwayat Nomor Baju",
+        "instruction": "Mohon tambahkan minimal satu nomor baju"
+      },
+
+      "transfer": {
+        "title": "Riwayat Transfer",
+        "instruction": "Mohon tambahkan transfer."
+      },
+
+      "labels": {
+        "club": "Klub",
+        "joinedAt": "Tanggal Bergabung",
+        "leftAt": "Tanggal Keluar",
+        "contracts": {
+          "contractStart": "Tanggal Mulai",
+          "contractEnd": "Tanggal Akhir",
+          "salary": "Gaji (per tahun)"
+        },
+        "shirtNumbers": {
+          "shirtNumber": "Nomor Baju",
+          "startDate": "Tanggal Mulai",
+          "endDate": "Tanggal Akhir"
+        },
+        "transfer": {
+          "season": "Musim",
+          "fromClub": "Klub Asal",
+          "toClub": "Klub Tujuan",
+          "transferType": "Tipe Transfer",
+          "transferFee": "Biaya Transfer",
+          "transferDate": "Tanggal Transfer"
+        }
+      },
+
+      "placeholders": {
+        "club": "Pilih Klub",
+        "joinedAt": "Pilih Tanggal Bergabung",
+        "leftAt": "Pilih Tanggal Keluar",
+        "contracts": {
+          "contractStart": "Pilih Tanggal Mulai",
+          "contractEnd": "Pilih Tanggal Akhir",
+          "salary": "Masukkan gaji (dalam juta euro)"
+        },
+        "shirtNumbers": {
+          "shirtNumber": "Masukkan Nomor Baju",
+          "startDate": "Plih Tanggal Mulai",
+          "endDate": "Pilih Tanggal Akhir"
+        },
+        "transfer": {
+          "season": "Pilih Musim",
+          "fromClub": "Pilih Klub Asal",
+          "toClub": "Pilih Klub Tujuan",
+          "transferType": "Pilih Tipe Transfer",
+          "transferFee": "Masukkan Biaya Transfer",
+          "transferDate": "Pilih Tanggal Transfer"
+        },
+
+        "options": {
+          "transferType": {
+            "transfer": "Transfer",
+            "loan": "Pinjaman",
+            "loanReturn": "Kembali dari Pinjaman",
+            "free": "Gratis",
+            "released": "Dilepas",
+            "youthPromotion": "Promosi dari Tim Muda",
+            "retired": "Pensiun"
+          }
+        }
+      }
+    },
+
+    "columns": {
+      "club": "Klub",
+      "joinedAt": "Tanggal Bergabung",
+      "leftAt": "Tanggal Keluar"
+    },
+
     "actions": {
       "addNew": "Tambah Pemain Baru"
     }
@@ -96,15 +194,19 @@
   "clubs": {
     "title": "Kelola Klub",
     "subtitle": "Tambah, edit, atau hapus klub.",
+
     "notFound": "Klub Tidak Ditemukan",
+
     "create": {
       "title": "Buat Klub",
       "subtitle": "Buat klub baru"
     },
+
     "edit": {
       "title": "Edit Klub",
       "subtitle": "Edit klub"
     },
+
     "form": {
       "labels": {
         "image": "Gambar Klub",
@@ -113,13 +215,15 @@
         "nation": "Asal Negara",
         "parentClub": "Klub Induk"
       },
-      "placeholder": {
+
+      "placeholders": {
         "image": "Pilih Gambar",
         "name": "Input nama",
         "clubType": "Pilih Tipe Klub",
         "nation": "Pilih Asal Negara",
         "parentClub": "Pilih Klub Induk"
       },
+
       "options": {
         "clubType": {
           "firstTeam": "Tim Utama",
@@ -132,34 +236,13 @@
           "u17": "Tim U17",
           "academy": "Tim Akademi"
         }
-      },
-      "confirm": {
-        "delete": "Apakah kamu yakin ingin menghapus klub ini?"
-      },
-      "success": {
-        "add": "Berhasil menambahkan klub baru: ",
-        "edit": "Berhasil memperbarui klub: ",
-        "delete": "Berhasil menghapus klub: "
-      },
-      "errors": {
-        "add": {
-          "empty": "Silakan masukkan nama untuk klub baru.",
-          "duplicate": "Klub dengan nama ini sudah ada.",
-          "failed": "Gagal menambahkan klub."
-        },
-        "edit": {
-          "empty": "Silakan masukkan nama untuk klub.",
-          "duplicate": "Klub dengan nama ini sudah ada.",
-          "failed": "Gagal memperbarui klub."
-        },
-        "delete": {
-          "failed": "Gagal menghapus klub."
-        }
       }
     },
+
     "columns": {
       "name": "Nama"
     },
+
     "actions": {
       "addNew": "Tambah Klub Baru"
     }
@@ -168,42 +251,23 @@
   "nationalities": {
     "title": "Kelola Kebangsaan",
     "subtitle": "Tambah, edit, atau hapus kebangsaan.",
+
     "form": {
       "labels": {
         "image": "Gambar Kebangsaan",
         "name": "Nama Kebangsaan"
       },
-      "placeholder": {
+
+      "placeholders": {
         "image": "Input gambar kebangsaan",
         "name": "Input nama kebangsaan"
-      },
-      "confirm": {
-        "delete": "Apakah kamu yakin ingin menghapus kebangsaan ini?"
-      },
-      "success": {
-        "add": "Berhasil menambahkan kebangsaan baru: ",
-        "edit": "Berhasil memperbarui kebangsaan: ",
-        "delete": "Berhasil menghapus kebangsaan: "
-      },
-      "errors": {
-        "add": {
-          "empty": "Silakan masukkan nama untuk kebangsaan baru.",
-          "duplicate": "Kebangsaan dengan nama ini sudah ada.",
-          "failed": "Gagal menambahkan kebangsaan."
-        },
-        "edit": {
-          "empty": "Silakan masukkan nama untuk kebangsaan.",
-          "duplicate": "Kebangsaan dengan nama ini sudah ada.",
-          "failed": "Gagal memperbarui kebangsaan."
-        },
-        "delete": {
-          "failed": "Gagal menghapus kebangsaan."
-        }
       }
     },
+
     "columns": {
       "name": "Nama"
     },
+
     "actions": {
       "addNew": "Tambah Kebangsaan Baru"
     }
@@ -212,40 +276,21 @@
   "positions": {
     "title": "Kelola Posisi",
     "subtitle": "Tambah, edit, atau hapus posisi.",
+
     "form": {
       "labels": {
         "name": "Nama Posisi"
       },
-      "placeholder": {
+
+      "placeholders": {
         "name": "Input nama"
-      },
-      "confirm": {
-        "delete": "Apakah kamu yakin ingin menghapus posisi ini?"
-      },
-      "success": {
-        "add": "Berhasil menambahkan posisi baru: ",
-        "edit": "Berhasil memperbarui posisi: ",
-        "delete": "Berhasil menghapus posisi: "
-      },
-      "errors": {
-        "add": {
-          "empty": "Silakan masukkan nama untuk posisi baru.",
-          "duplicate": "Posisi dengan nama ini sudah ada.",
-          "failed": "Gagal menambahkan posisi."
-        },
-        "edit": {
-          "empty": "Silakan masukkan nama untuk posisi.",
-          "duplicate": "Posisi dengan nama ini sudah ada.",
-          "failed": "Gagal memperbarui posisi."
-        },
-        "delete": {
-          "failed": "Gagal menghapus posisi."
-        }
       }
     },
+
     "columns": {
       "name": "Nama"
     },
+
     "actions": {
       "addNew": "Tambah Posisi Baru"
     }
@@ -254,40 +299,21 @@
   "seasons": {
     "title": "Kelola Musim",
     "subtitle": "Tambah, edit, atau hapus musim.",
+
     "form": {
       "labels": {
         "name": "Nama Musim"
       },
-      "placeholder": {
+
+      "placeholders": {
         "name": "Input nama"
-      },
-      "confirm": {
-        "delete": "Apakah kamu yakin ingin menghapus musim ini?"
-      },
-      "success": {
-        "add": "Berhasil menambahkan musim baru: ",
-        "edit": "Berhasil memperbarui musim: ",
-        "delete": "Berhasil menghapus musim: "
-      },
-      "errors": {
-        "add": {
-          "empty": "Silakan masukkan nama untuk musim baru.",
-          "duplicate": "Musim dengan nama ini sudah ada.",
-          "failed": "Gagal menambahkan musim."
-        },
-        "edit": {
-          "empty": "Silakan masukkan nama untuk musim.",
-          "duplicate": "Musim dengan nama ini sudah ada.",
-          "failed": "Gagal memperbarui musim."
-        },
-        "delete": {
-          "failed": "Gagal menghapus musim."
-        }
       }
     },
+
     "columns": {
       "name": "Nama"
     },
+
     "actions": {
       "addNew": "Tambah Musim Baru"
     }

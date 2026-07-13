@@ -22,7 +22,7 @@ const Navbar = () => {
   const tNav = useTranslations("navigation");
   const tTeams = useTranslations("navigation.teams");
   const tManage = useTranslations("navigation.manage");
-  const tCommonAuth = useTranslations("common.auth");
+  const tAuth = useTranslations("auth");
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname = usePathname();
@@ -140,7 +140,7 @@ const Navbar = () => {
                     className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-semibold rounded-lg border border-border/50 bg-muted/40 hover:bg-muted transition-all cursor-pointer text-foreground"
                   >
                     <LogOut className="w-3.5 h-3.5" />
-                    <span>{tCommonAuth("logout")}</span>
+                    <span>{tAuth("logout")}</span>
                   </button>
                 </div>
               ) : (
@@ -149,7 +149,7 @@ const Navbar = () => {
                   className="hidden md:flex items-center gap-1.5 px-4 py-1.5 text-sm font-semibold rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-all shadow-sm"
                 >
                   <LogIn className="w-3.5 h-3.5" />
-                  <span>{tCommonAuth("login")}</span>
+                  <span>{tAuth("login")}</span>
                 </Link>
               ))}
 
@@ -241,7 +241,7 @@ const Navbar = () => {
                         className="w-full flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold rounded-lg bg-destructive/10 text-destructive hover:bg-destructive/20 transition-all cursor-pointer"
                       >
                         <LogOut className="w-4 h-4" />
-                        <span>{tCommonAuth("logout")}</span>
+                        <span>{tAuth("logout")}</span>
                       </button>
                     </div>
                   ) : (
@@ -252,7 +252,7 @@ const Navbar = () => {
                         className="w-full flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-all shadow-sm"
                       >
                         <LogIn className="w-4 h-4" />
-                        <span>{tCommonAuth("login")}</span>
+                        <span>{tAuth("login")}</span>
                       </Link>
                     </div>
                   ))}

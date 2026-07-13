@@ -1,13 +1,13 @@
 "use client";
 
-import { useNationalityData } from "@/hooks/manage/nationalities/useNationalityData";
 import { usePlayerForm } from "@/hooks/manage/players";
-import { usePositionData } from "@/hooks/manage/positions/usePositionData";
 import PlayerPersonalSection from "./PlayerPersonalSection";
 import PlayerNationalTeamSection from "./PlayerNationalTeamSection";
 import FormHeader from "../base/FormHeader";
 import FormWrapper from "../base/FormWrapper";
 import { PlayerDetailResponse } from "@/types/player";
+import { usePositions } from "@/hooks/manage/positions";
+import { useNationalities } from "@/hooks/manage/nationalities";
 
 interface Props {
   mode: "create" | "edit";
@@ -21,8 +21,8 @@ interface Props {
 const PlayerForm = ({ mode, player, loading = false, onSubmit }: Props) => {
   const { form, setForm, canSubmit, buildPayload } = usePlayerForm(player);
 
-  const { positions } = usePositionData();
-  const { nationalities } = useNationalityData();
+  const { positions } = usePositions();
+  const { nationalities } = useNationalities();
 
   const isCreate = mode === "create";
 

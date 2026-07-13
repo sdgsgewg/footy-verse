@@ -29,7 +29,7 @@ export function useClubActions() {
 
     deleteMutation.mutate({
       id: club.id,
-      name: club.name,
+      data: club,
     });
   };
 

@@ -11,13 +11,13 @@ import { STORAGE_BUCKETS } from "@/lib/storage";
 import { NextResponse } from "next/server";
 
 type PlayerRouteContext = {
-  params: Promise<{ id: string }>;
+  params: Promise<{ playerId: string }>;
 };
 
 export async function GET(_request: Request, context: PlayerRouteContext) {
   try {
-    const { id } = await context.params;
-    const data = await getPlayerByIdService(id);
+    const { playerId } = await context.params;
+    const data = await getPlayerByIdService(playerId);
 
     if (!data) {
       return errorResponse(new Error("Player not found"), 404);
@@ -31,17 +31,17 @@ export async function GET(_request: Request, context: PlayerRouteContext) {
 
 export async function PUT(request: Request, context: PlayerRouteContext) {
   try {
-    const { id } = await context.params;
+    const { playerId } = await context.params;
 
     if (!isFormDataRequest(request)) {
       const body = await request.json();
 
-      const data = await updatePlayerService(id, body);
+      const data = await updatePlayerService(playerId, body);
 
       return successResponse(data);
     }
 
-    const currentPlayer = await getPlayerByIdService(id);
+    const currentPlayer = await getPlayerByIdService(playerId);
 
     if (!currentPlayer) {
       return errorResponse(new Error("Player not found"), 404);
@@ -62,7 +62,7 @@ export async function PUT(request: Request, context: PlayerRouteContext) {
     body.image = image;
 
     try {
-      const data = await updatePlayerService(id, body);
+      const data = await updatePlayerService(playerId, body);
 
       return successResponse(data);
     } catch (error) {
@@ -79,9 +79,9 @@ export async function PUT(request: Request, context: PlayerRouteContext) {
 
 export async function DELETE(_request: Request, context: PlayerRouteContext) {
   try {
-    const { id } = await context.params;
+    const { playerId } = await context.params;
 
-    await deletePlayerService(id);
+    await deletePlayerService(playerId);
 
     return NextResponse.json({ success: true });
   } catch (error: unknown) {

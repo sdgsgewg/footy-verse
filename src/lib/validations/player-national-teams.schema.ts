@@ -1,4 +1,4 @@
-import { nullableDate } from "@/utils/date";
+import { nullableDate } from "@/lib/validations/helpers";
 import { z } from "zod";
 
 export const playerNationalTeamIdSchema = z.string().uuid();

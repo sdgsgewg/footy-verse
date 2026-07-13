@@ -29,7 +29,7 @@ export function usePlayerActions() {
 
     deleteMutation.mutate({
       id: player.id,
-      name: player.name,
+      data: player,
     });
   };
 

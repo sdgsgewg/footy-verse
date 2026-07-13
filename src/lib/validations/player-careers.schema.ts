@@ -1,5 +1,8 @@
-import { nullableDate } from "@/utils/date";
+import { nullableDate } from "@/lib/validations/helpers";
 import { z } from "zod";
+import { playerContractMutationSchema } from "./player-contracts.schema";
+import { playerShirtNumberMutationSchema } from "./player-shirt-numbers.schema";
+import { transferMutationSchema } from "./transfers.schema";
 
 export const playerCareerIdSchema = z.string().uuid();
 
@@ -7,7 +10,9 @@ export const playerCareerMutationSchema = z.object({
   club_id: z.string().uuid(),
   joined_at: z.string(),
   left_at: nullableDate.optional(),
-  is_current: z.boolean().default(false),
+  contracts: playerContractMutationSchema.array(),
+  shirt_numbers: playerShirtNumberMutationSchema.array(),
+  transfer: transferMutationSchema,
 });
 
 export const createPlayerCareerSchema = playerCareerMutationSchema;

@@ -3,16 +3,15 @@
 import ConnectionErrorAlert from "@/components/feedback/ConnectionErrorAlert";
 import { CrudPage } from "@/components/templates/crud/CrudPage";
 import { usePositionData } from "@/hooks/manage/positions/usePositionData";
-import { isLikelyConnectionError } from "@/lib/utils/error";
+import { usePositions } from "@/hooks/manage/positions/usePositions";
+import { isLikelyConnectionError } from "@/lib/utils/connection-error";
 import { useTranslations } from "next-intl";
 
 export default function PositionsManagementPage() {
   const t = useTranslations("manage.positions");
 
+  const { positions, loading, retrying, loadError, retryLoad } = usePositions();
   const {
-    positions,
-    loading,
-    retrying,
     isEditing,
     buttonText,
     isSubmitting,
@@ -23,8 +22,6 @@ export default function PositionsManagementPage() {
     handleEdit,
     handleDelete,
     resetForm,
-    loadError,
-    retryLoad,
   } = usePositionData();
 
   return (

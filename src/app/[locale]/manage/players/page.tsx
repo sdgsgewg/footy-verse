@@ -6,7 +6,7 @@ import { CrudPageHeader, CrudPageTable } from "@/components/templates/crud";
 import CrudPageManagement from "@/components/templates/crud/CrudPageManagement";
 import { usePlayers } from "@/hooks/manage/players";
 import { usePlayerActions } from "@/hooks/manage/players/usePlayerActions";
-import { isLikelyConnectionError } from "@/lib/utils/error";
+import { isLikelyConnectionError } from "@/lib/utils/connection-error";
 import { CrudColumn, CrudRow } from "@/types/crud";
 import { useTranslations } from "next-intl";
 

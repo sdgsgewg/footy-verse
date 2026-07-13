@@ -1,4 +1,27 @@
 {
+  "crud": {
+    "success": {
+      "create": "Berhasil menambahkan {entity}.",
+      "update": "Berhasil memperbarui {entity}.",
+      "delete": "Berhasil menghapus {entity}."
+    },
+
+    "error": {
+      "create": "Gagal menambahkan {entity}.",
+      "update": "Gagal memperbarui {entity}.",
+      "delete": "Gagal menghapus {entity}.",
+      "duplicate": "{entity} dengan nama ini sudah ada."
+    },
+
+    "confirm": {
+      "delete": "Apakah kamu yakin ingin menghapus {entity} ini?"
+    }
+  },
+
+  "validation": {
+    "required": "{field} is required."
+  },
+
   "actions": {
     "add": "Tambah",
     "create": "Buat",
@@ -47,27 +70,5 @@
       "saveFailed": "Gagal menyimpan data karena koneksi internet tidak stabil. Coba lagi setelah koneksi membaik.",
       "actionFailed": "Operasi gagal karena koneksi internet tidak stabil. Coba lagi setelah koneksi membaik."
     }
-  },
-  "auth": {
-    "login": "Masuk",
-    "register": "Daftar",
-    "logout": "Keluar",
-    "email": "Alamat Email",
-    "password": "Kata Sandi",
-    "confirmPassword": "Konfirmasi Kata Sandi",
-    "dontHaveAccount": "Belum punya akun?",
-    "alreadyHaveAccount": "Sudah punya akun?",
-    "signingIn": "Masuk...",
-    "signingUp": "Mendaftar...",
-    "loginSuccess": "Berhasil masuk!",
-    "registerSuccess": "Pendaftaran berhasil! Silakan periksa email Anda untuk tautan verifikasi.",
-    "passwordsDoNotMatch": "Kata sandi tidak cocok.",
-    "invalidEmail": "Masukkan alamat email yang valid.",
-    "passwordMinLength": "Kata sandi harus minimal 6 karakter.",
-    "welcomeBack": "Selamat Datang Kembali",
-    "createNewAccount": "Buat Akun Baru",
-    "loginDescription": "Masukkan kredensial Anda untuk mengakses panel manajemen.",
-    "registerDescription": "Daftar untuk mulai mengelola klub dan pemain.",
-    "errorOccurred": "Terjadi kesalahan. Silakan coba lagi."
   }
 }

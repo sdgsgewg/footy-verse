@@ -1,6 +1,6 @@
 import { createClient as createSupabaseClient } from "@supabase/supabase-js";
 import { createClient as createServerClient } from "@/utils/supabase/server";
-import { slugify } from "@/common/utils/slug.util";
+import { slugify } from "@/utils/string";
 
 async function createStorageClient() {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -18,7 +18,11 @@ async function createStorageClient() {
   return createServerClient();
 }
 
-export async function uploadImage(file: File, baseName: string, bucketName: string) {
+export async function uploadImage(
+  file: File,
+  baseName: string,
+  bucketName: string,
+) {
   const supabase = await createStorageClient();
 
   const slug = slugify(baseName);
@@ -84,7 +88,10 @@ export async function deleteImage(filePath: string, bucketName: string) {
   }
 }
 
-export async function tryDeleteImage(filePath: string | null, bucketName: string) {
+export async function tryDeleteImage(
+  filePath: string | null,
+  bucketName: string,
+) {
   if (!filePath) return;
 
   try {
@@ -97,7 +104,11 @@ export async function tryDeleteImage(filePath: string | null, bucketName: string
   }
 }
 
-export async function renameImage(oldPath: string, newName: string, bucketName: string) {
+export async function renameImage(
+  oldPath: string,
+  newName: string,
+  bucketName: string,
+) {
   const supabase = await createStorageClient();
   const oldStoragePath = getStoragePath(oldPath, bucketName);
 

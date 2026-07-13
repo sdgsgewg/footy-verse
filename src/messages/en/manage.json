@@ -1,24 +1,30 @@
 {
   "players": {
     "title": "Manage Players",
-    "subtitle": "Add, edit, or delete players",
+    "subtitle": "Add, edit, or delete players.",
+
     "notFound": "Player Not Found",
+
     "create": {
       "title": "Create Player",
-      "subtitle": "Add new Player"
+      "subtitle": "Add new player"
     },
+
     "edit": {
       "title": "Edit Player",
-      "subtitle": "Edit Player"
+      "subtitle": "Edit player"
     },
+
     "form": {
       "positions": {
         "instruction": "Add at least one position, then drag to set priority."
       },
+
       "nationalTeams": {
         "title": "National Team History",
         "noData": "No national team history added."
       },
+
       "labels": {
         "image": "Player Image",
         "name": "Player Name",
@@ -28,7 +34,8 @@
         "height": "Height (cm)",
         "weight": "Weight (kg)",
         "preferredFoot": "Preferred Foot",
-        "marketValue": "Market Value (million euro)",
+        "marketValue": "Market Value (Million Euro)",
+
         "nationalTeams": {
           "nation": "Nation",
           "label": "Label",
@@ -37,16 +44,18 @@
           "shirtNumber": "Shirt Number"
         }
       },
+
       "placeholders": {
         "image": "Choose Image",
-        "name": "Input Name",
+        "name": "Input Player Name",
         "positions": "Select Positions",
         "dob": "Select Date of Birth",
         "pob": "Input Place of Birth",
-        "height": "Input Height (cm)",
-        "weight": "Input Weight (kg)",
+        "height": "Input Height",
+        "weight": "Input Weight",
         "preferredFoot": "Select Preferred Foot",
-        "marketValue": "Input Market Value (million euro)",
+        "marketValue": "Input Market Value",
+
         "nationalTeams": {
           "nation": "Select Nation",
           "label": "Input Label",
@@ -55,82 +64,137 @@
           "shirtNumber": "Input Shirt Number"
         }
       },
-      "validation": {
-        "id": {
-          "required": "Id is required."
-        },
-        "name": {
-          "required": "Player name is required."
-        },
-        "positions": {
-          "required": "Please select at least one position."
-        },
-        "dob": {
-          "required": "Date of birth is required."
-        },
-        "pob": {
-          "required": "Place of birth is required."
-        },
-        "height": {
-          "required": "Height is required."
-        },
-        "weight": {
-          "required": "Weight is required."
-        },
-        "marketValue": {
-          "required": "Market value is required."
-        }
-      },
+
       "options": {
         "preferredFoot": {
           "right": "Right",
           "left": "Left"
         }
-      },
-      "confirm": {
-        "delete": "Are you sure you want to delete this player?"
-      },
-      "success": {
-        "add": "Successfully added new player: ",
-        "edit": "Successfully updated player: ",
-        "delete": "Successfully deleted player: "
-      },
-      "errors": {
-        "add": {
-          "empty": "Please enter a name for the new player.",
-          "duplicate": "A player with this name already exists.",
-          "failed": "Failed to add player."
-        },
-        "edit": {
-          "empty": "Please enter a name for the player.",
-          "duplicate": "A player with this name already exists.",
-          "failed": "Failed to update player."
-        },
-        "delete": {
-          "failed": "Failed to delete player."
-        }
       }
     },
+
     "columns": {
       "name": "Name"
     },
+
     "actions": {
       "addNew": "Add New Player"
+    }
+  },
+
+  "playerCareers": {
+    "title": "Manage Player Careers",
+    "subtitle": "Add, edit, or delete player careers",
+
+    "notFound": "Player Career Not Found",
+
+    "create": {
+      "title": "Create Player Career",
+      "subtitle": "Add new player career"
+    },
+
+    "edit": {
+      "title": "Edit Player Career",
+      "subtitle": "Edit player career"
+    },
+
+    "form": {
+      "contracts": {
+        "title": "Contract History",
+        "instruction": "Please add at least one contract."
+      },
+
+      "shirtNumbers": {
+        "title": "Shirt Number History",
+        "instruction": "Please add at least one shirt number"
+      },
+
+      "transfer": {
+        "title": "Transfer History",
+        "instruction": "Please add transfer."
+      },
+
+      "labels": {
+        "club": "Club",
+        "joinedAt": "Join Date",
+        "leftAt": "Left Date",
+        "contracts": {
+          "contractStart": "Start Date",
+          "contractEnd": "End Date",
+          "salary": "Salary (per year)"
+        },
+        "shirtNumbers": {
+          "shirtNumber": "Shirt Number",
+          "startDate": "Start Date",
+          "endDate": "End Date"
+        },
+        "transfer": {
+          "season": "Season",
+          "fromClub": "From Club",
+          "toClub": "To Club",
+          "transferType": "Transfer Type",
+          "transferFee": "Transfer Fee",
+          "transferDate": "Transfer Date"
+        }
+      },
+
+      "placeholders": {
+        "club": "Select Club",
+        "joinedAt": "Select Join Date",
+        "leftAt": "Select Left Date",
+        "contracts": {
+          "contractStart": "Select Start Date",
+          "contractEnd": "Select End Date",
+          "salary": "Input Salary (in million euro)"
+        },
+        "shirtNumbers": {
+          "shirtNumber": "Input Shirt Number",
+          "startDate": "Select Start Date",
+          "endDate": "Select End Date"
+        },
+        "transfer": {
+          "season": "Select Season",
+          "fromClub": "Select From Club",
+          "toClub": "Select To Club",
+          "transferType": "Select Transfer Type",
+          "transferFee": "Input Transfer Fee",
+          "transferDate": "Select Transfer Date"
+        }
+      },
+
+      "options": {
+        "preferredFoot": {
+          "right": "Right",
+          "left": "Left"
+        }
+      }
+    },
+
+    "columns": {
+      "name": "Name"
+    },
+
+    "actions": {
+      "addNew": "Add New Player Career"
     }
   },
 
   "clubs": {
     "title": "Manage Clubs",
     "subtitle": "Add, edit, or delete clubs",
+
     "notFound": "Club Not Found",
+
     "create": {
       "title": "Create Club",
       "subtitle": "Add new club"
     },
+
     "edit": {
       "title": "Edit Club",
       "subtitle": "Edit club"
     },
+
     "form": {
       "labels": {
         "image": "Club Image",
@@ -139,6 +203,7 @@
         "nation": "Nation",
         "parentClub": "Parent Club"
       },
+
       "placeholders": {
         "image": "Choose Image",
         "name": "Input name",
@@ -146,6 +211,7 @@
         "nation": "Select Nation",
         "parentClub": "Select Parent Club"
       },
+
       "options": {
         "clubType": {
           "firstTeam": "First Team",
@@ -158,34 +224,13 @@
           "u17": "U17 Team",
           "academy": "Academy Team"
         }
-      },
-      "confirm": {
-        "delete": "Are you sure you want to delete this club?"
-      },
-      "success": {
-        "add": "Successfully added new club: ",
-        "edit": "Successfully updated club: ",
-        "delete": "Successfully deleted club: "
-      },
-      "errors": {
-        "add": {
-          "empty": "Please enter a name for the new club.",
-          "duplicate": "A club with this name already exists.",
-          "failed": "Failed to add club."
-        },
-        "edit": {
-          "empty": "Please enter a name for the club.",
-          "duplicate": "A club with this name already exists.",
-          "failed": "Failed to update club."
-        },
-        "delete": {
-          "failed": "Failed to delete club."
-        }
       }
     },
+
     "columns": {
       "name": "Name"
     },
+
     "actions": {
       "addNew": "Add New Club"
     }
@@ -194,42 +239,23 @@
   "nationalities": {
     "title": "Manage Nationalities",
     "subtitle": "Add, edit, or delete nationalities",
+
     "form": {
       "labels": {
         "image": "Nationality Image",
         "name": "Nationality Name"
       },
-      "placeholder": {
+
+      "placeholders": {
         "image": "Input image",
         "name": "Input name"
-      },
-      "confirm": {
-        "delete": "Are you sure you want to delete this nationality?"
-      },
-      "success": {
-        "add": "Successfully added new nationality: ",
-        "edit": "Successfully updated nationality: ",
-        "delete": "Successfully deleted nationality: "
-      },
-      "errors": {
-        "add": {
-          "empty": "Please enter a name for the new nationality.",
-          "duplicate": "A nationality with this name already exists.",
-          "failed": "Failed to add nationality."
-        },
-        "edit": {
-          "empty": "Please enter a name for the nationality.",
-          "duplicate": "A nationality with this name already exists.",
-          "failed": "Failed to update nationality."
-        },
-        "delete": {
-          "failed": "Failed to delete nationality."
-        }
       }
     },
+
     "columns": {
       "name": "Name"
     },
+
     "actions": {
       "addNew": "Add New Nationality"
     }
@@ -238,40 +264,20 @@
   "positions": {
     "title": "Manage Positions",
     "subtitle": "Add, edit, or delete positions",
+
     "form": {
       "labels": {
         "name": "Position Name"
       },
-      "placeholder": {
+      "placeholders": {
         "name": "Input name"
-      },
-      "confirm": {
-        "delete": "Are you sure you want to delete this position?"
-      },
-      "success": {
-        "add": "Successfully added new position: ",
-        "edit": "Successfully updated position: ",
-        "delete": "Successfully deleted position: "
-      },
-      "errors": {
-        "add": {
-          "empty": "Please enter a name for the new position.",
-          "duplicate": "A position with this name already exists.",
-          "failed": "Failed to add position."
-        },
-        "edit": {
-          "empty": "Please enter a name for the position.",
-          "duplicate": "A position with this name already exists.",
-          "failed": "Failed to update position."
-        },
-        "delete": {
-          "failed": "Failed to delete position."
-        }
       }
     },
+
     "columns": {
       "name": "Name"
     },
+
     "actions": {
       "addNew": "Add New Position"
     }
@@ -280,40 +286,21 @@
   "seasons": {
     "title": "Manage Seasons",
     "subtitle": "Add, edit, or delete sesaons",
+
     "form": {
       "labels": {
         "name": "Season Name"
       },
-      "placeholder": {
+
+      "placeholders": {
         "name": "Input name"
-      },
-      "confirm": {
-        "delete": "Are you sure you want to delete this season?"
-      },
-      "success": {
-        "add": "Successfully added new season: ",
-        "edit": "Successfully updated season: ",
-        "delete": "Successfully deleted season: "
-      },
-      "errors": {
-        "add": {
-          "empty": "Please enter a name for the new season.",
-          "duplicate": "A season with this name already exists.",
-          "failed": "Failed to add season."
-        },
-        "edit": {
-          "empty": "Please enter a name for the season.",
-          "duplicate": "A season with this name already exists.",
-          "failed": "Failed to update season."
-        },
-        "delete": {
-          "failed": "Failed to delete season."
-        }
       }
     },
+
     "columns": {
       "name": "Name"
     },
+
     "actions": {
       "addNew": "Add New Season"
     }
