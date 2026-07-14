@@ -7,14 +7,17 @@ import DropdownMenu from "./DropdownMenu";
 
 interface NavbarDesktopLinksProps {
   pathname: string;
-  canManage: boolean;
+  isContentManager: boolean;
+  isSystemManager: boolean;
 }
 
 const NavbarDesktopLinks = ({
   pathname,
-  canManage,
+  isContentManager,
+  isSystemManager,
 }: NavbarDesktopLinksProps) => {
-  const { navLinks, teamLinks, manageLinks } = useNavbarLinks();
+  const { navLinks, teamLinks, contentManageLinks, systemManageLinks } =
+    useNavbarLinks();
 
   const tTeams = useTranslations("navigation.teams");
   const tManage = useTranslations("navigation.manage");
@@ -43,10 +46,18 @@ const NavbarDesktopLinks = ({
         pathname={pathname}
       />
 
-      {canManage && (
+      {isContentManager && (
         <DropdownMenu
           label={tManage("base")}
-          links={manageLinks}
+          links={contentManageLinks}
+          pathname={pathname}
+        />
+      )}
+
+      {isSystemManager && (
+        <DropdownMenu
+          label={tManage("system")}
+          links={systemManageLinks}
           pathname={pathname}
         />
       )}

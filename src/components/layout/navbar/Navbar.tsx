@@ -16,7 +16,7 @@ const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname = usePathname();
 
-  const { canManage } = useAuth();
+  const { isContentManager, isSystemManager } = useAuth();
 
   useFixedNavbar();
 
@@ -31,7 +31,11 @@ const Navbar = () => {
             <NavbarLogo />
 
             {/* Desktop Navigation */}
-            <NavbarDesktopLinks pathname={pathname} canManage={canManage} />
+            <NavbarDesktopLinks
+              pathname={pathname}
+              isContentManager={isContentManager}
+              isSystemManager={isSystemManager}
+            />
           </div>
 
           <div className="flex items-center space-x-2 md:space-x-4">
@@ -56,7 +60,8 @@ const Navbar = () => {
       <NavbarMobileMenu
         open={mobileMenuOpen}
         pathname={pathname}
-        canManage={canManage}
+        isContentManager={isContentManager}
+        isSystemManager={isSystemManager}
         onClose={closeMobileMenu}
       />
     </header>

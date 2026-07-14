@@ -6,28 +6,27 @@ import MobileDropdownMenu from "./MobileDropdownMenu";
 import { useTranslations } from "next-intl";
 import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useAuth } from "@/providers/auth-provider";
 import NavbarMobileAuth from "./NavbarMobileAuth";
 
 interface NavbarMobileMenuProps {
   open: boolean;
   pathname: string;
-  canManage: boolean;
+  isContentManager: boolean;
+  isSystemManager: boolean;
   onClose: () => void;
 }
 
 const NavbarMobileMenu = ({
   open,
   pathname,
-  canManage,
+  isContentManager,
+  isSystemManager,
   onClose,
 }: NavbarMobileMenuProps) => {
-  const { navLinks, teamLinks, manageLinks } = useNavbarLinks();
-  const { user, signOut } = useAuth();
-
+  const { navLinks, teamLinks, contentManageLinks, systemManageLinks } =
+    useNavbarLinks();
   const tTeams = useTranslations("navigation.teams");
   const tManage = useTranslations("navigation.manage");
-  const tAuth = useTranslations("auth");
 
   const isActive = (path: string) =>
     pathname === path || pathname.startsWith(`${path}/`);
@@ -82,10 +81,19 @@ const NavbarMobileMenu = ({
                 onLinkClick={onClose}
               />
 
-              {canManage && (
+              {isContentManager && (
                 <MobileDropdownMenu
                   label={tManage("base")}
-                  links={manageLinks}
+                  links={contentManageLinks}
+                  pathname={pathname}
+                  onLinkClick={onClose}
+                />
+              )}
+
+              {isSystemManager && (
+                <MobileDropdownMenu
+                  label={tManage("system")}
+                  links={systemManageLinks}
                   pathname={pathname}
                   onLinkClick={onClose}
                 />

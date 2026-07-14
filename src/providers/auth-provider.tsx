@@ -5,13 +5,17 @@ import { User } from "@supabase/supabase-js";
 import { createClient } from "@/utils/supabase/client";
 import { Profile } from "@/types/profile";
 import { useRouter } from "next/navigation";
-import { Role } from "@/enums/Role";
+import { canManageContent, canManageSystem } from "@/lib/auth/roles";
 
 interface AuthContextType {
   user: User | null;
   profile: Profile | null;
+
   isAuthenticated: boolean;
-  canManage: boolean;
+
+  isContentManager: boolean;
+  isSystemManager: boolean;
+
   signOut: () => Promise<void>;
 }
 
@@ -36,8 +40,9 @@ export function AuthProvider({
 
   const isAuthenticated = !!user;
 
-  const canManage =
-    profile?.role === Role.ADMIN || profile?.role === Role.EDITOR;
+  const isContentManager = canManageContent(profile);
+
+  const isSystemManager = canManageSystem(profile);
 
   const signOut = async () => {
     try {
@@ -78,7 +83,8 @@ export function AuthProvider({
         user,
         profile,
         isAuthenticated,
-        canManage,
+        isContentManager,
+        isSystemManager,
         signOut,
       }}
     >

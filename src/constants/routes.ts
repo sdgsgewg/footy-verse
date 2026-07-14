@@ -32,5 +32,11 @@ export const ROUTES = {
       CREATE: "/manage/competitions/create",
       EDIT: "/manage/competitions/edit",
     },
+    USERS: {
+      BASE: "/manage/users",
+      CREATE: "/manage/users/create",
+      EDIT: "/manage/users/edit",
+    },
+    ROLES: "/manage/roles",
   },
 };

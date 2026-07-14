@@ -14,7 +14,7 @@ export function useNavbarLinks() {
     { name: tTeams("arsenal"), path: ROUTES.TEAMS.ARSENAL },
   ];
 
-  const manageLinks: NavLink[] = [
+  const contentManageLinks: NavLink[] = [
     { name: tManage("players"), path: ROUTES.MANAGE.PLAYERS.BASE },
     { name: tManage("clubs"), path: ROUTES.MANAGE.CLUBS.BASE },
     { name: tManage("nationalities"), path: ROUTES.MANAGE.NATIONALITIES },
@@ -22,9 +22,16 @@ export function useNavbarLinks() {
     { name: tManage("seasons"), path: ROUTES.MANAGE.SEASONS },
   ];
 
+  const systemManageLinks: NavLink[] = [
+    { name: tManage("users"), path: ROUTES.MANAGE.USERS.BASE },
+    { name: tManage("roles"), path: ROUTES.MANAGE.ROLES },
+  ];
+
   return {
     navLinks,
     teamLinks,
-    manageLinks,
+    
+    contentManageLinks,
+    systemManageLinks,
   };
 }

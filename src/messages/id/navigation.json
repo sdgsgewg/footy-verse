@@ -13,7 +13,11 @@
     "positions": "Posisi",
     "seasons": "Musim",
     "regions": "Zona Wilayah",
-    "competitions": "Kompetisi"
+    "competitions": "Kompetisi",
+
+    "system": "Sistem",
+    "users": "Pengguna",
+    "roles": "Peran"
   },
   "about": "Tentang"
 }

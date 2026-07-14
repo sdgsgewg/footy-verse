@@ -13,7 +13,11 @@
     "positions": "Positions",
     "seasons": "Seasons",
     "regions": "Regions",
-    "competitions": "Competitions"
+    "competitions": "Competitions",
+    
+    "system": "System",
+    "users": "Users",
+    "roles": "Roles"
   },
   "about": "About"
 }
