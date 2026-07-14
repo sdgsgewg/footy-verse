@@ -1,6 +1,4 @@
-import { slugify } from "@/utils/string";
 import { createClient } from "@/utils/supabase/server";
-import { renameImage, tryDeleteImage } from "../services/storage.service";
 import { STORAGE_BUCKETS } from "../storage";
 import {
   GetNationalitiesParams,
@@ -10,18 +8,29 @@ import {
   NationalityListItem,
   NationalityUpdateInput,
 } from "@/types/nationality";
-import { ensureUniqueRecord } from "./helpers/uniqueness";
+import { ensureUniqueSlug } from "./helpers/slug";
+import { requireEntity } from "./helpers/require-entity";
+import { ENTITY_CONFIG } from "@/config/entities";
+import { deleteEntityImage, prepareUpdatedImage } from "./helpers/image";
 
 async function getSupabase() {
   return createClient();
 }
+
+const getLabel = () => {
+  return ENTITY_CONFIG["nationality"]["label"];
+};
+
+const getTable = () => {
+  return ENTITY_CONFIG["nationality"]["table"];
+};
 
 export async function getNationalitiesRepo(
   params: GetNationalitiesParams,
 ): Promise<NationalityListItem[]> {
   const supabase = await getSupabase();
 
-  let query = supabase.from("nationalities").select("*").order("name");
+  let query = supabase.from(getTable()).select("*").order("name");
 
   if (params.name) {
     query = query.ilike("name", `%${params.name}%`);
@@ -40,7 +49,7 @@ export async function getNationalityByIdRepo(
   const supabase = await getSupabase();
 
   const { data, error } = await supabase
-    .from("nationalities")
+    .from(getTable())
     .select("*")
     .eq("id", id)
     .maybeSingle();
@@ -55,16 +64,13 @@ export async function createNationalityRepo(
 ): Promise<Nationality> {
   const supabase = await getSupabase();
 
-  const slug = slugify(nationality.name);
-
-  await ensureUniqueRecord({
-    table: "nationalities",
+  const slug = await ensureUniqueSlug({
+    table: getTable(),
     name: nationality.name,
-    slug,
   });
 
   const { data, error } = await supabase
-    .from("nationalities")
+    .from(getTable())
     .insert({ ...nationality, slug })
     .select("*")
     .single();
@@ -79,44 +85,28 @@ export async function updateNationalityRepo(
   nationality: NationalityUpdateInput,
 ): Promise<Nationality> {
   const supabase = await getSupabase();
-  const oldNationality = await getNationalityByIdRepo(id);
-  const slug = slugify(nationality.name);
 
-  if (!oldNationality) {
-    throw new Error("Nationality not found");
-  }
+  const oldNationality = await requireEntity(
+    getNationalityByIdRepo,
+    id,
+    getLabel(),
+  );
 
-  await ensureUniqueRecord({
-    table: "nationalities",
+  const slug = await ensureUniqueSlug({
+    table: getTable(),
     name: nationality.name,
-    slug,
-    ignoreId: id,
   });
 
-  let finalImage = nationality.image;
-
-  // If the nationality name has changed and the image is still the same (no new upload),
-  // we rename the file in the storage bucket to reflect the new name's slug.
-  if (
-    oldNationality.name !== nationality.name &&
-    oldNationality.image &&
-    oldNationality.image === nationality.image
-  ) {
-    finalImage = await renameImage(
-      oldNationality.image,
-      nationality.name,
-      STORAGE_BUCKETS.NATIONALITIES,
-    );
-  }
-
-  // To comply with RLS policies where deleting the old image requires the database
-  // record to still reference the old path, we delete the old image before updating.
-  if (oldNationality.image && oldNationality.image !== nationality.image) {
-    await tryDeleteImage(oldNationality.image, STORAGE_BUCKETS.NATIONALITIES);
-  }
+  const finalImage = await prepareUpdatedImage({
+    oldName: oldNationality.name,
+    newName: nationality.name,
+    oldImage: oldNationality.image,
+    newImage: nationality.image ?? "",
+    bucket: STORAGE_BUCKETS.NATIONALITIES,
+  });
 
   const { data, error } = await supabase
-    .from("nationalities")
+    .from(getTable())
     .update({
       name: nationality.name,
       image: finalImage,
@@ -135,13 +125,15 @@ export async function updateNationalityRepo(
 export async function deleteNationalityRepo(id: string): Promise<void> {
   const supabase = await getSupabase();
 
-  const nationality = await getNationalityByIdRepo(id);
+  const nationality = await requireEntity(
+    getNationalityByIdRepo,
+    id,
+    getLabel(),
+  );
 
-  if (nationality?.image) {
-    await tryDeleteImage(nationality.image, STORAGE_BUCKETS.NATIONALITIES);
-  }
+  await deleteEntityImage(nationality.image, STORAGE_BUCKETS.NATIONALITIES);
 
-  const { error } = await supabase.from("nationalities").delete().eq("id", id);
+  const { error } = await supabase.from(getTable()).delete().eq("id", id);
 
   if (error) throw error;
 }

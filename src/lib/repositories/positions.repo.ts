@@ -1,4 +1,3 @@
-import { slugify } from "@/utils/string";
 import {
   GetPositionsParams,
   Position,
@@ -8,18 +7,28 @@ import {
   PositionUpdateInput,
 } from "@/types/position";
 import { createClient } from "@/utils/supabase/server";
-import { ensureUniqueRecord } from "./helpers/uniqueness";
+import { ensureUniqueSlug } from "./helpers/slug";
+import { requireEntity } from "./helpers/require-entity";
+import { ENTITY_CONFIG } from "@/config/entities";
 
 async function getSupabase() {
   return createClient();
 }
+
+const getLabel = () => {
+  return ENTITY_CONFIG["position"]["label"];
+};
+
+const getTable = () => {
+  return ENTITY_CONFIG["position"]["table"];
+};
 
 export async function getPositionsRepo(
   params: GetPositionsParams,
 ): Promise<PositionListItem[]> {
   const supabase = await getSupabase();
 
-  let query = supabase.from("positions").select("*").order("name");
+  let query = supabase.from(getTable()).select("*").order("name");
 
   if (params.name) {
     query = query.ilike("name", `%${params.name}%`);
@@ -38,7 +47,7 @@ export async function getPositionByIdRepo(
   const supabase = await getSupabase();
 
   const { data, error } = await supabase
-    .from("positions")
+    .from(getTable())
     .select("*")
     .eq("id", id)
     .maybeSingle();
@@ -53,16 +62,13 @@ export async function createPositionRepo(
 ): Promise<Position> {
   const supabase = await getSupabase();
 
-  const slug = slugify(position.name);
-
-  await ensureUniqueRecord({
-    table: "positions",
+  const slug = await ensureUniqueSlug({
+    table: getTable(),
     name: position.name,
-    slug,
   });
 
   const { data, error } = await supabase
-    .from("positions")
+    .from(getTable())
     .insert({ ...position, slug })
     .select("*")
     .single();
@@ -77,22 +83,16 @@ export async function updatePositionRepo(
   position: PositionUpdateInput,
 ): Promise<Position> {
   const supabase = await getSupabase();
-  const oldPosition = await getPositionByIdRepo(id);
-  const slug = slugify(position.name);
 
-  if (!oldPosition) {
-    throw new Error("Position not found");
-  }
+  await requireEntity(getPositionByIdRepo, id, getLabel());
 
-  await ensureUniqueRecord({
-    table: "positions",
+  const slug = await ensureUniqueSlug({
+    table: getTable(),
     name: position.name,
-    slug,
-    ignoreId: id,
   });
 
   const { data, error } = await supabase
-    .from("positions")
+    .from(getTable())
     .update({
       name: position.name,
       slug,
@@ -110,7 +110,9 @@ export async function updatePositionRepo(
 export async function deletePositionRepo(id: string): Promise<void> {
   const supabase = await getSupabase();
 
-  const { error } = await supabase.from("positions").delete().eq("id", id);
+  await requireEntity(getPositionByIdRepo, id, getLabel());
+
+  const { error } = await supabase.from(getTable()).delete().eq("id", id);
 
   if (error) throw error;
 }

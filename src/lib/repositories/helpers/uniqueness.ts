@@ -1,6 +1,5 @@
+import { EntityTable } from "@/config/entities";
 import { createClient } from "@/utils/supabase/server";
-
-type Table = "nationalities" | "clubs" | "positions" | "players" | "seasons";
 
 async function getSupabase() {
   return createClient();
@@ -12,7 +11,7 @@ export async function ensureUniqueRecord({
   slug,
   ignoreId,
 }: {
-  table: Table;
+  table: EntityTable;
   name: string;
   slug?: string;
   ignoreId?: string;

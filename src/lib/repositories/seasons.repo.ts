@@ -7,17 +7,27 @@ import {
   SeasonListItem,
   SeasonUpdateInput,
 } from "@/types/season";
+import { ENTITY_CONFIG } from "@/config/entities";
+import { requireEntity } from "./helpers/require-entity";
 
 async function getSupabase() {
   return createClient();
 }
+
+const getLabel = () => {
+  return ENTITY_CONFIG["season"]["label"];
+};
+
+const getTable = () => {
+  return ENTITY_CONFIG["season"]["table"];
+};
 
 export async function getSeasonsRepo(
   params: GetSeasonsParams,
 ): Promise<SeasonListItem[]> {
   const supabase = await getSupabase();
 
-  let query = supabase.from("seasons").select("*").order("name");
+  let query = supabase.from(getTable()).select("*").order("name");
 
   if (params.name) {
     query = query.ilike("name", `%${params.name}%`);
@@ -36,7 +46,7 @@ export async function getSeasonByIdRepo(
   const supabase = await getSupabase();
 
   const { data, error } = await supabase
-    .from("seasons")
+    .from(getTable())
     .select("*")
     .eq("id", id)
     .maybeSingle();
@@ -52,12 +62,12 @@ export async function createSeasonRepo(
   const supabase = await getSupabase();
 
   await ensureUniqueRecord({
-    table: "seasons",
+    table: getTable(),
     name: season.name,
   });
 
   const { data, error } = await supabase
-    .from("seasons")
+    .from(getTable())
     .insert({ ...season })
     .select("*")
     .single();
@@ -72,20 +82,17 @@ export async function updateSeasonRepo(
   season: SeasonUpdateInput,
 ): Promise<SeasonDetailResponse> {
   const supabase = await getSupabase();
-  const oldSeason = await getSeasonByIdRepo(id);
 
-  if (!oldSeason) {
-    throw new Error("Season not found");
-  }
+  await requireEntity(getSeasonByIdRepo, id, getLabel());
 
   await ensureUniqueRecord({
-    table: "seasons",
+    table: getTable(),
     name: season.name,
     ignoreId: id,
   });
 
   const { data, error } = await supabase
-    .from("seasons")
+    .from(getTable())
     .update({
       name: season.name,
       updated_at: new Date().toISOString(),
@@ -102,7 +109,9 @@ export async function updateSeasonRepo(
 export async function deleteSeasonRepo(id: string): Promise<void> {
   const supabase = await getSupabase();
 
-  const { error } = await supabase.from("seasons").delete().eq("id", id);
+  await requireEntity(getSeasonByIdRepo, id, getLabel());
+
+  const { error } = await supabase.from(getTable()).delete().eq("id", id);
 
   if (error) throw error;
 }

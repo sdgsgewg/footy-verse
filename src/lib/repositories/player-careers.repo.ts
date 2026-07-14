@@ -13,10 +13,32 @@ import {
   mapPlayerCareerListItem,
 } from "../player-careers/mapper";
 import { PlayerCareerCreateInput } from "@/types/player";
+import { ENTITY_CONFIG } from "@/config/entities";
+import { requireEntity } from "./helpers/require-entity";
 
 async function getSupabase() {
   return createClient();
 }
+
+const getPlayerCareerLabel = () => {
+  return ENTITY_CONFIG["playerCareer"]["label"];
+};
+
+const getPlayerCareerTable = () => {
+  return ENTITY_CONFIG["playerCareer"]["table"];
+};
+
+const getPlayerContractTable = () => {
+  return ENTITY_CONFIG["playerContract"]["table"];
+};
+
+const getPlayerShirtNumberTable = () => {
+  return ENTITY_CONFIG["playerShirtNumber"]["table"];
+};
+
+const getTransferTable = () => {
+  return ENTITY_CONFIG["transfer"]["table"];
+};
 
 export async function getPlayerCareersRepo(
   playerId: string,
@@ -24,7 +46,7 @@ export async function getPlayerCareersRepo(
   const supabase = await getSupabase();
 
   const query = supabase
-    .from("player_careers")
+    .from(getPlayerCareerTable())
     .select(
       `
         id,
@@ -54,7 +76,7 @@ export async function getPlayerCareerByIdRepo(
   const supabase = await getSupabase();
 
   const { data, error } = await supabase
-    .from("player_careers")
+    .from(getPlayerCareerTable())
     .select(
       `
         *,
@@ -91,7 +113,7 @@ async function insertPlayerContracts(
   }));
 
   const { error: playerContractError } = await supabase
-    .from("player_contracts")
+    .from(getPlayerContractTable())
     .insert(playerContractInserts);
   if (playerContractError) throw playerContractError;
 }
@@ -109,7 +131,7 @@ async function insertPlayerShirtNumbers(
     shirt_number: psn.shirt_number,
   }));
   const { error: playerShirtNumberError } = await supabase
-    .from("player_shirt_numbers")
+    .from(getPlayerShirtNumberTable())
     .insert(playerShirtNumberInserts);
   if (playerShirtNumberError) throw playerShirtNumberError;
 }
@@ -130,7 +152,7 @@ async function insertTransfer(
     transfer_type: transfer.transfer_type,
   };
   const { error: transferError } = await supabase
-    .from("transfers")
+    .from(getTransferTable())
     .insert(transferInsert);
   if (transferError) throw transferError;
 }
@@ -145,7 +167,7 @@ export async function createPlayerCareerRepo(
 
   const { data: insertedPlayerCareer, error: playerCareerError } =
     await supabase
-      .from("player_careers")
+      .from(getPlayerCareerTable())
       .insert({
         ...rest,
         player_id: playerId,
@@ -184,16 +206,17 @@ export async function updatePlayerCareerRepo(
   playerCareer: PlayerCareerUpdateInput,
 ): Promise<PlayerCareerDetailResponse> {
   const supabase = await getSupabase();
-  const oldPlayerCareer = await getPlayerCareerByIdRepo(careerId);
 
-  if (!oldPlayerCareer) {
-    throw new Error("Player career not found");
-  }
+  const oldPlayerCareer = await requireEntity(
+    getPlayerCareerByIdRepo,
+    careerId,
+    getPlayerCareerLabel(),
+  );
 
   const { contracts, shirt_numbers, transfer, ...rest } = playerCareer;
 
   const { error: playerCareerError } = await supabase
-    .from("player_careers")
+    .from(getPlayerCareerTable())
     .update({
       ...rest,
       player_id: playerId,
@@ -206,7 +229,7 @@ export async function updatePlayerCareerRepo(
   // Contracts: Delete existing contracts and insert new ones
 
   const { error: deleteContractError } = await supabase
-    .from("player_contracts")
+    .from(getPlayerContractTable())
     .delete()
     .eq("player_career_id", careerId);
   if (deleteContractError) throw deleteContractError;
@@ -218,7 +241,7 @@ export async function updatePlayerCareerRepo(
   // Shirt Numbers : Delete existing shirt numbers and insert new ones
 
   const { error: deleteShirtNumberError } = await supabase
-    .from("player_shirt_numbers")
+    .from(getPlayerShirtNumberTable())
     .delete()
     .eq("player_career_id", careerId);
   if (deleteShirtNumberError) throw deleteShirtNumberError;
@@ -230,7 +253,7 @@ export async function updatePlayerCareerRepo(
   // Transfer : Delete existing transfer and insert new one
 
   const { error: deleteTransferError } = await supabase
-    .from("transfers")
+    .from(getTransferTable())
     .delete()
     .eq("player_career_id", careerId);
   if (deleteTransferError) throw deleteTransferError;
@@ -250,32 +273,32 @@ export async function updatePlayerCareerRepo(
 export async function deletePlayerCareerRepo(careerId: string): Promise<void> {
   const supabase = await getSupabase();
 
-  const oldPlayerCareer = await getPlayerCareerByIdRepo(careerId);
-
-  if (!oldPlayerCareer) {
-    throw new Error("Player career not found");
-  }
+  await requireEntity(
+    getPlayerCareerByIdRepo,
+    careerId,
+    getPlayerCareerLabel(),
+  );
 
   const { error: deleteContractError } = await supabase
-    .from("player_contracts")
+    .from(getPlayerContractTable())
     .delete()
     .eq("player_career_id", careerId);
   if (deleteContractError) throw deleteContractError;
 
   const { error: deleteShirtNumberError } = await supabase
-    .from("player_shirt_numbers")
+    .from(getPlayerShirtNumberTable())
     .delete()
     .eq("player_career_id", careerId);
   if (deleteShirtNumberError) throw deleteShirtNumberError;
 
   const { error: deleteTransferError } = await supabase
-    .from("transfers")
+    .from(getTransferTable())
     .delete()
     .eq("player_career_id", careerId);
   if (deleteTransferError) throw deleteTransferError;
 
   const { error: deletePlayerCareerError } = await supabase
-    .from("player_careers")
+    .from(getPlayerCareerTable())
     .delete()
     .eq("id", careerId);
 

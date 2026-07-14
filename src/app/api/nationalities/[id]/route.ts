@@ -4,6 +4,8 @@ import {
   noContentResponse,
   successResponse,
 } from "@/lib/api/response";
+import { authorizeManageContent } from "@/lib/auth/api-authorization";
+import { NotFoundError } from "@/lib/errors/http-error";
 import { getNationalityInputFromFormData } from "@/lib/nationalities/form-data";
 import {
   deleteNationalityService,
@@ -23,7 +25,7 @@ export async function GET(_request: Request, context: NationalityRouteContext) {
     const data = await getNationalityByIdService(id);
 
     if (!data) {
-      return errorResponse(new Error("Nationality not found"), 404);
+      return errorResponse(new NotFoundError("Nationality not found"));
     }
 
     return successResponse(data);
@@ -34,19 +36,21 @@ export async function GET(_request: Request, context: NationalityRouteContext) {
 
 export async function PUT(request: Request, context: NationalityRouteContext) {
   try {
+    await authorizeManageContent();
+
     const { id } = await context.params;
+
+    const currentNationality = await getNationalityByIdService(id);
+
+    if (!currentNationality) {
+      return errorResponse(new NotFoundError("Nationality not found"));
+    }
 
     if (!isFormDataRequest(request)) {
       const body = await request.json();
       const data = await updateNationalityService(id, body);
 
       return successResponse(data);
-    }
-
-    const currentNationality = await getNationalityByIdService(id);
-
-    if (!currentNationality) {
-      return errorResponse(new Error("Nationality not found"), 404);
     }
 
     const formData = await request.formData();
@@ -84,7 +88,15 @@ export async function DELETE(
   context: NationalityRouteContext,
 ) {
   try {
+    await authorizeManageContent();
+
     const { id } = await context.params;
+
+    const nationality = await getNationalityByIdService(id);
+
+    if (!nationality) {
+      return errorResponse(new NotFoundError("Nationality not found"));
+    }
 
     await deleteNationalityService(id);
 

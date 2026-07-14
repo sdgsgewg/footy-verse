@@ -1,5 +1,5 @@
+import { Entity } from "@/config/entities";
 import { IMAGES } from "@/constants/images";
-import { Entity } from "@/types/entity";
 
 export function getDefaultImage(entity: Entity) {
   return entity === "player"

@@ -4,9 +4,8 @@ import { useRouter } from "next/navigation";
 import { getApiErrorMessage, hasDuplicateError } from "@/lib/crud/error";
 import { getNameFromPayload } from "@/lib/crud/payload";
 import { isLikelyConnectionError } from "@/lib/utils/connection-error";
-import { Entity } from "@/types/entity";
-
-type CrudAction = "create" | "update" | "delete";
+import { Entity } from "@/config/entities";
+import { CrudAction } from "@/types/crud";
 
 interface CrudMutationOptions<TVariables> {
   mutationFn: (variables: TVariables) => Promise<unknown>;
@@ -52,7 +51,7 @@ export function useCrudMutation<TVariables>({
         queryKey,
       });
 
-      if (entityKey === "player-career") {
+      if (entityKey === "playerCareer") {
         alert(
           `${t(`common.crud.success.${action}`, {
             entity: t(`entities.${entityKey}`),

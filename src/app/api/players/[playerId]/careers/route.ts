@@ -3,6 +3,7 @@ import {
   errorResponse,
   successResponse,
 } from "@/lib/api/response";
+import { authorizeManageContent } from "@/lib/auth/api-authorization";
 import {
   createPlayerCareerService,
   getPlayerCareersService,
@@ -32,6 +33,8 @@ export async function POST(
   context: PlayerCareerRouteContext,
 ) {
   try {
+    await authorizeManageContent();
+
     const { playerId } = await context.params;
 
     const body = await request.json();

@@ -4,6 +4,7 @@ import {
   errorResponse,
   successResponse,
 } from "@/lib/api/response";
+import { authorizeManageContent } from "@/lib/auth/api-authorization";
 import { getNationalityInputFromFormData } from "@/lib/nationalities/form-data";
 import {
   createNationalityService,
@@ -30,6 +31,8 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   try {
+    await authorizeManageContent();
+
     if (!isFormDataRequest(request)) {
       const body = await request.json();
       const data = await createNationalityService(body);

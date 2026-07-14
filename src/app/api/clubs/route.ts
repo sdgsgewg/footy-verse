@@ -11,6 +11,7 @@ import {
   successResponse,
 } from "@/lib/api/response";
 import { getClubInputFromFormData } from "@/lib/clubs/form-data";
+import { authorizeManageContent } from "@/lib/auth/api-authorization";
 
 export async function GET(request: Request) {
   try {
@@ -30,6 +31,8 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   try {
+    await authorizeManageContent();
+
     if (!isFormDataRequest(request)) {
       const body = await request.json();
       const data = await createClubService(body);

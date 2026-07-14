@@ -1,6 +1,4 @@
-import { slugify } from "@/utils/string";
 import { createClient } from "@/utils/supabase/server";
-import { renameImage, tryDeleteImage } from "@/lib/services/storage.service";
 import { STORAGE_BUCKETS } from "@/lib/storage";
 import {
   DbPlayerListRow,
@@ -13,11 +11,34 @@ import {
   PlayerUpdateInput,
 } from "@/types/player";
 import { mapPlayerDetailResponse, mapPlayerListItem } from "../players/mapper";
-import { ensureUniqueRecord } from "./helpers/uniqueness";
+import { ENTITY_CONFIG } from "@/config/entities";
+import { ensureUniqueSlug } from "./helpers/slug";
+import { requireEntity } from "./helpers/require-entity";
+import { deleteEntityImage, prepareUpdatedImage } from "./helpers/image";
 
 async function getSupabase() {
   return createClient();
 }
+
+const getPlayerLabel = () => {
+  return ENTITY_CONFIG["player"]["label"];
+};
+
+const getPlayerTable = () => {
+  return ENTITY_CONFIG["player"]["table"];
+};
+
+const getPlayerPositionTable = () => {
+  return ENTITY_CONFIG["playerPosition"]["table"];
+};
+
+const getPlayerCareerTable = () => {
+  return ENTITY_CONFIG["playerCareer"]["table"];
+};
+
+const getPlayerNationalTeamTable = () => {
+  return ENTITY_CONFIG["playerNationalTeam"]["table"];
+};
 
 export async function getPlayersRepo(
   params: GetPlayersParams,
@@ -25,7 +46,7 @@ export async function getPlayersRepo(
   const supabase = await getSupabase();
 
   let query = supabase
-    .from("players")
+    .from(getPlayerTable())
     .select(
       `
     id,
@@ -81,7 +102,7 @@ export async function getPlayerByIdRepo(
   const supabase = await getSupabase();
 
   const { data, error } = await supabase
-    .from("players")
+    .from(getPlayerTable())
     .select(
       `
         *,
@@ -121,7 +142,7 @@ async function insertPlayerPositions(
   }));
 
   const { error: playerPositionError } = await supabase
-    .from("player_positions")
+    .from(getPlayerPositionTable())
     .insert(playerPositionInserts);
   if (playerPositionError) throw playerPositionError;
 }
@@ -140,7 +161,7 @@ async function insertPlayerNationalTeams(
     shirt_number: pnt.shirt_number,
   }));
   const { error: playerNationalTeamError } = await supabase
-    .from("player_national_teams")
+    .from(getPlayerNationalTeamTable())
     .insert(playerNationalTeamInserts);
   if (playerNationalTeamError) throw playerNationalTeamError;
 }
@@ -150,18 +171,15 @@ export async function createPlayerRepo(
 ): Promise<PlayerDetailResponse> {
   const supabase = await getSupabase();
 
-  const slug = slugify(player.name);
-
-  await ensureUniqueRecord({
-    table: "players",
+  const slug = await ensureUniqueSlug({
+    table: getPlayerTable(),
     name: player.name,
-    slug,
   });
 
   const { market_value, positions, national_teams, ...rest } = player;
 
   const { data: insertedPlayer, error: playerError } = await supabase
-    .from("players")
+    .from(getPlayerTable())
     .insert({
       ...rest,
       slug,
@@ -195,42 +213,30 @@ export async function updatePlayerRepo(
   player: PlayerUpdateInput,
 ): Promise<PlayerDetailResponse> {
   const supabase = await getSupabase();
-  const oldPlayer = await getPlayerByIdRepo(id);
-  const slug = slugify(player.name);
 
-  if (!oldPlayer) {
-    throw new Error("Player not found");
-  }
+  const oldPlayer = await requireEntity(
+    getPlayerByIdRepo,
+    id,
+    getPlayerLabel(),
+  );
 
-  await ensureUniqueRecord({
-    table: "players",
+  const slug = await ensureUniqueSlug({
+    table: getPlayerTable(),
     name: player.name,
-    slug,
-    ignoreId: id,
   });
 
-  let finalImage = player.image;
-
-  if (
-    oldPlayer.name !== player.name &&
-    oldPlayer.image &&
-    oldPlayer.image === player.image
-  ) {
-    finalImage = await renameImage(
-      oldPlayer.image,
-      player.name,
-      STORAGE_BUCKETS.PLAYERS,
-    );
-  }
-
-  if (oldPlayer.image && oldPlayer.image !== player.image) {
-    await tryDeleteImage(oldPlayer.image, STORAGE_BUCKETS.PLAYERS);
-  }
+  const finalImage = await prepareUpdatedImage({
+    oldName: oldPlayer.name,
+    newName: player.name,
+    oldImage: oldPlayer.image,
+    newImage: player.image ?? "",
+    bucket: STORAGE_BUCKETS.PLAYERS,
+  });
 
   const { market_value, positions, national_teams, ...rest } = player;
 
   const { error: playerError } = await supabase
-    .from("players")
+    .from(getPlayerTable())
     .update({
       ...rest,
       image: finalImage,
@@ -245,7 +251,7 @@ export async function updatePlayerRepo(
   // Positions: Delete existing positions and insert new ones
 
   const { error: deletePosError } = await supabase
-    .from("player_positions")
+    .from(getPlayerPositionTable())
     .delete()
     .eq("player_id", id);
   if (deletePosError) throw deletePosError;
@@ -257,7 +263,7 @@ export async function updatePlayerRepo(
   // Nationality History: Delete existing nationalities and insert new ones
 
   const { error: deleteNatError } = await supabase
-    .from("player_national_teams")
+    .from(getPlayerNationalTeamTable())
     .delete()
     .eq("player_id", id);
   if (deleteNatError) throw deleteNatError;
@@ -277,32 +283,30 @@ export async function updatePlayerRepo(
 export async function deletePlayerRepo(id: string): Promise<void> {
   const supabase = await getSupabase();
 
-  const player = await getPlayerByIdRepo(id);
+  const player = await requireEntity(getPlayerByIdRepo, id, getPlayerLabel());
 
-  if (player?.image) {
-    await tryDeleteImage(player.image, STORAGE_BUCKETS.PLAYERS);
-  }
+  await deleteEntityImage(player.image, STORAGE_BUCKETS.PLAYERS);
 
   const { error: deletePosError } = await supabase
-    .from("player_positions")
+    .from(getPlayerPositionTable())
     .delete()
     .eq("player_id", id);
   if (deletePosError) throw deletePosError;
 
   const { error: deleteCareerError } = await supabase
-    .from("player_careers")
+    .from(getPlayerCareerTable())
     .delete()
     .eq("player_id", id);
   if (deleteCareerError) throw deleteCareerError;
 
   const { error: deleteNatError } = await supabase
-    .from("player_national_teams")
+    .from(getPlayerNationalTeamTable())
     .delete()
     .eq("player_id", id);
   if (deleteNatError) throw deleteNatError;
 
   const { error: deletePlayerError } = await supabase
-    .from("players")
+    .from(getPlayerTable())
     .delete()
     .eq("id", id);
 

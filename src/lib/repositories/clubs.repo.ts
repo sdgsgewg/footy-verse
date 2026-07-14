@@ -1,8 +1,5 @@
-import { slugify } from "@/utils/string";
 import { createClient } from "@/utils/supabase/server";
-import { renameImage, tryDeleteImage } from "../services/storage.service";
 import { STORAGE_BUCKETS } from "../storage";
-import { ensureUniqueRecord } from "./helpers/uniqueness";
 import {
   Club,
   ClubCreateInput,
@@ -11,10 +8,22 @@ import {
   ClubUpdateInput,
   GetClubsParams,
 } from "@/types/club";
+import { requireEntity } from "./helpers/require-entity";
+import { ensureUniqueSlug } from "./helpers/slug";
+import { ENTITY_CONFIG } from "@/config/entities";
+import { deleteEntityImage, prepareUpdatedImage } from "./helpers/image";
 
 async function getSupabase() {
   return createClient();
 }
+
+const getLabel = () => {
+  return ENTITY_CONFIG["club"]["label"];
+};
+
+const getTable = () => {
+  return ENTITY_CONFIG["club"]["table"];
+};
 
 export async function getClubsRepo(
   params: GetClubsParams,
@@ -22,7 +31,7 @@ export async function getClubsRepo(
   const supabase = await getSupabase();
 
   let query = supabase
-    .from("clubs")
+    .from(getTable())
     .select(
       `
       *,
@@ -57,7 +66,7 @@ export async function getClubByIdRepo(
   const supabase = await getSupabase();
 
   const { data, error } = await supabase
-    .from("clubs")
+    .from(getTable())
     .select(
       `
       *,
@@ -82,16 +91,13 @@ export async function getClubByIdRepo(
 export async function createClubRepo(club: ClubCreateInput): Promise<Club> {
   const supabase = await getSupabase();
 
-  const slug = slugify(club.name);
-
-  await ensureUniqueRecord({
-    table: "clubs",
+  const slug = await ensureUniqueSlug({
+    table: getTable(),
     name: club.name,
-    slug,
   });
 
   const { data, error } = await supabase
-    .from("clubs")
+    .from(getTable())
     .insert({ ...club, slug })
     .select(`*`)
     .single();
@@ -106,44 +112,24 @@ export async function updateClubRepo(
   club: ClubUpdateInput,
 ): Promise<Club> {
   const supabase = await getSupabase();
-  const oldClub = await getClubByIdRepo(id);
-  const slug = slugify(club.name);
 
-  if (!oldClub) {
-    throw new Error("Club not found");
-  }
+  const oldClub = await requireEntity(getClubByIdRepo, id, getLabel());
 
-  await ensureUniqueRecord({
-    table: "clubs",
+  const slug = await ensureUniqueSlug({
+    table: getTable(),
     name: club.name,
-    slug,
-    ignoreId: id,
   });
 
-  let finalImage = club.image;
-
-  // If the club name has changed and the image is still the same (no new upload),
-  // we rename the file in the storage bucket to reflect the new name's slug.
-  if (
-    oldClub.name !== club.name &&
-    oldClub.image &&
-    oldClub.image === club.image
-  ) {
-    finalImage = await renameImage(
-      oldClub.image,
-      club.name,
-      STORAGE_BUCKETS.CLUBS,
-    );
-  }
-
-  // To comply with RLS policies where deleting the old image requires the database
-  // record to still reference the old path, we delete the old image before updating.
-  if (oldClub.image && oldClub.image !== club.image) {
-    await tryDeleteImage(oldClub.image, STORAGE_BUCKETS.CLUBS);
-  }
+  const finalImage = await prepareUpdatedImage({
+    oldName: oldClub.name,
+    newName: club.name,
+    oldImage: oldClub.image,
+    newImage: club.image ?? "",
+    bucket: STORAGE_BUCKETS.CLUBS,
+  });
 
   const { data, error } = await supabase
-    .from("clubs")
+    .from(getTable())
     .update({
       name: club.name,
       image: finalImage,
@@ -162,13 +148,11 @@ export async function updateClubRepo(
 export async function deleteClubRepo(id: string): Promise<void> {
   const supabase = await getSupabase();
 
-  const club = await getClubByIdRepo(id);
+  const club = await requireEntity(getClubByIdRepo, id, getLabel());
 
-  if (club?.image) {
-    await tryDeleteImage(club.image, STORAGE_BUCKETS.CLUBS);
-  }
+  await deleteEntityImage(club.image, STORAGE_BUCKETS.CLUBS);
 
-  const { error } = await supabase.from("clubs").delete().eq("id", id);
+  const { error } = await supabase.from(getTable()).delete().eq("id", id);
 
   if (error) throw error;
 }

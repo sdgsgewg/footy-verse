@@ -12,6 +12,8 @@ import {
   successResponse,
 } from "@/lib/api/response";
 import { getClubInputFromFormData } from "@/lib/clubs/form-data";
+import { NotFoundError } from "@/lib/errors/http-error";
+import { authorizeManageContent } from "@/lib/auth/api-authorization";
 
 type ClubRouteContext = {
   params: Promise<{ id: string }>;
@@ -23,7 +25,7 @@ export async function GET(_request: Request, context: ClubRouteContext) {
     const data = await getClubByIdService(id);
 
     if (!data) {
-      return errorResponse(new Error("Club not found"), 404);
+      return errorResponse(new NotFoundError("Club not found"));
     }
 
     return successResponse(data);
@@ -34,19 +36,21 @@ export async function GET(_request: Request, context: ClubRouteContext) {
 
 export async function PUT(request: Request, context: ClubRouteContext) {
   try {
+    await authorizeManageContent();
+
     const { id } = await context.params;
+
+    const currentClub = await getClubByIdService(id);
+
+    if (!currentClub) {
+      return errorResponse(new NotFoundError("Club not found"));
+    }
 
     if (!isFormDataRequest(request)) {
       const body = await request.json();
       const data = await updateClubService(id, body);
 
       return successResponse(data);
-    }
-
-    const currentClub = await getClubByIdService(id);
-
-    if (!currentClub) {
-      return errorResponse(new Error("Club not found"), 404);
     }
 
     const formData = await request.formData();
@@ -81,11 +85,18 @@ export async function PUT(request: Request, context: ClubRouteContext) {
 
 export async function DELETE(_request: Request, context: ClubRouteContext) {
   try {
+    await authorizeManageContent();
+
     const { id } = await context.params;
+
+    const club = await getClubByIdService(id);
+
+    if (!club) {
+      return errorResponse(new NotFoundError("Club not found"));
+    }
 
     await deleteClubService(id);
 
-    // return successResponse(null);
     return noContentResponse();
   } catch (error) {
     return errorResponse(error);

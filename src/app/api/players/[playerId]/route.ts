@@ -1,5 +1,7 @@
 import { isFormDataRequest } from "@/lib/api/request";
 import { errorResponse, successResponse } from "@/lib/api/response";
+import { authorizeManageContent } from "@/lib/auth/api-authorization";
+import { NotFoundError } from "@/lib/errors/http-error";
 import { getPlayerInputFromFormData } from "@/lib/players/form-data";
 import {
   deletePlayerService,
@@ -20,7 +22,7 @@ export async function GET(_request: Request, context: PlayerRouteContext) {
     const data = await getPlayerByIdService(playerId);
 
     if (!data) {
-      return errorResponse(new Error("Player not found"), 404);
+      return errorResponse(new NotFoundError("Player not found"));
     }
 
     return successResponse(data);
@@ -31,20 +33,21 @@ export async function GET(_request: Request, context: PlayerRouteContext) {
 
 export async function PUT(request: Request, context: PlayerRouteContext) {
   try {
+    await authorizeManageContent();
+
     const { playerId } = await context.params;
-
-    if (!isFormDataRequest(request)) {
-      const body = await request.json();
-
-      const data = await updatePlayerService(playerId, body);
-
-      return successResponse(data);
-    }
 
     const currentPlayer = await getPlayerByIdService(playerId);
 
     if (!currentPlayer) {
-      return errorResponse(new Error("Player not found"), 404);
+      return errorResponse(new NotFoundError("Player not found"));
+    }
+
+    if (!isFormDataRequest(request)) {
+      const body = await request.json();
+      const data = await updatePlayerService(playerId, body);
+
+      return successResponse(data);
     }
 
     const formData = await request.formData();
@@ -79,7 +82,15 @@ export async function PUT(request: Request, context: PlayerRouteContext) {
 
 export async function DELETE(_request: Request, context: PlayerRouteContext) {
   try {
+    await authorizeManageContent();
+
     const { playerId } = await context.params;
+
+    const player = await getPlayerByIdService(playerId);
+
+    if (!player) {
+      return errorResponse(new NotFoundError("Player not found"));
+    }
 
     await deletePlayerService(playerId);
 
