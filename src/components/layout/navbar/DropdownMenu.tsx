@@ -8,9 +8,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
-import { type NavLink } from "@/types/NavLink";
 import { ChevronDown } from "lucide-react";
 import { useState } from "react";
+import { NavLink } from "@/types/NavLink";
 
 type NavbarDropdownMenuProps = {
   label: string;

@@ -7,7 +7,7 @@ import Navbar from "@/components/layout/navbar/Navbar";
 import Footer from "@/components/layout/footer/Footer";
 import PageWrapper from "@/components/wrappers/PageWrapper";
 import Providers from "./providers";
-import { createClient } from "@/utils/supabase/server";
+import { getCurrentAuth } from "@/lib/auth/current-auth";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,23 +34,7 @@ export default async function RootLayout({
   const { locale } = await params;
   const messages = await getMessages();
 
-  const supabase = await createClient();
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  let profile = null;
-
-  if (user) {
-    const { data } = await supabase
-      .from("profiles")
-      .select("*")
-      .eq("id", user.id)
-      .single();
-
-    profile = data;
-  }
+  const { user, profile } = await getCurrentAuth();
 
   return (
     <html lang={locale} suppressHydrationWarning>

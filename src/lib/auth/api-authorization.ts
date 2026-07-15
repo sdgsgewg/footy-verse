@@ -1,5 +1,5 @@
 import { canManageContent, canManageSystem } from "./roles";
-import { getCurrentProfile } from "./current-user";
+import { getCurrentProfile } from "./current-auth";
 import { ForbiddenError, UnauthorizedError } from "../errors/http-error";
 
 export async function authorizeManageContent() {

@@ -57,6 +57,7 @@ const Navbar = () => {
         </div>
       </nav>
 
+      {/* Mobile Menu Overlay */}
       <NavbarMobileMenu
         open={mobileMenuOpen}
         pathname={pathname}

@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 
-import { getCurrentProfile } from "./current-user";
+import { getCurrentProfile } from "./current-auth";
 import { canManageContent, canManageSystem } from "./roles";
 
 export async function requireAuthentication() {}
