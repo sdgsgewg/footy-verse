@@ -14,7 +14,7 @@ export function useUpdateClub() {
 
     queryKey: queryKeys.clubs(),
 
-    redirectTo: ROUTES.MANAGE.CLUBS.BASE,
+    redirectTo: ROUTES.DASHBOARD.CONTENT.CLUBS.BASE,
 
     entityKey: "club",
 

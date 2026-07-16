@@ -1,27 +1,26 @@
-import { useLocale, useTranslations } from "next-intl";
-import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { useDeleteClub } from "./useDeleteClub";
 import { ROUTES } from "@/constants/routes";
 import { ClubDetailResponse } from "@/types/club";
+import { useRouter } from "@/navigation";
 
 export function useClubActions() {
   const tClubs = useTranslations("manage.clubs");
 
   const router = useRouter();
-  const locale = useLocale();
 
   const deleteMutation = useDeleteClub();
 
   const handleCreate = () => {
-    router.push(`/${locale}/${ROUTES.MANAGE.CLUBS.CREATE}`);
+    router.push(`${ROUTES.DASHBOARD.CONTENT.CLUBS.CREATE}`);
   };
 
   const handleView = (club: ClubDetailResponse) => {
-    router.push(`/${locale}/${ROUTES.MANAGE.CLUBS.BASE}/${club.id}`);
+    router.push(`${ROUTES.DASHBOARD.CONTENT.CLUBS.BASE}/${club.id}`);
   };
 
   const handleEdit = (club: ClubDetailResponse) => {
-    router.push(`/${locale}/${ROUTES.MANAGE.CLUBS.EDIT}/${club.id}`);
+    router.push(`${ROUTES.DASHBOARD.CONTENT.CLUBS.EDIT}/${club.id}`);
   };
 
   const handleDelete = (club: ClubDetailResponse) => {

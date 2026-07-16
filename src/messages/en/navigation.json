@@ -14,10 +14,28 @@
     "seasons": "Seasons",
     "regions": "Regions",
     "competitions": "Competitions",
-    
+
     "system": "System",
     "users": "Users",
     "roles": "Roles"
+  },
+  "dashboard": {
+    "base": "Dashboard",
+    "content": {
+      "base": "Content Management",
+      "players": "Players",
+      "clubs": "Clubs",
+      "nationalities": "Nationalities",
+      "positions": "Positions",
+      "seasons": "Seasons",
+      "regions": "Regions",
+      "competitions": "Competitions"
+    },
+    "system": {
+      "base": "System Management",
+      "users": "Users",
+      "roles": "Roles"
+    }
   },
   "about": "About"
 }

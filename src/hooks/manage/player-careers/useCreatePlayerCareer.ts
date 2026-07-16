@@ -1,16 +1,15 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useLocale, useTranslations } from "next-intl";
-import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import axios from "axios";
 import { createPlayer } from "@/lib/api/player";
 import { queryKeys } from "@/lib/react-query/queryKeys";
 import { isLikelyConnectionError } from "@/lib/utils/connection-error";
 import { ROUTES } from "@/constants/routes";
+import { useRouter } from "@/navigation";
 
 export function useCreatePlayerCareer() {
   const queryClient = useQueryClient();
   const router = useRouter();
-  const locale = useLocale();
 
   const tPlayerCareers = useTranslations("manage.playerCareers");
   const tCommon = useTranslations("common");
@@ -48,7 +47,7 @@ export function useCreatePlayerCareer() {
 
       alert(`${tPlayerCareers("form.success.add")} ${playerName}`);
 
-      router.push(`/${locale}/${ROUTES.MANAGE.PLAYERS.BASE}`);
+      router.push(`${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}`);
     },
 
     onError: (error: unknown) => {

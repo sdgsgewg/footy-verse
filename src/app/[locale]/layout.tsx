@@ -3,9 +3,6 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "../globals.css";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
-import Navbar from "@/components/layout/navbar/Navbar";
-import Footer from "@/components/layout/footer/Footer";
-import PageWrapper from "@/components/wrappers/PageWrapper";
 import Providers from "./providers";
 import { getCurrentAuth } from "@/lib/auth/current-auth";
 
@@ -39,16 +36,11 @@ export default async function RootLayout({
   return (
     <html lang={locale} suppressHydrationWarning>
       <body
-        // className="min-h-full flex flex-col"
         className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
       >
         <NextIntlClientProvider messages={messages}>
           <Providers initialUser={user} initialProfile={profile}>
-            <Navbar />
-            <main className="content flex-1 min-h-screen">
-              <PageWrapper>{children}</PageWrapper>
-            </main>
-            <Footer />
+            {children}
           </Providers>
         </NextIntlClientProvider>
       </body>

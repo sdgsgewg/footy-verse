@@ -4,6 +4,7 @@ import { routing } from "./navigation";
 async function getMessages(locale: string) {
   const messages = {
     theme: (await import(`./messages/${locale}/theme.json`)).default,
+    lang: (await import(`./messages/${locale}/lang.json`)).default,
     navigation: (await import(`./messages/${locale}/navigation.json`)).default,
     footer: (await import(`./messages/${locale}/footer.json`)).default,
     common: (await import(`./messages/${locale}/common.json`)).default,

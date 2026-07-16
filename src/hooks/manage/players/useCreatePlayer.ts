@@ -9,7 +9,7 @@ export function useCreatePlayer() {
 
     queryKey: queryKeys.players(),
 
-    redirectTo: ROUTES.MANAGE.PLAYERS.BASE,
+    redirectTo: ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE,
 
     entityKey: "player",
 

@@ -6,7 +6,7 @@ interface EntityConfig {
   label: string;
   supportsImage: boolean;
   supportsSlug: boolean;
-  manageRoute?: string;
+  dashboardRoute?: string;
   storageBucket?: string;
   imageFolder?: string;
 }
@@ -17,7 +17,7 @@ export const ENTITY_CONFIG = {
     label: "Club",
     supportsImage: true,
     supportsSlug: true,
-    manageRoute: ROUTES.MANAGE.CLUBS.BASE,
+    dashboardRoute: ROUTES.DASHBOARD.CONTENT.CLUBS.BASE,
     storageBucket: STORAGE_BUCKETS.CLUBS,
     imageFolder: "clubs",
   },
@@ -27,7 +27,7 @@ export const ENTITY_CONFIG = {
     label: "Nationality",
     supportsImage: true,
     supportsSlug: true,
-    manageRoute: ROUTES.MANAGE.NATIONALITIES,
+    dashboardRoute: ROUTES.DASHBOARD.CONTENT.NATIONALITIES,
     storageBucket: STORAGE_BUCKETS.NATIONALITIES,
     imageFolder: "nationalities",
   },
@@ -37,7 +37,7 @@ export const ENTITY_CONFIG = {
     label: "Position",
     supportsImage: false,
     supportsSlug: true,
-    manageRoute: ROUTES.MANAGE.POSITIONS,
+    dashboardRoute: ROUTES.DASHBOARD.CONTENT.POSITIONS,
   },
 
   player: {
@@ -45,7 +45,7 @@ export const ENTITY_CONFIG = {
     label: "Player",
     supportsImage: true,
     supportsSlug: true,
-    manageRoute: ROUTES.MANAGE.PLAYERS.BASE,
+    dashboardRoute: ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE,
     storageBucket: STORAGE_BUCKETS.PLAYERS,
     imageFolder: "players",
   },
@@ -97,7 +97,7 @@ export const ENTITY_CONFIG = {
     label: "Season",
     supportsImage: false,
     supportsSlug: false,
-    manageRoute: ROUTES.MANAGE.SEASONS,
+    dashboardRoute: ROUTES.DASHBOARD.CONTENT.SEASONS,
   },
 
   region: {
@@ -105,7 +105,7 @@ export const ENTITY_CONFIG = {
     label: "Region",
     supportsImage: false,
     supportsSlug: true,
-    manageRoute: ROUTES.MANAGE.REGIONS,
+    dashboardRoute: ROUTES.DASHBOARD.CONTENT.REGIONS,
   },
 
   competition: {
@@ -113,7 +113,7 @@ export const ENTITY_CONFIG = {
     label: "Competition",
     supportsImage: true,
     supportsSlug: true,
-    manageRoute: ROUTES.MANAGE.COMPETITIONS.BASE,
+    dashboardRoute: ROUTES.DASHBOARD.CONTENT.COMPETITIONS.BASE,
     storageBucket: STORAGE_BUCKETS.COMPETITIONS,
     imageFolder: "competitions",
   },

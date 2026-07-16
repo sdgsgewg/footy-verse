@@ -5,19 +5,23 @@
     "indonesia": "Indonesia",
     "arsenal": "Arsenal"
   },
-  "manage": {
-    "base": "Kelola",
-    "players": "Pemain",
-    "clubs": "Klub",
-    "nationalities": "Kebangsaan",
-    "positions": "Posisi",
-    "seasons": "Musim",
-    "regions": "Zona Wilayah",
-    "competitions": "Kompetisi",
-
-    "system": "Sistem",
-    "users": "Pengguna",
-    "roles": "Peran"
+  "dashboard": {
+    "base": "Dasbor",
+    "content": {
+      "base": "Manajemen Konten",
+      "players": "Pemain",
+      "clubs": "Klub",
+      "nationalities": "Kebangsaan",
+      "positions": "Posisi",
+      "seasons": "Musim",
+      "regions": "Zona Wilayah",
+      "competitions": "Kompetisi"
+    },
+    "system": {
+      "base": "Manajemen Sistem",
+      "users": "Pengguna",
+      "roles": "Peran"
+    }
   },
   "about": "Tentang"
 }
