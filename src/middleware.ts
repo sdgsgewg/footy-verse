@@ -1,7 +1,6 @@
 import createMiddleware from "next-intl/middleware";
 import { NextRequest, NextResponse } from "next/server";
 import { createServerClient } from "@supabase/ssr";
-
 import { MANAGE_ROUTE_PERMISSIONS } from "@/lib/auth/permissions";
 
 const intlMiddleware = createMiddleware({
@@ -55,6 +54,15 @@ export default async function middleware(request: NextRequest) {
   const {
     data: { user },
   } = await supabase.auth.getUser();
+
+  // Guest only (auth pages)
+  if (matchedPermission.type === "guest") {
+    if (user) {
+      return NextResponse.redirect(new URL(`/${locale}`, request.url));
+    }
+
+    return response;
+  }
 
   // Guest -> Login
   if (!user) {
