@@ -1,7 +1,7 @@
 "use client";
 
-import Loading from "@/components/feedback/Loading";
 import NotFound from "@/components/feedback/NotFound";
+import PageLoading from "@/components/feedback/PageLoading";
 import ClubForm from "@/components/forms/clubs/ClubForm";
 import FormSectionLayout from "@/components/layout/FormSectionLayout";
 import ManagePageWrapper from "@/components/manage/ManagePageWrapper";
@@ -14,6 +14,9 @@ const EditClubPage = () => {
   const t = useTranslations("dashboard.clubs");
   const tEdit = useTranslations("dashboard.clubs.edit");
 
+  const tCommonStates = useTranslations("common.states");
+  const tEntities = useTranslations("entities");
+
   const params = useParams();
 
   const id = params.id as string;
@@ -25,7 +28,13 @@ const EditClubPage = () => {
   const { submit, isSubmitting } = useClubSubmit();
 
   if (loading) {
-    return <Loading />;
+    return (
+      <PageLoading
+        message={tCommonStates("loadingEntity", {
+          entity: tEntities("club").toLowerCase(),
+        })}
+      />
+    );
   }
 
   if (!club) {

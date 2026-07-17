@@ -20,7 +20,7 @@ import { Check, ChevronDown, ListOrdered, Plus, RotateCcw } from "lucide-react";
 
 import SortablePositionItem, {
   SortablePositionItemValue,
-} from "@/components/ui/SortablePositionItem";
+} from "@/components/forms/fields/SortablePositionItem";
 import { Button } from "@/components/ui/button";
 import {
   Command,

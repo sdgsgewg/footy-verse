@@ -1,7 +1,7 @@
 "use client";
 
-import Loading from "@/components/feedback/Loading";
 import NotFound from "@/components/feedback/NotFound";
+import PageLoading from "@/components/feedback/PageLoading";
 import PlayerForm from "@/components/forms/players/PlayerForm";
 import FormSectionLayout from "@/components/layout/FormSectionLayout";
 import ManagePageWrapper from "@/components/manage/ManagePageWrapper";
@@ -14,18 +14,27 @@ const EditPlayerPage = () => {
   const t = useTranslations("dashboard.players");
   const tEdit = useTranslations("dashboard.players.edit");
 
-  const { playerId } = useParams() as {
-    playerId: string;
+  const tCommonStates = useTranslations("common.states");
+  const tEntities = useTranslations("entities");
+
+  const { id } = useParams() as {
+    id: string;
   };
 
   const { player, loading } = usePlayer({
-    id: playerId,
+    id,
   });
 
   const { submit, isSubmitting } = usePlayerSubmit();
 
   if (loading) {
-    return <Loading />;
+    return (
+      <PageLoading
+        message={tCommonStates("loadingEntity", {
+          entity: tEntities("player").toLowerCase(),
+        })}
+      />
+    );
   }
 
   if (!player) {
@@ -43,7 +52,7 @@ const EditPlayerPage = () => {
           loading={isSubmitting}
           onSubmit={(payload) =>
             submit({
-              id: playerId,
+              id,
               payload,
             })
           }

@@ -49,7 +49,8 @@
     "updating": "Updating...",
     "emptyData": "No data available. Use the daily input tab to add records.",
     "loadOlderData": "Load Older Data...",
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "loadingEntity": "Loading {entity}..."
   },
 
   "ui": {

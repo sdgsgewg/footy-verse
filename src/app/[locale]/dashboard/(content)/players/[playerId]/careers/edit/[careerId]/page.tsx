@@ -1,7 +1,7 @@
 "use client";
 
-import Loading from "@/components/feedback/Loading";
 import NotFound from "@/components/feedback/NotFound";
+import PageLoading from "@/components/feedback/PageLoading";
 import PlayerCareerForm from "@/components/forms/player-careers/PlayerCareerForm";
 import FormSectionLayout from "@/components/layout/FormSectionLayout";
 import ManagePageWrapper from "@/components/manage/ManagePageWrapper";
@@ -14,6 +14,9 @@ import { useParams } from "next/navigation";
 const EditPlayerCareerPage = () => {
   const t = useTranslations("dashboard.playerCareers");
   const tEdit = useTranslations("dashboard.playerCareers.edit");
+
+  const tCommonStates = useTranslations("common.states");
+  const tEntities = useTranslations("entities");
 
   const { playerId, careerId } = useParams() as {
     playerId: string;
@@ -28,7 +31,13 @@ const EditPlayerCareerPage = () => {
   const { submit, isSubmitting } = usePlayerCareerSubmit(playerId);
 
   if (loading) {
-    return <Loading />;
+    return (
+      <PageLoading
+        message={tCommonStates("loadingEntity", {
+          entity: tEntities("player").toLowerCase(),
+        })}
+      />
+    );
   }
 
   if (!playerCareer) {
