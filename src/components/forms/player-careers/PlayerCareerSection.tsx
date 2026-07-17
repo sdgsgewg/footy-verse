@@ -2,11 +2,12 @@
 
 import { Dispatch, SetStateAction } from "react";
 import InputDate from "@/components/ui/InputDate";
-import InputSelect from "@/components/ui/InputSelect";
 import { useTranslations } from "next-intl";
 import { UpsertPlayerCareerInput } from "@/types/player-career";
 import { ClubListItem } from "@/types/club";
 import FormSection from "../base/FormSection";
+import ComboboxField from "../fields/ComboboxField";
+import { toClubOptions } from "@/lib/clubs/mapper";
 
 interface Props {
   form: UpsertPlayerCareerInput;
@@ -21,19 +22,37 @@ const PlayerCareerSection = ({ form, setForm, clubs }: Props) => {
     "dashboard.playerCareers.form.placeholders.career",
   );
 
+  const tEntities = useTranslations("entities");
+  const tCommon = useTranslations("common");
+
+  const clubOptions = toClubOptions(clubs);
+
   return (
     <FormSection title={tForm("title")}>
       <>
-        <InputSelect
+        {/* Club */}
+        <ComboboxField
           label={tLabels("club")}
-          name={`club`}
-          placeholder={tPlaceholders("club") || ""}
-          options={clubs}
+          name="club"
+          options={clubOptions}
           value={form.club_id}
-          onChange={(value) => setForm({ ...form, club_id: value })}
+          placeholder={tPlaceholders("club")}
+          searchPlaceholder={tCommon("combobox.searchEntity", {
+            entity: tEntities("club").toLowerCase(),
+          })}
+          emptyMessage={tCommon("combobox.noEntityFound", {
+            entity: tEntities("club").toLowerCase(),
+          })}
+          onChange={(value) =>
+            setForm({
+              ...form,
+              club_id: value,
+            })
+          }
           required
         />
 
+        {/* Join Date */}
         <InputDate
           label={tLabels("joinedAt")}
           name={`joined-at`}
@@ -43,6 +62,7 @@ const PlayerCareerSection = ({ form, setForm, clubs }: Props) => {
           required
         />
 
+        {/* Left Date */}
         <InputDate
           label={tLabels("leftAt")}
           name={`left-at`}

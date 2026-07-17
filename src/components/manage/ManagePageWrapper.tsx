@@ -5,7 +5,7 @@ interface Props {
 }
 
 const ManagePageWrapper = ({ children }: Props) => {
-  return <div className="space-y-8">{children}</div>;
+  return <div className="space-y-6">{children}</div>;
 };
 
 export default ManagePageWrapper;

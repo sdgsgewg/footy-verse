@@ -1,4 +1,11 @@
 {
+  "combobox": {
+    "search": "Search...",
+    "searchEntity": "Search {entity}...",
+    "noResults": "No results found.",
+    "noEntityFound": "No {entity} found."
+  },
+
   "crud": {
     "success": {
       "create": "Successfully created {entity}",

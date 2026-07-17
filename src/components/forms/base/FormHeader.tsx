@@ -29,8 +29,8 @@ const FormHeader = ({
       : tCommonActions("update");
 
   return (
-    <div className="flex flex-row items-center justify-between p-6 bg-muted/20 border-b border-border/50">
-      <div className=" flex items-center gap-2">
+    <div className="flex flex-row items-center justify-between px-6 py-4 bg-muted/20 border-b border-border/50">
+      <div className="flex items-center gap-2">
         {isCreate ? (
           <>
             <Plus className="w-4 h-4" />

@@ -7,9 +7,14 @@ import FormWrapper from "../base/FormWrapper";
 import ImageUpload from "@/components/shared/ImageUpload";
 import { ClubDetailResponse } from "@/types/club";
 import InputText from "@/components/ui/InputText";
-import InputSelect from "@/components/ui/InputSelect";
 import { ClubType } from "@/enums/ClubType";
 import { useNationalities } from "@/hooks/dashboard/nationalities";
+import { SelectOption } from "@/types/select";
+import SelectField from "../fields/SelectField";
+import { toNationalityOptions } from "@/lib/nationalities/mapper";
+import ComboboxField from "../fields/ComboboxField";
+import { toClubOptions } from "@/lib/clubs/mapper";
+import FormContentWrapper from "../base/FormContentWrapper";
 
 interface Props {
   mode: "create" | "edit";
@@ -22,6 +27,8 @@ interface Props {
 
 const ClubForm = ({ mode, club, loading = false, onSubmit }: Props) => {
   const t = useTranslations("dashboard.clubs");
+  const tEntities = useTranslations("entities");
+  const tCommon = useTranslations("common");
 
   const { form, setForm, canSubmit, buildPayload } = useClubForm(club);
 
@@ -30,7 +37,7 @@ const ClubForm = ({ mode, club, loading = false, onSubmit }: Props) => {
 
   const isCreate = mode === "create";
 
-  const clubTypeOptions = [
+  const clubTypeOptions: SelectOption[] = [
     {
       id: ClubType.FIRST_TEAM,
       name: t("form.options.clubType.firstTeam"),
@@ -69,6 +76,9 @@ const ClubForm = ({ mode, club, loading = false, onSubmit }: Props) => {
     },
   ];
 
+  const nationalityOptions = toNationalityOptions(nationalities);
+  const clubOptions = toClubOptions(clubs);
+
   const handleSubmit = () => {
     onSubmit(buildPayload());
   };
@@ -82,7 +92,7 @@ const ClubForm = ({ mode, club, loading = false, onSubmit }: Props) => {
         onSubmit={handleSubmit}
       />
 
-      <div className="space-y-5 py-8 px-6">
+      <FormContentWrapper className="space-y-5">
         {/* Image */}
         <ImageUpload
           label={t("form.labels.image")}
@@ -109,7 +119,7 @@ const ClubForm = ({ mode, club, loading = false, onSubmit }: Props) => {
         />
 
         {/* Club Type */}
-        <InputSelect
+        <SelectField
           label={t("form.labels.clubType")}
           name="club_type"
           placeholder={t("form.placeholders.clubType")}
@@ -122,26 +132,38 @@ const ClubForm = ({ mode, club, loading = false, onSubmit }: Props) => {
         />
 
         {/* Nation */}
-        <InputSelect
+        <ComboboxField
           label={t("form.labels.nation")}
           name={`nationality`}
+          options={nationalityOptions}
           placeholder={t("form.placeholders.nation")}
-          options={nationalities}
+          searchPlaceholder={tCommon("combobox.searchEntity", {
+            entity: tEntities("nationality").toLowerCase(),
+          })}
+          emptyMessage={tCommon("combobox.noEntityFound", {
+            entity: tEntities("nationality").toLowerCase(),
+          })}
           value={form.nation_id || ""}
           onChange={(value) => setForm({ ...form, nation_id: value })}
           required
         />
 
         {/* Parent Club */}
-        <InputSelect
+        <ComboboxField
           label={t("form.labels.parentClub")}
           name={`parent_club`}
+          options={clubOptions}
           placeholder={t("form.placeholders.parentClub")}
-          options={clubs}
+          searchPlaceholder={tCommon("combobox.searchEntity", {
+            entity: tEntities("club").toLowerCase(),
+          })}
+          emptyMessage={tCommon("combobox.noEntityFound", {
+            entity: tEntities("club").toLowerCase(),
+          })}
           value={form.parent_club_id || ""}
           onChange={(value) => setForm({ ...form, parent_club_id: value })}
         />
-      </div>
+      </FormContentWrapper>
     </FormWrapper>
   );
 };

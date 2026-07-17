@@ -13,6 +13,7 @@ import PlayerContractSection from "./PlayerContractSection";
 import PlayerShirtNumberSection from "./PlayerShirtNumberSection";
 import TransferSection from "./TransferSection";
 import { useSeasons } from "@/hooks/dashboard/seasons";
+import FormContentWrapper from "../base/FormContentWrapper";
 
 interface Props {
   mode: "create" | "edit";
@@ -50,7 +51,7 @@ const PlayerCareerForm = ({
         onSubmit={handleSubmit}
       />
 
-      <div className="space-y-8 py-8 px-6">
+      <FormContentWrapper className="space-y-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div className="lg:grid-cols-6">
             <PlayerCareerSection form={form} setForm={setForm} clubs={clubs} />
@@ -75,7 +76,7 @@ const PlayerCareerForm = ({
             <PlayerShirtNumberSection form={form} setForm={setForm} />
           </div>
         </div>
-      </div>
+      </FormContentWrapper>
     </FormWrapper>
   );
 };

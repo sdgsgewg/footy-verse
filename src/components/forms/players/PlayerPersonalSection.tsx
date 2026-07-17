@@ -1,14 +1,14 @@
 import ImageUpload from "@/components/shared/ImageUpload";
 import InputDate from "@/components/ui/InputDate";
 import InputNumber from "@/components/ui/InputNumber";
-import InputSelect from "@/components/ui/InputSelect";
 import InputText from "@/components/ui/InputText";
-import PlayerPositionSelector from "@/components/ui/PlayerPositionSelector";
+import PlayerPositionSelector from "@/components/forms/fields/PlayerPositionSelector";
 import { PreferredFoot } from "@/enums/PreferredFoot";
 import { UpsertPlayerInput } from "@/types/player";
 import { PositionListItem } from "@/types/position";
 import { useTranslations } from "next-intl";
 import React, { Dispatch, SetStateAction } from "react";
+import SelectField from "../fields/SelectField";
 
 interface Props {
   form: UpsertPlayerInput;
@@ -44,6 +44,7 @@ const PlayerPersonalSection = ({ form, setForm, positions }: Props) => {
             previewUrl: URL.createObjectURL(file),
           }))
         }
+        required
       />
 
       {/* Name */}
@@ -53,6 +54,7 @@ const PlayerPersonalSection = ({ form, setForm, positions }: Props) => {
         placeholder={t("form.placeholders.name") || ""}
         value={(form.name as string) ?? ""}
         onChange={(value) => setForm({ ...form, name: value })}
+        required
       />
 
       {/* Positions */}
@@ -67,6 +69,7 @@ const PlayerPersonalSection = ({ form, setForm, positions }: Props) => {
             positions,
           })
         }
+        required
       />
 
       {/* DOB */}
@@ -76,6 +79,7 @@ const PlayerPersonalSection = ({ form, setForm, positions }: Props) => {
         placeholder={t("form.placeholders.dob") || ""}
         value={(form.dob as string) ?? ""}
         onChange={(value) => setForm({ ...form, dob: value })}
+        required
       />
 
       {/* POB */}
@@ -85,6 +89,7 @@ const PlayerPersonalSection = ({ form, setForm, positions }: Props) => {
         placeholder={t("form.placeholders.pob") || ""}
         value={(form.pob as string) ?? ""}
         onChange={(value) => setForm({ ...form, pob: value })}
+        required
       />
 
       {/* Height */}
@@ -94,6 +99,7 @@ const PlayerPersonalSection = ({ form, setForm, positions }: Props) => {
         placeholder={t("form.placeholders.height")}
         value={form.height}
         onChange={(value) => setForm({ ...form, height: value! })}
+        required
       />
 
       {/* Weight */}
@@ -103,10 +109,11 @@ const PlayerPersonalSection = ({ form, setForm, positions }: Props) => {
         placeholder={t("form.placeholders.weight")}
         value={form.weight}
         onChange={(value) => setForm({ ...form, weight: value! })}
+        required
       />
 
       {/* Preferred Foot */}
-      <InputSelect
+      <SelectField
         label={t("form.labels.preferredFoot")}
         name="preferred_foot"
         placeholder={t("form.placeholders.preferredFoot")}
@@ -115,6 +122,7 @@ const PlayerPersonalSection = ({ form, setForm, positions }: Props) => {
         onChange={(value) =>
           setForm({ ...form, preferred_foot: value as PreferredFoot })
         }
+        required
       />
 
       {/* Market Value */}
@@ -124,6 +132,7 @@ const PlayerPersonalSection = ({ form, setForm, positions }: Props) => {
         placeholder={t("form.placeholders.marketValue")}
         value={form.market_value}
         onChange={(value) => setForm({ ...form, market_value: value! })}
+        required
       />
     </div>
   );

@@ -3,12 +3,13 @@
 import { Dispatch, SetStateAction } from "react";
 import InputDate from "@/components/ui/InputDate";
 import InputNumber from "@/components/ui/InputNumber";
-import InputSelect from "@/components/ui/InputSelect";
 import { UpsertPlayerInput } from "@/types/player";
 import { NationalityListItem } from "@/types/nationality";
 import InputText from "@/components/ui/InputText";
 import { useTranslations } from "next-intl";
 import DynamicFormSection from "../base/DynamicFormSection";
+import ComboboxField from "../fields/ComboboxField";
+import { toNationalityOptions } from "@/lib/nationalities/mapper";
 
 type NationalTeam = NonNullable<UpsertPlayerInput["national_teams"]>[number];
 
@@ -26,6 +27,11 @@ const PlayerNationalTeamSection = ({ form, setForm, nationalities }: Props) => {
   const tPlaceholders = useTranslations(
     "dashboard.players.form.placeholders.nationalTeams",
   );
+
+  const tEntities = useTranslations("entities");
+  const tCommon = useTranslations("common");
+
+  const nationOptions = toNationalityOptions(nationalities);
 
   return (
     <DynamicFormSection<NationalTeam>
@@ -47,11 +53,17 @@ const PlayerNationalTeamSection = ({ form, setForm, nationalities }: Props) => {
       }
       renderItem={(item, index, updateItem) => (
         <>
-          <InputSelect
+          <ComboboxField
             label={tLabels("nation")}
             name={`nationality-${index}`}
+            options={nationOptions}
             placeholder={tPlaceholders("nation") || ""}
-            options={nationalities}
+            searchPlaceholder={tCommon("combobox.searchEntity", {
+              entity: tEntities("nationality").toLowerCase(),
+            })}
+            emptyMessage={tCommon("combobox.noEntityFound", {
+              entity: tEntities("nationality").toLowerCase(),
+            })}
             value={item.nation_id}
             onChange={(v) => updateItem(index, "nation_id", v as string)}
             required

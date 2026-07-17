@@ -1,4 +1,11 @@
 {
+  "combobox": {
+    "search": "Cari...",
+    "searchEntity": "Cari {entity}...",
+    "noResults": "Data tidak ditemukan.",
+    "noEntityFound": "{entity} tidak ditemukan."
+  },
+
   "crud": {
     "success": {
       "create": "Berhasil menambahkan {entity}.",

@@ -8,6 +8,7 @@ import FormWrapper from "../base/FormWrapper";
 import { PlayerDetailResponse } from "@/types/player";
 import { usePositions } from "@/hooks/dashboard/positions";
 import { useNationalities } from "@/hooks/dashboard/nationalities";
+import FormContentWrapper from "../base/FormContentWrapper";
 
 interface Props {
   mode: "create" | "edit";
@@ -39,7 +40,7 @@ const PlayerForm = ({ mode, player, loading = false, onSubmit }: Props) => {
         onSubmit={handleSubmit}
       />
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 py-8 px-6 gap-8">
+      <FormContentWrapper className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Player Personal Section */}
         <div className="lg:grid-cols-6">
           <PlayerPersonalSection
@@ -50,7 +51,7 @@ const PlayerForm = ({ mode, player, loading = false, onSubmit }: Props) => {
         </div>
 
         {/* History */}
-        <div className="lg:grid-cols-6 space-y-6">
+        <div className="lg:grid-cols-6">
           {/* Player Nationalities History */}
           <PlayerNationalTeamSection
             form={form}
@@ -58,7 +59,7 @@ const PlayerForm = ({ mode, player, loading = false, onSubmit }: Props) => {
             nationalities={nationalities}
           />
         </div>
-      </div>
+      </FormContentWrapper>
     </FormWrapper>
   );
 };

@@ -12,13 +12,13 @@ const SectionHeader = ({ title, onAdd }: Props) => {
   const tCommonActions = useTranslations("common.actions");
 
   return (
-    <div className="flex items-center justify-between bg-primary   px-4 py-2 uppercase mb-1">
+    <div className="flex items-center justify-between bg-foreground px-4 py-2 uppercase mb-1">
       <p className="text-start text-primary-foreground text-xl font-bold">
         {title}
       </p>
       {onAdd && (
         <Button
-          variant="muted"
+          variant="default"
           size="sm"
           onClick={onAdd}
           className="flex items-center gap-1"

@@ -2,7 +2,6 @@
 
 import { Dispatch, SetStateAction } from "react";
 import InputDate from "@/components/ui/InputDate";
-import InputSelect from "@/components/ui/InputSelect";
 import { useTranslations } from "next-intl";
 import { UpsertPlayerCareerInput } from "@/types/player-career";
 import { ClubListItem } from "@/types/club";
@@ -10,6 +9,11 @@ import FormSection from "../base/FormSection";
 import { SeasonListItem } from "@/types/season";
 import { TransferType } from "@/enums/TransferType";
 import InputNumber from "@/components/ui/InputNumber";
+import ComboboxField from "../fields/ComboboxField";
+import { SelectOption } from "@/types/select";
+import { toSeasonOptions } from "@/lib/seasons/mapper";
+import { toClubOptions } from "@/lib/clubs/mapper";
+import SelectField from "../fields/SelectField";
 
 interface Props {
   form: UpsertPlayerCareerInput;
@@ -30,6 +34,9 @@ const TransferSection = ({ form, setForm, seasons, clubs }: Props) => {
     "dashboard.playerCareers.form.options.transferType",
   );
 
+  const tEntities = useTranslations("entities");
+  const tCommon = useTranslations("common");
+
   const { transfer } = form;
   const {
     season_id,
@@ -40,7 +47,7 @@ const TransferSection = ({ form, setForm, seasons, clubs }: Props) => {
     transfer_date,
   } = transfer;
 
-  const transferTypeOptions = [
+  const transferTypeOptions: SelectOption[] = [
     {
       id: TransferType.TRANSFER,
       name: tTransferType("transfer"),
@@ -71,15 +78,24 @@ const TransferSection = ({ form, setForm, seasons, clubs }: Props) => {
     },
   ];
 
+  const seasonOptions = toSeasonOptions(seasons);
+  const clubOptions = toClubOptions(clubs);
+
   return (
     <FormSection title={tForm("title")}>
       <>
         {/* Season */}
-        <InputSelect
+        <ComboboxField
           label={tLabels("season")}
           name={`season`}
+          options={seasonOptions}
           placeholder={tPlaceholders("season") || ""}
-          options={seasons}
+          searchPlaceholder={tCommon("combobox.searchEntity", {
+            entity: tEntities("season").toLowerCase(),
+          })}
+          emptyMessage={tCommon("combobox.noEntityFound", {
+            entity: tEntities("season").toLowerCase(),
+          })}
           value={season_id}
           onChange={(value) =>
             setForm({
@@ -94,11 +110,17 @@ const TransferSection = ({ form, setForm, seasons, clubs }: Props) => {
         />
 
         {/* From Club */}
-        <InputSelect
+        <ComboboxField
           label={tLabels("fromClub")}
           name={`from-club`}
+          options={clubOptions}
           placeholder={tPlaceholders("fromClub") || ""}
-          options={clubs}
+          searchPlaceholder={tCommon("combobox.searchEntity", {
+            entity: tEntities("club").toLowerCase(),
+          })}
+          emptyMessage={tCommon("combobox.noEntityFound", {
+            entity: tEntities("club").toLowerCase(),
+          })}
           value={from_club_id}
           onChange={(value) =>
             setForm({
@@ -113,11 +135,17 @@ const TransferSection = ({ form, setForm, seasons, clubs }: Props) => {
         />
 
         {/* To Club */}
-        <InputSelect
+        <ComboboxField
           label={tLabels("toClub")}
           name={`to-club`}
+          options={clubOptions}
           placeholder={tPlaceholders("toClub") || ""}
-          options={clubs}
+          searchPlaceholder={tCommon("combobox.searchEntity", {
+            entity: tEntities("club").toLowerCase(),
+          })}
+          emptyMessage={tCommon("combobox.noEntityFound", {
+            entity: tEntities("club").toLowerCase(),
+          })}
           value={to_club_id}
           onChange={(value) =>
             setForm({
@@ -132,7 +160,7 @@ const TransferSection = ({ form, setForm, seasons, clubs }: Props) => {
         />
 
         {/* Transfer Type */}
-        <InputSelect
+        <SelectField
           label={tLabels("transferType")}
           name="transfer_type"
           placeholder={tPlaceholders("transferType")}

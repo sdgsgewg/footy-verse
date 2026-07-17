@@ -1,8 +1,8 @@
+import SelectField from "@/components/forms/fields/SelectField";
 import ImageUpload from "@/components/shared/ImageUpload";
 import { Button } from "@/components/ui/button";
 import InputDate from "@/components/ui/InputDate";
 import InputNumber from "@/components/ui/InputNumber";
-import InputSelect from "@/components/ui/InputSelect";
 import InputText from "@/components/ui/InputText";
 import { CrudForm, CrudPageProps, CrudRow } from "@/types/crud";
 import { Edit2, Plus, Save, X } from "lucide-react";
@@ -105,7 +105,7 @@ export const CrudPageForm = ({
             // Select Field
             if (field.type === "select") {
               return (
-                <InputSelect
+                <SelectField
                   key={field.name}
                   label={field.label}
                   name={field.name}

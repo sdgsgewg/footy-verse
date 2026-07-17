@@ -38,6 +38,7 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { useTranslations } from "next-intl";
+import Label from "./Label";
 
 export interface PositionOption {
   id: string;
@@ -55,6 +56,7 @@ interface PlayerPositionSelectorProps<TPosition extends PositionOption> {
   options: TPosition[];
   value: PlayerPositionValue[];
   disabled?: boolean;
+  required?: boolean;
   className?: string;
   onChange: (value: PlayerPositionValue[]) => void;
 }
@@ -72,6 +74,7 @@ const PlayerPositionSelector = <TPosition extends PositionOption>({
   options,
   value,
   disabled = false,
+  required = true,
   className,
   onChange,
 }: PlayerPositionSelectorProps<TPosition>) => {
@@ -180,9 +183,7 @@ const PlayerPositionSelector = <TPosition extends PositionOption>({
   return (
     <div className={cn("flex flex-col gap-2", className)}>
       <div className="flex items-center justify-between gap-3">
-        <label className="text-sm font-medium text-muted-foreground ml-1">
-          {label}
-        </label>
+        <Label label={label} required={required} />
 
         {selectedPositions.length > 0 && (
           <Button

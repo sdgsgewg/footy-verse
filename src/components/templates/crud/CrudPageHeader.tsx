@@ -1,6 +1,7 @@
 import { ArrowLeft, Database } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
+import { Button } from "@/components/ui/button";
 
 interface Props {
   title: string;
@@ -30,13 +31,13 @@ export const CrudPageHeader = ({
   return (
     <div className="flex items-center gap-4 pb-4 border-b border-border/40">
       {hasBackButton && (
-        <button
-          className="bg-primary flex items-center gap-1 text-primary-foreground px-4 py-1 rounded-lg hover:bg-primary/80 cursor-pointer"
+        <Button
+          className="flex items-center gap-1"
           onClick={handleBack}
         >
           <ArrowLeft className="w-4 h-4" />
           <span>{tCommon("back")}</span>
-        </button>
+        </Button>
       )}
 
       {/* Icon and Title */}

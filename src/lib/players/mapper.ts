@@ -4,6 +4,10 @@ import {
   PlayerDetailResponse,
   PlayerListItem,
 } from "@/types/player";
+import { SelectOption } from "@/types/select";
+import { STORAGE_BUCKETS } from "../storage";
+import { getImageUrl } from "../images/image-url";
+import { getDefaultImage } from "../images/default-image";
 
 function getCurrentCareer(player: DbPlayerListRow) {
   const current = player.player_careers.find(
@@ -53,4 +57,14 @@ export function mapPlayerDetailResponse(
     careers: player.player_careers,
     national_teams: player.player_national_teams,
   };
+}
+
+export function toPlayerOptions(players: PlayerListItem[]): SelectOption[] {
+  return players.map((player) => ({
+    id: player.id,
+    name: player.name,
+    imageUrl:
+      getImageUrl(STORAGE_BUCKETS.PLAYERS, player.image) ??
+      getDefaultImage("player"),
+  }));
 }
