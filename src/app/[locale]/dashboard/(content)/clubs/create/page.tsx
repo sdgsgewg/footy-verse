@@ -4,11 +4,11 @@ import ClubForm from "@/components/forms/clubs/ClubForm";
 import FormSectionLayout from "@/components/layout/FormSectionLayout";
 import ManagePageWrapper from "@/components/manage/ManagePageWrapper";
 import { CrudPageHeader } from "@/components/templates/crud";
-import { useClubSubmit } from "@/hooks/manage/clubs";
+import { useClubSubmit } from "@/hooks/dashboard/clubs";
 import { useTranslations } from "next-intl";
 
 export default function CreateClubPage() {
-  const t = useTranslations("manage.clubs.create");
+  const t = useTranslations("dashboard.clubs.create");
 
   const { submit, isSubmitting } = useClubSubmit();
 

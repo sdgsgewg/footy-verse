@@ -1,0 +1,22 @@
+{
+  "title": "Kelola Posisi",
+  "subtitle": "Tambah, edit, atau hapus posisi.",
+
+  "form": {
+    "labels": {
+      "name": "Nama Posisi"
+    },
+
+    "placeholders": {
+      "name": "Input nama"
+    }
+  },
+
+  "columns": {
+    "name": "Nama"
+  },
+
+  "actions": {
+    "addNew": "Tambah Posisi Baru"
+  }
+}

@@ -1,0 +1,114 @@
+{
+  "title": "Kelola Karir Pemain",
+  "subtitle": "Tambah, edit, atau hapus karir pemain.",
+
+  "notFound": "Karier Pemain Tidak Ditemukan",
+
+  "create": {
+    "title": "Buat Karir Pemain",
+    "subtitle": "Buat karir pemain baru"
+  },
+
+  "edit": {
+    "title": "Edit Karir Pemain",
+    "subtitle": "Edit karir pemain"
+  },
+
+  "form": {
+    "career": {
+      "title": "Riwayat Karir",
+      "noData": "Karir tidak ditemukan",
+      "instruction": "Mohon tambahkan karir."
+    },
+
+    "contracts": {
+      "title": "Riwayat Kontrak",
+      "noData": "Kontrak tidak ditemukan",
+      "instruction": "Mohon tambahkan minimal satu kontrak"
+    },
+
+    "shirtNumbers": {
+      "title": "Riwayat Nomor Baju",
+      "noData": "Nomor baju tidak ditemukan",
+      "instruction": "Mohon tambahkan minimal satu nomor baju"
+    },
+
+    "transfer": {
+      "title": "Riwayat Transfer",
+      "noData": "Transfer tidak ditemukan",
+      "instruction": "Mohon tambahkan transfer."
+    },
+
+    "labels": {
+      "career": {
+        "club": "Klub",
+        "joinedAt": "Tanggal Bergabung",
+        "leftAt": "Tanggal Keluar"
+      },
+      "contracts": {
+        "contractStart": "Tanggal Mulai",
+        "contractEnd": "Tanggal Akhir",
+        "salary": "Gaji (per tahun)"
+      },
+      "shirtNumbers": {
+        "shirtNumber": "Nomor Baju",
+        "startDate": "Tanggal Mulai",
+        "endDate": "Tanggal Akhir"
+      },
+      "transfer": {
+        "season": "Musim",
+        "fromClub": "Klub Asal",
+        "toClub": "Klub Tujuan",
+        "transferType": "Tipe Transfer",
+        "transferFee": "Biaya Transfer",
+        "transferDate": "Tanggal Transfer"
+      }
+    },
+
+    "placeholders": {
+      "club": "Pilih Klub",
+      "joinedAt": "Pilih Tanggal Bergabung",
+      "leftAt": "Pilih Tanggal Keluar",
+      "contracts": {
+        "contractStart": "Pilih Tanggal Mulai",
+        "contractEnd": "Pilih Tanggal Akhir",
+        "salary": "Masukkan gaji (dalam juta euro)"
+      },
+      "shirtNumbers": {
+        "shirtNumber": "Masukkan Nomor Baju",
+        "startDate": "Plih Tanggal Mulai",
+        "endDate": "Pilih Tanggal Akhir"
+      },
+      "transfer": {
+        "season": "Pilih Musim",
+        "fromClub": "Pilih Klub Asal",
+        "toClub": "Pilih Klub Tujuan",
+        "transferType": "Pilih Tipe Transfer",
+        "transferFee": "Masukkan Biaya Transfer",
+        "transferDate": "Pilih Tanggal Transfer"
+      },
+
+      "options": {
+        "transferType": {
+          "transfer": "Transfer",
+          "loan": "Pinjaman",
+          "loanReturn": "Kembali dari Pinjaman",
+          "free": "Gratis",
+          "released": "Dilepas",
+          "youthPromotion": "Promosi dari Tim Muda",
+          "retired": "Pensiun"
+        }
+      }
+    }
+  },
+
+  "columns": {
+    "club": "Klub",
+    "joinedAt": "Tanggal Bergabung",
+    "leftAt": "Tanggal Keluar"
+  },
+
+  "actions": {
+    "addNew": "Tambah Pemain Baru"
+  }
+}

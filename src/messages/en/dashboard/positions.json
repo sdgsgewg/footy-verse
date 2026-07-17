@@ -1,0 +1,21 @@
+{
+  "title": "Manage Positions",
+  "subtitle": "Add, edit, or delete positions",
+
+  "form": {
+    "labels": {
+      "name": "Position Name"
+    },
+    "placeholders": {
+      "name": "Input name"
+    }
+  },
+
+  "columns": {
+    "name": "Name"
+  },
+
+  "actions": {
+    "addNew": "Add New Position"
+  }
+}

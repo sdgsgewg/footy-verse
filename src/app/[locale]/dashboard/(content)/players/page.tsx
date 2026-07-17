@@ -4,14 +4,14 @@ import ConnectionErrorAlert from "@/components/feedback/ConnectionErrorAlert";
 import ManagePageWrapper from "@/components/manage/ManagePageWrapper";
 import { CrudPageHeader, CrudPageTable } from "@/components/templates/crud";
 import CrudPageManagement from "@/components/templates/crud/CrudPageManagement";
-import { usePlayers } from "@/hooks/manage/players";
-import { usePlayerActions } from "@/hooks/manage/players/usePlayerActions";
+import { usePlayers } from "@/hooks/dashboard/players";
+import { usePlayerActions } from "@/hooks/dashboard/players/usePlayerActions";
 import { isLikelyConnectionError } from "@/lib/utils/connection-error";
 import { CrudColumn, CrudRow } from "@/types/crud";
 import { useTranslations } from "next-intl";
 
 export default function PlayersManagementPage() {
-  const t = useTranslations("manage.players");
+  const t = useTranslations("dashboard.players");
 
   const { players, loading, retrying, loadError, retryLoad } = usePlayers();
   const { handleCreate, handleView, handleEdit, handleDelete } =

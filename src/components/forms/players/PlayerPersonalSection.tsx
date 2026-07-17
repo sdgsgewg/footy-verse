@@ -17,7 +17,7 @@ interface Props {
 }
 
 const PlayerPersonalSection = ({ form, setForm, positions }: Props) => {
-  const t = useTranslations("manage.players");
+  const t = useTranslations("dashboard.players");
 
   const preferredFootOptions = [
     {

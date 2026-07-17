@@ -207,7 +207,7 @@ export async function updatePlayerCareerRepo(
 ): Promise<PlayerCareerDetailResponse> {
   const supabase = await getSupabase();
 
-  const oldPlayerCareer = await requireEntity(
+  await requireEntity(
     getPlayerCareerByIdRepo,
     careerId,
     getPlayerCareerLabel(),

@@ -5,12 +5,12 @@ import { CrudPage } from "@/components/templates/crud/CrudPage";
 import {
   useNationalities,
   useNationalityData,
-} from "@/hooks/manage/nationalities";
+} from "@/hooks/dashboard/nationalities";
 import { isLikelyConnectionError } from "@/lib/utils/connection-error";
 import { useTranslations } from "next-intl";
 
 export default function NationalitiesManagementPage() {
-  const t = useTranslations("manage.nationalities");
+  const t = useTranslations("dashboard.nationalities");
 
   const { nationalities, loading, retrying, loadError, retryLoad } =
     useNationalities();

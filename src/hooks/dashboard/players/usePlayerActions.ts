@@ -5,7 +5,7 @@ import { PlayerDetailResponse } from "@/types/player";
 import { useRouter } from "@/navigation";
 
 export function usePlayerActions() {
-  const tPlayers = useTranslations("manage.players");
+  const tPlayers = useTranslations("dashboard.players");
 
   const router = useRouter();
 

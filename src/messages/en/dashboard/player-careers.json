@@ -1,0 +1,116 @@
+{
+  "title": "Manage Player Careers",
+  "subtitle": "Add, edit, or delete player careers",
+
+  "notFound": "Player Career Not Found",
+
+  "create": {
+    "title": "Create Career {playerName}",
+    "subtitle": "Add new player career"
+  },
+
+  "edit": {
+    "title": "Edit Player Career",
+    "subtitle": "Edit player career"
+  },
+
+  "form": {
+    "career": {
+      "title": "Career History",
+      "noData": "No career found",
+      "instruction": "Please add career."
+    },
+
+    "contracts": {
+      "title": "Contract History",
+      "noData": "No contract found",
+      "instruction": "Please add at least one contract."
+    },
+
+    "shirtNumbers": {
+      "title": "Shirt Number History",
+      "noData": "No shirt number found",
+      "instruction": "Please add at least one shirt number"
+    },
+
+    "transfer": {
+      "title": "Transfer History",
+      "noData": "No transfer found",
+      "instruction": "Please add transfer."
+    },
+
+    "labels": {
+      "career": {
+        "club": "Club",
+        "joinedAt": "Join Date",
+        "leftAt": "Left Date"
+      },
+      "contracts": {
+        "contractStart": "Start Date",
+        "contractEnd": "End Date",
+        "salary": "Salary (per year)"
+      },
+      "shirtNumbers": {
+        "shirtNumber": "Shirt Number",
+        "startDate": "Start Date",
+        "endDate": "End Date"
+      },
+      "transfer": {
+        "season": "Season",
+        "fromClub": "From Club",
+        "toClub": "To Club",
+        "transferType": "Transfer Type",
+        "transferFee": "Transfer Fee",
+        "transferDate": "Transfer Date"
+      }
+    },
+
+    "placeholders": {
+      "career": {
+        "club": "Select Club",
+        "joinedAt": "Select Join Date",
+        "leftAt": "Select Left Date"
+      },
+      "contracts": {
+        "contractStart": "Select Start Date",
+        "contractEnd": "Select End Date",
+        "salary": "Input Salary (in million euro)"
+      },
+      "shirtNumbers": {
+        "shirtNumber": "Input Shirt Number",
+        "startDate": "Select Start Date",
+        "endDate": "Select End Date"
+      },
+      "transfer": {
+        "season": "Select Season",
+        "fromClub": "Select From Club",
+        "toClub": "Select To Club",
+        "transferType": "Select Transfer Type",
+        "transferFee": "Input Transfer Fee",
+        "transferDate": "Select Transfer Date"
+      }
+    },
+
+    "options": {
+      "transferType": {
+        "transfer": "Transfer",
+        "loan": "Loan",
+        "loanReturn": "Loan Return",
+        "free": "Free",
+        "released": "Released",
+        "youthPromotion": "Youth Promotion",
+        "retired": "Retired"
+      }
+    }
+  },
+
+  "columns": {
+    "club": "Club",
+    "joinedAt": "Join Date",
+    "leftAt": "Left Date"
+  },
+
+  "actions": {
+    "addNew": "Add New Player Career"
+  }
+}

@@ -4,11 +4,11 @@ import PlayerForm from "@/components/forms/players/PlayerForm";
 import FormSectionLayout from "@/components/layout/FormSectionLayout";
 import ManagePageWrapper from "@/components/manage/ManagePageWrapper";
 import { CrudPageHeader } from "@/components/templates/crud";
-import { usePlayerSubmit } from "@/hooks/manage/players";
+import { usePlayerSubmit } from "@/hooks/dashboard/players";
 import { useTranslations } from "next-intl";
 
 export default function CreatePlayerPage() {
-  const t = useTranslations("manage.players.create");
+  const t = useTranslations("dashboard.players.create");
 
   const { submit, isSubmitting } = usePlayerSubmit();
 

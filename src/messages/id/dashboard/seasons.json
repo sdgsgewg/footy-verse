@@ -1,0 +1,22 @@
+{
+  "title": "Kelola Musim",
+  "subtitle": "Tambah, edit, atau hapus musim.",
+
+  "form": {
+    "labels": {
+      "name": "Nama Musim"
+    },
+
+    "placeholders": {
+      "name": "Input nama"
+    }
+  },
+
+  "columns": {
+    "name": "Nama"
+  },
+
+  "actions": {
+    "addNew": "Tambah Musim Baru"
+  }
+}

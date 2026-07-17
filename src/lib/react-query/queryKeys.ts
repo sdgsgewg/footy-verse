@@ -3,7 +3,8 @@ export const queryKeys = {
   player: (id: string) => ["players", id] as const,
 
   player_careers: (playerId: string) => ["player-careers", playerId] as const,
-  player_career: (careerId: string) => ["player-careers", careerId] as const,
+  player_career: (playerId: string, careerId: string) =>
+    ["player-careers", playerId, careerId] as const,
 
   clubs: () => ["clubs"] as const,
   club: (id: string) => ["clubs", id] as const,

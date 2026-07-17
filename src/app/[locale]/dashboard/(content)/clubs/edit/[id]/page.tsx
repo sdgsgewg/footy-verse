@@ -6,13 +6,13 @@ import ClubForm from "@/components/forms/clubs/ClubForm";
 import FormSectionLayout from "@/components/layout/FormSectionLayout";
 import ManagePageWrapper from "@/components/manage/ManagePageWrapper";
 import { CrudPageHeader } from "@/components/templates/crud";
-import { useClub, useClubSubmit } from "@/hooks/manage/clubs";
+import { useClub, useClubSubmit } from "@/hooks/dashboard/clubs";
 import { useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
 
 const EditClubPage = () => {
-  const t = useTranslations("manage.clubs");
-  const tEdit = useTranslations("manage.clubs.edit");
+  const t = useTranslations("dashboard.clubs");
+  const tEdit = useTranslations("dashboard.clubs.edit");
 
   const params = useParams();
 

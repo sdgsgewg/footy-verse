@@ -1,0 +1,56 @@
+{
+  "title": "Kelola Klub",
+  "subtitle": "Tambah, edit, atau hapus klub.",
+
+  "notFound": "Klub Tidak Ditemukan",
+
+  "create": {
+    "title": "Buat Klub",
+    "subtitle": "Buat klub baru"
+  },
+
+  "edit": {
+    "title": "Edit Klub",
+    "subtitle": "Edit klub"
+  },
+
+  "form": {
+    "labels": {
+      "image": "Gambar Klub",
+      "name": "Nama Klub",
+      "clubType": "Tipe Klub",
+      "nation": "Asal Negara",
+      "parentClub": "Klub Induk"
+    },
+
+    "placeholders": {
+      "image": "Pilih Gambar",
+      "name": "Input nama",
+      "clubType": "Pilih Tipe Klub",
+      "nation": "Pilih Asal Negara",
+      "parentClub": "Pilih Klub Induk"
+    },
+
+    "options": {
+      "clubType": {
+        "firstTeam": "Tim Utama",
+        "bTeam": "Tim B",
+        "reserve": "Tim Cadangan",
+        "u23": "Tim U23",
+        "u21": "Tim U21",
+        "u19": "Tim U19",
+        "u18": "Tim U18",
+        "u17": "Tim U17",
+        "academy": "Tim Akademi"
+      }
+    }
+  },
+
+  "columns": {
+    "name": "Nama"
+  },
+
+  "actions": {
+    "addNew": "Tambah Klub Baru"
+  }
+}

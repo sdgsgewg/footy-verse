@@ -3,18 +3,18 @@
 import Loading from "@/components/feedback/Loading";
 import NotFound from "@/components/feedback/NotFound";
 import PlayerDetailContent from "@/components/players/PlayerDetailContent";
-import { usePlayer } from "@/hooks/manage/players";
+import { usePlayer } from "@/hooks/dashboard/players";
 import { useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
 
 const ViewPlayerPage = () => {
-  const t = useTranslations("manage.players");
+  const t = useTranslations("dashboard.players");
 
-  const { id } = useParams() as {
-    id: string;
+  const { playerId } = useParams() as {
+    playerId: string;
   };
 
-  const { player, loading } = usePlayer({ id });
+  const { player, loading } = usePlayer({ id: playerId });
 
   if (loading) {
     return <Loading />;

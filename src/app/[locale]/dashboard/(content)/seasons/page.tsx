@@ -2,13 +2,13 @@
 
 import ConnectionErrorAlert from "@/components/feedback/ConnectionErrorAlert";
 import { CrudPage } from "@/components/templates/crud/CrudPage";
-import { useSeasonData } from "@/hooks/manage/seasons/useSeasonData";
-import { useSeasons } from "@/hooks/manage/seasons/useSeasons";
+import { useSeasonData } from "@/hooks/dashboard/seasons/useSeasonData";
+import { useSeasons } from "@/hooks/dashboard/seasons/useSeasons";
 import { isLikelyConnectionError } from "@/lib/utils/connection-error";
 import { useTranslations } from "next-intl";
 
 export default function SeasonsManagementPage() {
-  const t = useTranslations("manage.seasons");
+  const t = useTranslations("dashboard.seasons");
 
   const { seasons, loading, retrying, loadError, retryLoad } = useSeasons();
   const {

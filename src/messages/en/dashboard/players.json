@@ -1,0 +1,82 @@
+{
+  "title": "Manage Players",
+  "subtitle": "Add, edit, or delete players.",
+
+  "notFound": "Player Not Found",
+
+  "create": {
+    "title": "Create Player",
+    "subtitle": "Add new player"
+  },
+
+  "edit": {
+    "title": "Edit Player",
+    "subtitle": "Edit player"
+  },
+
+  "form": {
+    "positions": {
+      "instruction": "Add at least one position, then drag to set priority."
+    },
+
+    "nationalTeams": {
+      "title": "National Team History",
+      "noData": "No national team history added."
+    },
+
+    "labels": {
+      "image": "Player Image",
+      "name": "Player Name",
+      "positions": "Positions",
+      "dob": "Date of Birth",
+      "pob": "Place of Birth",
+      "height": "Height (cm)",
+      "weight": "Weight (kg)",
+      "preferredFoot": "Preferred Foot",
+      "marketValue": "Market Value (Million Euro)",
+
+      "nationalTeams": {
+        "nation": "Nation",
+        "label": "Label",
+        "startDate": "Start Date",
+        "endDate": "End Date",
+        "shirtNumber": "Shirt Number"
+      }
+    },
+
+    "placeholders": {
+      "image": "Choose Image",
+      "name": "Input Player Name",
+      "positions": "Select Positions",
+      "dob": "Select Date of Birth",
+      "pob": "Input Place of Birth",
+      "height": "Input Height",
+      "weight": "Input Weight",
+      "preferredFoot": "Select Preferred Foot",
+      "marketValue": "Input Market Value",
+
+      "nationalTeams": {
+        "nation": "Select Nation",
+        "label": "Input Label",
+        "startDate": "Select Start Date",
+        "endDate": "Select End Date",
+        "shirtNumber": "Input Shirt Number"
+      }
+    },
+
+    "options": {
+      "preferredFoot": {
+        "right": "Right",
+        "left": "Left"
+      }
+    }
+  },
+
+  "columns": {
+    "name": "Name"
+  },
+
+  "actions": {
+    "addNew": "Add New Player"
+  }
+}

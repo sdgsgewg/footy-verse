@@ -2,13 +2,13 @@
 
 import ConnectionErrorAlert from "@/components/feedback/ConnectionErrorAlert";
 import { CrudPage } from "@/components/templates/crud/CrudPage";
-import { usePositionData } from "@/hooks/manage/positions/usePositionData";
-import { usePositions } from "@/hooks/manage/positions/usePositions";
+import { usePositionData } from "@/hooks/dashboard/positions/usePositionData";
+import { usePositions } from "@/hooks/dashboard/positions/usePositions";
 import { isLikelyConnectionError } from "@/lib/utils/connection-error";
 import { useTranslations } from "next-intl";
 
 export default function PositionsManagementPage() {
-  const t = useTranslations("manage.positions");
+  const t = useTranslations("dashboard.positions");
 
   const { positions, loading, retrying, loadError, retryLoad } = usePositions();
   const {

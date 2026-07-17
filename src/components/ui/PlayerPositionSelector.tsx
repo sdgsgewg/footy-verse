@@ -77,7 +77,7 @@ const PlayerPositionSelector = <TPosition extends PositionOption>({
 }: PlayerPositionSelectorProps<TPosition>) => {
   const [open, setOpen] = React.useState(false);
 
-  const tForm = useTranslations("manage.players.form.positions");
+  const tForm = useTranslations("dashboard.players.form.positions");
   const tCommonActions = useTranslations("common.actions");
 
   const sensors = useSensors(

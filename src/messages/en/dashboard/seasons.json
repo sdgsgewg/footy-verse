@@ -1,0 +1,22 @@
+{
+  "title": "Manage Seasons",
+  "subtitle": "Add, edit, or delete sesaons",
+
+  "form": {
+    "labels": {
+      "name": "Season Name"
+    },
+
+    "placeholders": {
+      "name": "Input name"
+    }
+  },
+
+  "columns": {
+    "name": "Name"
+  },
+
+  "actions": {
+    "addNew": "Add New Season"
+  }
+}

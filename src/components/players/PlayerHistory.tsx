@@ -12,8 +12,8 @@ interface Props {
 }
 
 const PlayerHistory = ({ player }: Props) => {
-  const { id } = useParams() as {
-    id: string;
+  const { playerId } = useParams() as {
+    playerId: string;
   };
 
   const router = useRouter();
@@ -21,7 +21,7 @@ const PlayerHistory = ({ player }: Props) => {
   const isDashboard = isDashboardPath(pathname);
 
   const handleAddCareer = () => {
-    router.push(`${ROUTES.DASHBOARD.CONTENT.PLAYERS}/${id}/careers/create`);
+    router.push(`${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${playerId}/careers/create`);
   };
 
   return (

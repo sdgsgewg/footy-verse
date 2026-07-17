@@ -4,14 +4,14 @@ import ConnectionErrorAlert from "@/components/feedback/ConnectionErrorAlert";
 import ManagePageWrapper from "@/components/manage/ManagePageWrapper";
 import { CrudPageHeader, CrudPageTable } from "@/components/templates/crud";
 import CrudPageManagement from "@/components/templates/crud/CrudPageManagement";
-import { useClubs } from "@/hooks/manage/clubs";
-import { useClubActions } from "@/hooks/manage/clubs/useClubActions";
+import { useClubs } from "@/hooks/dashboard/clubs";
+import { useClubActions } from "@/hooks/dashboard/clubs/useClubActions";
 import { isLikelyConnectionError } from "@/lib/utils/connection-error";
 import { CrudColumn, CrudRow } from "@/types/crud";
 import { useTranslations } from "next-intl";
 
 export default function ClubsManagementPage() {
-  const t = useTranslations("manage.clubs");
+  const t = useTranslations("dashboard.clubs");
 
   const { clubs, loading, retrying, loadError, retryLoad } = useClubs();
   const { handleCreate, handleView, handleEdit, handleDelete } =

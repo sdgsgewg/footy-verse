@@ -12,15 +12,21 @@ export function usePlayerCareers({
   playerId,
   enabled = true,
 }: UsePlayerCareersOptions) {
-  const { data, isLoading, isRefetching, error, refetch } = useQuery({
-    queryKey: queryKeys.player(playerId ?? ""),
+  const {
+    data = [],
+    isLoading,
+    isRefetching,
+    error,
+    refetch,
+  } = useQuery({
+    queryKey: queryKeys.player_careers(playerId ?? ""),
     queryFn: () => fetchPlayerCareers(playerId!),
     enabled: enabled && !!playerId,
     ...queryConfig,
   });
 
   return {
-    playerCareers: data ?? null,
+    playerCareers: data,
     loading: isLoading,
     retrying: isRefetching,
     loadError: error ?? null,

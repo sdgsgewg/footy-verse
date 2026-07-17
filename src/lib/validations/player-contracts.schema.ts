@@ -1,11 +1,10 @@
-import { nullableDate } from "@/lib/validations/helpers";
 import { z } from "zod";
 
 export const playerContractIdSchema = z.string().uuid();
 
 export const playerContractMutationSchema = z.object({
   contract_start: z.string(),
-  contract_end: nullableDate.optional(),
+  contract_end: z.string(),
   salary: z.number().min(0),
 });
 

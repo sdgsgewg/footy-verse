@@ -1,6 +1,6 @@
 "use client";
 
-import { useClubForm, useClubs } from "@/hooks/manage/clubs";
+import { useClubForm, useClubs } from "@/hooks/dashboard/clubs";
 import { useTranslations } from "next-intl";
 import FormHeader from "../base/FormHeader";
 import FormWrapper from "../base/FormWrapper";
@@ -9,7 +9,7 @@ import { ClubDetailResponse } from "@/types/club";
 import InputText from "@/components/ui/InputText";
 import InputSelect from "@/components/ui/InputSelect";
 import { ClubType } from "@/enums/ClubType";
-import { useNationalities } from "@/hooks/manage/nationalities";
+import { useNationalities } from "@/hooks/dashboard/nationalities";
 
 interface Props {
   mode: "create" | "edit";
@@ -21,7 +21,7 @@ interface Props {
 }
 
 const ClubForm = ({ mode, club, loading = false, onSubmit }: Props) => {
-  const t = useTranslations("manage.clubs");
+  const t = useTranslations("dashboard.clubs");
 
   const { form, setForm, canSubmit, buildPayload } = useClubForm(club);
 

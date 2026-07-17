@@ -2,33 +2,36 @@
 
 import Loading from "@/components/feedback/Loading";
 import NotFound from "@/components/feedback/NotFound";
-import PlayerForm from "@/components/forms/players/PlayerForm";
+import PlayerCareerForm from "@/components/forms/player-careers/PlayerCareerForm";
 import FormSectionLayout from "@/components/layout/FormSectionLayout";
 import ManagePageWrapper from "@/components/manage/ManagePageWrapper";
 import { CrudPageHeader } from "@/components/templates/crud";
-import { usePlayer, usePlayerSubmit } from "@/hooks/dashboard/players";
+import { usePlayerCareer } from "@/hooks/dashboard/player-careers/usePlayerCareer";
+import { usePlayerCareerSubmit } from "@/hooks/dashboard/player-careers/usePlayerCareerSubmit";
 import { useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
 
-const EditPlayerPage = () => {
-  const t = useTranslations("dashboard.players");
-  const tEdit = useTranslations("dashboard.players.edit");
+const EditPlayerCareerPage = () => {
+  const t = useTranslations("dashboard.playerCareers");
+  const tEdit = useTranslations("dashboard.playerCareers.edit");
 
-  const { playerId } = useParams() as {
+  const { playerId, careerId } = useParams() as {
     playerId: string;
+    careerId: string;
   };
 
-  const { player, loading } = usePlayer({
-    id: playerId,
+  const { playerCareer, loading } = usePlayerCareer({
+    playerId,
+    careerId,
   });
 
-  const { submit, isSubmitting } = usePlayerSubmit();
+  const { submit, isSubmitting } = usePlayerCareerSubmit(playerId);
 
   if (loading) {
     return <Loading />;
   }
 
-  if (!player) {
+  if (!playerCareer) {
     return <NotFound text={t("notFound")} />;
   }
 
@@ -37,13 +40,13 @@ const EditPlayerPage = () => {
       <CrudPageHeader title={tEdit("title")} showBackButton />
 
       <FormSectionLayout formSize="large">
-        <PlayerForm
+        <PlayerCareerForm
           mode="edit"
-          player={player}
+          playerCareer={playerCareer}
           loading={isSubmitting}
           onSubmit={(payload) =>
             submit({
-              id: playerId,
+              careerId,
               payload,
             })
           }
@@ -53,4 +56,4 @@ const EditPlayerPage = () => {
   );
 };
 
-export default EditPlayerPage;
+export default EditPlayerCareerPage;

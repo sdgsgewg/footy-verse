@@ -5,7 +5,7 @@ import { ClubDetailResponse } from "@/types/club";
 import { useRouter } from "@/navigation";
 
 export function useClubActions() {
-  const tClubs = useTranslations("manage.clubs");
+  const tClubs = useTranslations("dashboard.clubs");
 
   const router = useRouter();
 

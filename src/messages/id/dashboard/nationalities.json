@@ -1,0 +1,24 @@
+{
+  "title": "Kelola Kebangsaan",
+  "subtitle": "Tambah, edit, atau hapus kebangsaan.",
+
+  "form": {
+    "labels": {
+      "image": "Gambar Kebangsaan",
+      "name": "Nama Kebangsaan"
+    },
+
+    "placeholders": {
+      "image": "Input gambar kebangsaan",
+      "name": "Input nama kebangsaan"
+    }
+  },
+
+  "columns": {
+    "name": "Nama"
+  },
+
+  "actions": {
+    "addNew": "Tambah Kebangsaan Baru"
+  }
+}

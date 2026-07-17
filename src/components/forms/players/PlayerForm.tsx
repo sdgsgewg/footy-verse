@@ -1,13 +1,13 @@
 "use client";
 
-import { usePlayerForm } from "@/hooks/manage/players";
+import { usePlayerForm } from "@/hooks/dashboard/players";
 import PlayerPersonalSection from "./PlayerPersonalSection";
 import PlayerNationalTeamSection from "./PlayerNationalTeamSection";
 import FormHeader from "../base/FormHeader";
 import FormWrapper from "../base/FormWrapper";
 import { PlayerDetailResponse } from "@/types/player";
-import { usePositions } from "@/hooks/manage/positions";
-import { useNationalities } from "@/hooks/manage/nationalities";
+import { usePositions } from "@/hooks/dashboard/positions";
+import { useNationalities } from "@/hooks/dashboard/nationalities";
 
 interface Props {
   mode: "create" | "edit";

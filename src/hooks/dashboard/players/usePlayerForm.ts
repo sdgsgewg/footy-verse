@@ -72,6 +72,19 @@ export function usePlayerForm(player?: PlayerDetailResponse) {
 
   const isEditing = player != null;
 
+  const arePositionsValid =
+    form.positions.length > 0 &&
+    form.positions.every((position) => position.position_id.trim().length > 0);
+
+  const areNationalTeamsValid = form.national_teams && form.national_teams.every((item) => {
+    return (
+      item.nation_id.trim().length > 0 &&
+      item.start_date.trim().length > 0 &&
+      item.label.trim().length > 0 &&
+      item.shirt_number > 0
+    );
+  });
+
   const canSubmit = useMemo(() => {
     const isFilled =
       form.name.trim().length > 0 &&
@@ -80,7 +93,9 @@ export function usePlayerForm(player?: PlayerDetailResponse) {
       form.positions.length > 0 &&
       form.height > 0 &&
       form.weight > 0 &&
-      form.market_value > 0;
+      form.market_value > 0 &&
+      arePositionsValid &&
+      areNationalTeamsValid;
 
     if (!isFilled) {
       return false;
@@ -105,7 +120,7 @@ export function usePlayerForm(player?: PlayerDetailResponse) {
       form.image !== initialForm.image ||
       form.imageFile != null
     );
-  }, [form, initialForm, isEditing]);
+  }, [form, arePositionsValid, areNationalTeamsValid, initialForm, isEditing]);
 
   const buildPayload = () => {
     const payload = new FormData();

@@ -1,0 +1,24 @@
+{
+  "title": "Manage Nationalities",
+  "subtitle": "Add, edit, or delete nationalities",
+
+  "form": {
+    "labels": {
+      "image": "Nationality Image",
+      "name": "Nationality Name"
+    },
+
+    "placeholders": {
+      "image": "Input image",
+      "name": "Input name"
+    }
+  },
+
+  "columns": {
+    "name": "Name"
+  },
+
+  "actions": {
+    "addNew": "Add New Nationality"
+  }
+}
