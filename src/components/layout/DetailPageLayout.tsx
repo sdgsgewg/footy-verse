@@ -1,3 +1,5 @@
+import { isDashboardPath } from "@/lib/utils/navigation";
+import { usePathname } from "@/navigation";
 import { ArrowLeft } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
@@ -13,31 +15,36 @@ interface Props {
 
 const DetailPageLayout = ({ title, image, summary, children }: Props) => {
   const router = useRouter();
+  const pathname = usePathname();
   const tCommon = useTranslations("common.actions");
 
   const handleNavigateBack = () => {
     router.back();
   };
 
+  const isDashboard = isDashboardPath(pathname);
+
   return (
     <div className="space-y-8">
       {/* Header */}
-      <div className="flex items-center gap-4 pb-4 border-b border-border/40">
-        <button
-          className="bg-primary flex items-center gap-1 text-primary-foreground px-4 py-1 rounded-lg hover:bg-primary/80 cursor-pointer"
-          onClick={handleNavigateBack}
-        >
-          <ArrowLeft className="w-4 h-4" />
-          <span>{tCommon("back")}</span>
-        </button>
+      {isDashboard && (
+        <div className="flex items-center gap-4 pb-4 border-b border-border/40">
+          <button
+            className="bg-primary flex items-center gap-1 text-primary-foreground px-4 py-1 rounded-lg hover:bg-primary/80 cursor-pointer"
+            onClick={handleNavigateBack}
+          >
+            <ArrowLeft className="w-4 h-4" />
+            <span>{tCommon("back")}</span>
+          </button>
 
-        {/* Icon and Title */}
-        <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-extrabold tracking-tight bg-clip-text text-transparent bg-linear-to-r from-foreground to-foreground/80">
-            {title}
-          </h1>
+          {/* Icon and Title */}
+          <div className="flex items-center gap-3">
+            <h1 className="text-3xl font-extrabold tracking-tight bg-clip-text text-transparent bg-linear-to-r from-foreground to-foreground/80">
+              {title}
+            </h1>
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Entity Image and summary */}
       <div className="flex gap-8">

@@ -14,7 +14,7 @@ export const ROUTES = {
     ARSENAL: "/club/arsenal/men/players/",
   },
   DASHBOARD: {
-    HOME: "/dashboard",
+    BASE: "/dashboard",
     CONTENT: {
       PLAYERS: {
         BASE: "/dashboard/players",
