@@ -13,6 +13,7 @@ import {
 import { PlayerDetailResponse } from "@/types/player";
 import { getImageUrl } from "@/lib/images/image-url";
 import { STORAGE_BUCKETS } from "@/lib/storage";
+import SectionHeader from "./SectionHeader";
 
 interface Props {
   player: PlayerDetailResponse;
@@ -30,9 +31,7 @@ const PlayerProfile = ({ player }: Props) => {
 
   return (
     <div className="">
-      <div className="bg-primary text-primary-foreground text-2xl font-bold px-5 py-3 uppercase mb-2">
-        <p className="text-start">Player Profile</p>
-      </div>
+      <SectionHeader title="Player Profile" />
 
       <RecordData label="Name" value={name} />
 

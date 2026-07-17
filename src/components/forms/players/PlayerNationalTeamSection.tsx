@@ -105,6 +105,7 @@ const PlayerNationalTeamSection = ({ form, setForm, nationalities }: Props) => {
               onChange={(value) =>
                 updateNationalTeam(index, "nation_id", value as string)
               }
+              required
             />
 
             {/* Label */}
@@ -112,8 +113,10 @@ const PlayerNationalTeamSection = ({ form, setForm, nationalities }: Props) => {
               label={tLabels("label")}
               name={`label-${index}`}
               placeholder={tPlaceholders("label") || ""}
-              value={(form.name as string) ?? ""}
-              onChange={(value) => setForm({ ...form, name: value })}
+              value={item.label}
+              onChange={(value) =>
+                updateNationalTeam(index, "label", value as string)
+              }
               required
             />
 
@@ -125,6 +128,7 @@ const PlayerNationalTeamSection = ({ form, setForm, nationalities }: Props) => {
               onChange={(value) =>
                 updateNationalTeam(index, "start_date", value)
               }
+              required
             />
 
             <InputDate
@@ -143,6 +147,7 @@ const PlayerNationalTeamSection = ({ form, setForm, nationalities }: Props) => {
               onChange={(value) =>
                 updateNationalTeam(index, "shirt_number", value ?? 1)
               }
+              required
             />
 
             <div className="flex justify-end">

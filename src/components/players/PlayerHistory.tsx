@@ -1,13 +1,24 @@
-import React from "react";
+import { PlayerDetailResponse } from "@/types/player";
+import CareerHistoryTable from "./CareerHistoryTable";
+import NationalTeamHistoryTable from "./NationalTeamHistoryTable";
+import SectionHeader from "./SectionHeader";
 
-const PlayerHistory = () => {
+interface Props {
+  player: PlayerDetailResponse;
+}
+
+const PlayerHistory = ({ player }: Props) => {
   return (
-    <div className="flex flex-col gap-8">
-      {/* Clubs History */}
-      <h1>Club History</h1>
+    <div className="space-y-10">
+      <section>
+        <SectionHeader title="Career History" />
+        <CareerHistoryTable careers={player.careers} />
+      </section>
 
-      {/* National Teams History */}
-      <h1>National Team History</h1>
+      <section>
+        <SectionHeader title="National Team History" />
+        <NationalTeamHistoryTable nationalTeams={player.national_teams} />
+      </section>
     </div>
   );
 };

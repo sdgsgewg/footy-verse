@@ -122,7 +122,7 @@ export function usePlayerForm(player?: PlayerDetailResponse) {
 
     if (form.national_teams) {
       payload.append(
-        "nationalities",
+        "national_teams",
         JSON.stringify(
           form.national_teams.map((item) => ({
             ...item,

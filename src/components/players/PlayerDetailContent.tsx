@@ -19,7 +19,7 @@ const PlayerDetailContent = ({ player }: PlayerDetailContentProps) => {
   return (
     <DetailPageLayout title={name} image={modifiedImage}>
       <PlayerProfile player={player} />
-      <PlayerHistory />
+      <PlayerHistory player={player} />
     </DetailPageLayout>
   );
 };

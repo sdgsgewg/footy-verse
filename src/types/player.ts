@@ -34,10 +34,10 @@ export type PlayerNationalTeamCreateInput = z.infer<
 export type PlayerPosition = Tables<"player_positions"> & {
   position: Tables<"positions">;
 };
-type PlayerCareer = Tables<"player_careers"> & {
+export type PlayerCareer = Tables<"player_careers"> & {
   club: Tables<"clubs">;
 };
-type PlayerNationalTeam = Tables<"player_national_teams"> & {
+export type PlayerNationalTeam = Tables<"player_national_teams"> & {
   nationality: Tables<"nationalities">;
 };
 

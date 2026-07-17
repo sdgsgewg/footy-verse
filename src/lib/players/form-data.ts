@@ -16,6 +16,6 @@ export function getPlayerInputFromFormData(formData: FormData) {
     market_value: parseNumberField(formData, "market_value"),
     positions: parseJsonField(formData, "positions", []),
     clubs: parseJsonField(formData, "clubs", []),
-    nationalities: parseJsonField(formData, "nationalities", []),
+    national_teams: parseJsonField(formData, "national_teams", []),
   };
 }

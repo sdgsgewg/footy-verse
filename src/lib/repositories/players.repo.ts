@@ -15,6 +15,7 @@ import { ENTITY_CONFIG } from "@/config/entities";
 import { ensureUniqueSlug } from "./helpers/slug";
 import { requireEntity } from "./helpers/require-entity";
 import { deleteEntityImage, prepareUpdatedImage } from "./helpers/image";
+import { slugify } from "@/utils/string";
 
 async function getSupabase() {
   return createClient();
@@ -156,6 +157,7 @@ async function insertPlayerNationalTeams(
   const playerNationalTeamInserts = playerNationalTeams.map((pnt) => ({
     player_id: playerId,
     nation_id: pnt.nation_id,
+    label: pnt.label,
     start_date: pnt.start_date,
     end_date: pnt.end_date || null,
     shirt_number: pnt.shirt_number,
@@ -214,16 +216,15 @@ export async function updatePlayerRepo(
 ): Promise<PlayerDetailResponse> {
   const supabase = await getSupabase();
 
+  console.log("Player Update Input: ", JSON.stringify(player, null, 2));
+
   const oldPlayer = await requireEntity(
     getPlayerByIdRepo,
     id,
     getPlayerLabel(),
   );
 
-  const slug = await ensureUniqueSlug({
-    table: getPlayerTable(),
-    name: player.name,
-  });
+  const slug = slugify(player.name);
 
   const finalImage = await prepareUpdatedImage({
     oldName: oldPlayer.name,
@@ -261,6 +262,8 @@ export async function updatePlayerRepo(
   }
 
   // Nationality History: Delete existing nationalities and insert new ones
+
+  console.log("National Teams: ", JSON.stringify(national_teams, null, 2));
 
   const { error: deleteNatError } = await supabase
     .from(getPlayerNationalTeamTable())
