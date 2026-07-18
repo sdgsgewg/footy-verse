@@ -1,3 +1,5 @@
+import { GetClubsParams } from "@/types/club";
+
 export const queryKeys = {
   players: () => ["players"] as const,
   player: (id: string) => ["players", id] as const,
@@ -6,7 +8,7 @@ export const queryKeys = {
   player_career: (playerId: string, careerId: string) =>
     ["player-careers", playerId, careerId] as const,
 
-  clubs: () => ["clubs"] as const,
+  clubs: (params?: GetClubsParams) => ["clubs", params] as const,
   club: (id: string) => ["clubs", id] as const,
 
   nationalities: () => ["nationalities"] as const,

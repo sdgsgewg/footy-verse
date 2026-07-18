@@ -58,13 +58,3 @@ export function mapPlayerDetailResponse(
     national_teams: player.player_national_teams,
   };
 }
-
-export function toPlayerOptions(players: PlayerListItem[]): SelectOption[] {
-  return players.map((player) => ({
-    id: player.id,
-    name: player.name,
-    imageUrl:
-      getImageUrl(STORAGE_BUCKETS.PLAYERS, player.image) ??
-      getDefaultImage("player"),
-  }));
-}

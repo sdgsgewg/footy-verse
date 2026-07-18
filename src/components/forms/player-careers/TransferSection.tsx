@@ -10,10 +10,11 @@ import { SeasonListItem } from "@/types/season";
 import { TransferType } from "@/enums/TransferType";
 import ComboboxField from "../fields/ComboboxField";
 import { SelectOption } from "@/types/select";
-import { toSeasonOptions } from "@/lib/seasons/mapper";
-import { toClubOptions } from "@/lib/clubs/mapper";
 import SelectField from "../fields/SelectField";
 import NumberField from "../fields/NumberField";
+import { getTransferTypeOptions } from "@/lib/transfers/options";
+import { getSeasonOptions } from "@/lib/seasons/options";
+import { getClubOptions } from "@/lib/clubs/options";
 
 interface Props {
   form: UpsertPlayerCareerInput;
@@ -47,39 +48,11 @@ const TransferSection = ({ form, setForm, seasons, clubs }: Props) => {
     transfer_date,
   } = transfer;
 
-  const transferTypeOptions: SelectOption[] = [
-    {
-      id: TransferType.TRANSFER,
-      name: tTransferType("transfer"),
-    },
-    {
-      id: TransferType.LOAN,
-      name: tTransferType("loan"),
-    },
-    {
-      id: TransferType.LOAN_RETURN,
-      name: tTransferType("loanReturn"),
-    },
-    {
-      id: TransferType.FREE,
-      name: tTransferType("free"),
-    },
-    {
-      id: TransferType.RELEASED,
-      name: tTransferType("released"),
-    },
-    {
-      id: TransferType.YOUTH_PROMOTION,
-      name: tTransferType("youthPromotion"),
-    },
-    {
-      id: TransferType.RETIRED,
-      name: tTransferType("retired"),
-    },
-  ];
+  const transferTypeOptions: SelectOption[] =
+    getTransferTypeOptions(tTransferType);
 
-  const seasonOptions = toSeasonOptions(seasons);
-  const clubOptions = toClubOptions(clubs);
+  const seasonOptions = getSeasonOptions(seasons);
+  const clubOptions = getClubOptions(clubs);
 
   return (
     <FormSection title={tForm("title")}>

@@ -9,12 +9,11 @@ import { ClubDetailResponse } from "@/types/club";
 import InputText from "@/components/ui/InputText";
 import { ClubType } from "@/enums/ClubType";
 import { useNationalities } from "@/hooks/dashboard/nationalities";
-import { SelectOption } from "@/types/select";
 import SelectField from "../fields/SelectField";
-import { toNationalityOptions } from "@/lib/nationalities/mapper";
 import ComboboxField from "../fields/ComboboxField";
-import { toClubOptions } from "@/lib/clubs/mapper";
 import FormContentWrapper from "../base/FormContentWrapper";
+import { getClubTypeOptions, getClubOptions } from "@/lib/clubs/options";
+import { getNationalityOptions } from "@/lib/nationalities/options";
 
 interface Props {
   mode: "create" | "edit";
@@ -27,6 +26,7 @@ interface Props {
 
 const ClubForm = ({ mode, club, loading = false, onSubmit }: Props) => {
   const t = useTranslations("dashboard.clubs");
+  const tClubType = useTranslations("dashboard.clubs.form.options.clubType");
   const tEntities = useTranslations("entities");
   const tCommon = useTranslations("common");
 
@@ -37,47 +37,9 @@ const ClubForm = ({ mode, club, loading = false, onSubmit }: Props) => {
 
   const isCreate = mode === "create";
 
-  const clubTypeOptions: SelectOption[] = [
-    {
-      id: ClubType.FIRST_TEAM,
-      name: t("form.options.clubType.firstTeam"),
-    },
-    {
-      id: ClubType.B_TEAM,
-      name: t("form.options.clubType.bTeam"),
-    },
-    {
-      id: ClubType.RESERVE,
-      name: t("form.options.clubType.reserve"),
-    },
-    {
-      id: ClubType.U23,
-      name: t("form.options.clubType.u23"),
-    },
-    {
-      id: ClubType.U21,
-      name: t("form.options.clubType.u21"),
-    },
-    {
-      id: ClubType.U19,
-      name: t("form.options.clubType.u19"),
-    },
-    {
-      id: ClubType.U18,
-      name: t("form.options.clubType.u18"),
-    },
-    {
-      id: ClubType.U17,
-      name: t("form.options.clubType.u17"),
-    },
-    {
-      id: ClubType.ACADEMY,
-      name: t("form.options.clubType.academy"),
-    },
-  ];
-
-  const nationalityOptions = toNationalityOptions(nationalities);
-  const clubOptions = toClubOptions(clubs);
+  const clubTypeOptions = getClubTypeOptions(tClubType);
+  const nationalityOptions = getNationalityOptions(nationalities);
+  const clubOptions = getClubOptions(clubs);
 
   const handleSubmit = () => {
     onSubmit(buildPayload());

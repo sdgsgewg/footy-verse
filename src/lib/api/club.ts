@@ -3,13 +3,17 @@ import {
   createClubSchema,
   updateClubSchema,
 } from "../validations/clubs.schema";
-import { ClubDetailResponse, ClubListItem } from "@/types/club";
+import { ClubDetailResponse, ClubListItem, GetClubsParams } from "@/types/club";
 
-export const fetchClubs = async (): Promise<ClubListItem[]> => {
+export const fetchClubs = async (
+  params?: GetClubsParams,
+): Promise<ClubListItem[]> => {
   const { data } = await apiClient.get<{
     success: boolean;
     data: ClubListItem[];
-  }>("/clubs");
+  }>("/clubs", {
+    params,
+  });
 
   return data.data;
 };

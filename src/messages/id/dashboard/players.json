@@ -63,14 +63,10 @@
     },
 
     "options": {
-      "transferType": {
-        "transfer": "Transfer",
-        "loan": "Loan",
-        "loanReturn": "Loan Return",
-        "free": "Free",
-        "released": "Released",
-        "youthPromotion": "Youth Promotion",
-        "retired": "Retired"
+      "preferredFoot": {
+        "right": "Kanan",
+        "left": "Kiri",
+        "both": "Keduanya"
       }
     }
   },

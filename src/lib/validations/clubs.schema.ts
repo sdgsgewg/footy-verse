@@ -35,4 +35,8 @@ export const clubsSchema = z.array(clubSchema);
 
 export const clubsQuerySchema = z.object({
   name: z.string().trim().min(1).max(255).optional(),
+
+  nationId: z.string().uuid().optional(),
+
+  clubType: z.string().optional(),
 });

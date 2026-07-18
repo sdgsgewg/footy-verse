@@ -7,7 +7,7 @@ import { UpsertPlayerCareerInput } from "@/types/player-career";
 import { ClubListItem } from "@/types/club";
 import FormSection from "../base/FormSection";
 import ComboboxField from "../fields/ComboboxField";
-import { toClubOptions } from "@/lib/clubs/mapper";
+import { getClubOptions } from "@/lib/clubs/options";
 
 interface Props {
   form: UpsertPlayerCareerInput;
@@ -25,7 +25,7 @@ const PlayerCareerSection = ({ form, setForm, clubs }: Props) => {
   const tEntities = useTranslations("entities");
   const tCommon = useTranslations("common");
 
-  const clubOptions = toClubOptions(clubs);
+  const clubOptions = getClubOptions(clubs);
 
   return (
     <FormSection title={tForm("title")}>

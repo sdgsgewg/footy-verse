@@ -9,7 +9,7 @@ import InputText from "@/components/ui/InputText";
 import { useTranslations } from "next-intl";
 import DynamicFormSection from "../base/DynamicFormSection";
 import ComboboxField from "../fields/ComboboxField";
-import { toNationalityOptions } from "@/lib/nationalities/mapper";
+import { getNationalityOptions } from "@/lib/nationalities/options";
 
 type NationalTeam = NonNullable<UpsertPlayerInput["national_teams"]>[number];
 
@@ -31,7 +31,7 @@ const PlayerNationalTeamSection = ({ form, setForm, nationalities }: Props) => {
   const tEntities = useTranslations("entities");
   const tCommon = useTranslations("common");
 
-  const nationOptions = toNationalityOptions(nationalities);
+  const nationOptions = getNationalityOptions(nationalities);
 
   return (
     <DynamicFormSection<NationalTeam>

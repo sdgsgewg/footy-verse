@@ -67,7 +67,8 @@
     "options": {
       "preferredFoot": {
         "right": "Right",
-        "left": "Left"
+        "left": "Left",
+        "both": "Both"
       }
     }
   },

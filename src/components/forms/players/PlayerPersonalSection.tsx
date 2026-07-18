@@ -9,6 +9,7 @@ import { PositionListItem } from "@/types/position";
 import { useTranslations } from "next-intl";
 import React, { Dispatch, SetStateAction } from "react";
 import SelectField from "../fields/SelectField";
+import { getPreferredFootOptions } from "@/lib/players/options";
 
 interface Props {
   form: UpsertPlayerInput;
@@ -18,17 +19,11 @@ interface Props {
 
 const PlayerPersonalSection = ({ form, setForm, positions }: Props) => {
   const t = useTranslations("dashboard.players");
+  const tPrefFoot = useTranslations(
+    "dashboard.players.form.options.preferredFoot",
+  );
 
-  const preferredFootOptions = [
-    {
-      id: PreferredFoot.LEFT,
-      name: t("form.options.preferredFoot.left"),
-    },
-    {
-      id: PreferredFoot.RIGHT,
-      name: t("form.options.preferredFoot.right"),
-    },
-  ];
+  const preferredFootOptions = getPreferredFootOptions(tPrefFoot);
 
   return (
     <div className="space-y-5">

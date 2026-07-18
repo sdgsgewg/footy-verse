@@ -1,6 +1,6 @@
 export interface SelectOption {
-  id: string;
-  name: string;
+  label: string;
+  value: string;
   imageUrl?: string;
   disabled?: boolean;
 }

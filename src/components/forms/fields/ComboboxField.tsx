@@ -65,7 +65,7 @@ const ComboboxField: React.FC<ComboboxFieldProps> = ({
 }) => {
   const [open, setOpen] = React.useState(false);
 
-  const selectedOption = options.find((item) => item.id === value);
+  const selectedOption = options.find((item) => item.value === value);
 
   return (
     <div className={cn("flex flex-col gap-2", className)}>
@@ -85,7 +85,7 @@ const ComboboxField: React.FC<ComboboxFieldProps> = ({
               {selectedOption?.imageUrl && (
                 <Image
                   src={selectedOption.imageUrl}
-                  alt={selectedOption.name}
+                  alt={selectedOption.label}
                   width={20}
                   height={20}
                   className="rounded-full object-cover shrink-0"
@@ -93,7 +93,7 @@ const ComboboxField: React.FC<ComboboxFieldProps> = ({
               )}
 
               <span className="truncate">
-                {selectedOption?.name ?? placeholder}
+                {selectedOption?.label ?? placeholder}
               </span>
             </div>
 
@@ -114,17 +114,17 @@ const ComboboxField: React.FC<ComboboxFieldProps> = ({
               <CommandGroup>
                 {options.map((option) => (
                   <CommandItem
-                    key={option.id}
-                    value={option.name}
+                    key={option.value}
+                    value={option.label}
                     onSelect={() => {
-                      onChange(option.id);
+                      onChange(option.value);
                       setOpen(false);
                     }}
                   >
                     <Check
                       className={cn(
                         "mr-2 h-4 w-4",
-                        value === option.id ? "opacity-100" : "opacity-0",
+                        value === option.value ? "opacity-100" : "opacity-0",
                       )}
                     />
 
@@ -132,14 +132,14 @@ const ComboboxField: React.FC<ComboboxFieldProps> = ({
                       {option.imageUrl && (
                         <Image
                           src={option.imageUrl}
-                          alt={option.name}
+                          alt={option.label}
                           width={20}
                           height={20}
                           className="rounded-full object-cover shrink-0"
                         />
                       )}
 
-                      <span>{option.name}</span>
+                      <span>{option.label}</span>
                     </div>
                   </CommandItem>
                 ))}

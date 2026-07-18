@@ -2,27 +2,20 @@ import { useQuery } from "@tanstack/react-query";
 import { queryConfig } from "@/lib/react-query/queryConfig";
 import { queryKeys } from "@/lib/react-query/queryKeys";
 import { fetchClubs } from "@/lib/api/club";
+import { GetClubsParams } from "@/types/club";
 
-export function useClubs() {
-  const {
-    data = [],
-    isLoading,
-    isRefetching,
-    error,
-    refetch,
-  } = useQuery({
-    queryKey: queryKeys.clubs(),
-    queryFn: fetchClubs,
+export function useClubs(params?: GetClubsParams) {
+  const query = useQuery({
+    queryKey: queryKeys.clubs(params),
+    queryFn: () => fetchClubs(params),
     ...queryConfig,
   });
 
   return {
-    clubs: data,
-    loading: isLoading,
-    retrying: isRefetching,
-    loadError: error ?? null,
-    retryLoad: () => {
-      void refetch();
-    },
+    clubs: query.data ?? [],
+    loading: query.isLoading,
+    retrying: query.isRefetching,
+    loadError: query.error,
+    retryLoad: query.refetch,
   };
 }

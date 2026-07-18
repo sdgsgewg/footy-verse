@@ -30,6 +30,7 @@ export async function getClubsRepo(
 ): Promise<ClubListItem[]> {
   const supabase = await getSupabase();
 
+  // Base Query
   let query = supabase
     .from(getTable())
     .select(
@@ -47,8 +48,17 @@ export async function getClubsRepo(
     )
     .order("name");
 
+  // Filter
   if (params.name) {
     query = query.ilike("name", `%${params.name}%`);
+  }
+
+  if (params.nationId) {
+    query = query.eq("nation_id", params.nationId);
+  }
+
+  if (params.clubType) {
+    query = query.eq("club_type", params.clubType);
   }
 
   const { data, error } = await query;

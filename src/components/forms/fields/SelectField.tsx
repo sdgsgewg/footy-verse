@@ -11,11 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
-interface SelectOption {
-  id: string;
-  name: string;
-}
+import { SelectOption } from "@/types/select";
 
 interface SelectFieldProps {
   label: string;
@@ -68,8 +64,8 @@ const SelectField: React.FC<SelectFieldProps> = ({
 
         <SelectContent>
           {options.map((option) => (
-            <SelectItem key={option.id} value={option.id}>
-              {option.name}
+            <SelectItem key={option.value} value={option.value}>
+              {option.label}
             </SelectItem>
           ))}
         </SelectContent>

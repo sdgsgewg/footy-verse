@@ -47,5 +47,3 @@ export type UpsertClubInput = z.infer<typeof clubMutationSchema> & {
 } & ImagePayload;
 
 // Others
-
-export type ClubStatus = "active" | "inactive";
