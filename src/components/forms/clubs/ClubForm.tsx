@@ -143,7 +143,7 @@ const ClubForm = ({ mode, club, loading = false, onSubmit }: Props) => {
           emptyMessage={tCommon("combobox.noEntityFound", {
             entity: tEntities("nationality").toLowerCase(),
           })}
-          value={form.nation_id || ""}
+          value={form.nation_id || null}
           onChange={(value) => setForm({ ...form, nation_id: value })}
           required
         />
@@ -160,8 +160,10 @@ const ClubForm = ({ mode, club, loading = false, onSubmit }: Props) => {
           emptyMessage={tCommon("combobox.noEntityFound", {
             entity: tEntities("club").toLowerCase(),
           })}
-          value={form.parent_club_id || ""}
-          onChange={(value) => setForm({ ...form, parent_club_id: value })}
+          value={form.parent_club_id || null}
+          onChange={(value) =>
+            setForm({ ...form, parent_club_id: value || null })
+          }
         />
       </FormContentWrapper>
     </FormWrapper>

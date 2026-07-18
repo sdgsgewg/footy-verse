@@ -2,10 +2,10 @@
 
 import { Dispatch, SetStateAction } from "react";
 import InputDate from "@/components/ui/InputDate";
-import InputNumber from "@/components/ui/InputNumber";
 import { useTranslations } from "next-intl";
 import DynamicFormSection from "../base/DynamicFormSection";
 import { UpsertPlayerCareerInput } from "@/types/player-career";
+import NumberField from "../fields/NumberField";
 
 type Contract = NonNullable<UpsertPlayerCareerInput["contracts"]>[number];
 
@@ -28,6 +28,7 @@ const PlayerContractSection = ({ form, setForm }: Props) => {
       title={tForm("title")}
       noData={tForm("noData")}
       items={form.contracts ?? []}
+      minItems={1}
       createItem={() => ({
         contract_start: "",
         contract_end: "",
@@ -61,7 +62,7 @@ const PlayerContractSection = ({ form, setForm }: Props) => {
           />
 
           {/* Salary */}
-          <InputNumber
+          <NumberField
             label={tLabels("salary")}
             name={`salary-${index}`}
             placeholder={tPlaceholders("salary") || ""}

@@ -1,4 +1,4 @@
-import { parseStringField } from "../api/form-data";
+import { parseNullableStringField, parseStringField } from "../api/form-data";
 
 export function getClubInputFromFormData(formData: FormData) {
   return {
@@ -6,6 +6,6 @@ export function getClubInputFromFormData(formData: FormData) {
     name: parseStringField(formData, "name"),
     club_type: parseStringField(formData, "club_type"),
     nation_id: parseStringField(formData, "nation_id"),
-    parent_club_id: parseStringField(formData, "parent_club_id"),
+    parent_club_id: parseNullableStringField(formData, "parent_club_id"),
   };
 }

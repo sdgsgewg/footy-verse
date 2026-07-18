@@ -16,7 +16,7 @@ const emptyClubForm: UpsertClubInput = {
   club_type: ClubType.FIRST_TEAM,
 
   nation_id: "",
-  parent_club_id: "",
+  parent_club_id: null,
 };
 
 function mapClub(club: Club): UpsertClubInput {
@@ -32,7 +32,7 @@ function mapClub(club: Club): UpsertClubInput {
     club_type: club.club_type as ClubType,
 
     nation_id: club.nation_id ?? "",
-    parent_club_id: club.parent_club_id ?? "",
+    parent_club_id: club.parent_club_id ?? null,
   };
 }
 

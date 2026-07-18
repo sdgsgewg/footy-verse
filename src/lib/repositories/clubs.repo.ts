@@ -132,6 +132,9 @@ export async function updateClubRepo(
     .from(getTable())
     .update({
       name: club.name,
+      club_type: club.club_type,
+      nation_id: club.nation_id,
+      parent_club_id: club.parent_club_id,
       image: finalImage,
       slug,
       updated_at: new Date().toISOString(),

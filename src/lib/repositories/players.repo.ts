@@ -216,8 +216,6 @@ export async function updatePlayerRepo(
 ): Promise<PlayerDetailResponse> {
   const supabase = await getSupabase();
 
-  console.log("Player Update Input: ", JSON.stringify(player, null, 2));
-
   const oldPlayer = await requireEntity(
     getPlayerByIdRepo,
     id,

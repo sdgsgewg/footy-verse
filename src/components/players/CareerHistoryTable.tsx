@@ -16,13 +16,28 @@ import { getImageUrl } from "@/lib/images/image-url";
 import { getDefaultImage } from "@/lib/images/default-image";
 import { STORAGE_BUCKETS } from "@/lib/storage";
 import DataTable from "../shared/DataTable";
+import { isDashboardPath } from "@/lib/utils/navigation";
+import { usePathname } from "@/navigation";
+import { CrudActionRow } from "../templates/crud";
+import { useParams } from "next/navigation";
+import { usePlayerCareerActions } from "@/hooks/dashboard/player-careers/usePlayerCareerActions";
 
 interface Props {
   careers: PlayerCareer[];
 }
 
 const CareerHistoryTable = ({ careers }: Props) => {
+  const { playerId } = useParams() as {
+    playerId: string;
+  };
+
   const locale = useLocale();
+  const pathname = usePathname();
+
+  const { handleView, handleEdit, handleDelete } =
+    usePlayerCareerActions(playerId);
+
+  const isDashboard = isDashboardPath(pathname);
 
   return (
     <DataTable
@@ -35,6 +50,7 @@ const CareerHistoryTable = ({ careers }: Props) => {
             <TableHead className="w-[320px]">Club</TableHead>
             <TableHead className="w-37.5">Joined</TableHead>
             <TableHead className="w-37.5">Left</TableHead>
+            {isDashboard && <TableHead className="w-37.5">Actions</TableHead>}
           </TableRow>
         </TableHeader>
 
@@ -68,6 +84,17 @@ const CareerHistoryTable = ({ careers }: Props) => {
                   ? formatDate(career.left_at, locale)
                   : "Present"}
               </TableCell>
+
+              {isDashboard && (
+                <TableCell>
+                  <CrudActionRow
+                    item={career}
+                    onView={() => handleView(career.id)}
+                    onEdit={() => handleEdit(career.id)}
+                    onDelete={() => handleDelete(career)}
+                  />
+                </TableCell>
+              )}
             </TableRow>
           ))}
         </TableBody>

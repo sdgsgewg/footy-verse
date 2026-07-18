@@ -3,8 +3,9 @@ import { ROUTES } from "@/constants/routes";
 import { useRouter } from "@/navigation";
 import { useDeletePlayerCareer } from "./useDeletePlayerCareer";
 import { PlayerCareerDetailResponse } from "@/types/player-career";
+import { PlayerCareer } from "@/types/player";
 
-export function usePlayerCareerActions(playerId: string, careerId: string) {
+export function usePlayerCareerActions(playerId: string) {
   const tPlayerCareers = useTranslations("dashboard.playerCareers");
 
   const router = useRouter();
@@ -17,19 +18,19 @@ export function usePlayerCareerActions(playerId: string, careerId: string) {
     );
   };
 
-  const handleView = (player: PlayerCareerDetailResponse) => {
+  const handleView = (careerId: string) => {
     router.push(
-      `${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${player.id}/careers/${careerId}`,
+      `${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${playerId}/careers/${careerId}`,
     );
   };
 
-  const handleEdit = (player: PlayerCareerDetailResponse) => {
+  const handleEdit = (careerId: string) => {
     router.push(
-      `${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${player.id}/careers/edit/${careerId}`,
+      `${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${playerId}/careers/edit/${careerId}`,
     );
   };
 
-  const handleDelete = (pc: PlayerCareerDetailResponse) => {
+  const handleDelete = (pc: PlayerCareer) => {
     if (!confirm(`${tPlayerCareers("form.confirm.delete")}`)) return;
 
     deleteMutation.mutate({

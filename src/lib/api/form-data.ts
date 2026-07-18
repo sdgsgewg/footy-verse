@@ -8,6 +8,15 @@ export function parseStringField(
   return typeof raw === "string" ? raw : fallback;
 }
 
+export function parseNullableStringField(
+  formData: FormData,
+  key: string,
+): string | null {
+  const value = parseStringField(formData, key).trim();
+
+  return value === "" ? null : value;
+}
+
 export function parseNumberField(
   formData: FormData,
   key: string,

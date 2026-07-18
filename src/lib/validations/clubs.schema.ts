@@ -17,8 +17,8 @@ export const clubMutationSchema = z.object({
     ClubType.U17,
     ClubType.ACADEMY,
   ]),
-  nation_id: z.string(),
-  parent_club_id: z.string().optional(),
+  nation_id: z.string().uuid(),
+  parent_club_id: z.string().uuid().nullable().optional(),
 });
 
 export const createClubSchema = clubMutationSchema;

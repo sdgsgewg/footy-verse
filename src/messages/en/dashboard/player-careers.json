@@ -16,7 +16,7 @@
 
   "form": {
     "career": {
-      "title": "Career History",
+      "title": "Career",
       "noData": "No career found",
       "instruction": "Please add career."
     },
@@ -34,7 +34,7 @@
     },
 
     "transfer": {
-      "title": "Transfer History",
+      "title": "Transfer",
       "noData": "No transfer found",
       "instruction": "Please add transfer."
     },
@@ -60,7 +60,7 @@
         "fromClub": "From Club",
         "toClub": "To Club",
         "transferType": "Transfer Type",
-        "transferFee": "Transfer Fee",
+        "transferFee": "Transfer Fee (in million euro)",
         "transferDate": "Transfer Date"
       }
     },

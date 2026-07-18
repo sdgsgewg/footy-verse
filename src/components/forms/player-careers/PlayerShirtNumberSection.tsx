@@ -30,6 +30,7 @@ const PlayerShirtNumberSection = ({ form, setForm }: Props) => {
       title={tForm("title")}
       noData={tForm("noData")}
       items={form.shirt_numbers ?? []}
+      minItems={1}
       createItem={() => ({
         shirt_number: 1,
         start_date: "",

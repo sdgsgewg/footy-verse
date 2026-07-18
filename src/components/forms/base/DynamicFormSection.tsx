@@ -2,12 +2,16 @@ import { Button } from "@/components/ui/button";
 import { Plus, Trash2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import FormSection from "./FormSection";
+import { useEffect } from "react";
 
 interface DynamicFormSectionProps<T> {
   title: string;
   noData: string;
 
   items: T[];
+
+  minItems?: number;
+  maxItems?: number;
 
   createItem: () => T;
 
@@ -24,6 +28,8 @@ export default function DynamicFormSection<T>({
   title,
   noData,
   items,
+  minItems = 0,
+  maxItems,
   createItem,
   onChange,
   renderItem,
@@ -31,10 +37,14 @@ export default function DynamicFormSection<T>({
   const tCommonActions = useTranslations("common.actions");
 
   const addItem = () => {
+    if (maxItems !== undefined && items.length >= maxItems) return;
+
     onChange([...items, createItem()]);
   };
 
   const removeItem = (index: number) => {
+    if (items.length <= minItems) return;
+
     onChange(items.filter((_, i) => i !== index));
   };
 
@@ -52,6 +62,16 @@ export default function DynamicFormSection<T>({
 
     onChange(newItems);
   };
+
+  useEffect(() => {
+  if (items.length < minItems) {
+    onChange(
+      Array.from({ length: minItems }, (_, i) =>
+        items[i] ?? createItem(),
+      ),
+    );
+  }
+}, [items, minItems]);
 
   return (
     <FormSection
@@ -73,16 +93,19 @@ export default function DynamicFormSection<T>({
         <div key={index} className="rounded-xl border p-4 space-y-4">
           {renderItem(item, index, updateItem)}
 
-          <div className="flex justify-end">
-            <Button
-              type="button"
-              variant="destructive"
-              onClick={() => removeItem(index)}
-            >
-              <Trash2 className="mr-2 h-4 w-4" />
-              {tCommonActions("remove")}
-            </Button>
-          </div>
+          {items.length > minItems && (
+            <div className="flex justify-end">
+              <Button
+                type="button"
+                variant="destructive"
+                disabled={maxItems !== undefined && items.length >= maxItems}
+                onClick={() => removeItem(index)}
+              >
+                <Trash2 className="mr-2 h-4 w-4" />
+                {tCommonActions("remove")}
+              </Button>
+            </div>
+          )}
         </div>
       ))}
     </FormSection>

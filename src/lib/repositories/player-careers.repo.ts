@@ -82,11 +82,11 @@ export async function getPlayerCareerByIdRepo(
         *,
         player_contracts(*),
         player_shirt_numbers(*),
-        transfer(
+        transfer:transfers(
             *,
-            from_club:clubs(*),
-            to_club:clubs(*),
-            season:seasons(*)
+            from_club:clubs!transfers_from_club_id_fkey(*),
+            to_club:clubs!transfers_to_club_id_fkey(*),
+            season:seasons!transfers_season_id_fkey(*)
         )
     `,
     )
@@ -179,17 +179,17 @@ export async function createPlayerCareerRepo(
 
   //  Insert player contracts (table player_contracts)
   if (contracts && contracts.length > 0) {
-    insertPlayerContracts(insertedPlayerCareer.id, contracts);
+    await insertPlayerContracts(insertedPlayerCareer.id, contracts);
   }
 
   //  Insert player shirt numbers (table player_shirt_numbers)
   if (shirt_numbers && shirt_numbers.length > 0) {
-    insertPlayerShirtNumbers(insertedPlayerCareer.id, shirt_numbers);
+    await insertPlayerShirtNumbers(insertedPlayerCareer.id, shirt_numbers);
   }
 
   //  Insert transfer (table transfers)
   if (transfer) {
-    insertTransfer(insertedPlayerCareer.id, transfer);
+    await insertTransfer(insertedPlayerCareer.id, transfer);
   }
 
   const result = await getPlayerCareerByIdRepo(insertedPlayerCareer.id);
@@ -235,7 +235,7 @@ export async function updatePlayerCareerRepo(
   if (deleteContractError) throw deleteContractError;
 
   if (contracts && contracts.length > 0) {
-    insertPlayerContracts(careerId, contracts);
+    await insertPlayerContracts(careerId, contracts);
   }
 
   // Shirt Numbers : Delete existing shirt numbers and insert new ones
@@ -247,7 +247,7 @@ export async function updatePlayerCareerRepo(
   if (deleteShirtNumberError) throw deleteShirtNumberError;
 
   if (shirt_numbers && shirt_numbers.length > 0) {
-    insertPlayerShirtNumbers(careerId, shirt_numbers);
+    await insertPlayerShirtNumbers(careerId, shirt_numbers);
   }
 
   // Transfer : Delete existing transfer and insert new one
@@ -259,7 +259,7 @@ export async function updatePlayerCareerRepo(
   if (deleteTransferError) throw deleteTransferError;
 
   if (transfer) {
-    insertTransfer(careerId, transfer);
+    await insertTransfer(careerId, transfer);
   }
 
   const result = await getPlayerCareerByIdRepo(careerId);

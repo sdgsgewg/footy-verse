@@ -8,12 +8,12 @@ import { ClubListItem } from "@/types/club";
 import FormSection from "../base/FormSection";
 import { SeasonListItem } from "@/types/season";
 import { TransferType } from "@/enums/TransferType";
-import InputNumber from "@/components/ui/InputNumber";
 import ComboboxField from "../fields/ComboboxField";
 import { SelectOption } from "@/types/select";
 import { toSeasonOptions } from "@/lib/seasons/mapper";
 import { toClubOptions } from "@/lib/clubs/mapper";
 import SelectField from "../fields/SelectField";
+import NumberField from "../fields/NumberField";
 
 interface Props {
   form: UpsertPlayerCareerInput;
@@ -179,7 +179,7 @@ const TransferSection = ({ form, setForm, seasons, clubs }: Props) => {
         />
 
         {/* Transfer Fee */}
-        <InputNumber
+        <NumberField
           label={tLabels("transferFee")}
           name="transfer_fee"
           placeholder={tPlaceholders("transferFee")}
@@ -193,6 +193,7 @@ const TransferSection = ({ form, setForm, seasons, clubs }: Props) => {
               },
             })
           }
+          required
         />
 
         {/* Transfer Date */}
@@ -210,6 +211,7 @@ const TransferSection = ({ form, setForm, seasons, clubs }: Props) => {
               },
             })
           }
+          required
         />
       </>
     </FormSection>

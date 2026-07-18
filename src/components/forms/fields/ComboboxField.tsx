@@ -28,7 +28,7 @@ interface ComboboxFieldProps {
   label: string;
   name: string;
 
-  value: string;
+  value: string | null | undefined;
 
   options: SelectOption[];
 

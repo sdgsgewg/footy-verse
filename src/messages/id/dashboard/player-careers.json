@@ -16,7 +16,7 @@
 
   "form": {
     "career": {
-      "title": "Riwayat Karir",
+      "title": "Karir",
       "noData": "Karir tidak ditemukan",
       "instruction": "Mohon tambahkan karir."
     },
@@ -34,7 +34,7 @@
     },
 
     "transfer": {
-      "title": "Riwayat Transfer",
+      "title": "Transfer",
       "noData": "Transfer tidak ditemukan",
       "instruction": "Mohon tambahkan transfer."
     },
@@ -60,7 +60,7 @@
         "fromClub": "Klub Asal",
         "toClub": "Klub Tujuan",
         "transferType": "Tipe Transfer",
-        "transferFee": "Biaya Transfer",
+        "transferFee": "Biaya Transfer (dalam juta euro)",
         "transferDate": "Tanggal Transfer"
       }
     },
