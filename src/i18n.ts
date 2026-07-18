@@ -13,6 +13,7 @@ async function getMessages(locale: string) {
 
   const publicMessages = {
     home: (await import(`./messages/${locale}/public/home.json`)).default,
+    teams: (await import(`./messages/${locale}/public/teams.json`)).default,
   };
 
   const dashboardMessages = {

@@ -1,0 +1,42 @@
+import React from "react";
+
+interface Props {
+  title: string;
+  description?: string;
+  icon?: React.ReactNode;
+  leftAction?: React.ReactNode;
+  children?: React.ReactNode;
+}
+
+const PageHeader = ({
+  title,
+  description,
+  icon,
+  leftAction,
+  children,
+}: Props) => {
+  return (
+    <div className="flex items-center justify-between gap-4 pb-4 border-b border-border/40">
+      <div className="flex items-center gap-4">
+        {leftAction}
+
+        <div className="flex items-center gap-3">
+          {icon && <div className="p-2.5 bg-primary/10 rounded-xl">{icon}</div>}
+
+          <div className="flex flex-col gap-1">
+            <h1 className="text-3xl font-extrabold tracking-tight bg-clip-text text-transparent bg-linear-to-r from-foreground to-foreground/80">
+              {title}
+            </h1>
+            {description && (
+              <p className="text-sm text-muted-foreground">{description}</p>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {children && <div className="flex items-center gap-2">{children}</div>}
+    </div>
+  );
+};
+
+export default PageHeader;

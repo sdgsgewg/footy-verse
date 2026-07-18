@@ -10,6 +10,8 @@ export const ROUTES = {
   HOME: "/",
   TEAMS: {
     BASE: "/teams",
+    CLUBS: "/teams/clubs",
+    NATIONAL_TEAMS: "/teams/national-teams",
     INDONESIA: "/nation/indonesia/men/players/",
     ARSENAL: "/club/arsenal/men/players/",
   },

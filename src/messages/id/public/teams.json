@@ -1,0 +1,32 @@
+{
+  "title": "Tim",
+  "subtitle": "Jelajahi klub sepak bola dan tim nasional dari seluruh dunia.",
+  "showMore": "Tampilkan lebih banyak",
+
+  "search": {
+    "placeholder": "Cari tim..."
+  },
+
+  "empty": {
+    "title": "Tidak ada tim yang ditemukan",
+    "description": "Saat ini belum ada tim yang dapat ditampilkan"
+  },
+
+  "clubs": {
+    "title": "Klub",
+    "description": "Jelajahi klub sepak bola profesional.",
+    "empty": {
+      "title": "Tidak ada klub yang ditemukan",
+      "description": "Saat ini belum ada klub yang dapat ditampilkan"
+    }
+  },
+
+  "nationalTeams": {
+    "title": "Tim Nasional",
+    "description": "Jelajahi tim nasional sepak bola profesional.",
+    "empty": {
+      "title": "Tidak ada tim nasional yang ditemukan",
+      "description": "Saat ini belum ada tim nasional yang dapat ditampilkan"
+    }
+  }
+}
