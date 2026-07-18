@@ -1,30 +1,31 @@
 "use client";
 
-import TeamSearch from "@/components/public/teams/TeamSearch";
+import ActiveFiltersBar from "@/components/public/teams/clubs/ActiveFiltersBar";
+import ClubFilters from "@/components/public/teams/clubs/ClubFilters";
 import TeamSection from "@/components/public/teams/TeamSection";
 import PageHeader from "@/components/shared/PageHeader";
 import PublicPageWrapper from "@/components/wrappers/PublicPageWrapper";
+import useClubFilter, { ClubFilter } from "@/hooks/clubs/useClubFilter";
 import { useClubs } from "@/hooks/dashboard/clubs";
 import { useDebounce } from "@/hooks/useDebounce";
 import { getImageUrl } from "@/lib/images/image-url";
 import { STORAGE_BUCKETS } from "@/lib/storage";
+import { useRouter } from "@/navigation";
 import { TeamItem } from "@/types/team";
 import { useTranslations } from "next-intl";
-import { useState } from "react";
 
 export default function TeamsPage() {
   const t = useTranslations("public.teams");
+  const router = useRouter();
 
-  const [nationId, setNationId] = useState("");
-  const [clubType, setClubType] = useState("");
-  const [keyword, setKeyword] = useState("");
+  const { filters, setFilters, isSearching, clearFilters } = useClubFilter();
 
-  const debouncedKeyword = useDebounce(keyword, 500);
+  const debouncedKeyword = useDebounce(filters.name, 500);
 
   const { clubs, loading } = useClubs({
     name: debouncedKeyword || undefined,
-    nationId: nationId || undefined,
-    clubType: clubType || undefined,
+    nationId: filters.nationId || undefined,
+    clubType: filters.clubType || undefined,
   });
 
   const modifiedClubList: TeamItem[] = clubs.map((club) => ({
@@ -35,19 +36,24 @@ export default function TeamsPage() {
     subtitle: "",
   }));
 
+  const updateQuery = (newFilters: ClubFilter) => {
+    const params = new URLSearchParams();
+
+    if (newFilters.sort) params.set("sort", newFilters.sort);
+    if (newFilters.name) params.set("name", newFilters.name);
+    if (newFilters.nationId) params.set("nationId", newFilters.nationId);
+    if (newFilters.clubType) params.set("clubType", newFilters.clubType);
+
+    router.push(`?${params.toString()}`);
+  };
+
   return (
     <PublicPageWrapper>
       <PageHeader title={t("title")} description={t("subtitle")} />
 
-      {/* <TeamSearch
-        value={keyword}
-        onChange={setKeyword}
-        placeholder="Search club teams..."
-      /> */}
-
       {/* Search and Filter */}
       <div className="flex flex-col gap-4 mb-12">
-        {/* <PortfolioFilters
+        <ClubFilters
           filters={filters}
           setFilters={setFilters}
           updateQuery={updateQuery}
@@ -66,9 +72,7 @@ export default function TeamsPage() {
             })
           }
           onClearAll={clearFilters}
-          tProjectValues={tProjectValues}
-          tCommon={tCommon}
-        /> */}
+        />
       </div>
 
       <TeamSection
@@ -80,6 +84,7 @@ export default function TeamsPage() {
           title: t("clubs.empty.title"),
           description: t("clubs.empty.description"),
         }}
+        showAllData
       />
     </PublicPageWrapper>
   );

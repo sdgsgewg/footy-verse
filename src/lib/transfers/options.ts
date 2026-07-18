@@ -9,8 +9,6 @@ type Translate = (key: string) => string;
  * @param t
  * @returns
  */
-// Filter tinggal getClubTypeOptions()
-// Form tinggal getClubTypeOptions()
 
 export const getTransferTypeOptions = (t: Translate): SelectOption[] =>
   Object.values(TransferType).map((type) => ({

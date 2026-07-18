@@ -37,6 +37,7 @@
     "edit": "Edit",
     "remove": "Remove",
     "clear": "Clear",
+    "clearAll": "Clear All",
     "delete": "Delete",
     "cancel": "Cancel",
     "apply": "Apply",
@@ -64,10 +65,21 @@
     "noData": "No records found."
   },
 
+  "search": {
+    "placeholder": "Search by name...",
+    "loading": "Searching..."
+  },
+
   "filter": {
-    "allCategory": "All Categories",
     "all": "All",
-    "apply": "Apply"
+    "apply": "Apply",
+    "clear": "Clear Filters"
+  },
+
+  "sort": {
+    "title": "Sort",
+    "newest": "Newest",
+    "oldest": "Oldest"
   },
 
   "feedback": {

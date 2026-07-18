@@ -37,6 +37,7 @@
     "edit": "Edit",
     "remove": "Hapus",
     "clear": "Hapus",
+    "clearAll": "Hapus Semua",
     "delete": "Hapus",
     "cancel": "Batal",
     "apply": "Terapkan",
@@ -64,11 +65,21 @@
     "noData": "Tidak ada data yang ditemukan."
   },
 
+  "search": {
+    "placeholder": "Cari berdasarkan nama...",
+    "loading": "Mencari..."
+  },
+
   "filter": {
-    "allCategory": "Semua Kategori",
-    "selectCategory": "Pilih Kategori:",
     "all": "Semua",
-    "apply": "Terapkan"
+    "apply": "Terapkan",
+    "clear": "Hapus Filter"
+  },
+
+  "sort": {
+    "title": "Urutkan",
+    "newest": "Terbaru",
+    "oldest": "Terlama"
   },
 
   "feedback": {

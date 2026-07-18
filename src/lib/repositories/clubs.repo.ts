@@ -30,6 +30,8 @@ export async function getClubsRepo(
 ): Promise<ClubListItem[]> {
   const supabase = await getSupabase();
 
+  console.log("Params: ", JSON.stringify(params, null, 2));
+
   // Base Query
   let query = supabase
     .from(getTable())

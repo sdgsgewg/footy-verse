@@ -12,6 +12,7 @@ interface Props {
   teams: TeamItem[];
 
   loading?: boolean;
+  showAllData?: boolean;
 
   empty?: {
     title: string;
@@ -31,10 +32,13 @@ export default function TeamSection({
   description,
   teams,
   loading = false,
+  showAllData = false,
   empty,
   showMore,
 }: Props) {
   const t = useTranslations("public.teams");
+
+  const modifiedTeams = showAllData ? teams : teams.slice(0, 10);
 
   return (
     <section className="space-y-6">
@@ -72,7 +76,7 @@ export default function TeamSection({
         <>
           {/* Grid */}
           <TeamCardWrapper>
-            {teams.slice(0, 10).map((team) => (
+            {modifiedTeams.map((team) => (
               <TeamCard key={team.id} team={team} />
             ))}
           </TeamCardWrapper>

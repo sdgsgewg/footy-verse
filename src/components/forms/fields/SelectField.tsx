@@ -14,7 +14,7 @@ import {
 import { SelectOption } from "@/types/select";
 
 interface SelectFieldProps {
-  label: string;
+  label?: string;
   name: string;
 
   value: string;
@@ -50,7 +50,7 @@ const SelectField: React.FC<SelectFieldProps> = ({
 }) => {
   return (
     <div className={`flex flex-col gap-2 ${className ?? ""}`}>
-      <Label label={label} required={required} />
+      {label && <Label label={label} required={required} />}
 
       <Select
         value={value || undefined}

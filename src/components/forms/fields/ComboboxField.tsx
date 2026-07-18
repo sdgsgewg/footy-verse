@@ -25,7 +25,7 @@ import { SelectOption } from "@/types/select";
 import Image from "next/image";
 
 interface ComboboxFieldProps {
-  label: string;
+  label?: string;
   name: string;
 
   value: string | null | undefined;
@@ -69,7 +69,7 @@ const ComboboxField: React.FC<ComboboxFieldProps> = ({
 
   return (
     <div className={cn("flex flex-col gap-2", className)}>
-      <Label label={label} required={required} />
+      {label && <Label label={label} required={required} />}
 
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>

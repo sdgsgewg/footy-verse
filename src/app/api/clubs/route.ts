@@ -12,13 +12,16 @@ import {
 } from "@/lib/api/response";
 import { getClubInputFromFormData } from "@/lib/clubs/form-data";
 import { authorizeManageContent } from "@/lib/auth/api-authorization";
+import { GetClubsParams } from "@/types/club";
 
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
 
-    const query = {
+    const query: GetClubsParams = {
       name: searchParams.get("name") || undefined,
+      nationId: searchParams.get("nationId") || undefined,
+      clubType: searchParams.get("clubType") || undefined,
     };
 
     const data = await getClubsService(query);
