@@ -19,21 +19,6 @@ type ClubRouteContext = {
   params: Promise<{ id: string }>;
 };
 
-export async function GET(_request: Request, context: ClubRouteContext) {
-  try {
-    const { id } = await context.params;
-    const data = await getClubByIdService(id);
-
-    if (!data) {
-      return errorResponse(new NotFoundError("Club not found"));
-    }
-
-    return successResponse(data);
-  } catch (error) {
-    return errorResponse(error);
-  }
-}
-
 export async function PUT(request: Request, context: ClubRouteContext) {
   try {
     await authorizeManageContent();

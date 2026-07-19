@@ -2,6 +2,7 @@ import { ClubType } from "@/enums/ClubType";
 import { z } from "zod";
 
 export const clubIdSchema = z.string().uuid();
+export const clubSlugSchema = z.string();
 
 export const clubMutationSchema = z.object({
   image: z.string().nullable().optional(),
@@ -27,6 +28,7 @@ export const updateClubSchema = clubMutationSchema;
 
 export const clubSchema = clubMutationSchema.extend({
   id: clubIdSchema,
+  slug: clubSlugSchema,
   created_at: z.string(),
   updated_at: z.string().nullable(),
 });

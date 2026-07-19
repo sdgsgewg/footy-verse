@@ -16,11 +16,11 @@ export function useClubActions() {
   };
 
   const handleView = (club: ClubDetailResponse) => {
-    router.push(`${ROUTES.DASHBOARD.CONTENT.CLUBS.BASE}/${club.id}`);
+    router.push(`${ROUTES.DASHBOARD.CONTENT.CLUBS.BASE}/${club.slug}`);
   };
 
   const handleEdit = (club: ClubDetailResponse) => {
-    router.push(`${ROUTES.DASHBOARD.CONTENT.CLUBS.EDIT}/${club.id}`);
+    router.push(`${ROUTES.DASHBOARD.CONTENT.CLUBS.EDIT}/${club.slug}`);
   };
 
   const handleDelete = (club: ClubDetailResponse) => {

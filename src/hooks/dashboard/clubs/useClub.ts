@@ -2,18 +2,18 @@ import { useQuery } from "@tanstack/react-query";
 
 import { queryConfig } from "@/lib/react-query/queryConfig";
 import { queryKeys } from "@/lib/react-query/queryKeys";
-import { fetchClubById } from "@/lib/api/club";
+import { fetchClubBySlug } from "@/lib/api/club";
 
 interface UseClubOptions {
-  id?: string;
+  slug?: string;
   enabled?: boolean;
 }
 
-export function useClub({ id, enabled = true }: UseClubOptions) {
+export function useClub({ slug, enabled = true }: UseClubOptions) {
   const { data, isLoading, isRefetching, error, refetch } = useQuery({
-    queryKey: queryKeys.club(id ?? ""),
-    queryFn: () => fetchClubById(id!),
-    enabled: enabled && !!id,
+    queryKey: queryKeys.club(slug ?? ""),
+    queryFn: () => fetchClubBySlug(slug!),
+    enabled: enabled && !!slug,
     ...queryConfig,
   });
 

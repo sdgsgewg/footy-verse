@@ -29,6 +29,17 @@ export const fetchClubById = async (
   return data.data;
 };
 
+export const fetchClubBySlug = async (
+  slug: string,
+): Promise<ClubDetailResponse> => {
+  const { data } = await apiClient.get<{
+    success: boolean;
+    data: ClubDetailResponse;
+  }>(`/clubs/slug/${slug}`);
+
+  return data.data;
+};
+
 export const createClub = async (payload: unknown) => {
   if (payload instanceof FormData) {
     const response = await fetch("/api/clubs", {

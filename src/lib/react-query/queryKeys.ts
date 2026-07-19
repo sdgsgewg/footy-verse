@@ -9,7 +9,7 @@ export const queryKeys = {
     ["player-careers", playerId, careerId] as const,
 
   clubs: (params?: GetClubsParams) => ["clubs", params] as const,
-  club: (id: string) => ["clubs", id] as const,
+  club: (slug: string) => ["clubs", slug] as const,
 
   nationalities: () => ["nationalities"] as const,
 

@@ -100,6 +100,34 @@ export async function getClubByIdRepo(
   return data;
 }
 
+export async function getClubBySlugRepo(
+  slug: string,
+): Promise<ClubDetailResponse | null> {
+  const supabase = await getSupabase();
+
+  const { data, error } = await supabase
+    .from(getTable())
+    .select(
+      `
+      *,
+      nation:nationalities!clubs_nation_id_fkey(
+        id,
+        name
+      ),
+      parent_club:clubs!parent_club_id(
+        id,
+        name
+      )
+    `,
+    )
+    .eq("slug", slug)
+    .maybeSingle();
+
+  if (error) throw error;
+
+  return data;
+}
+
 export async function createClubRepo(club: ClubCreateInput): Promise<Club> {
   const supabase = await getSupabase();
 

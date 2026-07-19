@@ -2,11 +2,13 @@ import {
   createClubRepo,
   deleteClubRepo,
   getClubByIdRepo,
+  getClubBySlugRepo,
   getClubsRepo,
   updateClubRepo,
 } from "@/lib/repositories/clubs.repo";
 import {
   clubIdSchema,
+  clubSlugSchema,
   clubsQuerySchema,
   createClubSchema,
   updateClubSchema,
@@ -22,6 +24,12 @@ export async function getClubByIdService(id: string) {
   const parsedId = clubIdSchema.parse(id);
 
   return getClubByIdRepo(parsedId);
+}
+
+export async function getClubBySlugService(slug: string) {
+  const parsedSlug = clubSlugSchema.parse(slug);
+
+  return getClubBySlugRepo(parsedSlug);
 }
 
 export async function createClubService(input: unknown) {

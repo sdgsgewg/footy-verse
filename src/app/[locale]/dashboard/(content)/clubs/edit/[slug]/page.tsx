@@ -17,12 +17,12 @@ const EditClubPage = () => {
   const tCommonStates = useTranslations("common.states");
   const tEntities = useTranslations("entities");
 
-  const params = useParams();
-
-  const id = params.id as string;
+  const { slug } = useParams() as {
+    slug: string;
+  };
 
   const { club, loading } = useClub({
-    id,
+    slug,
   });
 
   const { submit, isSubmitting } = useClubSubmit();
@@ -52,7 +52,7 @@ const EditClubPage = () => {
           loading={isSubmitting}
           onSubmit={(payload) =>
             submit({
-              id,
+              id: club.id,
               payload,
             })
           }

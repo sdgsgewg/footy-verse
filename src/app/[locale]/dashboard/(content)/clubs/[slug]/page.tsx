@@ -15,11 +15,11 @@ const ViewClubPage = () => {
   const tCommonStates = useTranslations("common.states");
   const tEntities = useTranslations("entities");
 
-  const { id } = useParams() as {
-    id: string;
+  const { slug } = useParams() as {
+    slug: string;
   };
 
-  const { club, loading } = useClub({ id });
+  const { club, loading } = useClub({ slug });
 
   if (loading) {
     return (
