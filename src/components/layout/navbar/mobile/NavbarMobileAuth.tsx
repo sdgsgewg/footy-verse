@@ -1,8 +1,8 @@
-import DashboardButton from "@/components/layout/buttons/DashboardButton";
-import LoginButton from "@/components/layout/buttons/LoginButton";
-import RegisterButton from "@/components/layout/buttons/RegisterButton";
+import DashboardButton from "@/components/shared/buttons/DashboardButton";
+import LoginButton from "@/components/shared/buttons/LoginButton";
+import RegisterButton from "@/components/shared/buttons/RegisterButton";
 import { useAuth } from "@/providers/auth-provider";
-import LogoutButton from "../../buttons/LogoutButton";
+import LogoutButton from "../../../shared/buttons/LogoutButton";
 import { usePathname } from "@/navigation";
 
 interface NavbarMobileAuthProps {

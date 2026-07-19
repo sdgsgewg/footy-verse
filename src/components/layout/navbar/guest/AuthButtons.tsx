@@ -1,5 +1,5 @@
-import LoginButton from "@/components/layout/buttons/LoginButton";
-import RegisterButton from "@/components/layout/buttons/RegisterButton";
+import LoginButton from "@/components/shared/buttons/LoginButton";
+import RegisterButton from "@/components/shared/buttons/RegisterButton";
 
 const AuthButtons = () => {
   return (

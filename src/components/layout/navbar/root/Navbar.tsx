@@ -1,16 +1,22 @@
 "use client";
 
+import { LanguageSwitcher } from "@/components/settings/LanguageSwitcher";
+import { ModeToggle } from "@/components/settings/ModeToggle";
 import { usePathname } from "@/navigation";
 import { Menu } from "lucide-react";
 import { useState } from "react";
-import { LanguageSwitcher } from "../../settings/LanguageSwitcher";
-import { ModeToggle } from "../../settings/ModeToggle";
-import NavbarLogo from "../navbar/NavbarLogo";
-import NavbarMobileMenu from "../navbar/root/NavbarMobileMenu";
+import { useAuth } from "@/providers/auth-provider";
+import NavbarLogo from "../NavbarLogo";
+import NavbarDesktopLinks from "../desktop/NavbarDesktopLinks";
+import NavbarDesktopAuth from "../desktop/NavbarDesktopAuth";
+import NavbarMobileMenu from "../root/NavbarMobileMenu";
+import DashboardButton from "@/components/shared/buttons/DashboardButton";
 
-export function Navbar() {
+const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname = usePathname();
+
+  const { isGuest, isContentManager, isSystemManager } = useAuth();
 
   const closeMobileMenu = () => setMobileMenuOpen(false);
 
@@ -21,11 +27,28 @@ export function Navbar() {
           <div className="flex items-center">
             {/* Logo and Website Name */}
             <NavbarLogo />
+
+            {/* Desktop Navigation */}
+            <NavbarDesktopLinks pathname={pathname} />
           </div>
 
           <div className="flex items-center space-x-2 md:space-x-4">
-            <LanguageSwitcher />
-            <ModeToggle />
+            {isGuest && (
+              <div className="hidden md:flex items-center gap-4">
+                <ModeToggle />
+                <LanguageSwitcher />
+              </div>
+            )}
+
+            {/* Dashboard Navigation Button */}
+            {(isContentManager || isSystemManager) && (
+              <div className="hidden md:flex">
+                <DashboardButton />
+              </div>
+            )}
+
+            {/* Desktop Auth Section */}
+            <NavbarDesktopAuth />
 
             {/* Mobile Menu Toggle */}
             <button
@@ -47,4 +70,6 @@ export function Navbar() {
       />
     </header>
   );
-}
+};
+
+export default Navbar;
