@@ -2,8 +2,11 @@
 
 import NotFound from "@/components/feedback/NotFound";
 import PageLoading from "@/components/feedback/PageLoading";
-import PlayerDetailContent from "@/components/players/PlayerDetailContent";
+import PlayerDetailPageLayout from "@/components/layout/detail-page/PlayerDetailPageLayout";
 import { usePlayer } from "@/hooks/dashboard/players";
+import { getDefaultImage } from "@/lib/images/default-image";
+import { getImageUrl } from "@/lib/images/image-url";
+import { STORAGE_BUCKETS } from "@/lib/storage";
 import { useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
 
@@ -32,7 +35,18 @@ const ViewPlayerPage = () => {
     return <NotFound text={t("notFound")} />;
   }
 
-  return <PlayerDetailContent player={player} />;
+  const { image, name } = player;
+
+  const modifiedImage =
+    getImageUrl(STORAGE_BUCKETS.PLAYERS, image) ?? getDefaultImage("player");
+
+  return (
+    <PlayerDetailPageLayout
+      title={name}
+      imageUrl={modifiedImage}
+      player={player}
+    />
+  );
 };
 
 export default ViewPlayerPage;

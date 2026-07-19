@@ -18,8 +18,10 @@ const PageHeader = ({
   return (
     <div className="flex items-center justify-between gap-4 pb-4 border-b border-border/40">
       <div className="flex items-center gap-4">
+        {/* Ex: back button */}
         {leftAction}
 
+        {/* Icon and Title */}
         <div className="flex items-center gap-3">
           {icon && <div className="p-2.5 bg-primary/10 rounded-xl">{icon}</div>}
 

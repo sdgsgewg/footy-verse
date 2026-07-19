@@ -2,8 +2,11 @@
 
 import NotFound from "@/components/feedback/NotFound";
 import PageLoading from "@/components/feedback/PageLoading";
-import ClubDetail from "@/components/manage/clubs/ClubDetail";
+import ClubDetailPageLayout from "@/components/layout/detail-page/ClubDetailPageLayout";
 import { useClub } from "@/hooks/dashboard/clubs";
+import { getDefaultImage } from "@/lib/images/default-image";
+import { getImageUrl } from "@/lib/images/image-url";
+import { STORAGE_BUCKETS } from "@/lib/storage";
 import { useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
 
@@ -32,7 +35,14 @@ const ViewClubPage = () => {
     return <NotFound text={t("notFound")} />;
   }
 
-  return <ClubDetail club={club} />;
+  const { image, name } = club;
+
+  const modifiedImage =
+    getImageUrl(STORAGE_BUCKETS.CLUBS, image) ?? getDefaultImage("club");
+
+  return (
+    <ClubDetailPageLayout title={name} imageUrl={modifiedImage} club={club} />
+  );
 };
 
 export default ViewClubPage;
