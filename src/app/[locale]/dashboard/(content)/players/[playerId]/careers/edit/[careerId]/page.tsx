@@ -3,8 +3,8 @@
 import NotFound from "@/components/feedback/NotFound";
 import PageLoading from "@/components/feedback/PageLoading";
 import PlayerCareerForm from "@/components/forms/player-careers/PlayerCareerForm";
-import FormSectionLayout from "@/components/layout/FormSectionLayout";
-import ManagePageWrapper from "@/components/manage/ManagePageWrapper";
+import FormSectionWrapper from "@/components/wrappers/FormSectionWrapper";
+import DashboardPageWrapper from "@/components/wrappers/DashboardPageWrapper";
 import { CrudPageHeader } from "@/components/templates/crud";
 import { usePlayerCareer } from "@/hooks/dashboard/player-careers/usePlayerCareer";
 import { usePlayerCareerSubmit } from "@/hooks/dashboard/player-careers/usePlayerCareerSubmit";
@@ -45,10 +45,10 @@ const EditPlayerCareerPage = () => {
   }
 
   return (
-    <ManagePageWrapper>
+    <DashboardPageWrapper>
       <CrudPageHeader title={tEdit("title")} showBackButton />
 
-      <FormSectionLayout formSize="large">
+      <FormSectionWrapper formSize="large">
         <PlayerCareerForm
           mode="edit"
           playerCareer={playerCareer}
@@ -60,8 +60,8 @@ const EditPlayerCareerPage = () => {
             })
           }
         />
-      </FormSectionLayout>
-    </ManagePageWrapper>
+      </FormSectionWrapper>
+    </DashboardPageWrapper>
   );
 };
 

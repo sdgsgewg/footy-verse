@@ -1,7 +1,7 @@
 import { getImageUrl } from "@/lib/images/image-url";
 import PlayerProfile from "./PlayerProfile";
 import PlayerHistory from "./PlayerHistory";
-import DetailPageLayout from "../layout/DetailPageLayout";
+import DetailPageLayout from "../layout/detail-page/DetailPageLayout";
 import { getDefaultImage } from "@/lib/images/default-image";
 import { STORAGE_BUCKETS } from "@/lib/storage";
 import { PlayerDetailResponse } from "@/types/player";

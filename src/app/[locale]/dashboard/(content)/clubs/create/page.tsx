@@ -1,8 +1,8 @@
 "use client";
 
 import ClubForm from "@/components/forms/clubs/ClubForm";
-import FormSectionLayout from "@/components/layout/FormSectionLayout";
-import ManagePageWrapper from "@/components/manage/ManagePageWrapper";
+import FormSectionWrapper from "@/components/wrappers/FormSectionWrapper";
+import DashboardPageWrapper from "@/components/wrappers/DashboardPageWrapper";
 import { CrudPageHeader } from "@/components/templates/crud";
 import { useClubSubmit } from "@/hooks/dashboard/clubs";
 import { useTranslations } from "next-intl";
@@ -13,10 +13,10 @@ export default function CreateClubPage() {
   const { submit, isSubmitting } = useClubSubmit();
 
   return (
-    <ManagePageWrapper>
+    <DashboardPageWrapper>
       <CrudPageHeader title={t("title")} showBackButton />
 
-      <FormSectionLayout formSize="small">
+      <FormSectionWrapper formSize="small">
         <ClubForm
           mode="create"
           loading={isSubmitting}
@@ -26,7 +26,7 @@ export default function CreateClubPage() {
             })
           }
         />
-      </FormSectionLayout>
-    </ManagePageWrapper>
+      </FormSectionWrapper>
+    </DashboardPageWrapper>
   );
 }

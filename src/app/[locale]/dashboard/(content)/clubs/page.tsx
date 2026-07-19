@@ -1,7 +1,7 @@
 "use client";
 
 import ConnectionErrorAlert from "@/components/feedback/ConnectionErrorAlert";
-import ManagePageWrapper from "@/components/manage/ManagePageWrapper";
+import DashboardPageWrapper from "@/components/wrappers/DashboardPageWrapper";
 import { CrudPageHeader, CrudPageTable } from "@/components/templates/crud";
 import CrudPageManagement from "@/components/templates/crud/CrudPageManagement";
 import { useClubs } from "@/hooks/dashboard/clubs";
@@ -28,7 +28,7 @@ export default function ClubsManagementPage() {
   ) : undefined;
 
   return (
-    <ManagePageWrapper>
+    <DashboardPageWrapper>
       <CrudPageHeader title={t("title")} />
       {headerContent}
 
@@ -42,6 +42,6 @@ export default function ClubsManagementPage() {
         onEdit={handleEdit as unknown as (item: CrudRow) => void}
         onDelete={handleDelete as unknown as (item: CrudRow) => void}
       />
-    </ManagePageWrapper>
+    </DashboardPageWrapper>
   );
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import ConnectionErrorAlert from "@/components/feedback/ConnectionErrorAlert";
-import ManagePageWrapper from "@/components/manage/ManagePageWrapper";
+import DashboardPageWrapper from "@/components/wrappers/DashboardPageWrapper";
 import { CrudPageHeader, CrudPageTable } from "@/components/templates/crud";
 import CrudPageManagement from "@/components/templates/crud/CrudPageManagement";
 import { usePlayers } from "@/hooks/dashboard/players";
@@ -29,7 +29,7 @@ export default function PlayersManagementPage() {
   ) : undefined;
 
   return (
-    <ManagePageWrapper>
+    <DashboardPageWrapper>
       <CrudPageHeader title={t("title")} />
       {headerContent}
 
@@ -43,6 +43,6 @@ export default function PlayersManagementPage() {
         onEdit={handleEdit as unknown as (item: CrudRow) => void}
         onDelete={handleDelete as unknown as (item: CrudRow) => void}
       />
-    </ManagePageWrapper>
+    </DashboardPageWrapper>
   );
 }

@@ -3,8 +3,8 @@
 import NotFound from "@/components/feedback/NotFound";
 import PageLoading from "@/components/feedback/PageLoading";
 import PlayerForm from "@/components/forms/players/PlayerForm";
-import FormSectionLayout from "@/components/layout/FormSectionLayout";
-import ManagePageWrapper from "@/components/manage/ManagePageWrapper";
+import FormSectionWrapper from "@/components/wrappers/FormSectionWrapper";
+import DashboardPageWrapper from "@/components/wrappers/DashboardPageWrapper";
 import { CrudPageHeader } from "@/components/templates/crud";
 import { usePlayer, usePlayerSubmit } from "@/hooks/dashboard/players";
 import { useTranslations } from "next-intl";
@@ -42,10 +42,10 @@ const EditPlayerPage = () => {
   }
 
   return (
-    <ManagePageWrapper>
+    <DashboardPageWrapper>
       <CrudPageHeader title={tEdit("title")} showBackButton />
 
-      <FormSectionLayout formSize="large">
+      <FormSectionWrapper formSize="large">
         <PlayerForm
           mode="edit"
           player={player}
@@ -57,8 +57,8 @@ const EditPlayerPage = () => {
             })
           }
         />
-      </FormSectionLayout>
-    </ManagePageWrapper>
+      </FormSectionWrapper>
+    </DashboardPageWrapper>
   );
 };
 

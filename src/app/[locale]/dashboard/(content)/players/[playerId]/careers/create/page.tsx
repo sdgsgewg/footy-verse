@@ -1,8 +1,8 @@
 "use client";
 
 import PlayerCareerForm from "@/components/forms/player-careers/PlayerCareerForm";
-import FormSectionLayout from "@/components/layout/FormSectionLayout";
-import ManagePageWrapper from "@/components/manage/ManagePageWrapper";
+import FormSectionWrapper from "@/components/wrappers/FormSectionWrapper";
+import DashboardPageWrapper from "@/components/wrappers/DashboardPageWrapper";
 import { CrudPageHeader } from "@/components/templates/crud";
 import { usePlayerCareerSubmit } from "@/hooks/dashboard/player-careers/usePlayerCareerSubmit";
 import { usePlayer } from "@/hooks/dashboard/players";
@@ -21,7 +21,7 @@ export default function CreatePlayerCareerPage() {
   const { submit, isSubmitting } = usePlayerCareerSubmit(playerId);
 
   return (
-    <ManagePageWrapper>
+    <DashboardPageWrapper>
       <CrudPageHeader
         title={t("title", {
           playerName: player ? `(${player.name})` : "",
@@ -29,7 +29,7 @@ export default function CreatePlayerCareerPage() {
         showBackButton
       />
 
-      <FormSectionLayout formSize="large">
+      <FormSectionWrapper formSize="large">
         <PlayerCareerForm
           mode="create"
           loading={isSubmitting}
@@ -39,7 +39,7 @@ export default function CreatePlayerCareerPage() {
             })
           }
         />
-      </FormSectionLayout>
-    </ManagePageWrapper>
+      </FormSectionWrapper>
+    </DashboardPageWrapper>
   );
 }

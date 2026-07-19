@@ -2,7 +2,7 @@ import { getImageUrl } from "@/lib/images/image-url";
 import { ClubDetailResponse } from "@/types/club";
 import ClubProfile from "./ClubProfile";
 import ClubPlayers from "./ClubPlayers";
-import DetailPageLayout from "@/components/layout/DetailPageLayout";
+import DetailPageLayout from "@/components/layout/detail-page/DetailPageLayout";
 import { STORAGE_BUCKETS } from "@/lib/storage";
 import { getDefaultImage } from "@/lib/images/default-image";
 

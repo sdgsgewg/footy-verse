@@ -3,8 +3,8 @@
 import NotFound from "@/components/feedback/NotFound";
 import PageLoading from "@/components/feedback/PageLoading";
 import ClubForm from "@/components/forms/clubs/ClubForm";
-import FormSectionLayout from "@/components/layout/FormSectionLayout";
-import ManagePageWrapper from "@/components/manage/ManagePageWrapper";
+import FormSectionWrapper from "@/components/wrappers/FormSectionWrapper";
+import DashboardPageWrapper from "@/components/wrappers/DashboardPageWrapper";
 import { CrudPageHeader } from "@/components/templates/crud";
 import { useClub, useClubSubmit } from "@/hooks/dashboard/clubs";
 import { useTranslations } from "next-intl";
@@ -42,10 +42,10 @@ const EditClubPage = () => {
   }
 
   return (
-    <ManagePageWrapper>
+    <DashboardPageWrapper>
       <CrudPageHeader title={tEdit("title")} showBackButton />
 
-      <FormSectionLayout formSize="small">
+      <FormSectionWrapper formSize="small">
         <ClubForm
           mode="edit"
           club={club}
@@ -57,8 +57,8 @@ const EditClubPage = () => {
             })
           }
         />
-      </FormSectionLayout>
-    </ManagePageWrapper>
+      </FormSectionWrapper>
+    </DashboardPageWrapper>
   );
 };
 
