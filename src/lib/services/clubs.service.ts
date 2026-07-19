@@ -7,12 +7,11 @@ import {
   updateClubRepo,
 } from "@/lib/repositories/clubs.repo";
 import {
-  clubIdSchema,
-  clubSlugSchema,
   clubsQuerySchema,
   createClubSchema,
   updateClubSchema,
 } from "@/lib/validations/clubs.schema";
+import { idSchema, slugSchema } from "../validations/primitives.schema";
 
 export async function getClubsService(query: unknown) {
   const parsed = clubsQuerySchema.parse(query);
@@ -21,13 +20,13 @@ export async function getClubsService(query: unknown) {
 }
 
 export async function getClubByIdService(id: string) {
-  const parsedId = clubIdSchema.parse(id);
+  const parsedId = idSchema.parse(id);
 
   return getClubByIdRepo(parsedId);
 }
 
 export async function getClubBySlugService(slug: string) {
-  const parsedSlug = clubSlugSchema.parse(slug);
+  const parsedSlug = slugSchema.parse(slug);
 
   return getClubBySlugRepo(parsedSlug);
 }
@@ -39,14 +38,14 @@ export async function createClubService(input: unknown) {
 }
 
 export async function updateClubService(id: string, input: unknown) {
-  const parsedId = clubIdSchema.parse(id);
+  const parsedId = idSchema.parse(id);
   const parsed = updateClubSchema.parse(input);
 
   return updateClubRepo(parsedId, parsed);
 }
 
 export async function deleteClubService(id: string) {
-  const parsedId = clubIdSchema.parse(id);
+  const parsedId = idSchema.parse(id);
 
   await deleteClubRepo(parsedId);
 }

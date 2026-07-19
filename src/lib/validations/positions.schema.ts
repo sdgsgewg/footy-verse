@@ -1,6 +1,5 @@
 import { z } from "zod";
-
-export const positionIdSchema = z.string().uuid();
+import { idSchema } from "./primitives.schema";
 
 export const positionMutationSchema = z.object({
   name: z.string().min(1).max(255),
@@ -11,7 +10,7 @@ export const createPositionSchema = positionMutationSchema;
 export const updatePositionSchema = positionMutationSchema;
 
 export const positionSchema = positionMutationSchema.extend({
-  id: positionIdSchema,
+  id: idSchema,
   created_at: z.string(),
   updated_at: z.string().nullable(),
 });

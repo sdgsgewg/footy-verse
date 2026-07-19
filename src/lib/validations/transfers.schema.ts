@@ -1,12 +1,11 @@
 import { TransferType } from "@/enums/TransferType";
 import { z } from "zod";
-
-export const transferIdSchema = z.string().uuid();
+import { idSchema } from "./primitives.schema";
 
 export const transferMutationSchema = z.object({
-  season_id: z.string(),
-  from_club_id: z.string(),
-  to_club_id: z.string(),
+  season_id: idSchema,
+  from_club_id: idSchema,
+  to_club_id: idSchema,
   transfer_type: z.enum([
     TransferType.TRANSFER,
     TransferType.LOAN,
@@ -25,7 +24,7 @@ export const createTransferSchema = transferMutationSchema;
 export const updateTransferSchema = transferMutationSchema;
 
 export const transferSchema = transferMutationSchema.extend({
-  id: transferIdSchema,
+  id: idSchema,
   created_at: z.string(),
   updated_at: z.string().nullable(),
 });

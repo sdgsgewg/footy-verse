@@ -1,6 +1,5 @@
 import { z } from "zod";
-
-export const playerContractIdSchema = z.string().uuid();
+import { idSchema } from "./primitives.schema";
 
 export const playerContractMutationSchema = z.object({
   contract_start: z.string(),
@@ -13,7 +12,7 @@ export const createPlayerContractSchema = playerContractMutationSchema;
 export const updatePlayerContractSchema = playerContractMutationSchema;
 
 export const playerContractSchema = playerContractMutationSchema.extend({
-  id: playerContractIdSchema,
+  id: idSchema,
   created_at: z.string(),
   updated_at: z.string().nullable(),
 });

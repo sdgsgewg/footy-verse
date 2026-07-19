@@ -2,8 +2,7 @@ import { PreferredFoot } from "@/enums/PreferredFoot";
 import { z } from "zod";
 import { playerPositionMutationSchema } from "./player-positions.schema";
 import { playerNationalTeamMutationSchema } from "./player-national-teams.schema";
-
-export const playerIdSchema = z.string().uuid();
+import { idSchema } from "./primitives.schema";
 
 export const playerMutationSchema = z.object({
   image: z.string().nullable().optional(),
@@ -27,7 +26,7 @@ export const createPlayerSchema = playerMutationSchema;
 export const updatePlayerSchema = playerMutationSchema;
 
 export const playerSchema = playerMutationSchema.extend({
-  id: playerIdSchema,
+  id: idSchema,
   created_at: z.string(),
   updated_at: z.string().nullable(),
 });

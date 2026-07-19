@@ -1,8 +1,6 @@
 import { ClubType } from "@/enums/ClubType";
 import { z } from "zod";
-
-export const clubIdSchema = z.string().uuid();
-export const clubSlugSchema = z.string();
+import { idSchema, slugSchema } from "./primitives.schema";
 
 export const clubMutationSchema = z.object({
   image: z.string().nullable().optional(),
@@ -18,8 +16,8 @@ export const clubMutationSchema = z.object({
     ClubType.U17,
     ClubType.ACADEMY,
   ]),
-  nation_id: z.string().uuid(),
-  parent_club_id: z.string().uuid().nullable().optional(),
+  nation_id: idSchema,
+  parent_club_id: idSchema.nullable().optional(),
 });
 
 export const createClubSchema = clubMutationSchema;
@@ -27,8 +25,8 @@ export const createClubSchema = clubMutationSchema;
 export const updateClubSchema = clubMutationSchema;
 
 export const clubSchema = clubMutationSchema.extend({
-  id: clubIdSchema,
-  slug: clubSlugSchema,
+  id: idSchema,
+  slug: slugSchema,
   created_at: z.string(),
   updated_at: z.string().nullable(),
 });
@@ -38,7 +36,7 @@ export const clubsSchema = z.array(clubSchema);
 export const clubsQuerySchema = z.object({
   name: z.string().trim().min(1).max(255).optional(),
 
-  nationId: z.string().uuid().optional(),
+  nationId: idSchema.optional(),
 
   clubType: z.string().optional(),
 });
