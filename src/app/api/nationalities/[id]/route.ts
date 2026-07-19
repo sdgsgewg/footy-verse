@@ -19,21 +19,6 @@ type NationalityRouteContext = {
   params: Promise<{ id: string }>;
 };
 
-export async function GET(_request: Request, context: NationalityRouteContext) {
-  try {
-    const { id } = await context.params;
-    const data = await getNationalityByIdService(id);
-
-    if (!data) {
-      return errorResponse(new NotFoundError("Nationality not found"));
-    }
-
-    return successResponse(data);
-  } catch (error: unknown) {
-    return errorResponse(error);
-  }
-}
-
 export async function PUT(request: Request, context: NationalityRouteContext) {
   try {
     await authorizeManageContent();

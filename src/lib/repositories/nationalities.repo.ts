@@ -59,6 +59,22 @@ export async function getNationalityByIdRepo(
   return data;
 }
 
+export async function getNationalityBySlugRepo(
+  slug: string,
+): Promise<NationalityDetailResponse | null> {
+  const supabase = await getSupabase();
+
+  const { data, error } = await supabase
+    .from(getTable())
+    .select("*")
+    .eq("slug", slug)
+    .maybeSingle();
+
+  if (error) throw error;
+
+  return data;
+}
+
 export async function createNationalityRepo(
   nationality: NationalityCreateInput,
 ): Promise<Nationality> {

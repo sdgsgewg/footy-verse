@@ -12,6 +12,7 @@ export const queryKeys = {
   club: (slug: string) => ["clubs", slug] as const,
 
   nationalities: () => ["nationalities"] as const,
+  nationality: (slug: string) => ["nationalities", slug] as const,
 
   positions: () => ["positions"] as const,
 

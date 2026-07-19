@@ -4,6 +4,7 @@ import ConnectionErrorAlert from "@/components/feedback/ConnectionErrorAlert";
 import { CrudPage } from "@/components/templates/crud/CrudPage";
 import {
   useNationalities,
+  useNationalityActions,
   useNationalityData,
 } from "@/hooks/dashboard/nationalities";
 import { isLikelyConnectionError } from "@/lib/utils/connection-error";
@@ -14,6 +15,7 @@ export default function NationalitiesManagementPage() {
 
   const { nationalities, loading, retrying, loadError, retryLoad } =
     useNationalities();
+  const { handleView } = useNationalityActions();
   const {
     isEditing,
     buttonText,
@@ -50,6 +52,7 @@ export default function NationalitiesManagementPage() {
       setForm={setForm}
       canSubmit={canSubmit}
       onSubmit={handleSubmit}
+      onView={handleView}
       onEdit={handleEdit}
       onDelete={handleDelete}
       isEditing={isEditing}

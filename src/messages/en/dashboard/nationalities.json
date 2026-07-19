@@ -2,6 +2,8 @@
   "title": "Manage Nationalities",
   "subtitle": "Add, edit, or delete nationalities",
 
+  "notFound": "Nationality Not Found",
+
   "form": {
     "labels": {
       "image": "Nationality Image",

@@ -3,13 +3,24 @@ import {
   createNationalitySchema,
   updateNationalitySchema,
 } from "../validations/nationalities.schema";
-import { NationalityListItem } from "@/types/nationality";
+import { NationalityDetailResponse, NationalityListItem } from "@/types/nationality";
 
 export const fetchNationalities = async (): Promise<NationalityListItem[]> => {
   const { data } = await apiClient.get<{
     success: boolean;
     data: NationalityListItem[];
   }>("/nationalities");
+
+  return data.data;
+};
+
+export const fetchNationalityBySlug = async (
+  slug: string,
+): Promise<NationalityDetailResponse> => {
+  const { data } = await apiClient.get<{
+    success: boolean;
+    data: NationalityDetailResponse;
+  }>(`/nationalities/slug/${slug}`);
 
   return data.data;
 };

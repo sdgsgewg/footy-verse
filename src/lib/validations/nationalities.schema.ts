@@ -1,6 +1,5 @@
 import { z } from "zod";
-
-export const nationalityIdSchema = z.string().uuid();
+import { idSchema, slugSchema } from "./primitives.schema";
 
 export const nationalityMutationSchema = z.object({
   image: z.string().nullable().optional(),
@@ -12,7 +11,8 @@ export const createNationalitySchema = nationalityMutationSchema;
 export const updateNationalitySchema = nationalityMutationSchema;
 
 export const nationalitySchema = nationalityMutationSchema.extend({
-  id: nationalityIdSchema,
+  id: idSchema,
+  slug: slugSchema,
   created_at: z.string(),
   updated_at: z.string().nullable(),
 });
