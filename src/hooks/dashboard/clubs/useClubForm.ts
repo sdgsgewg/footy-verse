@@ -1,6 +1,8 @@
+"use client";
+
 import { useMemo, useState } from "react";
 import { ClubType } from "@/enums/ClubType";
-import { Club, UpsertClubInput } from "@/types/club";
+import { ClubEditResponse, UpsertClubInput } from "@/types/club";
 import { getImageUrl } from "@/lib/images/image-url";
 import { STORAGE_BUCKETS } from "@/lib/storage";
 
@@ -19,24 +21,26 @@ const emptyClubForm: UpsertClubInput = {
   parent_club_id: null,
 };
 
-function mapClub(club: Club): UpsertClubInput {
-  return {
-    id: club.id,
+function mapClub(club: ClubEditResponse): UpsertClubInput {
+  const { id, image, name, clubType, nationId, parentClubId } = club;
 
-    image: club.image,
-    imageUrl: getImageUrl(STORAGE_BUCKETS.CLUBS, club.image),
+  return {
+    id,
+
+    image,
+    imageUrl: getImageUrl("club", STORAGE_BUCKETS.CLUBS, club.image),
     imageFile: null,
     previewUrl: null,
 
-    name: club.name,
-    club_type: club.club_type as ClubType,
+    name,
+    club_type: (clubType as ClubType) ?? ClubType.FIRST_TEAM,
 
-    nation_id: club.nation_id ?? "",
-    parent_club_id: club.parent_club_id ?? null,
+    nation_id: nationId,
+    parent_club_id: parentClubId ?? null,
   };
 }
 
-export function useClubForm(club?: Club) {
+export function useClubForm(club?: ClubEditResponse) {
   const initialValue = useMemo(
     () => (club ? mapClub(club) : emptyClubForm),
     [club],
@@ -79,7 +83,7 @@ export function useClubForm(club?: Club) {
 
     payload.append("name", form.name);
     payload.append("club_type", form.club_type);
-    payload.append("nation_id", form.nation_id);
+    payload.append("nation_id", form.nation_id ?? "");
     payload.append("parent_club_id", form.parent_club_id ?? "");
 
     if (form.image) {

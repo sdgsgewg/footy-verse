@@ -1,12 +1,12 @@
 import { createNationality } from "@/lib/api/nationality";
 import { useCrudMutation } from "../useCrudMutation";
-import { queryKeys } from "@/lib/react-query/queryKeys";
+import { nationalityKeys } from "@/lib/react-query/keys/nationalityKeys";
 
 export function useCreateNationality(onSuccess?: () => void) {
   return useCrudMutation({
     mutationFn: createNationality,
 
-    queryKey: queryKeys.nationalities(),
+    invalidateQueries: [{ queryKey: nationalityKeys.lists() }],
 
     entityKey: "nationality",
 

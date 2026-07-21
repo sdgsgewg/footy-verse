@@ -8,12 +8,12 @@ import FormHeader from "../base/FormHeader";
 import FormWrapper from "../base/FormWrapper";
 import { usePlayerCareerForm } from "@/hooks/dashboard/player-careers/usePlayerCareerForm";
 import PlayerCareerSection from "./PlayerCareerSection";
-import { useClubs } from "@/hooks/dashboard/clubs";
 import PlayerContractSection from "./PlayerContractSection";
 import PlayerShirtNumberSection from "./PlayerShirtNumberSection";
 import TransferSection from "./TransferSection";
 import { useSeasons } from "@/hooks/dashboard/seasons";
 import FormContentWrapper from "../base/FormContentWrapper";
+import { useClubs } from "@/hooks/clubs";
 
 interface Props {
   mode: "create" | "edit";

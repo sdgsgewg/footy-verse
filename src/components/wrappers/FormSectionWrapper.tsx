@@ -5,7 +5,7 @@ interface Props {
   children: React.ReactNode;
 }
 
-export default function FormSectionLayout({ formSize, children }: Props) {
+export default function FormSectionWrapper({ formSize, children }: Props) {
   const getGridClassName = (formSize: FormSize) => {
     switch (formSize) {
       case "small":

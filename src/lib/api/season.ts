@@ -1,15 +1,19 @@
-import { SeasonListItem } from "@/types/season";
+import { GetSeasonsParams, SeasonListItem } from "@/types/season";
 import { apiClient } from "./client";
 import {
   createSeasonSchema,
   updateSeasonSchema,
 } from "../validations/seasons.schema";
 
-export const fetchSeasons = async (): Promise<SeasonListItem[]> => {
+export const fetchSeasons = async (
+  params?: GetSeasonsParams,
+): Promise<SeasonListItem[]> => {
   const { data } = await apiClient.get<{
     success: boolean;
     data: SeasonListItem[];
-  }>("/seasons");
+  }>("/seasons", {
+    params,
+  });
 
   return data.data;
 };

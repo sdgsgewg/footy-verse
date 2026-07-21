@@ -2,8 +2,6 @@
   "title": "Kelola Kebangsaan",
   "subtitle": "Tambah, edit, atau hapus kebangsaan.",
 
-  "notFound": "Kebangsaan Tidak Ditemukan",
-
   "form": {
     "labels": {
       "image": "Gambar Kebangsaan",

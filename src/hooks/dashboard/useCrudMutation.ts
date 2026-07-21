@@ -1,4 +1,10 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+"use client";
+
+import {
+  InvalidateQueryFilters,
+  useMutation,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { getApiErrorMessage, hasDuplicateError } from "@/lib/crud/error";
@@ -10,14 +16,12 @@ import { CrudAction } from "@/types/crud";
 interface CrudMutationOptions<TVariables> {
   mutationFn: (variables: TVariables) => Promise<unknown>;
 
-  queryKey: readonly unknown[];
+  invalidateQueries?: InvalidateQueryFilters[];
 
   allowRedirect?: boolean;
-
   redirectTo?: string;
 
   entityKey: Entity;
-
   action: CrudAction;
 
   getPayload?: (variables: TVariables) => unknown;
@@ -27,7 +31,7 @@ interface CrudMutationOptions<TVariables> {
 
 export function useCrudMutation<TVariables>({
   mutationFn,
-  queryKey,
+  invalidateQueries,
   allowRedirect = false,
   redirectTo,
   entityKey,
@@ -47,8 +51,8 @@ export function useCrudMutation<TVariables>({
     mutationFn,
 
     onSuccess: (data, variables) => {
-      queryClient.invalidateQueries({
-        queryKey,
+      invalidateQueries?.forEach((filters) => {
+        queryClient.invalidateQueries(filters);
       });
 
       if (entityKey === "playerCareer") {

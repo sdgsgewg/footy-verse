@@ -5,16 +5,14 @@ import ClubFilters from "@/components/public/teams/clubs/ClubFilters";
 import TeamSection from "@/components/public/teams/TeamSection";
 import PageHeader from "@/components/shared/PageHeader";
 import PublicPageWrapper from "@/components/wrappers/PublicPageWrapper";
+import { useClubs } from "@/hooks/clubs";
 import useClubFilter, { ClubFilter } from "@/hooks/clubs/useClubFilter";
-import { useClubs } from "@/hooks/dashboard/clubs";
 import { useDebounce } from "@/hooks/useDebounce";
-import { getImageUrl } from "@/lib/images/image-url";
-import { STORAGE_BUCKETS } from "@/lib/storage";
 import { useRouter } from "@/navigation";
 import { TeamItem } from "@/types/team";
 import { useTranslations } from "next-intl";
 
-export default function TeamsPage() {
+export default function ClubsPage() {
   const t = useTranslations("public.teams");
   const router = useRouter();
 
@@ -31,7 +29,7 @@ export default function TeamsPage() {
   const modifiedClubList: TeamItem[] = clubs.map((club) => ({
     id: club.id,
     name: club.name,
-    imageUrl: getImageUrl(STORAGE_BUCKETS.CLUBS, club.image),
+    imageUrl: club.imageUrl,
     href: "",
     subtitle: "",
   }));

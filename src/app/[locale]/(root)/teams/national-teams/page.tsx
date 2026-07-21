@@ -6,8 +6,6 @@ import PageHeader from "@/components/shared/PageHeader";
 import PublicPageWrapper from "@/components/wrappers/PublicPageWrapper";
 import { ROUTES } from "@/constants/routes";
 import { useNationalities } from "@/hooks/dashboard/nationalities";
-import { getImageUrl } from "@/lib/images/image-url";
-import { STORAGE_BUCKETS } from "@/lib/storage";
 import { useRouter } from "@/navigation";
 import { TeamItem } from "@/types/team";
 import { useTranslations } from "next-intl";
@@ -25,7 +23,7 @@ export default function TeamsPage() {
   const modifiedNationalTeamList: TeamItem[] = nationalities.map((nation) => ({
     id: nation.id,
     name: nation.name,
-    imageUrl: getImageUrl(STORAGE_BUCKETS.NATIONALITIES, nation.image),
+    imageUrl: nation.imageUrl,
     href: "",
     subtitle: "",
   }));

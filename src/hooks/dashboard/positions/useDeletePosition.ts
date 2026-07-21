@@ -1,6 +1,6 @@
 import { useCrudMutation } from "../useCrudMutation";
 import { deletePosition } from "@/lib/api/position";
-import { queryKeys } from "@/lib/react-query/queryKeys";
+import { positionKeys } from "@/lib/react-query/keys/positionKeys";
 
 interface DeletePositionPayload {
   id: string;
@@ -11,7 +11,7 @@ export function useDeletePosition() {
   return useCrudMutation<DeletePositionPayload>({
     mutationFn: ({ id }) => deletePosition(id),
 
-    queryKey: queryKeys.positions(),
+    invalidateQueries: [{ queryKey: positionKeys.lists() }],
 
     entityKey: "position",
 

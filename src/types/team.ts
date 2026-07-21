@@ -5,3 +5,5 @@ export interface TeamItem {
   href?: string;
   subtitle?: string;
 }
+
+export type TeamType = "club" | "national-team";

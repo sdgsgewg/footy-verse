@@ -3,24 +3,59 @@ import {
   createNationalitySchema,
   updateNationalitySchema,
 } from "../validations/nationalities.schema";
-import { NationalityDetailResponse, NationalityListItem } from "@/types/nationality";
+import {
+  GetNationalitiesParams,
+  NationalityDetailResponse,
+  NationalityEditResponse,
+  NationalityListItem,
+} from "@/types/nationality";
 
-export const fetchNationalities = async (): Promise<NationalityListItem[]> => {
+/**
+ *
+ * @param params
+ * @returns NationalityListItem[]
+ */
+export const fetchNationalities = async (
+  params?: GetNationalitiesParams,
+): Promise<NationalityListItem[]> => {
   const { data } = await apiClient.get<{
     success: boolean;
     data: NationalityListItem[];
-  }>("/nationalities");
+  }>("/nationalities", {
+    params,
+  });
 
   return data.data;
 };
 
-export const fetchNationalityBySlug = async (
-  slug: string,
-): Promise<NationalityDetailResponse> => {
+/**
+ *
+ * @param id
+ * @returns NationalityEditResponse | null
+ */
+export const fetchNationalityEdit = async (
+  id: string,
+): Promise<NationalityEditResponse | null> => {
+  const { data } = await apiClient.get<{
+    success: boolean;
+    data: NationalityEditResponse;
+  }>(`/nationalities/${id}/edit`);
+
+  return data.data;
+};
+
+/**
+ *
+ * @param id
+ * @returns NationalityDetailResponse | null
+ */
+export const fetchNationalityDetail = async (
+  id: string,
+): Promise<NationalityDetailResponse | null> => {
   const { data } = await apiClient.get<{
     success: boolean;
     data: NationalityDetailResponse;
-  }>(`/nationalities/slug/${slug}`);
+  }>(`/nationalities/${id}`);
 
   return data.data;
 };

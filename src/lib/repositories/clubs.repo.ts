@@ -1,17 +1,25 @@
 import { createClient } from "@/utils/supabase/server";
 import { STORAGE_BUCKETS } from "../storage";
 import {
-  Club,
   ClubCreateInput,
   ClubDetailResponse,
+  ClubEditResponse,
   ClubListItem,
+  ClubLookupResponse,
   ClubUpdateInput,
+  DbClubDetailRow,
+  DbClubListRow,
   GetClubsParams,
 } from "@/types/club";
 import { requireEntity } from "./helpers/require-entity";
 import { ensureUniqueSlug } from "./helpers/slug";
 import { ENTITY_CONFIG } from "@/config/entities";
 import { deleteEntityImage, prepareUpdatedImage } from "./helpers/image";
+import {
+  mapClubDetailResponse,
+  mapClubEditResponse,
+  mapClubListItem,
+} from "../clubs/mapper";
 
 async function getSupabase() {
   return createClient();
@@ -25,29 +33,42 @@ const getTable = () => {
   return ENTITY_CONFIG["club"]["table"];
 };
 
+function getClubsBaseQuery() {
+  return `
+    id,
+    image,
+    name,
+    slug,
+    club_type,
+
+    nation:nationalities!clubs_nation_id_fkey(
+      id,
+      name,
+      image
+    ),
+
+    parent_club:clubs!parent_club_id(
+      id,
+      name,
+      image
+    )
+  `;
+}
+
+/**
+ *
+ * @param params
+ * @returns ClubListItem[]
+ */
 export async function getClubsRepo(
   params: GetClubsParams,
 ): Promise<ClubListItem[]> {
   const supabase = await getSupabase();
 
-  console.log("Params: ", JSON.stringify(params, null, 2));
-
   // Base Query
   let query = supabase
     .from(getTable())
-    .select(
-      `
-      *,
-      nation:nationalities!clubs_nation_id_fkey(
-        id,
-        name
-      ),
-      parent_club:clubs!parent_club_id(
-        id,
-        name
-      )
-      `,
-    )
+    .select(getClubsBaseQuery())
     .order("name");
 
   // Filter
@@ -63,72 +84,107 @@ export async function getClubsRepo(
     query = query.eq("club_type", params.clubType);
   }
 
-  const { data, error } = await query;
+  const { data, error } = await query.overrideTypes<DbClubListRow[]>();
 
   if (error) throw error;
 
-  return (data ?? []).map((club) => ({
-    ...club,
-  }));
+  return (data ?? []).map(mapClubListItem);
 }
 
-export async function getClubByIdRepo(
+function getClubDetailBaseQuery() {
+  return `
+    *,
+
+    nation:nationalities!clubs_nation_id_fkey(
+      id,
+      name,
+      image
+    ),
+
+    parent_club:clubs!parent_club_id(
+      id,
+      name,
+      image
+    )
+  `;
+}
+
+/**
+ *
+ * @param id
+ * @returns ClubEditResponse | null
+ */
+export async function getClubEditRepo(
+  id: string,
+): Promise<ClubEditResponse | null> {
+  const supabase = await getSupabase();
+
+  const { data, error } = await supabase
+    .from(getTable())
+    .select(getClubDetailBaseQuery())
+    .eq("id", id)
+    .maybeSingle()
+    .overrideTypes<DbClubDetailRow>();
+
+  if (error) throw error;
+  if (!data) return null;
+
+  return mapClubEditResponse(data);
+}
+
+/**
+ *
+ * @param id
+ * @returns ClubDetailResponse | null
+ */
+export async function getClubDetailRepo(
   id: string,
 ): Promise<ClubDetailResponse | null> {
   const supabase = await getSupabase();
 
   const { data, error } = await supabase
     .from(getTable())
-    .select(
-      `
-      *,
-      nation:nationalities!clubs_nation_id_fkey(
-        id,
-        name
-      ),
-      parent_club:clubs!parent_club_id(
-        id,
-        name
-      )
-    `,
-    )
+    .select(getClubDetailBaseQuery())
     .eq("id", id)
-    .maybeSingle();
+    .maybeSingle()
+    .overrideTypes<DbClubDetailRow>();
 
   if (error) throw error;
+  if (!data) return null;
 
-  return data;
+  return mapClubDetailResponse(data);
 }
 
-export async function getClubBySlugRepo(
+/**
+ *
+ * @param id
+ * @returns ClubLookupResponse
+ */
+export async function getClubLookupRepo(
   slug: string,
-): Promise<ClubDetailResponse | null> {
+): Promise<ClubLookupResponse | null> {
   const supabase = await getSupabase();
 
   const { data, error } = await supabase
     .from(getTable())
-    .select(
-      `
-      *,
-      nation:nationalities!clubs_nation_id_fkey(
-        id,
-        name
-      ),
-      parent_club:clubs!parent_club_id(
-        id,
-        name
-      )
-    `,
-    )
+    .select(`id, slug`)
     .eq("slug", slug)
     .maybeSingle();
 
   if (error) throw error;
+  if (!data) return null;
 
   return data;
 }
 
-export async function createClubRepo(club: ClubCreateInput): Promise<Club> {
+/**
+ *
+ * @param club
+ * @returns ClubDetailResponse
+ */
+export async function createClubRepo(
+  club: ClubCreateInput,
+): Promise<ClubDetailResponse> {
   const supabase = await getSupabase();
 
   const slug = await ensureUniqueSlug({
@@ -136,7 +192,7 @@ export async function createClubRepo(club: ClubCreateInput): Promise<Club> {
     name: club.name,
   });
 
-  const { data, error } = await supabase
+  const { data: insertedClub, error } = await supabase
     .from(getTable())
     .insert({ ...club, slug })
     .select(`*`)
@@ -144,16 +200,27 @@ export async function createClubRepo(club: ClubCreateInput): Promise<Club> {
 
   if (error) throw error;
 
-  return data;
+  const result = await getClubDetailRepo(insertedClub.id);
+  if (!result) {
+    throw new Error("Failed to retrieve created club");
+  }
+
+  return result;
 }
 
+/**
+ *
+ * @param id
+ * @param club
+ * @returns ClubDetailResponse
+ */
 export async function updateClubRepo(
   id: string,
   club: ClubUpdateInput,
-): Promise<Club> {
+): Promise<ClubDetailResponse> {
   const supabase = await getSupabase();
 
-  const oldClub = await requireEntity(getClubByIdRepo, id, getLabel());
+  const oldClub = await requireEntity(getClubEditRepo, id, getLabel());
 
   const slug = await ensureUniqueSlug({
     table: getTable(),
@@ -168,7 +235,7 @@ export async function updateClubRepo(
     bucket: STORAGE_BUCKETS.CLUBS,
   });
 
-  const { data, error } = await supabase
+  const { error } = await supabase
     .from(getTable())
     .update({
       name: club.name,
@@ -185,13 +252,22 @@ export async function updateClubRepo(
 
   if (error) throw error;
 
-  return data;
+  const result = await getClubDetailRepo(id);
+  if (!result) {
+    throw new Error("Failed to retrieve updated club");
+  }
+
+  return result;
 }
 
+/**
+ *
+ * @param id
+ */
 export async function deleteClubRepo(id: string): Promise<void> {
   const supabase = await getSupabase();
 
-  const club = await requireEntity(getClubByIdRepo, id, getLabel());
+  const club = await requireEntity(getClubEditRepo, id, getLabel());
 
   await deleteEntityImage(club.image, STORAGE_BUCKETS.CLUBS);
 

@@ -1,10 +1,11 @@
 import {
   createNationalityRepo,
   deleteNationalityRepo,
-  getNationalityByIdRepo,
   getNationalitiesRepo,
+  getNationalityDetailRepo,
+  getNationalityEditRepo,
+  getNationalityLookupRepo,
   updateNationalityRepo,
-  getNationalityBySlugRepo,
 } from "@/lib/repositories/nationalities.repo";
 import {
   nationalitiesQuerySchema,
@@ -19,16 +20,22 @@ export async function getNationalitiesService(query: unknown) {
   return getNationalitiesRepo(parsed);
 }
 
-export async function getNationalityByIdService(id: string) {
+export async function getNationalityEditService(id: string) {
   const parsedId = idSchema.parse(id);
 
-  return getNationalityByIdRepo(parsedId);
+  return getNationalityEditRepo(parsedId);
 }
 
-export async function getNationalityBySlugService(slug: string) {
+export async function getNationalityDetailService(id: string) {
+  const parsedId = idSchema.parse(id);
+
+  return getNationalityDetailRepo(parsedId);
+}
+
+export async function getNationalityLookupService(slug: string) {
   const parsedSlug = slugSchema.parse(slug);
 
-  return getNationalityBySlugRepo(parsedSlug);
+  return getNationalityLookupRepo(parsedSlug);
 }
 
 export async function createNationalityService(input: unknown) {

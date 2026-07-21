@@ -1,16 +1,18 @@
 import {
   createPlayerRepo,
   deletePlayerRepo,
-  getPlayerByIdRepo,
+  getPlayerEditRepo,
+  getPlayerDetailRepo,
   getPlayersRepo,
   updatePlayerRepo,
+  getPlayerLookupRepo,
 } from "@/lib/repositories/players.repo";
 import {
   playersQuerySchema,
   createPlayerSchema,
   updatePlayerSchema,
 } from "@/lib/validations/players.schema";
-import { idSchema } from "../validations/primitives.schema";
+import { idSchema, slugSchema } from "../validations/primitives.schema";
 
 export async function getPlayersService(query: unknown) {
   const parsed = playersQuerySchema.parse(query);
@@ -18,10 +20,22 @@ export async function getPlayersService(query: unknown) {
   return getPlayersRepo(parsed);
 }
 
-export async function getPlayerByIdService(id: string) {
+export async function getPlayerEditService(id: string) {
   const parsedId = idSchema.parse(id);
 
-  return getPlayerByIdRepo(parsedId);
+  return getPlayerEditRepo(parsedId);
+}
+
+export async function getPlayerDetailService(id: string) {
+  const parsedId = idSchema.parse(id);
+
+  return getPlayerDetailRepo(parsedId);
+}
+
+export async function getPlayerLookupService(slug: string) {
+  const parsedSlug = slugSchema.parse(slug);
+
+  return getPlayerLookupRepo(parsedSlug);
 }
 
 export async function createPlayerService(input: unknown) {

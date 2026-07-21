@@ -1,17 +1,24 @@
 import { createClient } from "@/utils/supabase/server";
 import { STORAGE_BUCKETS } from "../storage";
 import {
+  DbNationalityListRow,
   GetNationalitiesParams,
-  Nationality,
   NationalityCreateInput,
   NationalityDetailResponse,
+  NationalityEditResponse,
   NationalityListItem,
+  NationalityLookupResponse,
   NationalityUpdateInput,
 } from "@/types/nationality";
 import { ensureUniqueSlug } from "./helpers/slug";
 import { requireEntity } from "./helpers/require-entity";
 import { ENTITY_CONFIG } from "@/config/entities";
 import { deleteEntityImage, prepareUpdatedImage } from "./helpers/image";
+import {
+  mapNationalityDetailResponse,
+  mapNationalityEditResponse,
+  mapNationalityListItem,
+} from "../nationalities/mapper";
 
 async function getSupabase() {
   return createClient();
@@ -25,25 +32,70 @@ const getTable = () => {
   return ENTITY_CONFIG["nationality"]["table"];
 };
 
+function getNationalitiesBaseQuery() {
+  return `
+    id,
+    image,
+    name,
+    slug
+  `;
+}
+
+/**
+ *
+ * @param params
+ * @returns NationalityListItem[]
+ */
 export async function getNationalitiesRepo(
   params: GetNationalitiesParams,
 ): Promise<NationalityListItem[]> {
   const supabase = await getSupabase();
 
-  let query = supabase.from(getTable()).select("*").order("name");
+  let query = supabase
+    .from(getTable())
+    .select(getNationalitiesBaseQuery())
+    .order("name");
 
+  // Filter
   if (params.name) {
     query = query.ilike("name", `%${params.name}%`);
   }
 
-  const { data, error } = await query;
+  const { data, error } = await query.overrideTypes<DbNationalityListRow[]>();
 
   if (error) throw error;
 
-  return data ?? [];
+  return (data ?? []).map(mapNationalityListItem);
 }
 
-export async function getNationalityByIdRepo(
+/**
+ *
+ * @param id
+ * @returns NationalityEditResponse | null
+ */
+export async function getNationalityEditRepo(
+  id: string,
+): Promise<NationalityEditResponse | null> {
+  const supabase = await getSupabase();
+
+  const { data, error } = await supabase
+    .from(getTable())
+    .select("*")
+    .eq("id", id)
+    .maybeSingle();
+
+  if (error) throw error;
+  if (!data) return null;
+
+  return mapNationalityEditResponse(data);
+}
+
+/**
+ *
+ * @param id
+ * @returns NationalityDetailResponse | null
+ */
+export async function getNationalityDetailRepo(
   id: string,
 ): Promise<NationalityDetailResponse | null> {
   const supabase = await getSupabase();
@@ -55,29 +107,41 @@ export async function getNationalityByIdRepo(
     .maybeSingle();
 
   if (error) throw error;
+  if (!data) return null;
 
-  return data;
+  return mapNationalityDetailResponse(data);
 }
 
-export async function getNationalityBySlugRepo(
+/**
+ *
+ * @param slug
+ * @returns NationalityLookupResponse | null
+ */
+export async function getNationalityLookupRepo(
   slug: string,
-): Promise<NationalityDetailResponse | null> {
+): Promise<NationalityLookupResponse | null> {
   const supabase = await getSupabase();
 
   const { data, error } = await supabase
     .from(getTable())
-    .select("*")
+    .select(`id, slug`)
     .eq("slug", slug)
     .maybeSingle();
 
   if (error) throw error;
+  if (!data) return null;
 
   return data;
 }
 
+/**
+ *
+ * @param nationality
+ * @returns
+ */
 export async function createNationalityRepo(
   nationality: NationalityCreateInput,
-): Promise<Nationality> {
+): Promise<NationalityDetailResponse> {
   const supabase = await getSupabase();
 
   const slug = await ensureUniqueSlug({
@@ -85,7 +149,7 @@ export async function createNationalityRepo(
     name: nationality.name,
   });
 
-  const { data, error } = await supabase
+  const { data: insertedNationality, error } = await supabase
     .from(getTable())
     .insert({ ...nationality, slug })
     .select("*")
@@ -93,17 +157,22 @@ export async function createNationalityRepo(
 
   if (error) throw error;
 
-  return data;
+  const result = await getNationalityDetailRepo(insertedNationality.id);
+  if (!result) {
+    throw new Error("Failed to retrieve created nationality");
+  }
+
+  return result;
 }
 
 export async function updateNationalityRepo(
   id: string,
   nationality: NationalityUpdateInput,
-): Promise<Nationality> {
+): Promise<NationalityDetailResponse> {
   const supabase = await getSupabase();
 
   const oldNationality = await requireEntity(
-    getNationalityByIdRepo,
+    getNationalityEditRepo,
     id,
     getLabel(),
   );
@@ -121,7 +190,7 @@ export async function updateNationalityRepo(
     bucket: STORAGE_BUCKETS.NATIONALITIES,
   });
 
-  const { data, error } = await supabase
+  const { error } = await supabase
     .from(getTable())
     .update({
       name: nationality.name,
@@ -135,14 +204,19 @@ export async function updateNationalityRepo(
 
   if (error) throw error;
 
-  return data;
+  const result = await getNationalityDetailRepo(id);
+  if (!result) {
+    throw new Error("Failed to retrieve updated nationality");
+  }
+
+  return result;
 }
 
 export async function deleteNationalityRepo(id: string): Promise<void> {
   const supabase = await getSupabase();
 
   const nationality = await requireEntity(
-    getNationalityByIdRepo,
+    getNationalityEditRepo,
     id,
     getLabel(),
   );

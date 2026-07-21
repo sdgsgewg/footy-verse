@@ -3,13 +3,17 @@ import {
   createPositionSchema,
   updatePositionSchema,
 } from "../validations/positions.schema";
-import { PositionListItem } from "@/types/position";
+import { GetPositionsParams, PositionListItem } from "@/types/position";
 
-export const fetchPositions = async (): Promise<PositionListItem[]> => {
+export const fetchPositions = async (
+  params?: GetPositionsParams,
+): Promise<PositionListItem[]> => {
   const { data } = await apiClient.get<{
     success: boolean;
     data: PositionListItem[];
-  }>("/positions");
+  }>("/positions", {
+    params,
+  });
 
   return data.data;
 };

@@ -30,85 +30,201 @@ export type PlayerNationalTeamCreateInput = z.infer<
   typeof createPlayerNationalTeamSchema
 >;
 
-// Hasil query supabase
-export type PlayerPosition = Tables<"player_positions"> & {
-  position: Tables<"positions">;
-};
-export type PlayerCareer = Tables<"player_careers"> & {
-  club: Tables<"clubs">;
-};
-export type PlayerNationalTeam = Tables<"player_national_teams"> & {
-  nationality: Tables<"nationalities">;
-};
+// Data type for relation tables (can be used as a type for supabase query or DTO)
 
-type PositionSummary = Pick<Tables<"positions">, "id" | "name">;
+export type PositionSummary = Pick<Tables<"positions">, "id" | "name">;
 
-type ClubSummary = Pick<Tables<"clubs">, "id" | "name" | "image">;
+export type ClubSummary = Pick<Tables<"clubs">, "id" | "name" | "image">;
 
-type NationalitySummary = Pick<
+export type NationalitySummary = Pick<
   Tables<"nationalities">,
   "id" | "name" | "image"
 >;
+
+export type ContractSummary = Pick<
+  Tables<"player_contracts">,
+  "contract_start" | "contract_end"
+>;
+
+export type ShirtNumberSummary = Pick<
+  Tables<"player_shirt_numbers">,
+  "start_date" | "end_date" | "shirt_number"
+>;
+
+// Supabase Query Result
+
+// Player List
+
+export type DbPlayerPosition = Pick<
+  Tables<"player_positions">,
+  "display_order"
+> & {
+  position: PositionSummary;
+};
+
+export type DbPlayerCareer = Pick<
+  Tables<"player_careers">,
+  "id" | "joined_at" | "left_at" | "club_id"
+> & {
+  club: ClubSummary;
+  player_shirt_numbers: ShirtNumberSummary[];
+};
+
+export type DbPlayerNationalTeam = Pick<
+  Tables<"player_national_teams">,
+  "id" | "label" | "start_date" | "end_date" | "shirt_number" | "nation_id"
+> & {
+  nationality: NationalitySummary;
+};
 
 export type DbPlayerListRow = Pick<
   Player,
   "id" | "image" | "name" | "slug" | "market_value"
 > & {
-  player_positions: {
-    display_order: number;
-    position: PositionSummary;
-  }[];
+  player_positions: DbPlayerPosition[];
+  player_careers: DbPlayerCareer[];
+  player_national_teams: DbPlayerNationalTeam[];
+};
 
-  player_careers: {
-    joined_at: string;
-    left_at: string | null;
-    club: ClubSummary;
-  }[];
+// Player Detail
 
-  player_national_teams: {
-    end_date: string | null;
-    nationality: NationalitySummary;
-  }[];
+export type DbPlayerDetailCareer = Pick<
+  Tables<"player_careers">,
+  "id" | "joined_at" | "left_at" | "club_id"
+> & {
+  club: ClubSummary;
+  player_contracts: ContractSummary[];
+  player_shirt_numbers: ShirtNumberSummary[];
 };
 
 export type DbPlayerDetailRow = Player & {
-  player_positions: PlayerPosition[];
-  player_careers: PlayerCareer[];
-  player_national_teams: PlayerNationalTeam[];
+  player_positions: DbPlayerPosition[];
+  player_careers: DbPlayerDetailCareer[];
+  player_national_teams: DbPlayerNationalTeam[];
 };
 
 // API Response DTO
+
+// Player List
+
+export interface PlayerShirtNumber {
+  club: number | null;
+  nationalTeam: number | null;
+}
+
 export interface PlayerListItem {
+  id: string;
+  imageUrl: string;
+  name: string;
+  slug: string;
+
+  shirtNumber: PlayerShirtNumber;
+
+  mainPosition: PositionSummary;
+  currentClub: ClubSummary | null;
+  currentNationality: NationalitySummary | null;
+
+  marketValue: number;
+}
+
+// Player Detail
+
+export interface PlayerNationalTeam {
+  id: string;
+  label: string;
+  startDate: string;
+  endDate: string | null;
+  shirtNumber: number;
+  nationality: NationalitySummary;
+}
+
+// Model For Edit
+
+export interface PlayerPosition {
+  positionId: string;
+  displayOrder: number;
+}
+
+export interface PlayerEditResponse {
+  id: string;
+  name: string;
+  image: string | null;
+
+  dob: string;
+  pob: string;
+
+  height: number;
+  weight: number;
+
+  preferredFoot: string;
+  marketValue: number;
+
+  positions: PlayerPosition[];
+
+  nationalTeams: PlayerNationalTeam[];
+}
+
+// Model View Detail
+
+export interface PlayerCareer {
+  id: string;
+  joinedAt: string;
+  leftAt: string | null;
+  club: ClubSummary;
+  shirtNumber: ShirtNumberSummary;
+}
+
+export interface PlayerDetailResponse {
   id: string;
   image: string | null;
   name: string;
   slug: string;
 
-  main_position: {
-    id: string;
+  summary: {
+    shirtNumber: PlayerShirtNumber;
+    imageUrl: string | null;
     name: string;
-  } | null;
 
-  current_club: {
-    id: string;
+    dob: string;
+    pob: string;
+    currentNationality: NationalitySummary | null;
+    height: string;
+    mainPosition: PositionSummary;
+
+    currentClub: ClubSummary | null;
+    joinedAt: string;
+    contractEnd: string;
+  };
+
+  profile: {
     name: string;
-    image: string | null;
-  } | null;
+    dob: string;
+    pob: string;
+    height: string;
+    weight: string;
+    preferredFoot: string;
+    marketValue: string;
 
-  current_national_team: {
-    id: string;
-    name: string;
-    image: string | null;
-  } | null;
+    mainPosition: PositionSummary;
+    otherPositions: PositionSummary[];
 
-  market_value: number;
+    nationalities: NationalitySummary[];
+
+    currentClub: ClubSummary | null;
+    joinedAt: string;
+    contractEnd: string;
+  };
+
+  history: {
+    careers: PlayerCareer[];
+    nationalTeams: PlayerNationalTeam[];
+  };
 }
 
-export type PlayerDetailResponse = Player & {
-  positions: PlayerPosition[];
-  careers: PlayerCareer[];
-  national_teams: PlayerNationalTeam[];
-};
+export interface PlayerLookupResponse {
+  id: string;
+  slug: string;
+}
 
 // Mutation
 export type UpsertPlayerInput = z.infer<typeof playerMutationSchema> & {

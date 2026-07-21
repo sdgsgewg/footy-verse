@@ -16,7 +16,7 @@ export const clubMutationSchema = z.object({
     ClubType.U17,
     ClubType.ACADEMY,
   ]),
-  nation_id: idSchema,
+  nation_id: idSchema.nullable(),
   parent_club_id: idSchema.nullable().optional(),
 });
 

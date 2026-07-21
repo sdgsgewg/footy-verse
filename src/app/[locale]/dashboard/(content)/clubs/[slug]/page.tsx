@@ -1,48 +1,19 @@
-"use client";
+import ClubDetailPage from "@/components/dashboard/clubs/ClubDetailPage";
+import { getClubLookupService } from "@/lib/services/clubs.service";
+import { notFound } from "next/navigation";
 
-import NotFound from "@/components/feedback/NotFound";
-import PageLoading from "@/components/feedback/PageLoading";
-import ClubDetailPageLayout from "@/components/layout/detail-page/ClubDetailPageLayout";
-import { useClub } from "@/hooks/dashboard/clubs";
-import { getDefaultImage } from "@/lib/images/default-image";
-import { getImageUrl } from "@/lib/images/image-url";
-import { STORAGE_BUCKETS } from "@/lib/storage";
-import { useTranslations } from "next-intl";
-import { useParams } from "next/navigation";
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
 
-const ViewClubPage = () => {
-  const t = useTranslations("dashboard.clubs");
-  const tCommonStates = useTranslations("common.states");
-  const tEntities = useTranslations("entities");
+  const clubLookup = await getClubLookupService(slug);
 
-  const { slug } = useParams() as {
-    slug: string;
-  };
-
-  const { club, loading } = useClub({ slug });
-
-  if (loading) {
-    return (
-      <PageLoading
-        message={tCommonStates("loadingEntity", {
-          entity: tEntities("club").toLowerCase(),
-        })}
-      />
-    );
+  if (!clubLookup) {
+    return notFound();
   }
 
-  if (!club) {
-    return <NotFound text={t("notFound")} />;
-  }
-
-  const { image, name } = club;
-
-  const modifiedImage =
-    getImageUrl(STORAGE_BUCKETS.CLUBS, image) ?? getDefaultImage("club");
-
-  return (
-    <ClubDetailPageLayout title={name} imageUrl={modifiedImage} club={club} />
-  );
-};
-
-export default ViewClubPage;
+  return <ClubDetailPage clubLookup={clubLookup} />;
+}

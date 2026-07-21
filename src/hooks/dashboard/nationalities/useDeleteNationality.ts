@@ -1,6 +1,6 @@
 import { deleteNationality } from "@/lib/api/nationality";
 import { useCrudMutation } from "../useCrudMutation";
-import { queryKeys } from "@/lib/react-query/queryKeys";
+import { nationalityKeys } from "@/lib/react-query/keys/nationalityKeys";
 
 interface DeleteNationalityPayload {
   id: string;
@@ -11,7 +11,7 @@ export function useDeleteNationality() {
   return useCrudMutation<DeleteNationalityPayload>({
     mutationFn: ({ id }) => deleteNationality(id),
 
-    queryKey: queryKeys.nationalities(),
+    invalidateQueries: [{ queryKey: nationalityKeys.lists() }],
 
     entityKey: "nationality",
 

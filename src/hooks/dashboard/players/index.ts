@@ -1,5 +1,6 @@
 export * from "./usePlayers";
-export * from "./usePlayer";
+export * from "./usePlayerDetail";
+export * from "./usePlayerEdit";
 export * from "./usePlayerForm";
 export * from "./usePlayerSubmit";
 export * from "./useCreatePlayer";

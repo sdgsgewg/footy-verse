@@ -1,6 +1,6 @@
 import { updateNationality } from "@/lib/api/nationality";
 import { useCrudMutation } from "../useCrudMutation";
-import { queryKeys } from "@/lib/react-query/queryKeys";
+import { nationalityKeys } from "@/lib/react-query/keys/nationalityKeys";
 
 interface UpdateNationalityPayload {
   id: string;
@@ -11,7 +11,10 @@ export function useUpdateNationality(onSuccess?: () => void) {
   return useCrudMutation<UpdateNationalityPayload>({
     mutationFn: ({ id, data }) => updateNationality(id, data),
 
-    queryKey: queryKeys.nationalities(),
+    invalidateQueries: [
+      { queryKey: nationalityKeys.lists() },
+      { queryKey: nationalityKeys.details() },
+    ],
 
     entityKey: "nationality",
 

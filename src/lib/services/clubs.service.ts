@@ -1,8 +1,9 @@
 import {
   createClubRepo,
   deleteClubRepo,
-  getClubByIdRepo,
-  getClubBySlugRepo,
+  getClubDetailRepo,
+  getClubEditRepo,
+  getClubLookupRepo,
   getClubsRepo,
   updateClubRepo,
 } from "@/lib/repositories/clubs.repo";
@@ -12,23 +13,30 @@ import {
   updateClubSchema,
 } from "@/lib/validations/clubs.schema";
 import { idSchema, slugSchema } from "../validations/primitives.schema";
+import { GetClubsParams } from "@/types/club";
 
-export async function getClubsService(query: unknown) {
+export async function getClubsService(query: GetClubsParams) {
   const parsed = clubsQuerySchema.parse(query);
 
   return getClubsRepo(parsed);
 }
 
-export async function getClubByIdService(id: string) {
+export async function getClubEditService(id: string) {
   const parsedId = idSchema.parse(id);
 
-  return getClubByIdRepo(parsedId);
+  return getClubEditRepo(parsedId);
 }
 
-export async function getClubBySlugService(slug: string) {
+export async function getClubDetailService(id: string) {
+  const parsedId = idSchema.parse(id);
+
+  return getClubDetailRepo(parsedId);
+}
+
+export async function getClubLookupService(slug: string) {
   const parsedSlug = slugSchema.parse(slug);
 
-  return getClubBySlugRepo(parsedSlug);
+  return getClubLookupRepo(parsedSlug);
 }
 
 export async function createClubService(input: unknown) {

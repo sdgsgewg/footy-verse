@@ -35,7 +35,7 @@ const DetailPageLayout = ({ title, summary, content }: Props) => {
       <div className="flex gap-8">{summary}</div>
 
       {/* Detail Content */}
-      <div className="">{content}</div>
+      <div className="space-y-6">{content}</div>
     </div>
   );
 };

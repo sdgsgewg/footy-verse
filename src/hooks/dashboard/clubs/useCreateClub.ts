@@ -1,13 +1,13 @@
 import { createClub } from "@/lib/api/club";
 import { useCrudMutation } from "../useCrudMutation";
-import { queryKeys } from "@/lib/react-query/queryKeys";
 import { ROUTES } from "@/constants/routes";
+import { clubKeys } from "@/lib/react-query/keys/clubKeys";
 
 export function useCreateClub() {
   return useCrudMutation({
     mutationFn: createClub,
 
-    queryKey: queryKeys.clubs(),
+    invalidateQueries: [{ queryKey: clubKeys.lists() }],
 
     redirectTo: ROUTES.DASHBOARD.CONTENT.CLUBS.BASE,
 

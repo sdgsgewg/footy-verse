@@ -1,11 +1,11 @@
 import { ROUTES } from "@/constants/routes";
 import { useRouter } from "@/navigation";
-import { NationalityDetailResponse } from "@/types/nationality";
+import { NationalityListItem } from "@/types/nationality";
 
 export function useNationalityActions() {
   const router = useRouter();
 
-  const handleView = (nation: NationalityDetailResponse) => {
+  const handleView = (nation: NationalityListItem) => {
     router.push(`${ROUTES.DASHBOARD.CONTENT.NATIONALITIES}/${nation.slug}`);
   };
 

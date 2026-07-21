@@ -1,4 +1,4 @@
 export * from "./useNationalities";
-export * from "./useNationality";
+export * from "./useNationalityDetail";
 export * from "./useNationalityActions";
 export * from "./useNationalityData";

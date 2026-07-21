@@ -1,6 +1,8 @@
+"use client";
+
 import { TransferType } from "@/enums/TransferType";
 import {
-  PlayerCareerDetailResponse,
+  PlayerCareerEditResponse,
   UpsertPlayerCareerInput,
 } from "@/types/player-career";
 import { useMemo, useState } from "react";
@@ -25,41 +27,41 @@ const emptyPlayerCareerForm: UpsertPlayerCareerInput = {
 };
 
 function mapPlayerCareer(
-  playerCareer: PlayerCareerDetailResponse,
+  playerCareer: PlayerCareerEditResponse,
 ): UpsertPlayerCareerInput {
   const { transfer } = playerCareer;
 
   return {
     id: playerCareer.id,
 
-    club_id: playerCareer.club_id,
-    joined_at: playerCareer.joined_at,
-    left_at: playerCareer.left_at,
+    club_id: playerCareer.clubId,
+    joined_at: playerCareer.joinedAt,
+    left_at: playerCareer.leftAt,
 
     contracts: playerCareer.contracts.map((pc) => ({
-      contract_start: pc.contract_start,
-      contract_end: pc.contract_end,
+      contract_start: pc.contractStart,
+      contract_end: pc.contractEnd,
       salary: pc.salary,
     })),
 
-    shirt_numbers: playerCareer.shirt_numbers.map((psn) => ({
-      shirt_number: psn.shirt_number,
-      start_date: psn.start_date,
-      end_date: psn.end_date,
+    shirt_numbers: playerCareer.shirtNumbers.map((psn) => ({
+      shirt_number: psn.shirtNumber,
+      start_date: psn.startDate,
+      end_date: psn.endDate,
     })),
 
     transfer: {
-      season_id: transfer.season_id,
-      from_club_id: transfer.from_club_id,
-      to_club_id: transfer.to_club_id,
-      transfer_type: transfer.transfer_type as TransferType,
-      transfer_fee: transfer.transfer_fee,
-      transfer_date: transfer.transfer_date,
+      season_id: transfer.seasonId,
+      from_club_id: transfer.fromClubId,
+      to_club_id: transfer.toClubId,
+      transfer_type: transfer.transferType as TransferType,
+      transfer_fee: transfer.transferFee,
+      transfer_date: transfer.transferDate,
     },
   };
 }
 
-export function usePlayerCareerForm(playerCareer?: PlayerCareerDetailResponse) {
+export function usePlayerCareerForm(playerCareer?: PlayerCareerEditResponse) {
   const initialValue = useMemo(
     () =>
       playerCareer ? mapPlayerCareer(playerCareer) : emptyPlayerCareerForm,

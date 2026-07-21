@@ -5,9 +5,15 @@ import {
 import { apiClient } from "./client";
 import {
   PlayerCareerDetailResponse,
+  PlayerCareerEditResponse,
   PlayerCareerListItem,
 } from "@/types/player-career";
 
+/**
+ *
+ * @param playerId
+ * @returns PlayerCareerListItem[]
+ */
 export const fetchPlayerCareers = async (
   playerId: string,
 ): Promise<PlayerCareerListItem[]> => {
@@ -19,7 +25,31 @@ export const fetchPlayerCareers = async (
   return data.data;
 };
 
-export const fetchPlayerCareerById = async (
+/**
+ *
+ * @param playerId
+ * @param careerId
+ * @returns PlayerCareerEditResponse
+ */
+export const fetchPlayerCareerEdit = async (
+  playerId: string,
+  careerId: string,
+): Promise<PlayerCareerEditResponse> => {
+  const { data } = await apiClient.get<{
+    success: boolean;
+    data: PlayerCareerEditResponse;
+  }>(`/players/${playerId}/careers/${careerId}/edit`);
+
+  return data.data;
+};
+
+/**
+ *
+ * @param playerId
+ * @param careerId
+ * @returns PlayerCareerDetailResponse
+ */
+export const fetchPlayerCareerDetail = async (
   playerId: string,
   careerId: string,
 ): Promise<PlayerCareerDetailResponse> => {
@@ -31,6 +61,11 @@ export const fetchPlayerCareerById = async (
   return data.data;
 };
 
+/**
+ *
+ * @param playerId
+ * @param payload
+ */
 export const createPlayerCareer = async (
   playerId: string,
   payload: unknown,
@@ -40,6 +75,12 @@ export const createPlayerCareer = async (
   await apiClient.post(`/players/${playerId}/careers`, parsed);
 };
 
+/**
+ *
+ * @param playerId
+ * @param careerId
+ * @param payload
+ */
 export const updatePlayerCareer = async (
   playerId: string,
   careerId: string,
@@ -50,6 +91,11 @@ export const updatePlayerCareer = async (
   await apiClient.put(`/players/${playerId}/careers/${careerId}`, parsed);
 };
 
+/**
+ *
+ * @param playerId
+ * @param careerId
+ */
 export const deletePlayerCareer = async (
   playerId: string,
   careerId: string,

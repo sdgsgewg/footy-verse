@@ -1,6 +1,6 @@
 import { deletePlayer } from "@/lib/api/player";
 import { useCrudMutation } from "../useCrudMutation";
-import { queryKeys } from "@/lib/react-query/queryKeys";
+import { playerKeys } from "@/lib/react-query/keys/playerKeys";
 
 interface DeletePlayerPayload {
   id: string;
@@ -11,7 +11,7 @@ export function useDeletePlayer() {
   return useCrudMutation<DeletePlayerPayload>({
     mutationFn: ({ id }) => deletePlayer(id),
 
-    queryKey: queryKeys.players(),
+    invalidateQueries: [{ queryKey: playerKeys.lists() }],
 
     entityKey: "player",
 

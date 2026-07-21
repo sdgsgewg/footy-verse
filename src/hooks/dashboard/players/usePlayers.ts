@@ -1,29 +1,24 @@
 import { useQuery } from "@tanstack/react-query";
-
 import { fetchPlayers } from "@/lib/api/player";
-import { queryConfig } from "@/lib/react-query/queryConfig";
-import { queryKeys } from "@/lib/react-query/queryKeys";
+import { queryConfig } from "@/lib/react-query/config/queryConfig";
+import { GetPlayersParams } from "@/types/player";
+import { playerKeys } from "@/lib/react-query/keys/playerKeys";
 
-export function usePlayers() {
-  const {
-    data = [],
-    isLoading,
-    isRefetching,
-    error,
-    refetch,
-  } = useQuery({
-    queryKey: queryKeys.players(),
-    queryFn: fetchPlayers,
+export function usePlayers(params?: GetPlayersParams, enabled?: boolean) {
+  console.log("Params (hook): ", JSON.stringify(params, null, 2));
+
+  const query = useQuery({
+    queryKey: playerKeys.list(params),
+    queryFn: () => fetchPlayers(params),
+    enabled,
     ...queryConfig,
   });
 
   return {
-    players: data,
-    loading: isLoading,
-    retrying: isRefetching,
-    loadError: error ?? null,
-    retryLoad: () => {
-      void refetch();
-    },
+    players: query.data ?? [],
+    loading: query.isLoading,
+    retrying: query.isRefetching,
+    loadError: query.error ?? null,
+    retryLoad: query.refetch,
   };
 }

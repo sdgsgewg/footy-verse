@@ -12,12 +12,13 @@ import {
 } from "@/lib/services/nationalities.service";
 import { tryDeleteImage, uploadImage } from "@/lib/services/storage.service";
 import { STORAGE_BUCKETS } from "@/lib/storage";
+import { GetNationalitiesParams } from "@/types/nationality";
 
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
 
-    const query = {
+    const query: GetNationalitiesParams = {
       name: searchParams.get("name") || undefined,
     };
 

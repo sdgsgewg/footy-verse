@@ -2,11 +2,11 @@
 
 import { X } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { ClubFilter } from "@/hooks/clubs/useClubFilter";
 import { getClubTypeLabel } from "@/lib/clubs/labels";
 import { ClubType } from "@/enums/ClubType";
 import { useNationalities } from "@/hooks/dashboard/nationalities";
 import { useMemo } from "react";
+import { ClubFilter } from "@/hooks/clubs";
 
 interface Props {
   filters: ClubFilter;

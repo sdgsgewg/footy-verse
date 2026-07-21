@@ -35,4 +35,8 @@ export const playersSchema = z.array(playerSchema);
 
 export const playersQuerySchema = z.object({
   name: z.string().trim().min(1).max(255).optional(),
+
+  nationId: idSchema.optional(),
+
+  clubId: idSchema.optional(),
 });

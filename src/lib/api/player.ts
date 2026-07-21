@@ -3,18 +3,55 @@ import {
   createPlayerSchema,
   updatePlayerSchema,
 } from "../validations/players.schema";
-import { PlayerDetailResponse, PlayerListItem } from "@/types/player";
+import {
+  GetPlayersParams,
+  PlayerDetailResponse,
+  PlayerEditResponse,
+  PlayerListItem,
+} from "@/types/player";
 
-export const fetchPlayers = async (): Promise<PlayerListItem[]> => {
+/**
+ *
+ * @param params
+ * @returns PlayerListItem[]
+ */
+export const fetchPlayers = async (
+  params?: GetPlayersParams,
+): Promise<PlayerListItem[]> => {
+  console.log("Params (API): ", params);
+
   const { data } = await apiClient.get<{
     success: boolean;
     data: PlayerListItem[];
-  }>("/players");
+  }>("/players", {
+    params,
+  });
 
   return data.data;
 };
 
-export const fetchPlayerById = async (
+/**
+ *
+ * @param id
+ * @returns PlayerEditResponse
+ */
+export const fetchPlayerEdit = async (
+  id: string,
+): Promise<PlayerEditResponse> => {
+  const { data } = await apiClient.get<{
+    success: boolean;
+    data: PlayerEditResponse;
+  }>(`/players/${id}/edit`);
+
+  return data.data;
+};
+
+/**
+ *
+ * @param id
+ * @returns PlayerDetailResponse
+ */
+export const fetchPlayerDetail = async (
   id: string,
 ): Promise<PlayerDetailResponse> => {
   const { data } = await apiClient.get<{
@@ -25,7 +62,12 @@ export const fetchPlayerById = async (
   return data.data;
 };
 
-export const createPlayer = async (payload: unknown) => {
+/**
+ *
+ * @param payload
+ * @returns void
+ */
+export const createPlayer = async (payload: unknown): Promise<void> => {
   if (payload instanceof FormData) {
     const response = await fetch("/api/players", {
       method: "POST",
@@ -46,7 +88,16 @@ export const createPlayer = async (payload: unknown) => {
   await apiClient.post("/players", parsed);
 };
 
-export const updatePlayer = async (id: string, payload: unknown) => {
+/**
+ *
+ * @param id
+ * @param payload
+ * @returns void
+ */
+export const updatePlayer = async (
+  id: string,
+  payload: unknown,
+): Promise<void> => {
   if (payload instanceof FormData) {
     const response = await fetch(`/api/players/${id}`, {
       method: "PUT",
@@ -67,6 +118,10 @@ export const updatePlayer = async (id: string, payload: unknown) => {
   await apiClient.put(`/players/${id}`, parsed);
 };
 
-export const deletePlayer = async (id: string) => {
+/**
+ *
+ * @param id
+ */
+export const deletePlayer = async (id: string): Promise<void> => {
   await apiClient.delete(`/players/${id}`);
 };

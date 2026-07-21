@@ -1,6 +1,6 @@
 import { deletePlayerCareer } from "@/lib/api/player-career";
 import { useCrudMutation } from "../useCrudMutation";
-import { queryKeys } from "@/lib/react-query/queryKeys";
+import { playerCareerKeys } from "@/lib/react-query/keys/playerCareerKeys";
 
 interface DeletePlayerCareerPayload {
   careerId: string;
@@ -11,7 +11,7 @@ export function useDeletePlayerCareer(playerId: string) {
   return useCrudMutation<DeletePlayerCareerPayload>({
     mutationFn: ({ careerId }) => deletePlayerCareer(playerId, careerId),
 
-    queryKey: queryKeys.player_careers(playerId),
+    invalidateQueries: [{ queryKey: playerCareerKeys.lists() }],
 
     entityKey: "playerCareer",
 

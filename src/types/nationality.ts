@@ -19,11 +19,55 @@ export type GetNationalitiesParams = z.infer<typeof nationalitiesQuerySchema>;
 export type NationalityCreateInput = z.infer<typeof createNationalitySchema>;
 export type NationalityUpdateInput = z.infer<typeof updateNationalitySchema>;
 
+// Supabase Query Result
+
+// Club List
+
+export type DbNationalityListRow = Pick<
+  Nationality,
+  "id" | "image" | "name" | "slug"
+>;
+
+// Club Detail
+
+export type DbNationalityDetailRow = Nationality;
+
 // DTO helper
 
 // API Response DTO
-export type NationalityListItem = Nationality;
-export type NationalityDetailResponse = Nationality;
+
+// Nationality List
+
+export interface NationalityListItem {
+  id: string;
+  image: string | null;
+  imageUrl: string;
+  name: string;
+  slug: string;
+}
+
+// Nationality Detail
+
+// Model for Edit
+
+export interface NationalityEditResponse {
+  id: string;
+  image: string | null;
+  name: string;
+}
+
+// Model View Detail
+
+export interface NationalityDetailResponse {
+  id: string;
+  imageUrl: string;
+  name: string;
+}
+
+export interface NationalityLookupResponse {
+  id: string;
+  slug: string;
+}
 
 // Mutation
 export type UpsertNationalityInput = z.infer<

@@ -1,11 +1,11 @@
 "use client";
 
-import { useClubForm, useClubs } from "@/hooks/dashboard/clubs";
+import { useClubForm } from "@/hooks/dashboard/clubs";
 import { useTranslations } from "next-intl";
 import FormHeader from "../base/FormHeader";
 import FormWrapper from "../base/FormWrapper";
 import ImageUpload from "@/components/shared/ImageUpload";
-import { ClubDetailResponse } from "@/types/club";
+import { ClubEditResponse } from "@/types/club";
 import InputText from "@/components/ui/InputText";
 import { ClubType } from "@/enums/ClubType";
 import { useNationalities } from "@/hooks/dashboard/nationalities";
@@ -14,10 +14,11 @@ import ComboboxField from "../fields/ComboboxField";
 import FormContentWrapper from "../base/FormContentWrapper";
 import { getClubTypeOptions, getClubOptions } from "@/lib/clubs/options";
 import { getNationalityOptions } from "@/lib/nationalities/options";
+import { useClubs } from "@/hooks/clubs";
 
 interface Props {
   mode: "create" | "edit";
-  club?: ClubDetailResponse;
+  club?: ClubEditResponse;
 
   loading?: boolean;
 

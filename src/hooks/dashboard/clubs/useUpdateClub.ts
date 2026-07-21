@@ -1,7 +1,7 @@
 import { updateClub } from "@/lib/api/club";
 import { useCrudMutation } from "../useCrudMutation";
 import { ROUTES } from "@/constants/routes";
-import { queryKeys } from "@/lib/react-query/queryKeys";
+import { clubKeys } from "@/lib/react-query/keys/clubKeys";
 
 interface UpdateClubPayload {
   id: string;
@@ -12,7 +12,11 @@ export function useUpdateClub() {
   return useCrudMutation<UpdateClubPayload>({
     mutationFn: ({ id, data }) => updateClub(id, data),
 
-    queryKey: queryKeys.clubs(),
+    invalidateQueries: [
+      { queryKey: clubKeys.lists() },
+      { queryKey: clubKeys.details() },
+      { queryKey: clubKeys.edits() },
+    ],
 
     redirectTo: ROUTES.DASHBOARD.CONTENT.CLUBS.BASE,
 

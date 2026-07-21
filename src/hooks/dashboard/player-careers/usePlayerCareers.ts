@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import { queryConfig } from "@/lib/react-query/queryConfig";
-import { queryKeys } from "@/lib/react-query/queryKeys";
+import { queryConfig } from "@/lib/react-query/config/queryConfig";
 import { fetchPlayerCareers } from "@/lib/api/player-career";
+import { playerCareerKeys } from "@/lib/react-query/keys/playerCareerKeys";
 
 interface UsePlayerCareersOptions {
   playerId?: string;
@@ -12,26 +12,18 @@ export function usePlayerCareers({
   playerId,
   enabled = true,
 }: UsePlayerCareersOptions) {
-  const {
-    data = [],
-    isLoading,
-    isRefetching,
-    error,
-    refetch,
-  } = useQuery({
-    queryKey: queryKeys.player_careers(playerId ?? ""),
+  const query = useQuery({
+    queryKey: playerCareerKeys.list(playerId ?? ""),
     queryFn: () => fetchPlayerCareers(playerId!),
     enabled: enabled && !!playerId,
     ...queryConfig,
   });
 
   return {
-    playerCareers: data,
-    loading: isLoading,
-    retrying: isRefetching,
-    loadError: error ?? null,
-    retryLoad: () => {
-      void refetch();
-    },
+    playerCareers: query.data ?? [],
+    loading: query.isLoading,
+    retrying: query.isRefetching,
+    loadError: query.error ?? null,
+    retryLoad: query.refetch,
   };
 }

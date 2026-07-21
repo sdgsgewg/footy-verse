@@ -1,28 +1,21 @@
 import { useQuery } from "@tanstack/react-query";
-import { queryConfig } from "@/lib/react-query/queryConfig";
-import { queryKeys } from "@/lib/react-query/queryKeys";
+import { queryConfig } from "@/lib/react-query/config/queryConfig";
 import { fetchNationalities } from "@/lib/api/nationality";
+import { nationalityKeys } from "@/lib/react-query/keys/nationalityKeys";
+import { GetNationalitiesParams } from "@/types/nationality";
 
-export function useNationalities() {
-  const {
-    data = [],
-    isLoading,
-    isRefetching,
-    error,
-    refetch,
-  } = useQuery({
-    queryKey: queryKeys.nationalities(),
-    queryFn: fetchNationalities,
+export function useNationalities(params?: GetNationalitiesParams) {
+  const query = useQuery({
+    queryKey: nationalityKeys.list(params),
+    queryFn: () => fetchNationalities(params),
     ...queryConfig,
   });
 
   return {
-    nationalities: data,
-    loading: isLoading,
-    retrying: isRefetching,
-    loadError: error ?? null,
-    retryLoad: () => {
-      void refetch();
-    },
+    nationalities: query.data ?? [],
+    loading: query.isLoading,
+    retrying: query.isRefetching,
+    loadError: query.error,
+    retryLoad: query.refetch,
   };
 }

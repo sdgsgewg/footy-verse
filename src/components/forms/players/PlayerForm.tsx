@@ -5,14 +5,14 @@ import PlayerPersonalSection from "./PlayerPersonalSection";
 import PlayerNationalTeamSection from "./PlayerNationalTeamSection";
 import FormHeader from "../base/FormHeader";
 import FormWrapper from "../base/FormWrapper";
-import { PlayerDetailResponse } from "@/types/player";
+import { PlayerEditResponse } from "@/types/player";
 import { usePositions } from "@/hooks/dashboard/positions";
 import { useNationalities } from "@/hooks/dashboard/nationalities";
 import FormContentWrapper from "../base/FormContentWrapper";
 
 interface Props {
   mode: "create" | "edit";
-  player?: PlayerDetailResponse;
+  player?: PlayerEditResponse;
 
   loading?: boolean;
 

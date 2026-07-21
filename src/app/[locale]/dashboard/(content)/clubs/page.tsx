@@ -4,11 +4,11 @@ import ConnectionErrorAlert from "@/components/feedback/ConnectionErrorAlert";
 import DashboardPageWrapper from "@/components/wrappers/DashboardPageWrapper";
 import { CrudPageHeader, CrudPageTable } from "@/components/templates/crud";
 import CrudPageManagement from "@/components/templates/crud/CrudPageManagement";
-import { useClubs } from "@/hooks/dashboard/clubs";
 import { useClubActions } from "@/hooks/dashboard/clubs/useClubActions";
 import { isLikelyConnectionError } from "@/lib/utils/connection-error";
 import { CrudColumn, CrudRow } from "@/types/crud";
 import { useTranslations } from "next-intl";
+import { useClubs } from "@/hooks/clubs";
 
 export default function ClubsManagementPage() {
   const t = useTranslations("dashboard.clubs");

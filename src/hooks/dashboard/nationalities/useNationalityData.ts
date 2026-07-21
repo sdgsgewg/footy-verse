@@ -76,7 +76,11 @@ export const useNationalityData = (): UseNationalityDataReturn => {
       id: item.id ?? "",
       name: item.name,
       image: item.image ?? null,
-      imageUrl: getImageUrl(STORAGE_BUCKETS.NATIONALITIES, item.image ?? null),
+      imageUrl: getImageUrl(
+        "nationality",
+        STORAGE_BUCKETS.NATIONALITIES,
+        item.image ?? null,
+      ),
       imageFile: null,
       previewUrl: null,
     };

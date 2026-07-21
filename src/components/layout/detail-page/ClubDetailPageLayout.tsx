@@ -5,11 +5,13 @@ import { ClubDetailResponse } from "@/types/club";
 
 interface Props {
   title: string;
-  imageUrl: string;
   club: ClubDetailResponse;
+  content: React.ReactNode;
 }
 
-const ClubDetailPageLayout = ({ title, imageUrl, club }: Props) => {
+const ClubDetailPageLayout = ({ title, club, content }: Props) => {
+  const { imageUrl } = club;
+
   const summary = (
     <>
       <div
@@ -29,12 +31,6 @@ const ClubDetailPageLayout = ({ title, imageUrl, club }: Props) => {
         <p>{club.name}</p>
       </div>
     </>
-  );
-
-  const content = (
-    <div className="space-y-6">
-      <h1>Squad List</h1>
-    </div>
   );
 
   return <DetailPageLayout title={title} summary={summary} content={content} />;

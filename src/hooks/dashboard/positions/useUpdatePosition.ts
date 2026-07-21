@@ -1,6 +1,6 @@
 import { useCrudMutation } from "../useCrudMutation";
 import { updatePosition } from "@/lib/api/position";
-import { queryKeys } from "@/lib/react-query/queryKeys";
+import { positionKeys } from "@/lib/react-query/keys/positionKeys";
 
 interface UpdatePositionPayload {
   id: string;
@@ -11,7 +11,7 @@ export function useUpdatePosition(onSuccess?: () => void) {
   return useCrudMutation<UpdatePositionPayload>({
     mutationFn: ({ id, data }) => updatePosition(id, data),
 
-    queryKey: queryKeys.positions(),
+    invalidateQueries: [{ queryKey: positionKeys.lists() }],
 
     entityKey: "position",
 

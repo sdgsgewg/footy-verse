@@ -1,7 +1,7 @@
-import { queryKeys } from "@/lib/react-query/queryKeys";
 import { ROUTES } from "@/constants/routes";
 import { useCrudMutation } from "../useCrudMutation";
 import { updatePlayerCareer } from "@/lib/api/player-career";
+import { playerCareerKeys } from "@/lib/react-query/keys/playerCareerKeys";
 
 interface UpdatePlayerCareerPayload {
   careerId: string;
@@ -13,7 +13,11 @@ export function useUpdatePlayerCareer(playerId: string) {
     mutationFn: ({ careerId, data }) =>
       updatePlayerCareer(playerId, careerId, data),
 
-    queryKey: queryKeys.player_careers(playerId),
+    invalidateQueries: [
+      { queryKey: playerCareerKeys.lists() },
+      { queryKey: playerCareerKeys.details() },
+      { queryKey: playerCareerKeys.edits() },
+    ],
 
     redirectTo: `${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${playerId}`,
 

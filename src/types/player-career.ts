@@ -27,16 +27,13 @@ export type PlayerShirtNumberCreateInput = z.infer<
 >;
 export type TransferCreateInput = z.infer<typeof createTransferSchema>;
 
-// Hasil query supabase
-export type PlayerContract = Tables<"player_contracts">;
-type PlayerShirtNumber = Tables<"player_shirt_numbers">;
-type Transfer = Tables<"transfers"> & {
-  from_club: Tables<"clubs">;
-  to_club: Tables<"clubs">;
-  season: Tables<"seasons">;
-};
+// Data type for relation tables (can be used as a type for supabase query or DTO)
 
 type ClubSummary = Pick<Tables<"clubs">, "id" | "image" | "name">;
+
+// Supabase Query Result
+
+// Player Career List
 
 export type DbPlayerCareerListRow = Pick<
   PlayerCareer,
@@ -45,30 +42,88 @@ export type DbPlayerCareerListRow = Pick<
   club: ClubSummary;
 };
 
+// Player Career Detail
+
+export type DbPlayerContract = Tables<"player_contracts">;
+
+type DbPlayerShirtNumber = Tables<"player_shirt_numbers">;
+
+type DbTransfer = Tables<"transfers"> & {
+  from_club: Tables<"clubs">;
+  to_club: Tables<"clubs">;
+  season: Tables<"seasons">;
+};
+
 export type DbPlayerCareerDetailRow = PlayerCareer & {
-  player_contracts: PlayerContract[];
-  player_shirt_numbers: PlayerShirtNumber[];
-  transfer: Transfer;
+  player_contracts: DbPlayerContract[];
+  player_shirt_numbers: DbPlayerShirtNumber[];
+  transfer: DbTransfer;
 };
 
 // API Response DTO
+
+// Player Career List
+
 export interface PlayerCareerListItem {
   id: string;
-  joined_at: string;
-  left_at: string | null;
+  joinedAt: string;
+  leftAt: string | null;
 
-  club: {
-    id: string;
-    name: string;
-    image: string | null;
-  };
+  club: ClubSummary;
 }
 
-export type PlayerCareerDetailResponse = PlayerCareer & {
+// Player Career Detail
+
+export interface PlayerContract {
+  contractStart: string;
+  contractEnd: string;
+  salary: number;
+}
+
+export interface PlayerShirtNumber {
+  shirtNumber: number;
+  startDate: string;
+  endDate: string | null;
+}
+
+export interface Transfer {
+  seasonId: string;
+  fromClubId: string;
+  toClubId: string;
+  transferType: string;
+  transferFee: number;
+  transferDate: string;
+}
+
+// Model For Edit
+
+export interface PlayerCareerEditResponse {
+  id: string;
+  clubId: string;
+  joinedAt: string;
+  leftAt: string | null;
+
   contracts: PlayerContract[];
-  shirt_numbers: PlayerShirtNumber[];
+  shirtNumbers: PlayerShirtNumber[];
   transfer: Transfer;
-};
+}
+
+// Model View Detail
+
+export interface PlayerCareerDetailResponse {
+  id: string;
+  clubId: string;
+  joinedAt: string;
+  leftAt: string | null;
+
+  contracts: PlayerContract[];
+  shirtNumbers: PlayerShirtNumber[];
+  transfer: Transfer;
+}
+
+export interface PlayerCareerLookupResponse {
+  id: string;
+}
 
 // Mutation
 export type UpsertPlayerCareerInput = z.infer<

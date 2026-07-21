@@ -2,8 +2,6 @@
   "title": "Manage Players",
   "subtitle": "Add, edit, or delete players.",
 
-  "notFound": "Player Not Found",
-
   "create": {
     "title": "Create Player",
     "subtitle": "Add new player"

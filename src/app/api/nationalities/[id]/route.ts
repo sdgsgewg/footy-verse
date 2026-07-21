@@ -9,7 +9,8 @@ import { NotFoundError } from "@/lib/errors/http-error";
 import { getNationalityInputFromFormData } from "@/lib/nationalities/form-data";
 import {
   deleteNationalityService,
-  getNationalityByIdService,
+  getNationalityDetailService,
+  getNationalityEditService,
   updateNationalityService,
 } from "@/lib/services/nationalities.service";
 import { tryDeleteImage, uploadImage } from "@/lib/services/storage.service";
@@ -19,13 +20,28 @@ type NationalityRouteContext = {
   params: Promise<{ id: string }>;
 };
 
+export async function GET(_request: Request, context: NationalityRouteContext) {
+  try {
+    const { id } = await context.params;
+    const data = await getNationalityDetailService(id);
+
+    if (!data) {
+      return errorResponse(new NotFoundError("Nationality not found"));
+    }
+
+    return successResponse(data);
+  } catch (error: unknown) {
+    return errorResponse(error);
+  }
+}
+
 export async function PUT(request: Request, context: NationalityRouteContext) {
   try {
     await authorizeManageContent();
 
     const { id } = await context.params;
 
-    const currentNationality = await getNationalityByIdService(id);
+    const currentNationality = await getNationalityEditService(id);
 
     if (!currentNationality) {
       return errorResponse(new NotFoundError("Nationality not found"));
@@ -77,7 +93,7 @@ export async function DELETE(
 
     const { id } = await context.params;
 
-    const nationality = await getNationalityByIdService(id);
+    const nationality = await getNationalityEditService(id);
 
     if (!nationality) {
       return errorResponse(new NotFoundError("Nationality not found"));

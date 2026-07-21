@@ -5,10 +5,8 @@ import TeamSection from "@/components/public/teams/TeamSection";
 import PageHeader from "@/components/shared/PageHeader";
 import PublicPageWrapper from "@/components/wrappers/PublicPageWrapper";
 import { ROUTES } from "@/constants/routes";
-import { useClubs } from "@/hooks/dashboard/clubs";
+import { useClubs } from "@/hooks/clubs";
 import { useNationalities } from "@/hooks/dashboard/nationalities";
-import { getImageUrl } from "@/lib/images/image-url";
-import { STORAGE_BUCKETS } from "@/lib/storage";
 import { useRouter } from "@/navigation";
 import { TeamItem } from "@/types/team";
 import { useTranslations } from "next-intl";
@@ -27,16 +25,16 @@ export default function TeamsPage() {
   const modifiedClubList: TeamItem[] = clubs.map((club) => ({
     id: club.id,
     name: club.name,
-    imageUrl: getImageUrl(STORAGE_BUCKETS.CLUBS, club.image),
-    href: "",
+    imageUrl: club.imageUrl,
+    href: `${ROUTES.TEAMS.CLUBS}/${club.slug}`,
     subtitle: "",
   }));
 
   const modifiedNationalTeamList: TeamItem[] = nationalities.map((nation) => ({
     id: nation.id,
     name: nation.name,
-    imageUrl: getImageUrl(STORAGE_BUCKETS.NATIONALITIES, nation.image),
-    href: "",
+    imageUrl: nation.imageUrl,
+    href: `${ROUTES.TEAMS.NATIONAL_TEAMS}/${nation.slug}`,
     subtitle: "",
   }));
 

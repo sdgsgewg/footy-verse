@@ -1,12 +1,12 @@
 import { createSeason } from "@/lib/api/season";
 import { useCrudMutation } from "../useCrudMutation";
-import { queryKeys } from "@/lib/react-query/queryKeys";
+import { seasonKeys } from "@/lib/react-query/keys/seasonKeys";
 
 export function useCreateSeason(onSuccess?: () => void) {
   return useCrudMutation({
     mutationFn: createSeason,
 
-    queryKey: queryKeys.seasons(),
+    invalidateQueries: [{ queryKey: seasonKeys.lists() }],
 
     entityKey: "season",
 

@@ -1,7 +1,12 @@
 import { Entity } from "@/config/entities";
 import { IMAGES } from "@/constants/images";
 
-export function getDefaultImage(entity: Entity) {
+/**
+ *
+ * @param entity
+ * @returns
+ */
+export function getDefaultImage(entity: Entity): string {
   return entity === "player"
     ? IMAGES.COMMON.DEFAULT_PLAYER
     : IMAGES.COMMON.DEFAULT;

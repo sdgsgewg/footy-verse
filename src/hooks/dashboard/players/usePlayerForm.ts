@@ -1,6 +1,8 @@
+"use client";
+
 import { useMemo, useState } from "react";
 import { PreferredFoot } from "@/enums/PreferredFoot";
-import { PlayerDetailResponse, UpsertPlayerInput } from "@/types/player";
+import { PlayerEditResponse, UpsertPlayerInput } from "@/types/player";
 import { STORAGE_BUCKETS } from "@/lib/storage";
 import { getImageUrl } from "@/lib/images/image-url";
 
@@ -26,12 +28,12 @@ const emptyPlayerForm: UpsertPlayerInput = {
   national_teams: [],
 };
 
-function mapPlayer(player: PlayerDetailResponse): UpsertPlayerInput {
+function mapPlayer(player: PlayerEditResponse): UpsertPlayerInput {
   return {
     id: player.id,
 
     image: player.image,
-    imageUrl: getImageUrl(STORAGE_BUCKETS.PLAYERS, player.image),
+    imageUrl: getImageUrl("player", STORAGE_BUCKETS.PLAYERS, player.image),
     imageFile: null,
     previewUrl: null,
 
@@ -39,28 +41,28 @@ function mapPlayer(player: PlayerDetailResponse): UpsertPlayerInput {
     dob: player.dob,
     pob: player.pob,
 
-    preferred_foot: player.preferred_foot as PreferredFoot,
+    preferred_foot: player.preferredFoot as PreferredFoot,
 
     height: player.height,
     weight: player.weight,
-    market_value: player.market_value,
+    market_value: player.marketValue,
 
     positions: player.positions.map((position) => ({
-      position_id: position.position_id,
-      display_order: position.display_order,
+      position_id: position.positionId,
+      display_order: position.displayOrder,
     })),
 
-    national_teams: player.national_teams.map((nation) => ({
-      nation_id: nation.nation_id,
-      start_date: nation.start_date,
-      end_date: nation.end_date,
-      label: nation.label,
-      shirt_number: nation.shirt_number,
+    national_teams: player.nationalTeams.map((pnt) => ({
+      nation_id: pnt.nationality.id,
+      start_date: pnt.startDate,
+      end_date: pnt.endDate,
+      label: pnt.label,
+      shirt_number: pnt.shirtNumber,
     })),
   };
 }
 
-export function usePlayerForm(player?: PlayerDetailResponse) {
+export function usePlayerForm(player?: PlayerEditResponse) {
   const initialValue = useMemo(
     () => (player ? mapPlayer(player) : emptyPlayerForm),
     [player],
@@ -76,14 +78,16 @@ export function usePlayerForm(player?: PlayerDetailResponse) {
     form.positions.length > 0 &&
     form.positions.every((position) => position.position_id.trim().length > 0);
 
-  const areNationalTeamsValid = form.national_teams && form.national_teams.every((item) => {
-    return (
-      item.nation_id.trim().length > 0 &&
-      item.start_date.trim().length > 0 &&
-      item.label.trim().length > 0 &&
-      item.shirt_number > 0
-    );
-  });
+  const areNationalTeamsValid =
+    form.national_teams &&
+    form.national_teams.every((item) => {
+      return (
+        item.nation_id.trim().length > 0 &&
+        item.start_date.trim().length > 0 &&
+        item.label.trim().length > 0 &&
+        item.shirt_number > 0
+      );
+    });
 
   const canSubmit = useMemo(() => {
     const isFilled =

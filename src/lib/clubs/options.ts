@@ -2,9 +2,6 @@ import { ClubType } from "@/enums/ClubType";
 import { SelectOption } from "@/types/select";
 import { getClubTypeLabel } from "./labels";
 import { ClubListItem } from "@/types/club";
-import { getImageUrl } from "../images/image-url";
-import { STORAGE_BUCKETS } from "../storage";
-import { getDefaultImage } from "../images/default-image";
 
 type Translate = (key: string) => string;
 
@@ -31,7 +28,6 @@ export function getClubOptions(clubs: ClubListItem[]): SelectOption[] {
   return clubs.map((club) => ({
     label: club.name,
     value: club.id,
-    imageUrl:
-      getImageUrl(STORAGE_BUCKETS.CLUBS, club.image) ?? getDefaultImage("club"),
+    imageUrl: club.imageUrl,
   }));
 }

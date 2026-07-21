@@ -48,10 +48,16 @@
   "states": {
     "creating": "Membuat...",
     "updating": "Memperbarui...",
-    "emptyData": "No data available. Use the daily input tab to add records.",
+
     "loadOlderData": "Muat Data Lama...",
     "loading": "Memuat...",
-    "loadingEntity": "Memuat {entity}..."
+    "loadingEntity": "Memuat {entity}...",
+
+    "notFoundEntity": "{entity} Tidak Ditemukan",
+
+    "errorTitle": "Ada yang salah",
+    "errorDescription": "Terjadi kesalahan tak terduga saat memuat halaman ini.",
+    "retry": "Coba Lagi"
   },
 
   "ui": {

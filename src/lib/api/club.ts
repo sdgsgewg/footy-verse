@@ -3,8 +3,18 @@ import {
   createClubSchema,
   updateClubSchema,
 } from "../validations/clubs.schema";
-import { ClubDetailResponse, ClubListItem, GetClubsParams } from "@/types/club";
+import {
+  ClubDetailResponse,
+  ClubEditResponse,
+  ClubListItem,
+  GetClubsParams,
+} from "@/types/club";
 
+/**
+ *
+ * @param params
+ * @returns ClubListItem[]
+ */
 export const fetchClubs = async (
   params?: GetClubsParams,
 ): Promise<ClubListItem[]> => {
@@ -18,7 +28,26 @@ export const fetchClubs = async (
   return data.data;
 };
 
-export const fetchClubById = async (
+/**
+ *
+ * @param id
+ * @returns ClubEditResponse
+ */
+export const fetchClubEdit = async (id: string): Promise<ClubEditResponse> => {
+  const { data } = await apiClient.get<{
+    success: boolean;
+    data: ClubEditResponse;
+  }>(`/clubs/${id}/edit`);
+
+  return data.data;
+};
+
+/**
+ *
+ * @param id
+ * @returns ClubDetailResponse
+ */
+export const fetchClubDetail = async (
   id: string,
 ): Promise<ClubDetailResponse> => {
   const { data } = await apiClient.get<{
@@ -29,17 +58,11 @@ export const fetchClubById = async (
   return data.data;
 };
 
-export const fetchClubBySlug = async (
-  slug: string,
-): Promise<ClubDetailResponse> => {
-  const { data } = await apiClient.get<{
-    success: boolean;
-    data: ClubDetailResponse;
-  }>(`/clubs/slug/${slug}`);
-
-  return data.data;
-};
-
+/**
+ *
+ * @param payload
+ * @returns void
+ */
 export const createClub = async (payload: unknown) => {
   if (payload instanceof FormData) {
     const response = await fetch("/api/clubs", {
@@ -61,6 +84,12 @@ export const createClub = async (payload: unknown) => {
   await apiClient.post("/clubs", parsed);
 };
 
+/**
+ *
+ * @param id
+ * @param payload
+ * @returns void
+ */
 export const updateClub = async (id: string, payload: unknown) => {
   if (payload instanceof FormData) {
     const response = await fetch(`/api/clubs/${id}`, {
@@ -82,6 +111,10 @@ export const updateClub = async (id: string, payload: unknown) => {
   await apiClient.put(`/clubs/${id}`, parsed);
 };
 
+/**
+ *
+ * @param id
+ */
 export const deleteClub = async (id: string) => {
   await apiClient.delete(`/clubs/${id}`);
 };

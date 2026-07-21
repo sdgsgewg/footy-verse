@@ -2,8 +2,8 @@ import React from "react";
 import DetailPageLayout from "./DetailPageLayout";
 import Image from "next/image";
 import { PlayerDetailResponse } from "@/types/player";
-import PlayerProfile from "@/components/players/PlayerProfile";
-import PlayerHistory from "@/components/players/PlayerHistory";
+import PlayerProfile from "@/components/players/sections/PlayerProfile";
+import PlayerHistory from "@/components/players/sections/PlayerHistory";
 
 interface Props {
   title: string;
@@ -12,6 +12,9 @@ interface Props {
 }
 
 const PlayerDetailPageLayout = ({ title, imageUrl, player }: Props) => {
+  const { summary: PlayerSummaryData } = player;
+  const { name } = PlayerSummaryData;
+
   const summary = (
     <>
       <div
@@ -28,7 +31,7 @@ const PlayerDetailPageLayout = ({ title, imageUrl, player }: Props) => {
       </div>
 
       <div className="flex-1">
-        <p>{player.name}</p>
+        <p>{name}</p>
       </div>
     </>
   );

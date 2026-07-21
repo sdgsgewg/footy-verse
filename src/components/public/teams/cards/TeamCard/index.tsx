@@ -1,13 +1,19 @@
 import Image from "next/image";
-import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import { TeamItem } from "@/types/team";
+import { useRouter } from "@/navigation";
 
 interface Props {
   team: TeamItem;
 }
 
 export default function TeamCard({ team }: Props) {
+  const router = useRouter();
+
+  const navigateToTeamDetailPage = () => {
+    router.push(team.href ? team.href : "");
+  };
+
   const content = (
     <div className="group rounded-2xl border bg-card p-5 transition-all duration-300 hover:-translate-y-1 hover:border-primary hover:shadow-lg cursor-pointer">
       <div className="flex flex-col items-center text-center gap-4">
@@ -42,7 +48,7 @@ export default function TeamCard({ team }: Props) {
   );
 
   if (team.href) {
-    return <Link href={team.href}>{content}</Link>;
+    return <div onClick={navigateToTeamDetailPage}>{content}</div>;
   }
 
   return content;

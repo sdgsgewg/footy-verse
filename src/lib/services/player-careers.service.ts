@@ -2,7 +2,9 @@ import { UpsertPlayerCareerInput } from "@/types/player-career";
 import {
   createPlayerCareerRepo,
   deletePlayerCareerRepo,
-  getPlayerCareerByIdRepo,
+  getPlayerCareerDetailRepo,
+  getPlayerCareerEditRepo,
+  getPlayerCareerLookupRepo,
   getPlayerCareersRepo,
   updatePlayerCareerRepo,
 } from "../repositories/player-careers.repo";
@@ -16,10 +18,22 @@ export async function getPlayerCareersService(playerId: string) {
   return getPlayerCareersRepo(playerId);
 }
 
-export async function getPlayerCareerByIdService(careerId: string) {
+export async function getPlayerCareerEditService(careerId: string) {
   const parsedId = idSchema.parse(careerId);
 
-  return getPlayerCareerByIdRepo(parsedId);
+  return getPlayerCareerEditRepo(parsedId);
+}
+
+export async function getPlayerCareerDetailService(careerId: string) {
+  const parsedId = idSchema.parse(careerId);
+
+  return getPlayerCareerDetailRepo(parsedId);
+}
+
+export async function getPlayerCareerLookupService(careerId: string) {
+  const parsedId = idSchema.parse(careerId);
+
+  return getPlayerCareerLookupRepo(parsedId);
 }
 
 export async function createPlayerCareerService(

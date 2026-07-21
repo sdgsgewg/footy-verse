@@ -1,6 +1,6 @@
 import { updateSeason } from "@/lib/api/season";
 import { useCrudMutation } from "../useCrudMutation";
-import { queryKeys } from "@/lib/react-query/queryKeys";
+import { seasonKeys } from "@/lib/react-query/keys/seasonKeys";
 
 interface UpdateSeasonPayload {
   id: string;
@@ -11,7 +11,7 @@ export function useUpdateSeason(onSuccess?: () => void) {
   return useCrudMutation<UpdateSeasonPayload>({
     mutationFn: ({ id, data }) => updateSeason(id, data),
 
-    queryKey: queryKeys.seasons(),
+    invalidateQueries: [{ queryKey: seasonKeys.lists() }],
 
     entityKey: "season",
 

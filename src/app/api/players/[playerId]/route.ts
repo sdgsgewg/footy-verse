@@ -5,7 +5,8 @@ import { NotFoundError } from "@/lib/errors/http-error";
 import { getPlayerInputFromFormData } from "@/lib/players/form-data";
 import {
   deletePlayerService,
-  getPlayerByIdService,
+  getPlayerDetailService,
+  getPlayerEditService,
   updatePlayerService,
 } from "@/lib/services/players.service";
 import { tryDeleteImage, uploadImage } from "@/lib/services/storage.service";
@@ -19,14 +20,14 @@ type PlayerRouteContext = {
 export async function GET(_request: Request, context: PlayerRouteContext) {
   try {
     const { playerId } = await context.params;
-    const data = await getPlayerByIdService(playerId);
+    const data = await getPlayerDetailService(playerId);
 
     if (!data) {
       return errorResponse(new NotFoundError("Player not found"));
     }
 
     return successResponse(data);
-  } catch (error: unknown) {
+  } catch (error) {
     return errorResponse(error);
   }
 }
@@ -37,7 +38,7 @@ export async function PUT(request: Request, context: PlayerRouteContext) {
 
     const { playerId } = await context.params;
 
-    const currentPlayer = await getPlayerByIdService(playerId);
+    const currentPlayer = await getPlayerEditService(playerId);
 
     if (!currentPlayer) {
       return errorResponse(new NotFoundError("Player not found"));
@@ -86,7 +87,7 @@ export async function DELETE(_request: Request, context: PlayerRouteContext) {
 
     const { playerId } = await context.params;
 
-    const player = await getPlayerByIdService(playerId);
+    const player = await getPlayerEditService(playerId);
 
     if (!player) {
       return errorResponse(new NotFoundError("Player not found"));

@@ -3,7 +3,7 @@ import { authorizeManageContent } from "@/lib/auth/api-authorization";
 import { NotFoundError } from "@/lib/errors/http-error";
 import {
   deletePlayerCareerService,
-  getPlayerCareerByIdService,
+  getPlayerCareerDetailService,
   updatePlayerCareerService,
 } from "@/lib/services/player-careers.service";
 
@@ -19,7 +19,7 @@ export async function GET(
 ) {
   try {
     const { careerId } = await context.params;
-    const data = await getPlayerCareerByIdService(careerId);
+    const data = await getPlayerCareerDetailService(careerId);
 
     if (!data) {
       return errorResponse(new NotFoundError("Player career not found"));
@@ -37,7 +37,7 @@ export async function PUT(request: Request, context: PlayerCareerRouteContext) {
 
     const { playerId, careerId } = await context.params;
 
-    const currentPlayerCareer = await getPlayerCareerByIdService(careerId);
+    const currentPlayerCareer = await getPlayerCareerDetailService(careerId);
 
     if (!currentPlayerCareer) {
       return errorResponse(new NotFoundError("Player career not found"));
@@ -61,7 +61,7 @@ export async function DELETE(
 
     const { careerId } = await context.params;
 
-    const playerCareer = await getPlayerCareerByIdService(careerId);
+    const playerCareer = await getPlayerCareerDetailService(careerId);
 
     if (!playerCareer) {
       return errorResponse(new NotFoundError("Player career not found"));

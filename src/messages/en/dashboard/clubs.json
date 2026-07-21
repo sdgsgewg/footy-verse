@@ -2,8 +2,6 @@
   "title": "Manage Clubs",
   "subtitle": "Add, edit, or delete clubs",
 
-  "notFound": "Club Not Found",
-
   "create": {
     "title": "Create Club",
     "subtitle": "Add new club"

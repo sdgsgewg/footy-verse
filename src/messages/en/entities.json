@@ -1,10 +1,10 @@
 {
-  "player": "player",
-  "playerCareer": "player career",
-  "club": "club",
-  "nationality": "nationality",
-  "position": "position",
-  "season": "season",
-  "competition": "competition",
-  "region": "region"
+  "player": "Player",
+  "playerCareer": "Player Career",
+  "club": "Club",
+  "nationality": "Nationality",
+  "position": "Position",
+  "season": "Season",
+  "competition": "Competition",
+  "region": "Region"
 }

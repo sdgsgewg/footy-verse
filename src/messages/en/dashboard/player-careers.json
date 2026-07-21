@@ -2,8 +2,6 @@
   "title": "Manage Player Careers",
   "subtitle": "Add, edit, or delete player careers",
 
-  "notFound": "Player Career Not Found",
-
   "create": {
     "title": "Create Career {playerName}",
     "subtitle": "Add new player career"

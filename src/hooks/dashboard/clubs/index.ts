@@ -1,5 +1,5 @@
-export * from "./useClubs";
-export * from "./useClub";
+export * from "./useClubDetail";
+export * from "./useClubEdit";
 export * from "./useClubForm";
 export * from "./useClubSubmit";
 export * from "./useCreateClub";

@@ -1,6 +1,7 @@
 import {
   deleteClubService,
-  getClubByIdService,
+  getClubDetailService,
+  getClubEditService,
   updateClubService,
 } from "@/lib/services/clubs.service";
 import { tryDeleteImage, uploadImage } from "@/lib/services/storage.service";
@@ -19,13 +20,28 @@ type ClubRouteContext = {
   params: Promise<{ id: string }>;
 };
 
+export async function GET(_request: Request, context: ClubRouteContext) {
+  try {
+    const { id } = await context.params;
+    const data = await getClubDetailService(id);
+
+    if (!data) {
+      return errorResponse(new NotFoundError("Club not found"));
+    }
+
+    return successResponse(data);
+  } catch (error) {
+    return errorResponse(error);
+  }
+}
+
 export async function PUT(request: Request, context: ClubRouteContext) {
   try {
     await authorizeManageContent();
 
     const { id } = await context.params;
 
-    const currentClub = await getClubByIdService(id);
+    const currentClub = await getClubEditService(id);
 
     if (!currentClub) {
       return errorResponse(new NotFoundError("Club not found"));
@@ -74,7 +90,7 @@ export async function DELETE(_request: Request, context: ClubRouteContext) {
 
     const { id } = await context.params;
 
-    const club = await getClubByIdService(id);
+    const club = await getClubDetailService(id);
 
     if (!club) {
       return errorResponse(new NotFoundError("Club not found"));

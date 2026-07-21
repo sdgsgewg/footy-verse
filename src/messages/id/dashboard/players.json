@@ -2,8 +2,6 @@
   "title": "Kelola Pemain",
   "subtitle": "Tambah, edit, atau hapus pemain.",
 
-  "notFound": "Pemain Tidak Ditemukan",
-
   "create": {
     "title": "Buat Pemain",
     "subtitle": "Buat pemain baru"

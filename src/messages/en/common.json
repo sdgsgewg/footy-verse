@@ -48,10 +48,16 @@
   "states": {
     "creating": "Creating...",
     "updating": "Updating...",
-    "emptyData": "No data available. Use the daily input tab to add records.",
+
     "loadOlderData": "Load Older Data...",
     "loading": "Loading...",
-    "loadingEntity": "Loading {entity}..."
+    "loadingEntity": "Loading {entity}...",
+
+    "notFoundEntity": "{entity} Not Found",
+
+    "errorTitle": "Something went wrong",
+    "errorDescription": "An unexpected error occurred while loading this page.",
+    "retry": "Try Again"
   },
 
   "ui": {

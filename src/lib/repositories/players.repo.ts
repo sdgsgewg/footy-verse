@@ -1,16 +1,23 @@
 import { createClient } from "@/utils/supabase/server";
 import { STORAGE_BUCKETS } from "@/lib/storage";
 import {
+  DbPlayerDetailRow,
   DbPlayerListRow,
   GetPlayersParams,
   PlayerCreateInput,
   PlayerDetailResponse,
+  PlayerEditResponse,
   PlayerListItem,
+  PlayerLookupResponse,
   PlayerNationalTeamCreateInput,
   PlayerPositionCreateInput,
   PlayerUpdateInput,
 } from "@/types/player";
-import { mapPlayerDetailResponse, mapPlayerListItem } from "../players/mapper";
+import {
+  mapPlayerDetailResponse,
+  mapPlayerEditResponse,
+  mapPlayerListItem,
+} from "../players/mapper";
 import { ENTITY_CONFIG } from "@/config/entities";
 import { ensureUniqueSlug } from "./helpers/slug";
 import { requireEntity } from "./helpers/require-entity";
@@ -41,15 +48,8 @@ const getPlayerNationalTeamTable = () => {
   return ENTITY_CONFIG["playerNationalTeam"]["table"];
 };
 
-export async function getPlayersRepo(
-  params: GetPlayersParams,
-): Promise<PlayerListItem[]> {
-  const supabase = await getSupabase();
-
-  let query = supabase
-    .from(getPlayerTable())
-    .select(
-      `
+function getPlayersBaseQuery() {
+  return `
     id,
     image,
     name,
@@ -65,29 +65,67 @@ export async function getPlayersRepo(
     ),
 
     player_careers (
+      id,
       joined_at,
       left_at,
+      club_id,
+
       club:clubs!player_careers_club_id_fkey (
         id,
         name,
         image
+      ),
+
+      player_shirt_numbers:player_shirt_numbers!player_shirt_numbers_player_career_id_fkey (
+        start_date,
+        end_date,
+        shirt_number
       )
     ),
 
     player_national_teams (
+      id,
+      start_date,
       end_date,
+      shirt_number,
+      nation_id,
       nationality:nationalities!player_nationalities_nation_id_fkey (
         id,
         name,
         image
       )
     )
-  `,
-    )
+  `;
+}
+
+/**
+ *
+ * @param params
+ * @returns PlayerListItem[]
+ */
+export async function getPlayersRepo(
+  params: GetPlayersParams,
+): Promise<PlayerListItem[]> {
+  console.log("Params (repo): ", JSON.stringify(params, null, 2));
+
+  const supabase = await getSupabase();
+
+  let query = supabase
+    .from(getPlayerTable())
+    .select(getPlayersBaseQuery())
     .order("name");
 
+  // Filter
   if (params.name) {
     query = query.ilike("name", `%${params.name}%`);
+  }
+
+  if (params.nationId) {
+    query = query.eq("player_national_teams.nation_id", params.nationId);
+  }
+
+  if (params.clubId) {
+    query = query.eq("player_careers.club_id", params.clubId);
   }
 
   const { data, error } = await query.overrideTypes<DbPlayerListRow[]>();
@@ -97,32 +135,97 @@ export async function getPlayersRepo(
   return (data ?? []).map(mapPlayerListItem);
 }
 
-export async function getPlayerByIdRepo(
+function getPlayerDetailBaseQuery() {
+  return `
+    *,
+
+    player_positions (
+      display_order,
+      position:positions!player_positions_position_id_fkey (
+        id,
+        name
+      )
+    ),
+
+    player_careers!inner (
+      id,
+      joined_at,
+      left_at,
+      club_id,
+
+      club:clubs!player_careers_club_id_fkey (
+        id,
+        name,
+        image
+      ),
+
+      player_contracts:player_contracts!player_contracts_player_career_id_fkey (
+        contract_start,
+        contract_end,
+      ),
+
+      player_shirt_numbers:player_shirt_numbers!player_shirt_numbers_player_career_id_fkey (
+        start_date,
+        end_date,
+        shirt_number
+      )
+    ),
+
+    player_national_teams!inner (
+      id,
+      label,
+      start_date,
+      end_date,
+      shirt_number,
+      nation_id,
+      nationality:nationalities!player_nationalities_nation_id_fkey (
+        id,
+        name,
+        image
+      )
+    )
+  `;
+}
+
+/**
+ *
+ * @param id
+ * @returns PlayerEditResponse | null
+ */
+export async function getPlayerEditRepo(
+  id: string,
+): Promise<PlayerEditResponse | null> {
+  const supabase = await getSupabase();
+
+  const { data, error } = await supabase
+    .from(getPlayerTable())
+    .select(getPlayerDetailBaseQuery())
+    .eq("id", id)
+    .maybeSingle()
+    .overrideTypes<DbPlayerDetailRow>();
+
+  if (error) throw error;
+  if (!data) return null;
+
+  return mapPlayerEditResponse(data);
+}
+
+/**
+ *
+ * @param id
+ * @returns PlayerDetailResponse | null
+ */
+export async function getPlayerDetailRepo(
   id: string,
 ): Promise<PlayerDetailResponse | null> {
   const supabase = await getSupabase();
 
   const { data, error } = await supabase
     .from(getPlayerTable())
-    .select(
-      `
-        *,
-        player_positions(
-            *,
-            position:positions(*)
-        ),
-        player_careers(
-            *,
-            club:clubs(*)
-        ),
-        player_national_teams(
-            *,
-            nationality:nationalities(*)
-        )
-    `,
-    )
+    .select(getPlayerDetailBaseQuery())
     .eq("id", id)
-    .maybeSingle();
+    .maybeSingle()
+    .overrideTypes<DbPlayerDetailRow>();
 
   if (error) throw error;
   if (!data) return null;
@@ -130,6 +233,33 @@ export async function getPlayerByIdRepo(
   return mapPlayerDetailResponse(data);
 }
 
+/**
+ *
+ * @param slug
+ * @returns PlayerLookupResponse
+ */
+export async function getPlayerLookupRepo(
+  slug: string,
+): Promise<PlayerLookupResponse | null> {
+  const supabase = await getSupabase();
+
+  const { data, error } = await supabase
+    .from(getPlayerTable())
+    .select(`id, slug`)
+    .eq("slug", slug)
+    .maybeSingle();
+
+  if (error) throw error;
+  if (!data) return null;
+
+  return data;
+}
+
+/**
+ *
+ * @param playerId
+ * @param playerPositions
+ */
 async function insertPlayerPositions(
   playerId: string,
   playerPositions: PlayerPositionCreateInput[],
@@ -148,6 +278,11 @@ async function insertPlayerPositions(
   if (playerPositionError) throw playerPositionError;
 }
 
+/**
+ *
+ * @param playerId
+ * @param playerNationalTeams
+ */
 async function insertPlayerNationalTeams(
   playerId: string,
   playerNationalTeams: PlayerNationalTeamCreateInput[],
@@ -168,9 +303,14 @@ async function insertPlayerNationalTeams(
   if (playerNationalTeamError) throw playerNationalTeamError;
 }
 
+/**
+ *
+ * @param player
+ * @returns PlayerEditResponse
+ */
 export async function createPlayerRepo(
   player: PlayerCreateInput,
-): Promise<PlayerDetailResponse> {
+): Promise<PlayerEditResponse> {
   const supabase = await getSupabase();
 
   const slug = await ensureUniqueSlug({
@@ -202,7 +342,7 @@ export async function createPlayerRepo(
     insertPlayerNationalTeams(insertedPlayer.id, national_teams);
   }
 
-  const result = await getPlayerByIdRepo(insertedPlayer.id);
+  const result = await getPlayerEditRepo(insertedPlayer.id);
   if (!result) {
     throw new Error("Failed to retrieve created player");
   }
@@ -210,14 +350,20 @@ export async function createPlayerRepo(
   return result;
 }
 
+/**
+ *
+ * @param id
+ * @param player
+ * @returns PlayerEditResponse
+ */
 export async function updatePlayerRepo(
   id: string,
   player: PlayerUpdateInput,
-): Promise<PlayerDetailResponse> {
+): Promise<PlayerEditResponse> {
   const supabase = await getSupabase();
 
   const oldPlayer = await requireEntity(
-    getPlayerByIdRepo,
+    getPlayerEditRepo,
     id,
     getPlayerLabel(),
   );
@@ -227,7 +373,7 @@ export async function updatePlayerRepo(
   const finalImage = await prepareUpdatedImage({
     oldName: oldPlayer.name,
     newName: player.name,
-    oldImage: oldPlayer.image,
+    oldImage: oldPlayer.name,
     newImage: player.image ?? "",
     bucket: STORAGE_BUCKETS.PLAYERS,
   });
@@ -261,8 +407,6 @@ export async function updatePlayerRepo(
 
   // Nationality History: Delete existing nationalities and insert new ones
 
-  console.log("National Teams: ", JSON.stringify(national_teams, null, 2));
-
   const { error: deleteNatError } = await supabase
     .from(getPlayerNationalTeamTable())
     .delete()
@@ -273,7 +417,7 @@ export async function updatePlayerRepo(
     insertPlayerNationalTeams(id, national_teams);
   }
 
-  const result = await getPlayerByIdRepo(id);
+  const result = await getPlayerEditRepo(id);
   if (!result) {
     throw new Error("Failed to retrieve updated player");
   }
@@ -281,10 +425,14 @@ export async function updatePlayerRepo(
   return result;
 }
 
+/**
+ *
+ * @param id
+ */
 export async function deletePlayerRepo(id: string): Promise<void> {
   const supabase = await getSupabase();
 
-  const player = await requireEntity(getPlayerByIdRepo, id, getPlayerLabel());
+  const player = await requireEntity(getPlayerEditRepo, id, getPlayerLabel());
 
   await deleteEntityImage(player.image, STORAGE_BUCKETS.PLAYERS);
 

@@ -1,12 +1,12 @@
 import { useCrudMutation } from "../useCrudMutation";
 import { createPosition } from "@/lib/api/position";
-import { queryKeys } from "@/lib/react-query/queryKeys";
+import { positionKeys } from "@/lib/react-query/keys/positionKeys";
 
 export function useCreatePosition(onSuccess?: () => void) {
   return useCrudMutation({
     mutationFn: createPosition,
 
-    queryKey: queryKeys.positions(),
+    invalidateQueries: [{ queryKey: positionKeys.lists() }],
 
     entityKey: "position",
 
