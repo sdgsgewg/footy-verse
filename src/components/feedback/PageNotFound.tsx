@@ -3,10 +3,10 @@ import Image from "next/image";
 import React from "react";
 
 interface PageNotFoundProps {
-  text: string;
+  message: string;
 }
 
-const PageNotFound = ({ text }: PageNotFoundProps) => {
+const PageNotFound = ({ message }: PageNotFoundProps) => {
   return (
     <div className="flex flex-col items-center justify-center gap-4">
       <div className="max-w-lg">
@@ -19,7 +19,7 @@ const PageNotFound = ({ text }: PageNotFoundProps) => {
         />
       </div>
       <div>
-        <span className="text-lg font-semibold">{text}</span>
+        <span className="text-lg font-semibold">{message}</span>
       </div>
     </div>
   );

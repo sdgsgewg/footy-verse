@@ -29,7 +29,7 @@ export default function PlayerList({ teamType, players, baseRoute }: Props) {
             key={player.id}
             teamType={teamType}
             player={player}
-            onNavigate={handleViewPlayer}
+            onNavigate={() => handleViewPlayer(player)}
           />
         ))}
       </div>

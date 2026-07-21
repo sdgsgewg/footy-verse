@@ -47,7 +47,7 @@ export default function PlayerCard({ teamType, player, onNavigate }: Props) {
   return (
     <div
       className="w-full sm:w-1/2 md:w-1/2 xl:w-1/3 cursor-pointer"
-      onClick={() => onNavigate}
+      onClick={() => onNavigate(player)}
     >
       <div className="flex flex-col p-4">
         <div

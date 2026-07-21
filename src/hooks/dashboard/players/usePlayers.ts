@@ -4,9 +4,7 @@ import { queryConfig } from "@/lib/react-query/config/queryConfig";
 import { GetPlayersParams } from "@/types/player";
 import { playerKeys } from "@/lib/react-query/keys/playerKeys";
 
-export function usePlayers(params?: GetPlayersParams, enabled?: boolean) {
-  console.log("Params (hook): ", JSON.stringify(params, null, 2));
-
+export function usePlayers(params?: GetPlayersParams, enabled: boolean = true) {
   const query = useQuery({
     queryKey: playerKeys.list(params),
     queryFn: () => fetchPlayers(params),

@@ -18,8 +18,6 @@ import {
 export const fetchPlayers = async (
   params?: GetPlayersParams,
 ): Promise<PlayerListItem[]> => {
-  console.log("Params (API): ", params);
-
   const { data } = await apiClient.get<{
     success: boolean;
     data: PlayerListItem[];

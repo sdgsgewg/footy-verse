@@ -17,8 +17,7 @@ const ClubDetailPage = ({ clubLookup }: Props) => {
   const { club, isLoading, error, refetch } = useClubDetail(clubLookup.id);
 
   const { players } = usePlayers(
-    club ? { clubId: club.id } : undefined,
-    !!club,
+    clubLookup ? { clubId: clubLookup.id } : undefined,
   );
 
   // Initial request is still loading and no cached club data is available yet.

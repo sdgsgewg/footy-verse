@@ -1,7 +1,7 @@
 import { useTranslations } from "next-intl";
 import { useDeletePlayer } from "./useDeletePlayer";
 import { ROUTES } from "@/constants/routes";
-import { PlayerDetailResponse } from "@/types/player";
+import { PlayerDetailResponse, PlayerListItem } from "@/types/player";
 import { useRouter } from "@/navigation";
 
 export function usePlayerActions() {
@@ -15,15 +15,15 @@ export function usePlayerActions() {
     router.push(`${ROUTES.DASHBOARD.CONTENT.PLAYERS.CREATE}`);
   };
 
-  const handleView = (player: PlayerDetailResponse) => {
-    router.push(`${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${player.id}`);
+  const handleView = (player: PlayerListItem | PlayerDetailResponse) => {
+    router.push(`${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${player.slug}`);
   };
 
-  const handleEdit = (player: PlayerDetailResponse) => {
-    router.push(`${ROUTES.DASHBOARD.CONTENT.PLAYERS.EDIT}/${player.id}`);
+  const handleEdit = (player: PlayerListItem | PlayerDetailResponse) => {
+    router.push(`${ROUTES.DASHBOARD.CONTENT.PLAYERS.EDIT}/${player.slug}`);
   };
 
-  const handleDelete = (player: PlayerDetailResponse) => {
+  const handleDelete = (player: PlayerListItem | PlayerDetailResponse) => {
     if (!confirm(`${tPlayers("form.confirm.delete")}`)) return;
 
     deleteMutation.mutate({

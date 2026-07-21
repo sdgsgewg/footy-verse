@@ -1,6 +1,6 @@
 import { useTranslations } from "next-intl";
-import PageLoading from "./PageLoading";
 import { Entity } from "@/config/entities";
+import PageNotFound from "./PageNotFound";
 
 interface Props {
   entity: Entity;
@@ -11,7 +11,7 @@ export default function EntityNotFound({ entity }: Props) {
   const tEntities = useTranslations("entities");
 
   return (
-    <PageLoading
+    <PageNotFound
       message={tCommon("notFoundEntity", {
         entity: tEntities(entity),
       })}

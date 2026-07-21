@@ -17,8 +17,6 @@ export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
 
-    console.log("Search params: ", searchParams);
-
     const query = {
       name: searchParams.get("name") || undefined,
       nationId: searchParams.get("nationId") || undefined,

@@ -48,7 +48,13 @@ const getPlayerNationalTeamTable = () => {
   return ENTITY_CONFIG["playerNationalTeam"]["table"];
 };
 
-function getPlayersBaseQuery() {
+function getPlayersBaseQuery(options?: {
+  isClubFiltered?: boolean;
+  isNationFiltered?: boolean;
+}) {
+  const clubJoin = options?.isClubFiltered ? "!inner" : "";
+  const nationJoin = options?.isNationFiltered ? "!inner" : "";
+
   return `
     id,
     image,
@@ -64,7 +70,7 @@ function getPlayersBaseQuery() {
       )
     ),
 
-    player_careers (
+    player_careers${clubJoin} (
       id,
       joined_at,
       left_at,
@@ -83,7 +89,7 @@ function getPlayersBaseQuery() {
       )
     ),
 
-    player_national_teams (
+    player_national_teams${nationJoin} (
       id,
       start_date,
       end_date,
@@ -106,13 +112,16 @@ function getPlayersBaseQuery() {
 export async function getPlayersRepo(
   params: GetPlayersParams,
 ): Promise<PlayerListItem[]> {
-  console.log("Params (repo): ", JSON.stringify(params, null, 2));
-
   const supabase = await getSupabase();
 
   let query = supabase
     .from(getPlayerTable())
-    .select(getPlayersBaseQuery())
+    .select(
+      getPlayersBaseQuery({
+        isClubFiltered: !!params.clubId,
+        isNationFiltered: !!params.nationId,
+      }),
+    )
     .order("name");
 
   // Filter
@@ -147,7 +156,7 @@ function getPlayerDetailBaseQuery() {
       )
     ),
 
-    player_careers!inner (
+    player_careers (
       id,
       joined_at,
       left_at,
@@ -161,7 +170,7 @@ function getPlayerDetailBaseQuery() {
 
       player_contracts:player_contracts!player_contracts_player_career_id_fkey (
         contract_start,
-        contract_end,
+        contract_end
       ),
 
       player_shirt_numbers:player_shirt_numbers!player_shirt_numbers_player_career_id_fkey (
@@ -171,7 +180,7 @@ function getPlayerDetailBaseQuery() {
       )
     ),
 
-    player_national_teams!inner (
+    player_national_teams (
       id,
       label,
       start_date,
