@@ -1,5 +1,4 @@
 import ImageUpload from "@/components/shared/ImageUpload";
-import InputDate from "@/components/ui/InputDate";
 import InputNumber from "@/components/ui/InputNumber";
 import PlayerPositionSelector from "@/components/forms/fields/PlayerPositionSelector";
 import { PreferredFoot } from "@/enums/PreferredFoot";
@@ -10,6 +9,7 @@ import React, { Dispatch, SetStateAction } from "react";
 import SelectField from "../fields/SelectField";
 import { getPreferredFootOptions } from "@/lib/players/options";
 import TextField from "../fields/TextField";
+import DateField from "../fields/DateField";
 
 interface Props {
   form: UpsertPlayerInput;
@@ -68,7 +68,7 @@ const PlayerPersonalSection = ({ form, setForm, positions }: Props) => {
       />
 
       {/* DOB */}
-      <InputDate
+      <DateField
         label={t("form.labels.dob")}
         name="dob"
         placeholder={t("form.placeholders.dob") || ""}

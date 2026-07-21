@@ -1,11 +1,11 @@
 "use client";
 
 import { Dispatch, SetStateAction } from "react";
-import InputDate from "@/components/ui/InputDate";
 import { useTranslations } from "next-intl";
 import DynamicFormSection from "../base/DynamicFormSection";
 import { UpsertPlayerCareerInput } from "@/types/player-career";
 import NumberField from "../fields/NumberField";
+import DateField from "../fields/DateField";
 
 type Contract = NonNullable<UpsertPlayerCareerInput["contracts"]>[number];
 
@@ -43,7 +43,7 @@ const PlayerContractSection = ({ form, setForm }: Props) => {
       renderItem={(item, index, updateItem) => (
         <>
           {/* Contract Start */}
-          <InputDate
+          <DateField
             label={tLabels("contractStart")}
             name={`contract-start-${index}`}
             placeholder={tPlaceholders("contractStart") || ""}
@@ -53,7 +53,7 @@ const PlayerContractSection = ({ form, setForm }: Props) => {
           />
 
           {/* Contract End */}
-          <InputDate
+          <DateField
             label={tLabels("contractEnd")}
             name={`contract-end-${index}`}
             placeholder={tPlaceholders("contractEnd") || ""}

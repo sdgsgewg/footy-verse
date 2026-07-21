@@ -1,7 +1,6 @@
 "use client";
 
 import { Dispatch, SetStateAction } from "react";
-import InputDate from "@/components/ui/InputDate";
 import { useTranslations } from "next-intl";
 import { UpsertPlayerCareerInput } from "@/types/player-career";
 import { ClubListItem } from "@/types/club";
@@ -15,6 +14,7 @@ import NumberField from "../fields/NumberField";
 import { getTransferTypeOptions } from "@/lib/transfers/options";
 import { getSeasonOptions } from "@/lib/seasons/options";
 import { getClubOptions } from "@/lib/clubs/options";
+import DateField from "../fields/DateField";
 
 interface Props {
   form: UpsertPlayerCareerInput;
@@ -170,7 +170,7 @@ const TransferSection = ({ form, setForm, seasons, clubs }: Props) => {
         />
 
         {/* Transfer Date */}
-        <InputDate
+        <DateField
           label={tLabels("transferDate")}
           name="transfer_date"
           placeholder={tPlaceholders("transferDate") || ""}

@@ -1,7 +1,6 @@
 "use client";
 
 import { Dispatch, SetStateAction } from "react";
-import InputDate from "@/components/ui/InputDate";
 import InputNumber from "@/components/ui/InputNumber";
 import { UpsertPlayerInput } from "@/types/player";
 import { NationalityListItem } from "@/types/nationality";
@@ -10,6 +9,7 @@ import DynamicFormSection from "../base/DynamicFormSection";
 import ComboboxField from "../fields/ComboboxField";
 import { getNationalityOptions } from "@/lib/nationalities/options";
 import TextField from "../fields/TextField";
+import DateField from "../fields/DateField";
 
 type NationalTeam = NonNullable<UpsertPlayerInput["national_teams"]>[number];
 
@@ -78,7 +78,7 @@ const PlayerNationalTeamSection = ({ form, setForm, nationalities }: Props) => {
             required
           />
 
-          <InputDate
+          <DateField
             label={tLabels("startDate")}
             name={`start-date-${index}`}
             placeholder={tPlaceholders("startDate") || ""}
@@ -87,7 +87,7 @@ const PlayerNationalTeamSection = ({ form, setForm, nationalities }: Props) => {
             required
           />
 
-          <InputDate
+          <DateField
             label={tLabels("endDate")}
             name={`end-date-${index}`}
             placeholder={tPlaceholders("endDate") || ""}

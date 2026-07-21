@@ -1,11 +1,11 @@
 "use client";
 
 import { Dispatch, SetStateAction } from "react";
-import InputDate from "@/components/ui/InputDate";
 import InputNumber from "@/components/ui/InputNumber";
 import { useTranslations } from "next-intl";
 import DynamicFormSection from "../base/DynamicFormSection";
 import { UpsertPlayerCareerInput } from "@/types/player-career";
+import DateField from "../fields/DateField";
 
 type ShirtNumber = NonNullable<
   UpsertPlayerCareerInput["shirt_numbers"]
@@ -55,7 +55,7 @@ const PlayerShirtNumberSection = ({ form, setForm }: Props) => {
           />
 
           {/* Start Date */}
-          <InputDate
+          <DateField
             label={tLabels("startDate")}
             name={`start-date-${index}`}
             placeholder={tPlaceholders("startDate") || ""}
@@ -65,7 +65,7 @@ const PlayerShirtNumberSection = ({ form, setForm }: Props) => {
           />
 
           {/* End Date */}
-          <InputDate
+          <DateField
             label={tLabels("endDate")}
             name={`end-date-${index}`}
             placeholder={tPlaceholders("endDate") || ""}

@@ -1,8 +1,8 @@
+import DateField from "@/components/forms/fields/DateField";
 import SelectField from "@/components/forms/fields/SelectField";
 import TextField from "@/components/forms/fields/TextField";
 import ImageUpload from "@/components/shared/ImageUpload";
 import { Button } from "@/components/ui/button";
-import InputDate from "@/components/ui/InputDate";
 import InputNumber from "@/components/ui/InputNumber";
 import { CrudForm, CrudPageProps, CrudRow } from "@/types/crud";
 import { Edit2, Plus, Save, X } from "lucide-react";
@@ -89,7 +89,7 @@ export const CrudPageForm = ({
             // Date Field
             if (field.type === "date") {
               return (
-                <InputDate
+                <DateField
                   key={field.name}
                   label={field.label}
                   name={field.name}

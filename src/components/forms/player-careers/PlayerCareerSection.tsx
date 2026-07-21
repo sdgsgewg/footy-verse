@@ -1,13 +1,13 @@
 "use client";
 
 import { Dispatch, SetStateAction } from "react";
-import InputDate from "@/components/ui/InputDate";
 import { useTranslations } from "next-intl";
 import { UpsertPlayerCareerInput } from "@/types/player-career";
 import { ClubListItem } from "@/types/club";
 import FormSection from "../base/FormSection";
 import ComboboxField from "../fields/ComboboxField";
 import { getClubOptions } from "@/lib/clubs/options";
+import DateField from "../fields/DateField";
 
 interface Props {
   form: UpsertPlayerCareerInput;
@@ -53,7 +53,7 @@ const PlayerCareerSection = ({ form, setForm, clubs }: Props) => {
         />
 
         {/* Join Date */}
-        <InputDate
+        <DateField
           label={tLabels("joinedAt")}
           name={`joined-at`}
           placeholder={tPlaceholders("joinedAt") || ""}
@@ -63,7 +63,7 @@ const PlayerCareerSection = ({ form, setForm, clubs }: Props) => {
         />
 
         {/* Left Date */}
-        <InputDate
+        <DateField
           label={tLabels("leftAt")}
           name={`left-at`}
           placeholder={tPlaceholders("leftAt") || ""}
