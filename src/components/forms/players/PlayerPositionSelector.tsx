@@ -18,9 +18,6 @@ import {
 } from "@dnd-kit/sortable";
 import { Check, ChevronDown, ListOrdered, Plus, RotateCcw } from "lucide-react";
 
-import SortablePositionItem, {
-  SortablePositionItemValue,
-} from "@/components/forms/fields/SortablePositionItem";
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -38,7 +35,10 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { useTranslations } from "next-intl";
-import Label from "./Label";
+import SortablePositionItem, {
+  SortablePositionItemValue,
+} from "./SortablePositionItem";
+import { Label } from "../fields";
 
 export interface PositionOption {
   id: string;

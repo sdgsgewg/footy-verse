@@ -5,13 +5,8 @@ import { PositionListItem } from "@/types/position";
 import { useTranslations } from "next-intl";
 import React, { Dispatch, SetStateAction } from "react";
 import { getPreferredFootOptions } from "@/lib/players/options";
-import {
-  DateField,
-  NumberField,
-  PlayerPositionSelector,
-  SelectField,
-  TextField,
-} from "../fields";
+import { DateField, NumberField, SelectField, TextField } from "../fields";
+import PlayerPositionSelector from "./PlayerPositionSelector";
 
 interface Props {
   form: UpsertPlayerInput;
