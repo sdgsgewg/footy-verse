@@ -1,15 +1,17 @@
 import ImageUpload from "@/components/shared/ImageUpload";
-import InputNumber from "@/components/ui/InputNumber";
-import PlayerPositionSelector from "@/components/forms/fields/PlayerPositionSelector";
 import { PreferredFoot } from "@/enums/PreferredFoot";
 import { UpsertPlayerInput } from "@/types/player";
 import { PositionListItem } from "@/types/position";
 import { useTranslations } from "next-intl";
 import React, { Dispatch, SetStateAction } from "react";
-import SelectField from "../fields/SelectField";
 import { getPreferredFootOptions } from "@/lib/players/options";
-import TextField from "../fields/TextField";
-import DateField from "../fields/DateField";
+import {
+  DateField,
+  NumberField,
+  PlayerPositionSelector,
+  SelectField,
+  TextField,
+} from "../fields";
 
 interface Props {
   form: UpsertPlayerInput;
@@ -88,7 +90,7 @@ const PlayerPersonalSection = ({ form, setForm, positions }: Props) => {
       />
 
       {/* Height */}
-      <InputNumber
+      <NumberField
         label={t("form.labels.height")}
         name="height"
         placeholder={t("form.placeholders.height")}
@@ -98,7 +100,7 @@ const PlayerPersonalSection = ({ form, setForm, positions }: Props) => {
       />
 
       {/* Weight */}
-      <InputNumber
+      <NumberField
         label={t("form.labels.weight")}
         name="weight"
         placeholder={t("form.placeholders.weight")}
@@ -121,7 +123,7 @@ const PlayerPersonalSection = ({ form, setForm, positions }: Props) => {
       />
 
       {/* Market Value */}
-      <InputNumber
+      <NumberField
         label={t("form.labels.marketValue")}
         name="market_value"
         placeholder={t("form.placeholders.marketValue")}

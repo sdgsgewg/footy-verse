@@ -1,11 +1,10 @@
 "use client";
 
 import { Dispatch, SetStateAction } from "react";
-import InputNumber from "@/components/ui/InputNumber";
 import { useTranslations } from "next-intl";
 import DynamicFormSection from "../base/DynamicFormSection";
 import { UpsertPlayerCareerInput } from "@/types/player-career";
-import DateField from "../fields/DateField";
+import { DateField, NumberField } from "../fields";
 
 type ShirtNumber = NonNullable<
   UpsertPlayerCareerInput["shirt_numbers"]
@@ -45,7 +44,7 @@ const PlayerShirtNumberSection = ({ form, setForm }: Props) => {
       renderItem={(item, index, updateItem) => (
         <>
           {/* Shirt Number */}
-          <InputNumber
+          <NumberField
             label={tLabels("shirtNumber")}
             name={`shirt-number-${index}`}
             placeholder={tPlaceholders("shirtNumber") || ""}

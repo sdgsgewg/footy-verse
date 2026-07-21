@@ -1,9 +1,11 @@
-import DateField from "@/components/forms/fields/DateField";
-import SelectField from "@/components/forms/fields/SelectField";
-import TextField from "@/components/forms/fields/TextField";
+import {
+  DateField,
+  NumberField,
+  SelectField,
+  TextField,
+} from "@/components/forms/fields";
 import ImageUpload from "@/components/shared/ImageUpload";
 import { Button } from "@/components/ui/button";
-import InputNumber from "@/components/ui/InputNumber";
 import { CrudForm, CrudPageProps, CrudRow } from "@/types/crud";
 import { Edit2, Plus, Save, X } from "lucide-react";
 import { useTranslations } from "next-intl";
@@ -73,7 +75,7 @@ export const CrudPageForm = ({
             // Number Field
             if (field.type === "number") {
               return (
-                <InputNumber
+                <NumberField
                   key={field.name}
                   label={field.label}
                   name={field.name}

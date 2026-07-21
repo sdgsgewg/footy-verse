@@ -1,15 +1,12 @@
 "use client";
 
 import { Dispatch, SetStateAction } from "react";
-import InputNumber from "@/components/ui/InputNumber";
 import { UpsertPlayerInput } from "@/types/player";
 import { NationalityListItem } from "@/types/nationality";
 import { useTranslations } from "next-intl";
 import DynamicFormSection from "../base/DynamicFormSection";
-import ComboboxField from "../fields/ComboboxField";
 import { getNationalityOptions } from "@/lib/nationalities/options";
-import TextField from "../fields/TextField";
-import DateField from "../fields/DateField";
+import { ComboboxField, DateField, NumberField, TextField } from "../fields";
 
 type NationalTeam = NonNullable<UpsertPlayerInput["national_teams"]>[number];
 
@@ -95,7 +92,7 @@ const PlayerNationalTeamSection = ({ form, setForm, nationalities }: Props) => {
             onChange={(v) => updateItem(index, "end_date", v)}
           />
 
-          <InputNumber
+          <NumberField
             label={tLabels("shirtNumber")}
             name={`shirt-number-${index}`}
             placeholder={tPlaceholders("shirtNumber") || ""}
