@@ -1,9 +1,9 @@
 import SelectField from "@/components/forms/fields/SelectField";
+import TextField from "@/components/forms/fields/TextField";
 import ImageUpload from "@/components/shared/ImageUpload";
 import { Button } from "@/components/ui/button";
 import InputDate from "@/components/ui/InputDate";
 import InputNumber from "@/components/ui/InputNumber";
-import InputText from "@/components/ui/InputText";
 import { CrudForm, CrudPageProps, CrudRow } from "@/types/crud";
 import { Edit2, Plus, Save, X } from "lucide-react";
 import { useTranslations } from "next-intl";
@@ -57,7 +57,7 @@ export const CrudPageForm = ({
             // Text Field
             if (field.type === "text") {
               return (
-                <InputText
+                <TextField
                   key={field.name}
                   label={field.label}
                   name={field.name}

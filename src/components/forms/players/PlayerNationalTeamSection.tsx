@@ -5,11 +5,11 @@ import InputDate from "@/components/ui/InputDate";
 import InputNumber from "@/components/ui/InputNumber";
 import { UpsertPlayerInput } from "@/types/player";
 import { NationalityListItem } from "@/types/nationality";
-import InputText from "@/components/ui/InputText";
 import { useTranslations } from "next-intl";
 import DynamicFormSection from "../base/DynamicFormSection";
 import ComboboxField from "../fields/ComboboxField";
 import { getNationalityOptions } from "@/lib/nationalities/options";
+import TextField from "../fields/TextField";
 
 type NationalTeam = NonNullable<UpsertPlayerInput["national_teams"]>[number];
 
@@ -69,7 +69,7 @@ const PlayerNationalTeamSection = ({ form, setForm, nationalities }: Props) => {
             required
           />
 
-          <InputText
+          <TextField
             label={tLabels("label")}
             name={`label-${index}`}
             placeholder={tPlaceholders("label") || ""}

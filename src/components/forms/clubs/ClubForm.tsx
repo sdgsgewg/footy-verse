@@ -6,7 +6,6 @@ import FormHeader from "../base/FormHeader";
 import FormWrapper from "../base/FormWrapper";
 import ImageUpload from "@/components/shared/ImageUpload";
 import { ClubEditResponse } from "@/types/club";
-import InputText from "@/components/ui/InputText";
 import { ClubType } from "@/enums/ClubType";
 import { useNationalities } from "@/hooks/dashboard/nationalities";
 import SelectField from "../fields/SelectField";
@@ -15,6 +14,7 @@ import FormContentWrapper from "../base/FormContentWrapper";
 import { getClubTypeOptions, getClubOptions } from "@/lib/clubs/options";
 import { getNationalityOptions } from "@/lib/nationalities/options";
 import { useClubs } from "@/hooks/clubs";
+import TextField from "../fields/TextField";
 
 interface Props {
   mode: "create" | "edit";
@@ -72,7 +72,7 @@ const ClubForm = ({ mode, club, loading = false, onSubmit }: Props) => {
         />
 
         {/* Name */}
-        <InputText
+        <TextField
           label={t("form.labels.name")}
           name="name"
           placeholder={t("form.placeholders.name") || ""}

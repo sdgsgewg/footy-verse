@@ -1,7 +1,6 @@
 import ImageUpload from "@/components/shared/ImageUpload";
 import InputDate from "@/components/ui/InputDate";
 import InputNumber from "@/components/ui/InputNumber";
-import InputText from "@/components/ui/InputText";
 import PlayerPositionSelector from "@/components/forms/fields/PlayerPositionSelector";
 import { PreferredFoot } from "@/enums/PreferredFoot";
 import { UpsertPlayerInput } from "@/types/player";
@@ -10,6 +9,7 @@ import { useTranslations } from "next-intl";
 import React, { Dispatch, SetStateAction } from "react";
 import SelectField from "../fields/SelectField";
 import { getPreferredFootOptions } from "@/lib/players/options";
+import TextField from "../fields/TextField";
 
 interface Props {
   form: UpsertPlayerInput;
@@ -43,7 +43,7 @@ const PlayerPersonalSection = ({ form, setForm, positions }: Props) => {
       />
 
       {/* Name */}
-      <InputText
+      <TextField
         label={t("form.labels.name")}
         name="name"
         placeholder={t("form.placeholders.name") || ""}
@@ -78,7 +78,7 @@ const PlayerPersonalSection = ({ form, setForm, positions }: Props) => {
       />
 
       {/* POB */}
-      <InputText
+      <TextField
         label={t("form.labels.pob")}
         name="pob"
         placeholder={t("form.placeholders.pob") || ""}
