@@ -1,4 +1,4 @@
-import EntityLoading from "@/components/feedback/EntityLoading";
+import EntityLoading from "@/components/feedback/loading/EntityLoading";
 import ErrorState from "@/components/feedback/ErrorState";
 import ClubForm from "@/components/forms/clubs/ClubForm";
 import { CrudPageHeader } from "@/components/templates/crud";

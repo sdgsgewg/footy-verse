@@ -2,7 +2,7 @@
 
 import { usePlayerEdit, usePlayerSubmit } from "@/hooks/dashboard/players";
 import { PlayerLookupResponse } from "@/types/player";
-import EntityLoading from "@/components/feedback/EntityLoading";
+import EntityLoading from "@/components/feedback/loading/EntityLoading";
 import ErrorState from "@/components/feedback/ErrorState";
 import DashboardPageWrapper from "@/components/wrappers/DashboardPageWrapper";
 import { useTranslations } from "next-intl";

@@ -5,7 +5,7 @@ import { PlayerLookupResponse } from "@/types/player";
 import PlayerDetailPageLayout from "../layout/detail-page/PlayerDetailPageLayout";
 import { getImageUrl } from "@/lib/images/image-url";
 import { STORAGE_BUCKETS } from "@/lib/storage";
-import EntityLoading from "../feedback/EntityLoading";
+import EntityLoading from "../feedback/loading/EntityLoading";
 import ErrorState from "../feedback/ErrorState";
 
 interface Props {

@@ -1,6 +1,6 @@
 "use client";
 
-import EntityLoading from "@/components/feedback/EntityLoading";
+import EntityLoading from "@/components/feedback/loading/EntityLoading";
 import ErrorState from "@/components/feedback/ErrorState";
 import NationalTeamDetailPageLayout from "@/components/layout/detail-page/NationalTeamDetailPageLayout";
 import { useNationalityDetail } from "@/hooks/dashboard/nationalities";

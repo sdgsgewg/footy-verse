@@ -1,6 +1,6 @@
 "use client";
 
-import EntityLoading from "@/components/feedback/EntityLoading";
+import EntityLoading from "@/components/feedback/loading/EntityLoading";
 import ErrorState from "@/components/feedback/ErrorState";
 import ClubDetailPageLayout from "@/components/layout/detail-page/ClubDetailPageLayout";
 import { useClubDetail } from "@/hooks/dashboard/clubs";

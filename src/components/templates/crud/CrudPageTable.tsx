@@ -4,7 +4,7 @@ import { Database } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { ReactNode } from "react";
 import { CrudActionRow } from "./CrudActionRow";
-import TableSkeleton from "@/components/ui/TableSkeleton";
+import TableSkeleton from "@/components/shared/skeletons/TableSkeleton";
 
 export const CrudPageTable = <TData extends CrudRow>({
   loading,

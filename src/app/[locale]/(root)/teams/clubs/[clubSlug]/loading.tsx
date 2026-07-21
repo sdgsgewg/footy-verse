@@ -1,4 +1,4 @@
-import EntityLoading from "@/components/feedback/EntityLoading";
+import EntityLoading from "@/components/feedback/loading/EntityLoading";
 
 export default function Loading() {
   return <EntityLoading entity="club" />;
