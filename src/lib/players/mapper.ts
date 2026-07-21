@@ -82,7 +82,12 @@ export function mapPlayerDetailResponse(
   const otherPositions = getOtherPositions(player.player_positions);
 
   const currentCareer = getPlayerDetailCurrentCareer(player);
-  const currentContract = getCurrentContract(currentCareer.player_contracts);
+  const currentContract = getCurrentContract(
+    currentCareer ? currentCareer.player_contracts : [],
+  );
+
+  const joinedAt = currentCareer ? currentCareer.joined_at : null;
+  const contractEnd = currentContract ? currentContract.contract_end : null;
 
   const currentClub = getCurrentClub(player);
   const currentNationality = getCurrentNationality(player);
@@ -108,8 +113,8 @@ export function mapPlayerDetailResponse(
       height,
       mainPosition,
       currentClub: currentClub ?? null,
-      joinedAt: currentCareer.joined_at,
-      contractEnd: currentContract.contract_end,
+      joinedAt,
+      contractEnd,
     },
 
     profile: {
@@ -124,8 +129,8 @@ export function mapPlayerDetailResponse(
       otherPositions,
       nationalities,
       currentClub: currentClub ?? null,
-      joinedAt: currentCareer.joined_at,
-      contractEnd: currentContract.contract_end,
+      joinedAt,
+      contractEnd,
     },
 
     history: {

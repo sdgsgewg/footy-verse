@@ -20,7 +20,7 @@ export function usePlayerActions() {
   };
 
   const handleEdit = (player: PlayerListItem | PlayerDetailResponse) => {
-    router.push(`${ROUTES.DASHBOARD.CONTENT.PLAYERS.EDIT}/${player.slug}`);
+    router.push(`${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${player.slug}/edit`);
   };
 
   const handleDelete = (player: PlayerListItem | PlayerDetailResponse) => {

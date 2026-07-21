@@ -174,7 +174,9 @@ export function getPlayerNationalTeams(
  */
 export function getPlayerDetailCurrentCareer(
   player: DbPlayerDetailRow,
-): DbPlayerDetailCareer {
+): DbPlayerDetailCareer | null {
+  if (!player.player_careers) return null;
+
   const current = player.player_careers.find(
     (career) => career.left_at == null,
   );
@@ -188,7 +190,11 @@ export function getPlayerDetailCurrentCareer(
   )[0];
 }
 
-export function getCurrentContract(playerContracts: ContractSummary[]) {
+export function getCurrentContract(
+  playerContracts: ContractSummary[],
+): ContractSummary | null {
+  if (!playerContracts || playerContracts.length === 0) return null;
+
   return playerContracts.sort(
     (a, b) =>
       new Date(b.contract_end ?? b.contract_start).getTime() -

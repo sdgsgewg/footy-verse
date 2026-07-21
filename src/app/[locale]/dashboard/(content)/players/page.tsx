@@ -17,7 +17,11 @@ export default function PlayersManagementPage() {
   const { handleCreate, handleView, handleEdit, handleDelete } =
     usePlayerActions();
 
-  const columns: CrudColumn[] = [{ key: "name", label: t("columns.name") }];
+  const columns: CrudColumn[] = [
+    { key: "name", label: t("columns.name") },
+    { key: "currentClub.name", label: t("columns.club") },
+    { key: "currentNationality.name", label: t("columns.nationality") },
+  ];
 
   const headerContent = isLikelyConnectionError(loadError) ? (
     <ConnectionErrorAlert

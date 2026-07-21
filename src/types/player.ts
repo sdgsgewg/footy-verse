@@ -192,8 +192,8 @@ export interface PlayerDetailResponse {
     mainPosition: PositionSummary;
 
     currentClub: ClubSummary | null;
-    joinedAt: string;
-    contractEnd: string;
+    joinedAt: string | null;
+    contractEnd: string | null;
   };
 
   profile: {
@@ -211,8 +211,8 @@ export interface PlayerDetailResponse {
     nationalities: NationalitySummary[];
 
     currentClub: ClubSummary | null;
-    joinedAt: string;
-    contractEnd: string;
+    joinedAt: string | null;
+    contractEnd: string | null;
   };
 
   history: {

@@ -70,9 +70,9 @@
   },
 
   "columns": {
-    "club": "Club",
-    "joinedAt": "Join Date",
-    "leftAt": "Left Date"
+    "name": "Name",
+    "club": "Klub",
+    "nationality": "Kebangsaan"
   },
 
   "actions": {
