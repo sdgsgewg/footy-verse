@@ -5,10 +5,10 @@ import React from "react";
 
 interface Props {
   onCreate: () => void;
-  loading: boolean;
+  loading?: boolean;
 }
 
-const CrudPageManagement = ({ onCreate, loading }: Props) => {
+const CrudPageManagement = ({ onCreate, loading = false }: Props) => {
   const tCommonActions = useTranslations("common.actions");
 
   return (

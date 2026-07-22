@@ -11,7 +11,7 @@ import { PlayerLookupResponse } from "@/types/player";
 import { PlayerCareerLookupResponse } from "@/types/player-career";
 import { useTranslations } from "next-intl";
 import { usePlayerDetail } from "@/hooks/dashboard/players";
-import CrudTableFormLayout from "@/components/templates/crud/CrudTableFormLayout";
+import TableFormLayout from "@/components/layout/dashboard/TableFormLayout";
 import { PlayerCareerHistoryTable } from "@/components/shared/tables";
 
 interface Props {
@@ -63,7 +63,7 @@ export default function EditPlayerCareerPage({
   }
 
   return (
-    <CrudTableFormLayout
+    <TableFormLayout
       title={t("title", {
         entity: tEntities("playerCareer"),
         playerName: player ? `(${player.name})` : "",

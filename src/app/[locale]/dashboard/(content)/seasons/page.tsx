@@ -1,7 +1,7 @@
 "use client";
 
 import ConnectionErrorAlert from "@/components/feedback/ConnectionErrorAlert";
-import { CrudPage } from "@/components/templates/crud/CrudPage";
+import { CrudFormTablePage } from "@/components/templates/crud";
 import { useSeasonData } from "@/hooks/dashboard/seasons/useSeasonData";
 import { useSeasons } from "@/hooks/dashboard/seasons/useSeasons";
 import { isLikelyConnectionError } from "@/lib/utils/connection-error";
@@ -25,7 +25,7 @@ export default function SeasonsManagementPage() {
   } = useSeasonData();
 
   return (
-    <CrudPage
+    <CrudFormTablePage
       title={t("title")}
       formFields={[
         {

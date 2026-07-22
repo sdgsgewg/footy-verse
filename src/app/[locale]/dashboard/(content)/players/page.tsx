@@ -1,19 +1,19 @@
 "use client";
 
 import ConnectionErrorAlert from "@/components/feedback/ConnectionErrorAlert";
-import DashboardPageWrapper from "@/components/wrappers/DashboardPageWrapper";
-import { CrudPageHeader, CrudPageTable } from "@/components/templates/crud";
-import CrudPageManagement from "@/components/templates/crud/CrudPageManagement";
+import { CrudListPage } from "@/components/templates/crud";
 import { usePlayers } from "@/hooks/dashboard/players";
 import { usePlayerActions } from "@/hooks/dashboard/players/usePlayerActions";
 import { isLikelyConnectionError } from "@/lib/utils/connection-error";
-import { CrudColumn, CrudRow } from "@/types/crud";
+import { CrudColumn } from "@/types/crud";
 import { useTranslations } from "next-intl";
 
 export default function PlayersManagementPage() {
-  const t = useTranslations("dashboard.players");
+  const t = useTranslations("common.pages.list");
+  const tEntities = useTranslations("entities");
 
   const { players, loading, retrying, loadError, retryLoad } = usePlayers();
+
   const { handleCreate, handleView, handleEdit, handleDelete } =
     usePlayerActions();
 
@@ -23,30 +23,23 @@ export default function PlayersManagementPage() {
     { key: "currentNationality.name", label: t("columns.nationality") },
   ];
 
-  const headerContent = isLikelyConnectionError(loadError) ? (
-    <ConnectionErrorAlert
-      onRetry={() => {
-        retryLoad();
-      }}
-      retrying={retrying}
-    />
-  ) : undefined;
-
   return (
-    <DashboardPageWrapper>
-      <CrudPageHeader title={t("title")} />
-      {headerContent}
-
-      <CrudPageManagement onCreate={handleCreate} loading={loading} />
-
-      <CrudPageTable
-        loading={loading}
-        data={players as CrudRow[]}
-        columns={columns}
-        onView={handleView as unknown as (item: CrudRow) => void}
-        onEdit={handleEdit as unknown as (item: CrudRow) => void}
-        onDelete={handleDelete as unknown as (item: CrudRow) => void}
-      />
-    </DashboardPageWrapper>
+    <CrudListPage
+      title={t("title", {
+        entity: tEntities("player"),
+      })}
+      loading={loading}
+      data={players}
+      columns={columns}
+      onCreate={handleCreate}
+      onView={handleView}
+      onEdit={handleEdit}
+      onDelete={handleDelete}
+      headerContent={
+        isLikelyConnectionError(loadError) ? (
+          <ConnectionErrorAlert retrying={retrying} onRetry={retryLoad} />
+        ) : undefined
+      }
+    />
   );
 }

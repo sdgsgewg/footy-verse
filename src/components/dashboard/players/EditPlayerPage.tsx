@@ -4,18 +4,17 @@ import { usePlayerEdit, usePlayerSubmit } from "@/hooks/dashboard/players";
 import { PlayerLookupResponse } from "@/types/player";
 import EntityLoading from "@/components/feedback/loading/EntityLoading";
 import ErrorState from "@/components/feedback/ErrorState";
-import DashboardPageWrapper from "@/components/wrappers/DashboardPageWrapper";
 import { useTranslations } from "next-intl";
-import { CrudPageHeader } from "@/components/templates/crud";
 import PlayerForm from "@/components/forms/players/PlayerForm";
-import FormSectionWrapper from "@/components/wrappers/FormSectionWrapper";
+import FormPageLayout from "@/components/layout/dashboard/FormPageLayout";
 
 interface Props {
   playerLookup: PlayerLookupResponse;
 }
 
 export default function EditPlayerPage({ playerLookup }: Props) {
-  const tEdit = useTranslations("dashboard.players.edit");
+  const t = useTranslations("common.pages.edit");
+  const tEntities = useTranslations("entities");
 
   const { player, isLoading, error, refetch } = usePlayerEdit(playerLookup.id);
 
@@ -37,10 +36,12 @@ export default function EditPlayerPage({ playerLookup }: Props) {
   }
 
   return (
-    <DashboardPageWrapper>
-      <CrudPageHeader title={tEdit("title")} showBackButton />
-
-      <FormSectionWrapper formSize="large">
+    <FormPageLayout
+      title={t("title", {
+        entity: tEntities("player"),
+      })}
+      formSize="large"
+      form={
         <PlayerForm
           mode="edit"
           player={player}
@@ -52,7 +53,7 @@ export default function EditPlayerPage({ playerLookup }: Props) {
             })
           }
         />
-      </FormSectionWrapper>
-    </DashboardPageWrapper>
+      }
+    />
   );
 }

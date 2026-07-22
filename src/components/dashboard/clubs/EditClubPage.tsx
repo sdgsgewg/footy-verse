@@ -5,7 +5,7 @@ import { useClubEdit, useClubSubmit } from "@/hooks/dashboard/clubs";
 import { ClubLookupResponse } from "@/types/club";
 import { useTranslations } from "next-intl";
 import React from "react";
-import CrudFormLayout from "@/components/templates/crud/CrudFormLayout";
+import FormPageLayout from "@/components/layout/dashboard/FormPageLayout";
 
 interface Props {
   clubLookup: ClubLookupResponse;
@@ -35,7 +35,7 @@ const EditClubPage = ({ clubLookup }: Props) => {
   }
 
   return (
-    <CrudFormLayout
+    <FormPageLayout
       title={t("title", {
         entity: tEntities("club"),
       })}

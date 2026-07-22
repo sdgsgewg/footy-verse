@@ -7,7 +7,7 @@ import ErrorState from "@/components/feedback/ErrorState";
 import { useTranslations } from "next-intl";
 import { usePlayerNationalTeamSubmit } from "@/hooks/dashboard/player-national-teams";
 import CreatePlayerNationalTeamForm from "@/components/forms/player-national-teams/CreatePlayerNationalTeamForm";
-import CrudTableFormLayout from "@/components/templates/crud/CrudTableFormLayout";
+import TableFormLayout from "@/components/layout/dashboard/TableFormLayout";
 import { PlayerNationalTeamHistoryTable } from "@/components/shared/tables";
 
 interface Props {
@@ -40,7 +40,7 @@ export default function CreatePlayerNationalTeamPage({ playerLookup }: Props) {
   }
 
   return (
-    <CrudTableFormLayout
+    <TableFormLayout
       title={t("title", {
         entity: tEntities("playerNationalTeam"),
         playerName: player ? `(${player.name})` : "",

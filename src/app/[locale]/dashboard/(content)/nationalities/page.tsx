@@ -1,7 +1,7 @@
 "use client";
 
 import ConnectionErrorAlert from "@/components/feedback/ConnectionErrorAlert";
-import { CrudPage } from "@/components/templates/crud/CrudPage";
+import { CrudFormTablePage } from "@/components/templates/crud";
 import {
   useNationalities,
   useNationalityActions,
@@ -30,7 +30,7 @@ export default function NationalitiesManagementPage() {
   } = useNationalityData();
 
   return (
-    <CrudPage
+    <CrudFormTablePage
       title={t("title")}
       formFields={[
         {

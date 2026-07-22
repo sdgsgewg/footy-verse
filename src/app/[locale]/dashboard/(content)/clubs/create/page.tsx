@@ -1,7 +1,7 @@
 "use client";
 
 import ClubForm from "@/components/forms/clubs/ClubForm";
-import CrudFormLayout from "@/components/templates/crud/CrudFormLayout";
+import FormPageLayout from "@/components/layout/dashboard/FormPageLayout";
 import { useClubSubmit } from "@/hooks/dashboard/clubs";
 import { useTranslations } from "next-intl";
 
@@ -12,7 +12,7 @@ export default function CreateClubPage() {
   const { submit, isSubmitting } = useClubSubmit();
 
   return (
-    <CrudFormLayout
+    <FormPageLayout
       title={t("title", {
         entity: tEntities("club"),
       })}

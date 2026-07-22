@@ -1,7 +1,7 @@
 "use client";
 
 import ConnectionErrorAlert from "@/components/feedback/ConnectionErrorAlert";
-import { CrudPage } from "@/components/templates/crud/CrudPage";
+import { CrudFormTablePage } from "@/components/templates/crud";
 import { usePositionData } from "@/hooks/dashboard/positions/usePositionData";
 import { usePositions } from "@/hooks/dashboard/positions/usePositions";
 import { isLikelyConnectionError } from "@/lib/utils/connection-error";
@@ -25,7 +25,7 @@ export default function PositionsManagementPage() {
   } = usePositionData();
 
   return (
-    <CrudPage
+    <CrudFormTablePage
       title={t("title")}
       formFields={[
         {

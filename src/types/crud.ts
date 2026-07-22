@@ -24,7 +24,66 @@ export type CrudForm = {
   [key: string]: unknown;
 };
 
-export type CrudPageProps<TData extends CrudRow, TForm extends CrudForm> = {
+// Form
+
+export interface CrudPageFormProps<TForm extends CrudForm> {
+  formFields: CrudFormField[];
+
+  form: TForm;
+
+  setForm: Dispatch<SetStateAction<TForm>>;
+
+  isEditing: boolean;
+
+  isSubmitting: boolean;
+
+  buttonText: string;
+
+  resetForm: () => void;
+
+  canSubmit: boolean;
+
+  onSubmit: () => void;
+}
+
+// Table
+
+export interface CrudPageTableProps<TData extends CrudRow> {
+  loading?: boolean;
+
+  data: TData[];
+
+  columns: CrudColumn[];
+
+  onView?: (item: TData) => void;
+
+  onEdit: (item: TData) => void;
+
+  onDelete: (item: TData) => void;
+}
+
+// Mutation
+
+export type CrudAction = "create" | "update" | "delete";
+
+export interface CrudMutationOptions<TVariables> {
+  mutationFn: (variables: TVariables) => Promise<unknown>;
+
+  queryKey: readonly unknown[];
+
+  entityKey: string;
+
+  successKey: string;
+
+  redirectTo: string;
+}
+
+// Pages
+
+export type CrudFormTablePageProps<
+  TData extends CrudRow,
+  TForm extends CrudForm,
+> = {
   title: string;
   formFields: CrudFormField[];
   columns: CrudColumn[];
@@ -44,16 +103,20 @@ export type CrudPageProps<TData extends CrudRow, TForm extends CrudForm> = {
   headerContent?: ReactNode;
 };
 
-export type CrudAction = "create" | "update" | "delete";
+export type CrudListPageProps<TData extends CrudRow> = {
+  title: string;
 
-export interface CrudMutationOptions<TVariables> {
-  mutationFn: (variables: TVariables) => Promise<unknown>;
+  loading?: boolean;
 
-  queryKey: readonly unknown[];
+  data: TData[];
 
-  entityKey: string;
+  columns: CrudColumn[];
 
-  successKey: string;
+  onCreate: () => void;
 
-  redirectTo: string;
-}
+  onView?: (item: TData) => void;
+  onEdit: (item: TData) => void;
+  onDelete: (item: TData) => void;
+
+  headerContent?: ReactNode;
+};

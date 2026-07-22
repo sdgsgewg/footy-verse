@@ -1,12 +1,13 @@
 import type { Dispatch, SetStateAction } from "react";
-import { CrudForm, CrudPageProps, CrudRow } from "@/types/crud";
+import { CrudForm, CrudFormTablePageProps, CrudRow } from "@/types/crud";
 import { CrudPageHeader } from "./CrudPageHeader";
 import { CrudPageForm } from "./CrudPageForm";
 import { CrudPageTable } from "./CrudPageTable";
 
-export function CrudPage<TData extends CrudRow, TForm extends CrudForm>(
-  props: CrudPageProps<TData, TForm>,
-) {
+export function CrudFormTablePage<
+  TData extends CrudRow,
+  TForm extends CrudForm,
+>(props: CrudFormTablePageProps<TData, TForm>) {
   const {
     title,
     formFields,

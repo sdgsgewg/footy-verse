@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { CrudForm, CrudPageProps, CrudRow } from "@/types/crud";
+import { CrudPageTableProps, CrudRow } from "@/types/crud";
 import { Database } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { ReactNode } from "react";
@@ -13,10 +13,7 @@ export const CrudPageTable = <TData extends CrudRow>({
   onView,
   onEdit,
   onDelete,
-}: Pick<
-  CrudPageProps<TData, CrudForm>,
-  "loading" | "data" | "columns" | "onView" | "onEdit" | "onDelete"
->) => {
+}: CrudPageTableProps<TData>) => {
   const tCommonTable = useTranslations("common.table");
 
   const getValue = (obj: TData, path: string): ReactNode | null => {

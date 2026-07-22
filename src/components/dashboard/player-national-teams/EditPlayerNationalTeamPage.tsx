@@ -12,7 +12,7 @@ import {
 import { PlayerNationalTeamLookupResponse } from "@/types/player-national-teams";
 import EditPlayerNationalTeamForm from "@/components/forms/player-national-teams/EditPlayerNationalTeamForm";
 import { PlayerNationalTeamHistoryTable } from "@/components/shared/tables";
-import CrudTableFormLayout from "@/components/templates/crud/CrudTableFormLayout";
+import TableFormLayout from "@/components/layout/dashboard/TableFormLayout";
 
 interface Props {
   playerLookup: PlayerLookupResponse;
@@ -61,7 +61,7 @@ export default function EditPlayerNationalTeamPage({
   }
 
   return (
-    <CrudTableFormLayout
+    <TableFormLayout
       title={t("title", {
         entity: tEntities("playerNationalTeam"),
         playerName: player ? `(${player.name})` : "",

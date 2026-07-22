@@ -7,7 +7,7 @@ import ErrorState from "@/components/feedback/ErrorState";
 import { usePlayerCareerSubmit } from "@/hooks/dashboard/player-careers/usePlayerCareerSubmit";
 import PlayerCareerForm from "@/components/forms/player-careers/PlayerCareerForm";
 import { PlayerCareerHistoryTable } from "@/components/shared/tables";
-import CrudTableFormLayout from "@/components/templates/crud/CrudTableFormLayout";
+import TableFormLayout from "@/components/layout/dashboard/TableFormLayout";
 import { useTranslations } from "next-intl";
 
 interface Props {
@@ -40,7 +40,7 @@ export default function CreatePlayerCareerPage({ playerLookup }: Props) {
   }
 
   return (
-    <CrudTableFormLayout
+    <TableFormLayout
       title={t("title", {
         entity: tEntities("playerCareer"),
         playerName: player ? `(${player.name})` : "",

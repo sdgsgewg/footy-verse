@@ -1,6 +1,5 @@
 import SectionHeader from "@/components/players/sections/SectionHeader";
 import { CrudPageHeader } from "@/components/templates/crud";
-import DashboardPageWrapper from "@/components/wrappers/DashboardPageWrapper";
 import FormSectionWrapper from "@/components/wrappers/FormSectionWrapper";
 import { cn } from "@/lib/utils";
 import React from "react";
@@ -16,7 +15,7 @@ interface Props {
   form: React.ReactNode;
 }
 
-const CrudTableFormLayout = ({
+const TableFormLayout = ({
   title,
   columns,
   tableTitle,
@@ -24,7 +23,7 @@ const CrudTableFormLayout = ({
   form,
 }: Props) => {
   return (
-    <DashboardPageWrapper>
+    <>
       <CrudPageHeader title={title} showBackButton />
 
       <FormSectionWrapper formSize="large">
@@ -45,8 +44,8 @@ const CrudTableFormLayout = ({
           </div>
         </div>
       </FormSectionWrapper>
-    </DashboardPageWrapper>
+    </>
   );
 };
 
-export default CrudTableFormLayout;
+export default TableFormLayout;
