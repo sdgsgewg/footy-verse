@@ -15,7 +15,7 @@ export const transferMutationSchema = z.object({
     TransferType.YOUTH_PROMOTION,
     TransferType.RETIRED,
   ]),
-  transfer_fee: z.coerce.number().positive(),
+  transfer_fee: z.coerce.number().nonnegative(),
   transfer_date: z.string(),
 });
 

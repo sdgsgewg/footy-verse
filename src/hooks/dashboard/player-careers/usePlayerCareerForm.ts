@@ -15,7 +15,9 @@ const emptyPlayerCareerForm: UpsertPlayerCareerInput = {
   left_at: "",
 
   contracts: [],
+
   shirt_numbers: [],
+  
   transfer: {
     season_id: "",
     from_club_id: "",
@@ -87,7 +89,7 @@ export function usePlayerCareerForm(playerCareer?: PlayerCareerEditResponse) {
     form.transfer.from_club_id.trim().length > 0 &&
     form.transfer.to_club_id.trim().length > 0 &&
     form.transfer.transfer_type.trim().length > 0 &&
-    form.transfer.transfer_fee > 0 &&
+    form.transfer.transfer_fee >= 0 &&
     form.transfer.transfer_date.trim().length > 0;
 
   const canSubmit = useMemo(() => {

@@ -1,9 +1,17 @@
 {
-  "combobox": {
-    "search": "Search...",
-    "searchEntity": "Search {entity}...",
-    "noResults": "No results found.",
-    "noEntityFound": "No {entity} found."
+  "pages": {
+    "list": {
+      "title": "Manage {entity}",
+      "subtitle": "Add, edit, or delete {entity}"
+    },
+    "create": {
+      "title": "Create {entity} {playerName}",
+      "subtitle": "Add new {entity}"
+    },
+    "edit": {
+      "title": "Edit {entity} {playerName}",
+      "subtitle": "Edit {entity}"
+    }
   },
 
   "crud": {
@@ -64,6 +72,13 @@
     "toggleTheme": "Toggle theme",
     "switchLanguage": "Switch language",
     "entry": "Entry"
+  },
+
+  "combobox": {
+    "search": "Search...",
+    "searchEntity": "Search {entity}...",
+    "noResults": "No results found.",
+    "noEntityFound": "No {entity} found."
   },
 
   "table": {

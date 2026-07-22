@@ -4,25 +4,25 @@ import { usePlayerDetail } from "@/hooks/dashboard/players";
 import { PlayerLookupResponse } from "@/types/player";
 import EntityLoading from "@/components/feedback/loading/EntityLoading";
 import ErrorState from "@/components/feedback/ErrorState";
-import DashboardPageWrapper from "@/components/wrappers/DashboardPageWrapper";
-import { useTranslations } from "next-intl";
-import { CrudPageHeader } from "@/components/templates/crud";
-import FormSectionWrapper from "@/components/wrappers/FormSectionWrapper";
 import { usePlayerCareerSubmit } from "@/hooks/dashboard/player-careers/usePlayerCareerSubmit";
 import PlayerCareerForm from "@/components/forms/player-careers/PlayerCareerForm";
+import { PlayerCareerHistoryTable } from "@/components/shared/tables";
+import CrudTableFormLayout from "@/components/templates/crud/CrudTableFormLayout";
+import { useTranslations } from "next-intl";
 
 interface Props {
   playerLookup: PlayerLookupResponse;
 }
 
 export default function CreatePlayerCareerPage({ playerLookup }: Props) {
-  const t = useTranslations("dashboard.playerCareers.create");
+  const t = useTranslations("common.pages.create");
+  const tEntities = useTranslations("entities");
 
   const { player, isLoading, error, refetch } = usePlayerDetail(
     playerLookup.id,
   );
 
-  const { submit, isSubmitting } = usePlayerCareerSubmit(playerLookup.slug);
+  const { submit, isSubmitting } = usePlayerCareerSubmit(playerLookup);
 
   // Initial request is still loading and no cached player data is available yet.
   if (!player && isLoading) {
@@ -40,15 +40,17 @@ export default function CreatePlayerCareerPage({ playerLookup }: Props) {
   }
 
   return (
-    <DashboardPageWrapper>
-      <CrudPageHeader
-        title={t("title", {
-          playerName: player ? `(${player.name})` : "",
-        })}
-        showBackButton
-      />
-
-      <FormSectionWrapper formSize="large">
+    <CrudTableFormLayout
+      title={t("title", {
+        entity: tEntities("playerCareer"),
+        playerName: player ? `(${player.name})` : "",
+      })}
+      columns={1}
+      tableTitle="Career History"
+      table={
+        <PlayerCareerHistoryTable playerCareers={player.history.careers} />
+      }
+      form={
         <PlayerCareerForm
           mode="create"
           loading={isSubmitting}
@@ -58,7 +60,7 @@ export default function CreatePlayerCareerPage({ playerLookup }: Props) {
             })
           }
         />
-      </FormSectionWrapper>
-    </DashboardPageWrapper>
+      }
+    />
   );
 }

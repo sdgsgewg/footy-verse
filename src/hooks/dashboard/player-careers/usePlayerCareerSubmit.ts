@@ -1,22 +1,23 @@
 import { UpsertPlayerCareerInput } from "@/types/player-career";
 import { useCreatePlayerCareer } from "./useCreatePlayerCareer";
 import { useUpdatePlayerCareer } from "./useUpdatePlayerCareer";
+import { PlayerLookupResponse } from "@/types/player";
 
 type SubmitOptions = {
   careerId?: string;
   payload: UpsertPlayerCareerInput;
 };
 
-export function usePlayerCareerSubmit(playerId: string) {
-  const createMutation = useCreatePlayerCareer(playerId);
-  const updateMutation = useUpdatePlayerCareer(playerId);
+export function usePlayerCareerSubmit(player: PlayerLookupResponse) {
+  const createMutation = useCreatePlayerCareer(player);
+  const updateMutation = useUpdatePlayerCareer(player);
 
   const isSubmitting = createMutation.isPending || updateMutation.isPending;
   const isCreating = createMutation.isPending;
   const isUpdating = updateMutation.isPending;
 
   const submit = ({ careerId, payload }: SubmitOptions) => {
-    if (playerId && careerId) {
+    if (player.id && careerId) {
       updateMutation.mutate({
         careerId,
         data: payload,

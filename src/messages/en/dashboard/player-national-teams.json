@@ -1,0 +1,33 @@
+{
+  "form": {
+    "title": "National Team History",
+    "noData": "No national team history added.",
+
+    "labels": {
+      "nation": "Nation",
+      "label": "Label",
+      "startDate": "Start Date",
+      "endDate": "End Date",
+      "shirtNumber": "Shirt Number"
+    },
+
+    "placeholders": {
+      "nation": "Select Nation",
+      "label": "Input Label",
+      "startDate": "Select Start Date",
+      "endDate": "Select End Date",
+      "shirtNumber": "Input Shirt Number"
+    }
+  },
+
+  "columns": {
+    "nation": "Nation",
+    "startDate": "Start Date",
+    "endDate": "End Date",
+    "shirtNumber": "Shirt Number"
+  },
+
+  "actions": {
+    "addNew": "Add New Player National Team"
+  }
+}

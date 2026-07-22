@@ -2,8 +2,7 @@ import { useTranslations } from "next-intl";
 import { ROUTES } from "@/constants/routes";
 import { useRouter } from "@/navigation";
 import { useDeletePlayerCareer } from "./useDeletePlayerCareer";
-import { PlayerCareerDetailResponse } from "@/types/player-career";
-import { PlayerCareer } from "@/types/player";
+import { PlayerCareerListItem } from "@/types/player-career";
 
 export function usePlayerCareerActions(playerId: string) {
   const tPlayerCareers = useTranslations("dashboard.playerCareers");
@@ -26,11 +25,11 @@ export function usePlayerCareerActions(playerId: string) {
 
   const handleEdit = (careerId: string) => {
     router.push(
-      `${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${playerId}/careers/edit/${careerId}`,
+      `${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${playerId}/careers/${careerId}/edit`,
     );
   };
 
-  const handleDelete = (pc: PlayerCareer) => {
+  const handleDelete = (pc: PlayerCareerListItem) => {
     if (!confirm(`${tPlayerCareers("form.confirm.delete")}`)) return;
 
     deleteMutation.mutate({

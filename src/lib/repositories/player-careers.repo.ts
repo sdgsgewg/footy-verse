@@ -50,11 +50,11 @@ function getPlayerCareersBaseQuery() {
     joined_at,
     left_at,
 
-    club (
+    club:clubs (
       id,
       name,
       image
-    ),
+    )
   `;
 }
 
@@ -176,7 +176,7 @@ async function insertPlayerContracts(
   const playerContractInserts = playerContracts.map((pc) => ({
     player_career_id: playerCareerId,
     contract_start: pc.contract_start,
-    contract_end: pc.contract_start,
+    contract_end: pc.contract_end,
     salary: pc.salary,
   }));
 

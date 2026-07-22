@@ -1,0 +1,33 @@
+{
+  "form": {
+    "title": "Riwayat Tim Nasional",
+    "noData": "Belum ada riwayat tim nasional yang ditambahkan.",
+
+    "labels": {
+      "nation": "Negara",
+      "label": "Label",
+      "startDate": "Tanggal Mulai",
+      "endDate": "Tanggal Akhir",
+      "shirtNumber": "Nomor Baju"
+    },
+
+    "placeholders": {
+      "nation": "Pilih Negara",
+      "label": "Masukkan label",
+      "startDate": "Pilih tanggal mulai",
+      "endDate": "Pilih tanggal akhir",
+      "shirtNumber": "Masukkan nomor baju"
+    }
+  },
+
+  "columns": {
+    "nation": "Negara",
+    "startDate": "Tanggal Mulai",
+    "endDate": "Tanggal Akhir",
+    "shirtNumber": "Nomor Baju"
+  },
+
+  "actions": {
+    "addNew": "Tambah Tim Nasional Baru"
+  }
+}

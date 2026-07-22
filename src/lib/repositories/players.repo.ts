@@ -294,7 +294,7 @@ async function insertPlayerPositions(
  */
 async function insertPlayerNationalTeams(
   playerId: string,
-  playerNationalTeams: PlayerNationalTeamCreateInput[],
+  playerNationalTeams: PlayerNationalTeamCreateInput,
 ) {
   const supabase = await getSupabase();
 

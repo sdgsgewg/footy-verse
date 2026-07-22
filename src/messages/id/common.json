@@ -1,9 +1,17 @@
 {
-  "combobox": {
-    "search": "Cari...",
-    "searchEntity": "Cari {entity}...",
-    "noResults": "Data tidak ditemukan.",
-    "noEntityFound": "{entity} tidak ditemukan."
+  "pages": {
+    "list": {
+      "title": "Kelola {entity}",
+      "subtitle": "Tambah, edit, atau hapus {entity}"
+    },
+    "create": {
+      "title": "Buat {entity}",
+      "subtitle": "Tambah {entity} baru"
+    },
+    "edit": {
+      "title": "Edit {entity}",
+      "subtitle": "Edit {entity}"
+    }
   },
 
   "crud": {
@@ -64,6 +72,13 @@
     "toggleTheme": "Ganti tema",
     "switchLanguage": "Ganti bahasa",
     "entry": "Entri"
+  },
+
+  "combobox": {
+    "search": "Cari...",
+    "searchEntity": "Cari {entity}...",
+    "noResults": "Data tidak ditemukan.",
+    "noEntityFound": "{entity} tidak ditemukan."
   },
 
   "table": {

@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import { useLocale } from "next-intl";
 
@@ -10,37 +12,36 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import { PlayerCareer } from "@/types/player";
 import { formatDate } from "@/lib/utils/date";
 import { getImageUrl } from "@/lib/images/image-url";
 import { STORAGE_BUCKETS } from "@/lib/storage";
-import { isDashboardPath } from "@/lib/utils/navigation";
-import { usePathname } from "@/navigation";
 import { useParams } from "next/navigation";
 import { usePlayerCareerActions } from "@/hooks/dashboard/player-careers/usePlayerCareerActions";
 import DataTable from "@/components/shared/DataTable";
 import { CrudActionRow } from "@/components/templates/crud";
+import { PlayerCareerListItem } from "@/types/player-career";
 
 interface Props {
-  careers: PlayerCareer[];
+  playerCareers: PlayerCareerListItem[];
+  showActions?: boolean;
 }
 
-const CareerHistoryTable = ({ careers }: Props) => {
-  const { playerId } = useParams() as {
-    playerId: string;
+const PlayerCareerHistoryTable = ({
+  playerCareers,
+  showActions = false,
+}: Props) => {
+  const { playerSlug } = useParams() as {
+    playerSlug: string;
   };
 
   const locale = useLocale();
-  const pathname = usePathname();
 
   const { handleView, handleEdit, handleDelete } =
-    usePlayerCareerActions(playerId);
-
-  const isDashboard = isDashboardPath(pathname);
+    usePlayerCareerActions(playerSlug);
 
   return (
     <DataTable
-      empty={careers.length === 0}
+      empty={playerCareers.length === 0}
       emptyMessage="No career history found."
     >
       <Table>
@@ -49,12 +50,12 @@ const CareerHistoryTable = ({ careers }: Props) => {
             <TableHead className="w-[320px]">Club</TableHead>
             <TableHead className="w-37.5">Joined</TableHead>
             <TableHead className="w-37.5">Left</TableHead>
-            {isDashboard && <TableHead className="w-37.5">Actions</TableHead>}
+            {showActions && <TableHead className="w-37.5">Actions</TableHead>}
           </TableRow>
         </TableHeader>
 
         <TableBody>
-          {careers.map((career) => (
+          {playerCareers.map((career) => (
             <TableRow
               key={career.id}
               className="hover:bg-muted/50 transition-colors"
@@ -83,7 +84,7 @@ const CareerHistoryTable = ({ careers }: Props) => {
                 {career.leftAt ? formatDate(career.leftAt, locale) : "Present"}
               </TableCell>
 
-              {isDashboard && (
+              {showActions && (
                 <TableCell>
                   <CrudActionRow
                     item={career}
@@ -101,4 +102,4 @@ const CareerHistoryTable = ({ careers }: Props) => {
   );
 };
 
-export default CareerHistoryTable;
+export default PlayerCareerHistoryTable;

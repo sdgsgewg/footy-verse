@@ -1,7 +1,6 @@
 import { nullableDate } from "@/lib/validations/helpers";
 import { z } from "zod";
-
-export const playerNationalTeamIdSchema = z.string().uuid();
+import { idSchema } from "./primitives.schema";
 
 export const playerNationalTeamMutationSchema = z.object({
   nation_id: z.string().uuid(),
@@ -11,13 +10,14 @@ export const playerNationalTeamMutationSchema = z.object({
   shirt_number: z.number().int().min(1).max(99),
 });
 
-export const createPlayerNationalTeamSchema = playerNationalTeamMutationSchema;
+export const createPlayerNationalTeamSchema =
+  playerNationalTeamMutationSchema.array();
 
 export const updatePlayerNationalTeamSchema = playerNationalTeamMutationSchema;
 
 export const playerNationalTeamSchema = playerNationalTeamMutationSchema.extend(
   {
-    id: playerNationalTeamIdSchema,
+    id: idSchema,
     player_id: z.string().uuid(),
     created_at: z.string(),
     updated_at: z.string().nullable(),

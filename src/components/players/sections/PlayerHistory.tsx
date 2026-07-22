@@ -5,27 +5,40 @@ import { usePathname, useRouter } from "@/navigation";
 import { isDashboardPath } from "@/lib/utils/navigation";
 import { ROUTES } from "@/constants/routes";
 import { useParams } from "next/navigation";
-import CareerHistoryTable from "../tables/CareerHistoryTable";
-import NationalTeamHistoryTable from "../tables/NationalTeamHistoryTable";
+import {
+  PlayerCareerHistoryTable,
+  PlayerNationalTeamHistoryTable,
+} from "@/components/shared/tables";
+import { usePlayerCareers } from "@/hooks/dashboard/player-careers";
+import { usePlayerNationalTeams } from "@/hooks/dashboard/player-national-teams";
 
 interface Props {
   player: PlayerDetailResponse;
 }
 
 const PlayerHistory = ({ player }: Props) => {
-  const { playerId } = useParams() as {
-    playerId: string;
+  const { playerSlug } = useParams() as {
+    playerSlug: string;
   };
 
   const router = useRouter();
   const pathname = usePathname();
   const isDashboard = isDashboardPath(pathname);
 
-  const { careers, nationalTeams } = player.history;
+  const { playerCareers } = usePlayerCareers({ playerId: player.id });
+  const { playerNationalTeams } = usePlayerNationalTeams({
+    playerId: player.id,
+  });
 
   const handleAddCareer = () => {
     router.push(
-      `${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${playerId}/careers/create`,
+      `${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${playerSlug}/careers/create`,
+    );
+  };
+
+  const handleAddNationalTeam = () => {
+    router.push(
+      `${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${playerSlug}/national-teams/create`,
     );
   };
 
@@ -38,12 +51,23 @@ const PlayerHistory = ({ player }: Props) => {
           <SectionHeader title="Career History" />
         )}
 
-        <CareerHistoryTable careers={careers} />
+        <PlayerCareerHistoryTable playerCareers={playerCareers} showActions />
       </section>
 
       <section>
-        <SectionHeader title="National Team History" />
-        <NationalTeamHistoryTable nationalTeams={nationalTeams} />
+        {isDashboard ? (
+          <SectionHeader
+            title="National Team History"
+            onAdd={handleAddNationalTeam}
+          />
+        ) : (
+          <SectionHeader title="National Team History" />
+        )}
+
+        <PlayerNationalTeamHistoryTable
+          playerNationalTeams={playerNationalTeams}
+          showActions
+        />
       </section>
     </div>
   );

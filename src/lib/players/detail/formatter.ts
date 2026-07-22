@@ -69,9 +69,11 @@ export function getWeight(weight: number): string {
  * @returns string
  */
 export function formatMarketValue(marketValue: number): string {
-  return marketValue >= 1
-    ? `€${marketValue.toFixed(2)}m`
-    : `€${(marketValue * 1000).toFixed(0)}k`;
+  const modifiedMarketValue = marketValue / 1000000;
+
+  return modifiedMarketValue >= 1
+    ? `€${modifiedMarketValue.toFixed(2)}m`
+    : `€${(modifiedMarketValue * 1000).toFixed(0)}k`;
 }
 /**
  *

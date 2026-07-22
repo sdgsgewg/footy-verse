@@ -1,12 +1,9 @@
-import { GetPlayersParams } from "@/types/player";
-
 export const playerCareerKeys = {
   all: ["player-careers"] as const,
 
   lists: () => [...playerCareerKeys.all, "list"] as const,
 
-  list: (playerId: string, params?: GetPlayersParams) =>
-    [...playerCareerKeys.lists(), playerId, params] as const,
+  list: (playerId: string) => [...playerCareerKeys.lists(), playerId] as const,
 
   details: () => [...playerCareerKeys.all, "detail"] as const,
 

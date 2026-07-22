@@ -66,11 +66,19 @@ export function useCrudMutation<TVariables>({
 
         const name = getNameFromPayload(payload);
 
-        alert(
-          `${t(`common.crud.success.${action}`, {
-            entity: t(`entities.${entityKey}`),
-          })}: ${name}`,
-        );
+        if (name) {
+          alert(
+            `${t(`common.crud.success.${action}`, {
+              entity: t(`entities.${entityKey}`),
+            })}: ${name}`,
+          );
+        } else {
+          alert(
+            `${t(`common.crud.success.${action}`, {
+              entity: t(`entities.${entityKey}`),
+            })}.`,
+          );
+        }
       }
 
       onSuccess?.(data, variables);
