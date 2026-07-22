@@ -1,17 +1,4 @@
 {
-  "title": "Manage Clubs",
-  "subtitle": "Add, edit, or delete clubs",
-
-  "create": {
-    "title": "Create Club",
-    "subtitle": "Add new club"
-  },
-
-  "edit": {
-    "title": "Edit Club",
-    "subtitle": "Edit club"
-  },
-
   "form": {
     "labels": {
       "image": "Club Image",

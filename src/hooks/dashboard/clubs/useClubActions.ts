@@ -5,7 +5,7 @@ import { ClubListItem } from "@/types/club";
 import { useRouter } from "@/navigation";
 
 export function useClubActions() {
-  const tClubs = useTranslations("dashboard.clubs");
+  const t = useTranslations("common");
 
   const router = useRouter();
 
@@ -20,11 +20,11 @@ export function useClubActions() {
   };
 
   const handleEdit = (club: ClubListItem) => {
-    router.push(`${ROUTES.DASHBOARD.CONTENT.CLUBS.EDIT}/${club.slug}`);
+    router.push(`${ROUTES.DASHBOARD.CONTENT.CLUBS}/${club.slug}/edit`);
   };
 
   const handleDelete = (club: ClubListItem) => {
-    if (!confirm(`${tClubs("form.confirm.delete")}`)) return;
+    if (!confirm(`${t("crud.confirm.delete")}`)) return;
 
     deleteMutation.mutate({
       id: club.id,

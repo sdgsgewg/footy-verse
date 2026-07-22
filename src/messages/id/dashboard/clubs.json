@@ -1,17 +1,4 @@
 {
-  "title": "Kelola Klub",
-  "subtitle": "Tambah, edit, atau hapus klub.",
-
-  "create": {
-    "title": "Buat Klub",
-    "subtitle": "Buat klub baru"
-  },
-
-  "edit": {
-    "title": "Edit Klub",
-    "subtitle": "Edit klub"
-  },
-
   "form": {
     "labels": {
       "image": "Gambar Klub",

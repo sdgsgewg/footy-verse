@@ -1,20 +1,19 @@
 import EntityLoading from "@/components/feedback/loading/EntityLoading";
 import ErrorState from "@/components/feedback/ErrorState";
 import ClubForm from "@/components/forms/clubs/ClubForm";
-import { CrudPageHeader } from "@/components/templates/crud";
-import DashboardPageWrapper from "@/components/wrappers/DashboardPageWrapper";
-import FormSectionWrapper from "@/components/wrappers/FormSectionWrapper";
 import { useClubEdit, useClubSubmit } from "@/hooks/dashboard/clubs";
 import { ClubLookupResponse } from "@/types/club";
 import { useTranslations } from "next-intl";
 import React from "react";
+import CrudFormLayout from "@/components/templates/crud/CrudFormLayout";
 
 interface Props {
   clubLookup: ClubLookupResponse;
 }
 
 const EditClubPage = ({ clubLookup }: Props) => {
-  const tEdit = useTranslations("dashboard.clubs.edit");
+  const t = useTranslations("common.pages.edit");
+  const tEntities = useTranslations("entities");
 
   const { club, isLoading, error, refetch } = useClubEdit(clubLookup.id);
 
@@ -36,10 +35,12 @@ const EditClubPage = ({ clubLookup }: Props) => {
   }
 
   return (
-    <DashboardPageWrapper>
-      <CrudPageHeader title={tEdit("title")} showBackButton />
-
-      <FormSectionWrapper formSize="small">
+    <CrudFormLayout
+      title={t("title", {
+        entity: tEntities("club"),
+      })}
+      formSize="small"
+      form={
         <ClubForm
           mode="edit"
           club={club}
@@ -51,8 +52,8 @@ const EditClubPage = ({ clubLookup }: Props) => {
             })
           }
         />
-      </FormSectionWrapper>
-    </DashboardPageWrapper>
+      }
+    />
   );
 };
 

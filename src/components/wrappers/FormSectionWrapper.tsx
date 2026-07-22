@@ -1,4 +1,4 @@
-type FormSize = "small" | "medium" | "large";
+import { FormSize } from "@/types/form";
 
 interface Props {
   formSize: FormSize;

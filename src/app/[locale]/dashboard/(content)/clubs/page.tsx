@@ -11,11 +11,14 @@ import { useTranslations } from "next-intl";
 import { useClubs } from "@/hooks/clubs";
 
 export default function ClubsManagementPage() {
-  const t = useTranslations("dashboard.clubs");
+  const t = useTranslations("common.pages.list");
+  const tEntities = useTranslations("entities");
 
   const { clubs, loading, retrying, loadError, retryLoad } = useClubs();
+
   const { handleCreate, handleView, handleEdit, handleDelete } =
     useClubActions();
+    
   const columns: CrudColumn[] = [{ key: "name", label: t("columns.name") }];
 
   const headerContent = isLikelyConnectionError(loadError) ? (
@@ -29,7 +32,11 @@ export default function ClubsManagementPage() {
 
   return (
     <DashboardPageWrapper>
-      <CrudPageHeader title={t("title")} />
+      <CrudPageHeader
+        title={t("title", {
+          entity: tEntities("club"),
+        })}
+      />
       {headerContent}
 
       <CrudPageManagement onCreate={handleCreate} loading={loading} />

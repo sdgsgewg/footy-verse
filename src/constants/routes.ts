@@ -26,7 +26,6 @@ export const ROUTES = {
       CLUBS: {
         BASE: "/dashboard/clubs",
         CREATE: "/dashboard/clubs/create",
-        EDIT: "/dashboard/clubs/edit",
       },
       NATIONALITIES: "/dashboard/nationalities",
       POSITIONS: "/dashboard/positions",
