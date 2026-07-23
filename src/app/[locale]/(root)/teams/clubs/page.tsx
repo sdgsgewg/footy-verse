@@ -23,7 +23,6 @@ export default function ClubsPage() {
   const { clubs, loading } = useClubs({
     name: debouncedKeyword || undefined,
     nationId: filters.nationId || undefined,
-    clubType: filters.clubType || undefined,
   });
 
   const modifiedClubList: TeamItem[] = clubs.map((club) => ({

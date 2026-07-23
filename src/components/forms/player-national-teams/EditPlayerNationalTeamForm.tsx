@@ -9,7 +9,7 @@ import FormWrapper from "../base/FormWrapper";
 import { useEditPlayerNationalTeamForm } from "@/hooks/dashboard/player-national-teams";
 import FormContentWrapper from "../base/FormContentWrapper";
 import { useNationalities } from "@/hooks/dashboard/nationalities";
-import { ComboboxField, DateField, NumberField, TextField } from "../fields";
+import { ComboboxField, DateField, NumberField } from "../fields";
 import { useTranslations } from "next-intl";
 import { getNationalityOptions } from "@/lib/nationalities/options";
 
@@ -64,18 +64,8 @@ const EditPlayerNationalTeamForm = ({
           emptyMessage={tCommon("combobox.noEntityFound", {
             entity: tEntities("nationality").toLowerCase(),
           })}
-          value={form.nation_id}
-          onChange={(value) => setForm({ ...form, nation_id: value })}
-          required
-        />
-
-        {/* Label */}
-        <TextField
-          label={tLabels("label")}
-          name={`label`}
-          placeholder={tPlaceholders("label") || ""}
-          value={form.label}
-          onChange={(value) => setForm({ ...form, label: value })}
+          value={form.national_team_id}
+          onChange={(value) => setForm({ ...form, national_team_id: value })}
           required
         />
 

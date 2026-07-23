@@ -26,21 +26,28 @@ type NationalitySummary = Pick<
   "id" | "image" | "name"
 >;
 
+type NationalTeamSummary = Pick<
+  Tables<"national_teams">,
+  "id" | "team_category" | "age_group"
+> & {
+  nation: NationalitySummary;
+};
+
 // Supabase Query Result
 
 // Player National Team List
 
 export type DbPlayerNationalTeamListRow = Pick<
   PlayerNationalTeam,
-  "id" | "label" | "shirt_number" | "start_date" | "end_date"
+  "id" | "shirt_number" | "start_date" | "end_date"
 > & {
-  nationality: NationalitySummary;
+  nationalTeam: NationalTeamSummary;
 };
 
 // Player National Team Detail
 
 export type DbPlayerNationalTeamDetailRow = PlayerNationalTeam & {
-  nationality: NationalitySummary;
+  nationalTeam: NationalTeamSummary;
 };
 
 // API Response DTO
@@ -49,12 +56,11 @@ export type DbPlayerNationalTeamDetailRow = PlayerNationalTeam & {
 
 export interface PlayerNationalTeamListItem {
   id: string;
-  label: string;
+  imageUrl: string;
+  name: string;
   shirtNumber: number;
   startDate: string;
   endDate: string | null;
-
-  nationality: NationalitySummary;
 }
 
 // Player National Team Detail
@@ -63,23 +69,20 @@ export interface PlayerNationalTeamListItem {
 
 export interface PlayerNationalTeamEditResponse {
   id: string;
-  label: string;
   shirtNumber: number;
   startDate: string;
   endDate: string | null;
-  nationId: string;
+  nationalTeamId: string;
 }
 
 // Model View Detail
 
 export interface PlayerNationalTeamDetailResponse {
   id: string;
-  label: string;
   shirtNumber: number;
   startDate: string;
   endDate: string | null;
-
-  nationality: NationalitySummary;
+  nationalTeamId: string;
 }
 
 export interface PlayerNationalTeamLookupResponse {

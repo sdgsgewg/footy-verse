@@ -22,6 +22,13 @@ export const ENTITY_CONFIG = {
     imageFolder: "clubs",
   },
 
+  clubTeam: {
+    table: "club_teams",
+    label: "Club Team",
+    supportsImage: false,
+    supportsSlug: false,
+  },
+
   nationality: {
     table: "nationalities",
     label: "Nationality",
@@ -30,6 +37,13 @@ export const ENTITY_CONFIG = {
     dashboardRoute: ROUTES.DASHBOARD.CONTENT.NATIONALITIES,
     storageBucket: STORAGE_BUCKETS.NATIONALITIES,
     imageFolder: "nationalities",
+  },
+
+  nationalTeam: {
+    table: "national_teams",
+    label: "National Team",
+    supportsImage: false,
+    supportsSlug: false,
   },
 
   position: {

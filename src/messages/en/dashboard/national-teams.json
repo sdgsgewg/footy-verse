@@ -1,0 +1,18 @@
+{
+  "form": {
+    "labels": {
+      "teamCategory": "Team Category",
+      "ageGroup": "Age Group"
+    },
+
+    "placeholders": {
+      "teamCategory": "Select Team Category",
+      "ageGroup": "Select Age Group"
+    }
+  },
+
+  "columns": {
+    "teamCategory": "Team Category",
+    "ageGroup": "Age Group"
+  }
+}

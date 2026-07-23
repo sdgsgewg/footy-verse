@@ -7,8 +7,7 @@ import {
 import { useMemo, useState } from "react";
 
 const emptyUpdatePlayerNationalTeamForm: PlayerNationalTeamUpdateInput = {
-  nation_id: "",
-  label: "",
+  national_team_id: "",
   start_date: "",
   end_date: "",
   shirt_number: 1,
@@ -17,12 +16,11 @@ const emptyUpdatePlayerNationalTeamForm: PlayerNationalTeamUpdateInput = {
 function mapPlayerNationalTeam(
   playerNationalTeam: PlayerNationalTeamEditResponse,
 ): PlayerNationalTeamUpdateInput {
-  const { nationId, label, startDate, endDate, shirtNumber } =
+  const { nationalTeamId, startDate, endDate, shirtNumber } =
     playerNationalTeam;
 
   return {
-    nation_id: nationId,
-    label,
+    national_team_id: nationalTeamId,
     start_date: startDate,
     end_date: endDate,
     shirt_number: shirtNumber,
@@ -48,8 +46,7 @@ export function useEditPlayerNationalTeamForm(
 
   const canSubmit = useMemo(() => {
     const isFilled =
-      form.nation_id.trim().length > 0 &&
-      form.label.trim().length > 0 &&
+      form.national_team_id.trim().length > 0 &&
       form.start_date.trim().length > 0 &&
       form.shirt_number >= 1 &&
       form.shirt_number <= 99;
@@ -59,8 +56,7 @@ export function useEditPlayerNationalTeamForm(
     }
 
     return (
-      form.nation_id !== initialForm.nation_id ||
-      form.label !== initialForm.label ||
+      form.national_team_id !== initialForm.national_team_id ||
       form.start_date !== initialForm.start_date ||
       form.end_date !== initialForm.end_date ||
       form.shirt_number !== initialForm.shirt_number
@@ -68,11 +64,10 @@ export function useEditPlayerNationalTeamForm(
   }, [form, initialForm]);
 
   const buildPayload = () => {
-    const { nation_id, label, start_date, end_date, shirt_number } = form;
+    const { national_team_id, start_date, end_date, shirt_number } = form;
 
     const payload: PlayerNationalTeamUpdateInput = {
-      nation_id,
-      label,
+      national_team_id,
       start_date,
       end_date: end_date || null,
       shirt_number,

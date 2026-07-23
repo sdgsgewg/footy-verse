@@ -4,8 +4,7 @@
     "noData": "No national team history added.",
 
     "labels": {
-      "nation": "Nation",
-      "label": "Label",
+      "nation": "National Team",
       "startDate": "Start Date",
       "endDate": "End Date",
       "shirtNumber": "Shirt Number"
@@ -13,7 +12,6 @@
 
     "placeholders": {
       "nation": "Select Nation",
-      "label": "Input Label",
       "startDate": "Select Start Date",
       "endDate": "Select End Date",
       "shirtNumber": "Input Shirt Number"
@@ -21,10 +19,10 @@
   },
 
   "columns": {
-    "nation": "Nation",
+    "nationalTeam": "National Team",
+    "shirtNumber": "Shirt Number",
     "startDate": "Start Date",
-    "endDate": "End Date",
-    "shirtNumber": "Shirt Number"
+    "endDate": "End Date"
   },
 
   "actions": {

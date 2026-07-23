@@ -1,7 +1,6 @@
 import { PreferredFoot } from "@/enums/PreferredFoot";
 import { z } from "zod";
 import { playerPositionMutationSchema } from "./player-positions.schema";
-import { playerNationalTeamMutationSchema } from "./player-national-teams.schema";
 import { idSchema } from "./primitives.schema";
 
 export const playerMutationSchema = z.object({
@@ -18,7 +17,6 @@ export const playerMutationSchema = z.object({
   height: z.coerce.number().int().min(100).max(250),
   weight: z.coerce.number().positive(),
   market_value: z.coerce.number().positive(),
-  national_teams: playerNationalTeamMutationSchema.array().optional(),
 });
 
 export const createPlayerSchema = playerMutationSchema;

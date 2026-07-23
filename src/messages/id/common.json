@@ -5,11 +5,11 @@
       "subtitle": "Tambah, edit, atau hapus {entity}"
     },
     "create": {
-      "title": "Buat {entity}",
+      "title": "Buat {entity} {entityName}",
       "subtitle": "Tambah {entity} baru"
     },
     "edit": {
-      "title": "Edit {entity}",
+      "title": "Edit {entity} {entityName}",
       "subtitle": "Edit {entity}"
     }
   },
@@ -35,6 +35,22 @@
 
   "validation": {
     "required": "{field} is required."
+  },
+
+  "options": {
+    "teamCategory": {
+      "men": "Pria",
+      "women": "Wanita"
+    },
+
+    "ageGroup": {
+      "senior": "Senior",
+      "u23": "U23",
+      "u21": "U21",
+      "u19": "U19",
+      "u18": "U18",
+      "u17": "U17"
+    }
   },
 
   "actions": {
@@ -82,6 +98,10 @@
   },
 
   "table": {
+    "title": {
+      "history": "Riwayat {entity}"
+    },
+
     "actions": "Aksi",
     "noData": "Tidak ada data yang ditemukan."
   },

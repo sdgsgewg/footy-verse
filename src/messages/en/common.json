@@ -5,11 +5,11 @@
       "subtitle": "Add, edit, or delete {entity}"
     },
     "create": {
-      "title": "Create {entity} {playerName}",
+      "title": "Create {entity} {entityName}",
       "subtitle": "Add new {entity}"
     },
     "edit": {
-      "title": "Edit {entity} {playerName}",
+      "title": "Edit {entity} {entityName}",
       "subtitle": "Edit {entity}"
     }
   },
@@ -35,6 +35,22 @@
 
   "validation": {
     "required": "{field} is required."
+  },
+
+  "options": {
+    "teamCategory": {
+      "men": "Men",
+      "women": "Women"
+    },
+
+    "ageGroup": {
+      "senior": "Senior",
+      "u23": "U23",
+      "u21": "U21",
+      "u19": "U19",
+      "u18": "U18",
+      "u17": "U17"
+    }
   },
 
   "actions": {
@@ -82,6 +98,10 @@
   },
 
   "table": {
+    "title": {
+      "history": "{entity} History"
+    },
+
     "actions": "Actions",
     "noData": "No records found."
   },

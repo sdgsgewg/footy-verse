@@ -6,8 +6,8 @@ import {
   PlayerListItem,
 } from "@/types/player";
 import {
-  getCurrentClub,
-  getCurrentNationality,
+  getCurrentClubTeam,
+  getCurrentNationalTeam,
   getCurrentShirtNumber,
   getMainPosition,
 } from "./formatter";
@@ -16,11 +16,9 @@ import {
   getCurrentContract,
   getDateOfBirth,
   getHeight,
-  getNationalities,
+  getNationalTeams,
   getOtherPositions,
-  getPlayerCareers,
   getPlayerDetailCurrentCareer,
-  getPlayerNationalTeams,
   getWeight,
 } from "./detail/formatter";
 import { getImageUrl } from "../images/image-url";
@@ -31,17 +29,17 @@ export function mapPlayerListItem(player: DbPlayerListRow): PlayerListItem {
 
   const mainPosition = getMainPosition(player.player_positions);
 
-  const currentClub = getCurrentClub(player);
+  const currentClub = getCurrentClubTeam(player);
 
-  const currentNationality = getCurrentNationality(player);
+  const currentNationalTeam = getCurrentNationalTeam(player);
 
   return {
     ...player,
     imageUrl: getImageUrl("player", STORAGE_BUCKETS.PLAYERS, player.image),
     shirtNumber,
     mainPosition,
-    currentClub: currentClub ?? null,
-    currentNationality: currentNationality ?? null,
+    currentClubTeam: currentClub ?? null,
+    currentNationalTeam: currentNationalTeam ?? null,
     marketValue: player.market_value,
   };
 }
@@ -49,21 +47,15 @@ export function mapPlayerListItem(player: DbPlayerListRow): PlayerListItem {
 export function mapPlayerEditResponse(
   player: DbPlayerDetailRow,
 ): PlayerEditResponse {
+  const { preferred_foot, market_value, player_positions } = player;
+
   return {
     ...player,
-    preferredFoot: player.preferred_foot,
-    marketValue: player.market_value,
-    positions: player.player_positions.map((pp) => ({
+    preferredFoot: preferred_foot,
+    marketValue: market_value,
+    positions: player_positions.map((pp) => ({
       positionId: pp.position.id,
       displayOrder: pp.display_order,
-    })),
-    nationalTeams: player.player_national_teams.map((pnt) => ({
-      id: pnt.id,
-      label: pnt.label,
-      startDate: pnt.start_date,
-      endDate: pnt.end_date,
-      shirtNumber: pnt.shirt_number,
-      nationality: pnt.nationality,
     })),
   };
 }
@@ -89,13 +81,10 @@ export function mapPlayerDetailResponse(
   const joinedAt = currentCareer ? currentCareer.joined_at : null;
   const contractEnd = currentContract ? currentContract.contract_end : null;
 
-  const currentClub = getCurrentClub(player);
-  const currentNationality = getCurrentNationality(player);
+  const currentClubTeam = getCurrentClubTeam(player);
+  const currentNationalTeam = getCurrentNationalTeam(player);
 
-  const nationalities = getNationalities(player);
-
-  const careers = getPlayerCareers(player);
-  const nationalTeams = getPlayerNationalTeams(player);
+  const nationalTeams = getNationalTeams(player);
 
   return {
     id: player.id,
@@ -109,10 +98,10 @@ export function mapPlayerDetailResponse(
       name: player.name,
       dob,
       pob: player.pob,
-      currentNationality: currentNationality ?? null,
+      currentNationalTeam: currentNationalTeam ?? null,
       height,
       mainPosition,
-      currentClub: currentClub ?? null,
+      currentClub: currentClubTeam ?? null,
       joinedAt,
       contractEnd,
     },
@@ -127,15 +116,10 @@ export function mapPlayerDetailResponse(
       marketValue,
       mainPosition,
       otherPositions,
-      nationalities,
-      currentClub: currentClub ?? null,
+      nationalTeams,
+      currentClubTeam: currentClubTeam ?? null,
       joinedAt,
       contractEnd,
-    },
-
-    history: {
-      careers,
-      nationalTeams,
     },
   };
 }

@@ -4,8 +4,8 @@ import { idSchema } from "./primitives.schema";
 
 export const transferMutationSchema = z.object({
   season_id: idSchema,
-  from_club_id: idSchema,
-  to_club_id: idSchema,
+  from_club_team_id: idSchema,
+  to_club_team_id: idSchema,
   transfer_type: z.enum([
     TransferType.TRANSFER,
     TransferType.LOAN,

@@ -34,7 +34,7 @@ export function usePlayerNationalTeamActions(playerId: string) {
     if (
       !confirm(
         `${tCommon("crud.confirm.delete", {
-          entity: tEntities("playerNationalTeam"),
+          entity: tEntities("playerNationalTeam").toLowerCase(),
         })}`,
       )
     )

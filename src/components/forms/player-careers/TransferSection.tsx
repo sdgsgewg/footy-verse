@@ -41,8 +41,8 @@ const TransferSection = ({ form, setForm, seasons, clubs }: Props) => {
   const { transfer } = form;
   const {
     season_id,
-    from_club_id,
-    to_club_id,
+    from_club_team_id,
+    to_club_team_id,
     transfer_type,
     transfer_fee,
     transfer_date,
@@ -94,13 +94,13 @@ const TransferSection = ({ form, setForm, seasons, clubs }: Props) => {
           emptyMessage={tCommon("combobox.noEntityFound", {
             entity: tEntities("club").toLowerCase(),
           })}
-          value={from_club_id}
+          value={from_club_team_id}
           onChange={(value) =>
             setForm({
               ...form,
               transfer: {
                 ...transfer,
-                from_club_id: value,
+                from_club_team_id: value,
               },
             })
           }
@@ -119,13 +119,13 @@ const TransferSection = ({ form, setForm, seasons, clubs }: Props) => {
           emptyMessage={tCommon("combobox.noEntityFound", {
             entity: tEntities("club").toLowerCase(),
           })}
-          value={to_club_id}
+          value={to_club_team_id}
           onChange={(value) =>
             setForm({
               ...form,
               transfer: {
                 ...transfer,
-                to_club_id: value,
+                to_club_team_id: value,
               },
             })
           }

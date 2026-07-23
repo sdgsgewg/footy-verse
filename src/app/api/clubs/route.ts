@@ -21,7 +21,6 @@ export async function GET(request: Request) {
     const query: GetClubsParams = {
       name: searchParams.get("name") || undefined,
       nationId: searchParams.get("nationId") || undefined,
-      clubType: searchParams.get("clubType") || undefined,
     };
 
     const data = await getClubsService(query);

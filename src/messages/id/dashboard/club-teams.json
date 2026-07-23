@@ -1,0 +1,28 @@
+{
+  "form": {
+    "labels": {
+      "squadType": "Tipe Skuad",
+      "ageGroup": "Grup Usia"
+    },
+
+    "placeholders": {
+      "squadType": "Pilih Tipe Skuad",
+      "ageGroup": "Pilih Grup Usia"
+    },
+
+    "options": {
+      "squadType": {
+        "firstTeam": "Tim Utama",
+        "bTeam": "Tim B",
+        "reserve": "Tim Cadangan",
+        "academy": "Tim Akademi"
+      }
+    }
+  },
+
+  "columns": {
+    "name": "Nama",
+    "squadType": "Tipe Skuad",
+    "ageGroup": "Grup Usia"
+  }
+}

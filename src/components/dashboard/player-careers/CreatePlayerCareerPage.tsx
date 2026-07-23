@@ -9,6 +9,7 @@ import PlayerCareerForm from "@/components/forms/player-careers/PlayerCareerForm
 import { PlayerCareerHistoryTable } from "@/components/shared/tables";
 import TableFormLayout from "@/components/layout/dashboard/TableFormLayout";
 import { useTranslations } from "next-intl";
+import { usePlayerCareers } from "@/hooks/dashboard/player-careers";
 
 interface Props {
   playerLookup: PlayerLookupResponse;
@@ -21,6 +22,10 @@ export default function CreatePlayerCareerPage({ playerLookup }: Props) {
   const { player, isLoading, error, refetch } = usePlayerDetail(
     playerLookup.id,
   );
+
+  const { playerCareers } = usePlayerCareers({
+    playerId: player?.id,
+  });
 
   const { submit, isSubmitting } = usePlayerCareerSubmit(playerLookup);
 
@@ -43,13 +48,11 @@ export default function CreatePlayerCareerPage({ playerLookup }: Props) {
     <TableFormLayout
       title={t("title", {
         entity: tEntities("playerCareer"),
-        playerName: player ? `(${player.name})` : "",
+        entityName: player ? `(${player.name})` : "",
       })}
       columns={1}
       tableTitle="Career History"
-      table={
-        <PlayerCareerHistoryTable playerCareers={player.history.careers} />
-      }
+      table={<PlayerCareerHistoryTable playerCareers={playerCareers} />}
       form={
         <PlayerCareerForm
           mode="create"

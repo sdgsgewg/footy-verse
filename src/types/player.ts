@@ -35,11 +35,23 @@ export type PlayerNationalTeamCreateInput = z.infer<
 export type PositionSummary = Pick<Tables<"positions">, "id" | "name">;
 
 export type ClubSummary = Pick<Tables<"clubs">, "id" | "name" | "image">;
+export type ClubTeamSummary = Pick<
+  Tables<"club_teams">,
+  "id" | "squad_type" | "age_group"
+> & {
+  club: ClubSummary;
+};
 
 export type NationalitySummary = Pick<
   Tables<"nationalities">,
   "id" | "name" | "image"
 >;
+export type NationalTeamSummary = Pick<
+  Tables<"national_teams">,
+  "id" | "team_category" | "age_group"
+> & {
+  nation: NationalitySummary;
+};
 
 export type ContractSummary = Pick<
   Tables<"player_contracts">,
@@ -64,17 +76,17 @@ export type DbPlayerPosition = Pick<
 
 export type DbPlayerCareer = Pick<
   Tables<"player_careers">,
-  "id" | "joined_at" | "left_at" | "club_id"
+  "id" | "joined_at" | "left_at" | "club_team_id"
 > & {
-  club: ClubSummary;
+  club_team: ClubTeamSummary;
   player_shirt_numbers: ShirtNumberSummary[];
 };
 
 export type DbPlayerNationalTeam = Pick<
   Tables<"player_national_teams">,
-  "id" | "label" | "start_date" | "end_date" | "shirt_number" | "nation_id"
+  "id" | "start_date" | "end_date" | "shirt_number" | "national_team_id"
 > & {
-  nationality: NationalitySummary;
+  national_team: NationalTeamSummary;
 };
 
 export type DbPlayerListRow = Pick<
@@ -90,9 +102,9 @@ export type DbPlayerListRow = Pick<
 
 export type DbPlayerDetailCareer = Pick<
   Tables<"player_careers">,
-  "id" | "joined_at" | "left_at" | "club_id"
+  "id" | "joined_at" | "left_at" | "club_team_id"
 > & {
-  club: ClubSummary;
+  club_team: ClubTeamSummary;
   player_contracts: ContractSummary[];
   player_shirt_numbers: ShirtNumberSummary[];
 };
@@ -121,21 +133,28 @@ export interface PlayerListItem {
   shirtNumber: PlayerShirtNumber;
 
   mainPosition: PositionSummary;
-  currentClub: ClubSummary | null;
-  currentNationality: NationalitySummary | null;
+  currentClubTeam: ClubTeam | null;
+  currentNationalTeam: NationalTeam | null;
 
   marketValue: number;
 }
 
 // Player Detail
 
+export interface NationalTeam {
+  id: string;
+  imageUrl: string;
+  name: string;
+  teamCategory: string;
+  ageGroup: string;
+}
+
 export interface PlayerNationalTeam {
   id: string;
-  label: string;
   startDate: string;
   endDate: string | null;
   shirtNumber: number;
-  nationality: NationalitySummary;
+  nationalTeam: NationalTeam;
 }
 
 // Model For Edit
@@ -160,18 +179,30 @@ export interface PlayerEditResponse {
   marketValue: number;
 
   positions: PlayerPosition[];
-
-  nationalTeams: PlayerNationalTeam[];
 }
 
 // Model View Detail
+
+export interface ClubTeam {
+  id: string;
+  imageUrl: string;
+  name: string;
+  squadType: string;
+  ageGroup: string | null;
+}
+
+interface ShirtNumber {
+  shirtNumber: number;
+  startDate: string;
+  endDate: string | null;
+}
 
 export interface PlayerCareer {
   id: string;
   joinedAt: string;
   leftAt: string | null;
-  club: ClubSummary;
-  shirtNumber: ShirtNumberSummary;
+  clubTeam: ClubTeam;
+  shirtNumber: ShirtNumber;
 }
 
 export interface PlayerDetailResponse {
@@ -187,11 +218,11 @@ export interface PlayerDetailResponse {
 
     dob: string;
     pob: string;
-    currentNationality: NationalitySummary | null;
+    currentNationalTeam: NationalTeam | null;
     height: string;
     mainPosition: PositionSummary;
 
-    currentClub: ClubSummary | null;
+    currentClub: ClubTeam | null;
     joinedAt: string | null;
     contractEnd: string | null;
   };
@@ -208,16 +239,11 @@ export interface PlayerDetailResponse {
     mainPosition: PositionSummary;
     otherPositions: PositionSummary[];
 
-    nationalities: NationalitySummary[];
+    nationalTeams: NationalTeam[];
 
-    currentClub: ClubSummary | null;
+    currentClubTeam: ClubTeam | null;
     joinedAt: string | null;
     contractEnd: string | null;
-  };
-
-  history: {
-    careers: PlayerCareer[];
-    nationalTeams: PlayerNationalTeam[];
   };
 }
 

@@ -1,0 +1,18 @@
+{
+  "form": {
+    "labels": {
+      "teamCategory": "Kategori",
+      "ageGroup": "Grup Usia"
+    },
+
+    "placeholders": {
+      "teamCategory": "Select Kategori",
+      "ageGroup": "Select Grup Usia"
+    }
+  },
+
+  "columns": {
+    "teamCategory": "Kategori",
+    "ageGroup": "Grup Usia"
+  }
+}

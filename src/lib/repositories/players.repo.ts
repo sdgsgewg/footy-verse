@@ -9,7 +9,6 @@ import {
   PlayerEditResponse,
   PlayerListItem,
   PlayerLookupResponse,
-  PlayerNationalTeamCreateInput,
   PlayerPositionCreateInput,
   PlayerUpdateInput,
 } from "@/types/player";
@@ -74,12 +73,18 @@ function getPlayersBaseQuery(options?: {
       id,
       joined_at,
       left_at,
-      club_id,
+      club_team_id,
 
-      club:clubs!player_careers_club_id_fkey (
+      club_team:club_teams!player_careers_club_team_id_fkey (
         id,
-        name,
-        image
+        squad_type,
+        age_group,
+
+        club:clubs!club_teams_club_id_fkey (
+          id,
+          name,
+          image,
+        )
       ),
 
       player_shirt_numbers:player_shirt_numbers!player_shirt_numbers_player_career_id_fkey (
@@ -95,10 +100,17 @@ function getPlayersBaseQuery(options?: {
       end_date,
       shirt_number,
       nation_id,
-      nationality:nationalities!player_nationalities_nation_id_fkey (
+
+      national_team:national_teams!player_national_teams_national_team_id_fkey (
         id,
-        name,
-        image
+        team_category,
+        age_group,
+
+        nationality:nationalities!national_teams_nation_id_fkey (
+          id,
+          name,
+          image
+        )
       )
     )
   `;
@@ -162,10 +174,16 @@ function getPlayerDetailBaseQuery() {
       left_at,
       club_id,
 
-      club:clubs!player_careers_club_id_fkey (
+      club_team:club_teams!player_careers_club_team_id_fkey (
         id,
-        name,
-        image
+        squad_type,
+        age_group,
+
+        club:clubs!club_teams_club_id_fkey (
+          id,
+          name,
+          image,
+        )
       ),
 
       player_contracts:player_contracts!player_contracts_player_career_id_fkey (
@@ -187,10 +205,17 @@ function getPlayerDetailBaseQuery() {
       end_date,
       shirt_number,
       nation_id,
-      nationality:nationalities!player_nationalities_nation_id_fkey (
+
+      national_team:national_teams!player_national_teams_national_team_id_fkey (
         id,
-        name,
-        image
+        team_category,
+        age_group,
+
+        nationality:nationalities!national_teams_nation_id_fkey (
+          id,
+          name,
+          image
+        )
       )
     )
   `;
@@ -289,31 +314,6 @@ async function insertPlayerPositions(
 
 /**
  *
- * @param playerId
- * @param playerNationalTeams
- */
-async function insertPlayerNationalTeams(
-  playerId: string,
-  playerNationalTeams: PlayerNationalTeamCreateInput,
-) {
-  const supabase = await getSupabase();
-
-  const playerNationalTeamInserts = playerNationalTeams.map((pnt) => ({
-    player_id: playerId,
-    nation_id: pnt.nation_id,
-    label: pnt.label,
-    start_date: pnt.start_date,
-    end_date: pnt.end_date || null,
-    shirt_number: pnt.shirt_number,
-  }));
-  const { error: playerNationalTeamError } = await supabase
-    .from(getPlayerNationalTeamTable())
-    .insert(playerNationalTeamInserts);
-  if (playerNationalTeamError) throw playerNationalTeamError;
-}
-
-/**
- *
  * @param player
  * @returns PlayerEditResponse
  */
@@ -327,7 +327,7 @@ export async function createPlayerRepo(
     name: player.name,
   });
 
-  const { market_value, positions, national_teams, ...rest } = player;
+  const { market_value, positions, ...rest } = player;
 
   const { data: insertedPlayer, error: playerError } = await supabase
     .from(getPlayerTable())
@@ -344,11 +344,6 @@ export async function createPlayerRepo(
   //  Insert player positions (table player_positions)
   if (positions && positions.length > 0) {
     insertPlayerPositions(insertedPlayer.id, positions);
-  }
-
-  //  Insert player national teams (table player_national_teams)
-  if (national_teams && national_teams.length > 0) {
-    insertPlayerNationalTeams(insertedPlayer.id, national_teams);
   }
 
   const result = await getPlayerEditRepo(insertedPlayer.id);
@@ -387,7 +382,7 @@ export async function updatePlayerRepo(
     bucket: STORAGE_BUCKETS.PLAYERS,
   });
 
-  const { market_value, positions, national_teams, ...rest } = player;
+  const { market_value, positions, ...rest } = player;
 
   const { error: playerError } = await supabase
     .from(getPlayerTable())
@@ -412,18 +407,6 @@ export async function updatePlayerRepo(
 
   if (positions && positions.length > 0) {
     insertPlayerPositions(id, positions);
-  }
-
-  // Nationality History: Delete existing nationalities and insert new ones
-
-  const { error: deleteNatError } = await supabase
-    .from(getPlayerNationalTeamTable())
-    .delete()
-    .eq("player_id", id);
-  if (deleteNatError) throw deleteNatError;
-
-  if (national_teams && national_teams.length > 0) {
-    insertPlayerNationalTeams(id, national_teams);
   }
 
   const result = await getPlayerEditRepo(id);

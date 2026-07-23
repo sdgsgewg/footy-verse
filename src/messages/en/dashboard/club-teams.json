@@ -1,0 +1,28 @@
+{
+  "form": {
+    "labels": {
+      "squadType": "Squad Type",
+      "ageGroup": "Age Group"
+    },
+
+    "placeholders": {
+      "squadType": "Select Squad Type",
+      "ageGroup": "Select Age Group"
+    },
+
+    "options": {
+      "squadType": {
+        "firstTeam": "First Team",
+        "bTeam": "B Team",
+        "reserve": "Reserve Team",
+        "academy": "Academy Team"
+      }
+    }
+  },
+
+  "columns": {
+    "name": "Name",
+    "squadType": "Squad Type",
+    "ageGroup": "Age Group"
+  }
+}

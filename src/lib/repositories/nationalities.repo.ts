@@ -19,17 +19,24 @@ import {
   mapNationalityEditResponse,
   mapNationalityListItem,
 } from "../nationalities/mapper";
+import { NationalTeamCreateInput } from "@/types/national-team";
+import { TeamCategory } from "@/enums/TeamCategory";
+import { AgeGroup } from "@/enums/AgeGroup";
 
 async function getSupabase() {
   return createClient();
 }
 
-const getLabel = () => {
+const getNationalityLabel = () => {
   return ENTITY_CONFIG["nationality"]["label"];
 };
 
-const getTable = () => {
+const getNationalityTable = () => {
   return ENTITY_CONFIG["nationality"]["table"];
+};
+
+const getNationalTeamTable = () => {
+  return ENTITY_CONFIG["nationalTeam"]["table"];
 };
 
 function getNationalitiesBaseQuery() {
@@ -52,7 +59,7 @@ export async function getNationalitiesRepo(
   const supabase = await getSupabase();
 
   let query = supabase
-    .from(getTable())
+    .from(getNationalityTable())
     .select(getNationalitiesBaseQuery())
     .order("name");
 
@@ -79,7 +86,7 @@ export async function getNationalityEditRepo(
   const supabase = await getSupabase();
 
   const { data, error } = await supabase
-    .from(getTable())
+    .from(getNationalityTable())
     .select("*")
     .eq("id", id)
     .maybeSingle();
@@ -101,7 +108,7 @@ export async function getNationalityDetailRepo(
   const supabase = await getSupabase();
 
   const { data, error } = await supabase
-    .from(getTable())
+    .from(getNationalityTable())
     .select("*")
     .eq("id", id)
     .maybeSingle();
@@ -123,7 +130,7 @@ export async function getNationalityLookupRepo(
   const supabase = await getSupabase();
 
   const { data, error } = await supabase
-    .from(getTable())
+    .from(getNationalityTable())
     .select(`id, slug`)
     .eq("slug", slug)
     .maybeSingle();
@@ -132,6 +139,22 @@ export async function getNationalityLookupRepo(
   if (!data) return null;
 
   return data;
+}
+
+async function insertNationalTeam(nationId: string) {
+  const supabase = await getSupabase();
+
+  const nationalTeamInsert: NationalTeamCreateInput = {
+    team_category: TeamCategory.MEN,
+    age_group: AgeGroup.SENIOR,
+    nation_id: nationId,
+  };
+
+  const { error } = await supabase
+    .from(getNationalTeamTable())
+    .insert(nationalTeamInsert);
+
+  if (error) throw error;
 }
 
 /**
@@ -145,17 +168,20 @@ export async function createNationalityRepo(
   const supabase = await getSupabase();
 
   const slug = await ensureUniqueSlug({
-    table: getTable(),
+    table: getNationalityTable(),
     name: nationality.name,
   });
 
   const { data: insertedNationality, error } = await supabase
-    .from(getTable())
+    .from(getNationalityTable())
     .insert({ ...nationality, slug })
     .select("*")
     .single();
 
   if (error) throw error;
+
+  // Auto insert national men senior team
+  insertNationalTeam(insertedNationality.id);
 
   const result = await getNationalityDetailRepo(insertedNationality.id);
   if (!result) {
@@ -174,11 +200,11 @@ export async function updateNationalityRepo(
   const oldNationality = await requireEntity(
     getNationalityEditRepo,
     id,
-    getLabel(),
+    getNationalityLabel(),
   );
 
   const slug = await ensureUniqueSlug({
-    table: getTable(),
+    table: getNationalityTable(),
     name: nationality.name,
   });
 
@@ -191,7 +217,7 @@ export async function updateNationalityRepo(
   });
 
   const { error } = await supabase
-    .from(getTable())
+    .from(getNationalityTable())
     .update({
       name: nationality.name,
       image: finalImage,
@@ -218,12 +244,15 @@ export async function deleteNationalityRepo(id: string): Promise<void> {
   const nationality = await requireEntity(
     getNationalityEditRepo,
     id,
-    getLabel(),
+    getNationalityLabel(),
   );
 
   await deleteEntityImage(nationality.image, STORAGE_BUCKETS.NATIONALITIES);
 
-  const { error } = await supabase.from(getTable()).delete().eq("id", id);
+  const { error } = await supabase
+    .from(getNationalityTable())
+    .delete()
+    .eq("id", id);
 
   if (error) throw error;
 }

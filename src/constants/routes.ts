@@ -21,7 +21,6 @@ export const ROUTES = {
       PLAYERS: {
         BASE: "/dashboard/players",
         CREATE: "/dashboard/players/create",
-        EDIT: "/dashboard/players/edit",
       },
       CLUBS: {
         BASE: "/dashboard/clubs",
@@ -34,14 +33,12 @@ export const ROUTES = {
       COMPETITIONS: {
         BASE: "/dashboard/competitions",
         CREATE: "/dashboard/competitions/create",
-        EDIT: "/dashboard/competitions/edit",
       },
     },
     SYSTEM: {
       USERS: {
         BASE: "/dashboard/users",
         CREATE: "/dashboard/users/create",
-        EDIT: "/dashboard/users/edit",
       },
       ROLES: "/dashboard/roles",
     },

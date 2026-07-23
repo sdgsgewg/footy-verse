@@ -32,15 +32,18 @@ const getPlayerNationalTeamTable = () => {
 function getPlayerNationalTeamsBaseQuery() {
   return `
     id,
-    label,
     shirt_number,
     start_date,
     end_date,
 
-    nationality:nationalities (
-      id,
-      name,
-      image
+    nationalTeam:national_teams (
+      team_category,
+      age_group,
+      nationality:nationalities (
+        id,
+        name,
+        image
+      )
     )
   `;
 }
@@ -73,10 +76,14 @@ function getPlayerNationalTeamDetailBaseQuery() {
   return `
     *,
 
-    nationality:nationalities (
-      id,
-      name,
-      image
+    nationalTeam:national_teams (
+      team_category,
+      age_group,
+      nationality:nationalities (
+        id,
+        name,
+        image
+      )
     )
   `;
 }
@@ -160,14 +167,14 @@ export async function createPlayerNationalTeamRepo(
 ): Promise<void> {
   const supabase = await getSupabase();
 
-  const playerNationalTeamInserts = playerNationalTeams.map((pnt) => ({
-    player_id: playerId,
-    nation_id: pnt.nation_id,
-    label: pnt.label,
-    start_date: pnt.start_date,
-    end_date: pnt.end_date || null,
-    shirt_number: pnt.shirt_number,
-  }));
+  const playerNationalTeamInserts: PlayerNationalTeamCreateInput =
+    playerNationalTeams.map((pnt) => ({
+      player_id: playerId,
+      national_team_id: pnt.national_team_id,
+      start_date: pnt.start_date,
+      end_date: pnt.end_date || null,
+      shirt_number: pnt.shirt_number,
+    }));
 
   const { error: playerNationalTeamError } = await supabase
     .from(getPlayerNationalTeamTable())

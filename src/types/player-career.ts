@@ -31,6 +31,13 @@ export type TransferCreateInput = z.infer<typeof createTransferSchema>;
 
 type ClubSummary = Pick<Tables<"clubs">, "id" | "image" | "name">;
 
+type ClubTeamSummary = Pick<
+  Tables<"club_teams">,
+  "id" | "squad_type" | "age_group"
+> & {
+  club: ClubSummary;
+};
+
 // Supabase Query Result
 
 // Player Career List
@@ -39,7 +46,7 @@ export type DbPlayerCareerListRow = Pick<
   PlayerCareer,
   "id" | "joined_at" | "left_at"
 > & {
-  club: ClubSummary;
+  clubTeam: ClubTeamSummary;
 };
 
 // Player Career Detail
@@ -49,8 +56,8 @@ export type DbPlayerContract = Tables<"player_contracts">;
 type DbPlayerShirtNumber = Tables<"player_shirt_numbers">;
 
 type DbTransfer = Tables<"transfers"> & {
-  from_club: Tables<"clubs">;
-  to_club: Tables<"clubs">;
+  from_club_team: Tables<"club_teams">;
+  to_club_team: Tables<"club_teams">;
   season: Tables<"seasons">;
 };
 
@@ -66,10 +73,10 @@ export type DbPlayerCareerDetailRow = PlayerCareer & {
 
 export interface PlayerCareerListItem {
   id: string;
+  imageUrl: string;
+  name: string;
   joinedAt: string;
   leftAt: string | null;
-
-  club: ClubSummary;
 }
 
 // Player Career Detail
@@ -88,8 +95,8 @@ export interface PlayerShirtNumber {
 
 export interface Transfer {
   seasonId: string;
-  fromClubId: string;
-  toClubId: string;
+  fromClubTeamId: string;
+  toClubTeamId: string;
   transferType: string;
   transferFee: number;
   transferDate: string;
@@ -99,7 +106,7 @@ export interface Transfer {
 
 export interface PlayerCareerEditResponse {
   id: string;
-  clubId: string;
+  clubTeamId: string;
   joinedAt: string;
   leftAt: string | null;
 
@@ -112,7 +119,7 @@ export interface PlayerCareerEditResponse {
 
 export interface PlayerCareerDetailResponse {
   id: string;
-  clubId: string;
+  clubTeamId: string;
   joinedAt: string;
   leftAt: string | null;
 

@@ -10,18 +10,18 @@ import { useMemo, useState } from "react";
 const emptyPlayerCareerForm: UpsertPlayerCareerInput = {
   id: "",
 
-  club_id: "",
+  club_team_id: "",
   joined_at: "",
   left_at: "",
 
   contracts: [],
 
   shirt_numbers: [],
-  
+
   transfer: {
     season_id: "",
-    from_club_id: "",
-    to_club_id: "",
+    from_club_team_id: "",
+    to_club_team_id: "",
     transfer_type: TransferType.TRANSFER,
     transfer_fee: 0,
     transfer_date: "",
@@ -36,7 +36,7 @@ function mapPlayerCareer(
   return {
     id: playerCareer.id,
 
-    club_id: playerCareer.clubId,
+    club_team_id: playerCareer.clubTeamId,
     joined_at: playerCareer.joinedAt,
     left_at: playerCareer.leftAt,
 
@@ -54,8 +54,8 @@ function mapPlayerCareer(
 
     transfer: {
       season_id: transfer.seasonId,
-      from_club_id: transfer.fromClubId,
-      to_club_id: transfer.toClubId,
+      from_club_team_id: transfer.fromClubTeamId,
+      to_club_team_id: transfer.toClubTeamId,
       transfer_type: transfer.transferType as TransferType,
       transfer_fee: transfer.transferFee,
       transfer_date: transfer.transferDate,
@@ -86,15 +86,15 @@ export function usePlayerCareerForm(playerCareer?: PlayerCareerEditResponse) {
 
   const isTransferValid =
     form.transfer.season_id.trim().length > 0 &&
-    form.transfer.from_club_id.trim().length > 0 &&
-    form.transfer.to_club_id.trim().length > 0 &&
+    form.transfer.from_club_team_id.trim().length > 0 &&
+    form.transfer.to_club_team_id.trim().length > 0 &&
     form.transfer.transfer_type.trim().length > 0 &&
     form.transfer.transfer_fee >= 0 &&
     form.transfer.transfer_date.trim().length > 0;
 
   const canSubmit = useMemo(() => {
     const isFilled =
-      form.club_id.trim().length > 0 &&
+      form.club_team_id.trim().length > 0 &&
       form.joined_at.trim().length > 0 &&
       areContractsValid &&
       areShirtNumbersValid &&
@@ -105,7 +105,7 @@ export function usePlayerCareerForm(playerCareer?: PlayerCareerEditResponse) {
     }
 
     return (
-      form.club_id !== initialForm.club_id ||
+      form.club_team_id !== initialForm.club_team_id ||
       form.joined_at !== initialForm.joined_at ||
       form.left_at !== initialForm.left_at ||
       JSON.stringify(form.contracts) !==
@@ -123,11 +123,17 @@ export function usePlayerCareerForm(playerCareer?: PlayerCareerEditResponse) {
   ]);
 
   const buildPayload = () => {
-    const { club_id, joined_at, left_at, contracts, shirt_numbers, transfer } =
-      form;
+    const {
+      club_team_id,
+      joined_at,
+      left_at,
+      contracts,
+      shirt_numbers,
+      transfer,
+    } = form;
 
     const payload: UpsertPlayerCareerInput = {
-      club_id,
+      club_team_id,
       joined_at,
       left_at: left_at || null,
       contracts: contracts.map((item) => ({

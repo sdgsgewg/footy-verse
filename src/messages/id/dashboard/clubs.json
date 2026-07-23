@@ -14,20 +14,6 @@
       "clubType": "Pilih Tipe Klub",
       "nation": "Pilih Asal Negara",
       "parentClub": "Pilih Klub Induk"
-    },
-
-    "options": {
-      "clubType": {
-        "firstTeam": "Tim Utama",
-        "bTeam": "Tim B",
-        "reserve": "Tim Cadangan",
-        "u23": "Tim U23",
-        "u21": "Tim U21",
-        "u19": "Tim U19",
-        "u18": "Tim U18",
-        "u17": "Tim U17",
-        "academy": "Tim Akademi"
-      }
     }
   },
 

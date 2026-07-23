@@ -4,33 +4,41 @@ import { useRouter } from "@/navigation";
 import { useDeletePlayerCareer } from "./useDeletePlayerCareer";
 import { PlayerCareerListItem } from "@/types/player-career";
 
-export function usePlayerCareerActions(playerId: string) {
-  const tPlayerCareers = useTranslations("dashboard.playerCareers");
+export function usePlayerCareerActions(playerSlug: string) {
+  const t = useTranslations("common");
+  const tEntities = useTranslations("entities");
 
   const router = useRouter();
 
-  const deleteMutation = useDeletePlayerCareer(playerId);
+  const deleteMutation = useDeletePlayerCareer(playerSlug);
 
   const handleCreate = () => {
     router.push(
-      `${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${playerId}/careers/create`,
+      `${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${playerSlug}/careers/create`,
     );
   };
 
   const handleView = (careerId: string) => {
     router.push(
-      `${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${playerId}/careers/${careerId}`,
+      `${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${playerSlug}/careers/${careerId}`,
     );
   };
 
   const handleEdit = (careerId: string) => {
     router.push(
-      `${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${playerId}/careers/${careerId}/edit`,
+      `${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${playerSlug}/careers/${careerId}/edit`,
     );
   };
 
   const handleDelete = (pc: PlayerCareerListItem) => {
-    if (!confirm(`${tPlayerCareers("form.confirm.delete")}`)) return;
+    if (
+      !confirm(
+        `${t("crud.confirm.delete", {
+          entity: tEntities("playerCareer").toLowerCase(),
+        })}`,
+      )
+    )
+      return;
 
     deleteMutation.mutate({
       careerId: pc.id,

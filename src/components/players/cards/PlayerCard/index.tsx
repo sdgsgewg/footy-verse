@@ -1,5 +1,3 @@
-import { getImageUrl } from "@/lib/images/image-url";
-import { STORAGE_BUCKETS } from "@/lib/storage";
 import { PlayerListItem } from "@/types/player";
 import { TeamType } from "@/types/team";
 import Image from "next/image";
@@ -16,8 +14,8 @@ export default function PlayerCard({ teamType, player, onNavigate }: Props) {
     name,
     shirtNumber,
     mainPosition,
-    currentNationality,
-    currentClub,
+    currentNationalTeam,
+    currentClubTeam,
   } = player;
 
   const [firstName, lastName] = name.split(" ");
@@ -30,19 +28,7 @@ export default function PlayerCard({ teamType, player, onNavigate }: Props) {
     ? shirtNumber.club
     : shirtNumber.nationalTeam;
 
-  const playerOriginImageUrl = isClubPlayer
-    ? getImageUrl(
-        "nationality",
-        STORAGE_BUCKETS.NATIONALITIES,
-        currentNationality ? currentNationality.image : null,
-      )
-    : getImageUrl(
-        "club",
-        STORAGE_BUCKETS.CLUBS,
-        currentClub ? currentClub.image : null,
-      );
-
-  const playerOrigin = isClubPlayer ? currentNationality : currentClub;
+  const playerOrigin = isClubPlayer ? currentNationalTeam : currentClubTeam;
 
   return (
     <div
@@ -89,7 +75,7 @@ export default function PlayerCard({ teamType, player, onNavigate }: Props) {
           {playerOrigin && (
             <div className="flex items-center font-semibold text-sm text-tertiary gap-2 mt-2">
               <Image
-                src={playerOriginImageUrl}
+                src={playerOrigin.imageUrl}
                 alt={playerOrigin.name}
                 width={20}
                 height={20}

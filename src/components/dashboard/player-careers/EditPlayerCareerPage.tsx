@@ -5,6 +5,7 @@ import ErrorState from "@/components/feedback/ErrorState";
 import PlayerCareerForm from "@/components/forms/player-careers/PlayerCareerForm";
 import {
   usePlayerCareerEdit,
+  usePlayerCareers,
   usePlayerCareerSubmit,
 } from "@/hooks/dashboard/player-careers";
 import { PlayerLookupResponse } from "@/types/player";
@@ -31,6 +32,10 @@ export default function EditPlayerCareerPage({
   const { playerCareer, isLoading, error, refetch } = usePlayerCareerEdit({
     playerId: playerLookup.id,
     careerId: playerCareerLookup.id,
+  });
+
+  const { playerCareers } = usePlayerCareers({
+    playerId: player?.id,
   });
 
   const { submit, isSubmitting } = usePlayerCareerSubmit(playerLookup);
@@ -66,13 +71,11 @@ export default function EditPlayerCareerPage({
     <TableFormLayout
       title={t("title", {
         entity: tEntities("playerCareer"),
-        playerName: player ? `(${player.name})` : "",
+        entityName: player ? `(${player.name})` : "",
       })}
       columns={1}
       tableTitle="Career History"
-      table={
-        <PlayerCareerHistoryTable playerCareers={player.history.careers} />
-      }
+      table={<PlayerCareerHistoryTable playerCareers={playerCareers} />}
       form={
         <PlayerCareerForm
           mode="edit"

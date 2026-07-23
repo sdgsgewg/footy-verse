@@ -1,11 +1,9 @@
-import { getImageUrl } from "@/lib/images/image-url";
 import RecordRow from "./RecordRow";
-import { NationalitySummary } from "@/types/player";
 import Image from "next/image";
-import { STORAGE_BUCKETS } from "@/lib/storage";
+import { NationalTeam } from "@/types/player";
 
 interface PlayerNationalitiesRecordDataProps {
-  nationalities: NationalitySummary[];
+  nationalities: NationalTeam[];
 }
 
 const PlayerNationalitiesRecordData = ({
@@ -17,11 +15,7 @@ const PlayerNationalitiesRecordData = ({
         {nationalities.map((nation) => (
           <div key={nation.id} className="flex flex-row items-center gap-2">
             <Image
-              src={getImageUrl(
-                "nationality",
-                STORAGE_BUCKETS.NATIONALITIES,
-                nation.image,
-              )}
+              src={nation.imageUrl}
               alt={nation.name}
               width={24}
               height={16}

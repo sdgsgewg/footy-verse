@@ -7,8 +7,6 @@ import { Input } from "@/components/ui/input";
 import ComboboxField from "@/components/forms/fields/ComboboxField";
 import { getNationalityOptions } from "@/lib/nationalities/options";
 import { useNationalities } from "@/hooks/dashboard/nationalities";
-import { getClubTypeOptions } from "@/lib/clubs/options";
-import SelectField from "@/components/forms/fields/SelectField";
 
 interface ClubFiltersProps {
   filters: ClubFilter;
@@ -26,12 +24,10 @@ const ClubFilters = ({
   const tClub = useTranslations("dashboard.clubs");
   const tCommon = useTranslations("common");
   const tEntities = useTranslations("entities");
-  const tClubType = useTranslations("dashboard.clubs.form.options.clubType");
 
   const { nationalities } = useNationalities();
 
   const nationalityOptions = getNationalityOptions(nationalities);
-  const clubTypeOptions = getClubTypeOptions(tClubType);
 
   return (
     <div className="flex flex-col gap-4 mb-4">
@@ -79,21 +75,6 @@ const ClubFilters = ({
           onChange={(value) =>
             setFilters((prev) => {
               const updated = { ...prev, nationId: value };
-              updateQuery(updated);
-              return updated;
-            })
-          }
-        />
-
-        {/* Club Type Dropdown */}
-        <SelectField
-          name="club_type"
-          placeholder={tClub("form.placeholders.clubType")}
-          options={clubTypeOptions}
-          value={filters.clubType || ""}
-          onChange={(value) =>
-            setFilters((prev) => {
-              const updated = { ...prev, clubType: value };
               updateQuery(updated);
               return updated;
             })

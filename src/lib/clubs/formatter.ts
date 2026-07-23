@@ -1,5 +1,5 @@
-import { Nationality, ParentClub } from "@/types/club";
-import { ClubSummary, NationalitySummary } from "@/types/player";
+import { Nationality } from "@/types/club";
+import { NationalitySummary } from "@/types/player";
 import { getImageUrl } from "../images/image-url";
 import { STORAGE_BUCKETS } from "../storage";
 
@@ -24,23 +24,4 @@ export function getModifiedNation(
     : null;
 
   return modifiedNation;
-}
-
-/**
- *
- * @param parentClub
- * @returns ParentClub | null
- */
-export function getModifiedParentClub(
-  parentClub: ClubSummary | null,
-): ParentClub | null {
-  const modifiedParentClub = parentClub
-    ? {
-        id: parentClub.id,
-        imageUrl: getImageUrl("club", STORAGE_BUCKETS.CLUBS, parentClub.image),
-        name: parentClub.name,
-      }
-    : null;
-
-  return modifiedParentClub;
 }

@@ -5,7 +5,10 @@ import { PlayerLookupResponse } from "@/types/player";
 import EntityLoading from "@/components/feedback/loading/EntityLoading";
 import ErrorState from "@/components/feedback/ErrorState";
 import { useTranslations } from "next-intl";
-import { usePlayerNationalTeamSubmit } from "@/hooks/dashboard/player-national-teams";
+import {
+  usePlayerNationalTeams,
+  usePlayerNationalTeamSubmit,
+} from "@/hooks/dashboard/player-national-teams";
 import CreatePlayerNationalTeamForm from "@/components/forms/player-national-teams/CreatePlayerNationalTeamForm";
 import TableFormLayout from "@/components/layout/dashboard/TableFormLayout";
 import { PlayerNationalTeamHistoryTable } from "@/components/shared/tables";
@@ -21,6 +24,10 @@ export default function CreatePlayerNationalTeamPage({ playerLookup }: Props) {
   const { player, isLoading, error, refetch } = usePlayerDetail(
     playerLookup.id,
   );
+
+  const { playerNationalTeams } = usePlayerNationalTeams({
+    playerId: player?.id,
+  });
 
   const { submit, isSubmitting } = usePlayerNationalTeamSubmit(playerLookup);
 
@@ -43,13 +50,13 @@ export default function CreatePlayerNationalTeamPage({ playerLookup }: Props) {
     <TableFormLayout
       title={t("title", {
         entity: tEntities("playerNationalTeam"),
-        playerName: player ? `(${player.name})` : "",
+        entityName: player ? `(${player.name})` : "",
       })}
       columns={2}
       tableTitle="National Team History"
       table={
         <PlayerNationalTeamHistoryTable
-          playerNationalTeams={player.history.nationalTeams}
+          playerNationalTeams={playerNationalTeams}
         />
       }
       form={

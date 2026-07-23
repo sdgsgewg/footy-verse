@@ -3,7 +3,7 @@
   "subtitle": "Add, edit, or delete player careers",
 
   "create": {
-    "title": "Create Career {playerName}",
+    "title": "Create Career {entityName}",
     "subtitle": "Add new player career"
   },
 

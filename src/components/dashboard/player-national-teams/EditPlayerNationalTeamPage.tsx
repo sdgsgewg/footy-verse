@@ -7,6 +7,7 @@ import ErrorState from "@/components/feedback/ErrorState";
 import { useTranslations } from "next-intl";
 import {
   usePlayerNationalTeamEdit,
+  usePlayerNationalTeams,
   usePlayerNationalTeamSubmit,
 } from "@/hooks/dashboard/player-national-teams";
 import { PlayerNationalTeamLookupResponse } from "@/types/player-national-teams";
@@ -33,6 +34,10 @@ export default function EditPlayerNationalTeamPage({
       playerId: playerLookup.id,
       nationalTeamId: playerNationalTeamLookup.id,
     });
+
+  const { playerNationalTeams } = usePlayerNationalTeams({
+    playerId: player?.id,
+  });
 
   const { submit, isSubmitting } = usePlayerNationalTeamSubmit(playerLookup);
 
@@ -64,13 +69,13 @@ export default function EditPlayerNationalTeamPage({
     <TableFormLayout
       title={t("title", {
         entity: tEntities("playerNationalTeam"),
-        playerName: player ? `(${player.name})` : "",
+        entityName: player ? `(${player.name})` : "",
       })}
       columns={2}
       tableTitle="National Team History"
       table={
         <PlayerNationalTeamHistoryTable
-          playerNationalTeams={player.history.nationalTeams}
+          playerNationalTeams={playerNationalTeams}
         />
       }
       form={

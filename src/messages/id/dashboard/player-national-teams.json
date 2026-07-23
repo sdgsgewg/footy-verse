@@ -4,8 +4,7 @@
     "noData": "Belum ada riwayat tim nasional yang ditambahkan.",
 
     "labels": {
-      "nation": "Negara",
-      "label": "Label",
+      "nation": "Tim Nasional",
       "startDate": "Tanggal Mulai",
       "endDate": "Tanggal Akhir",
       "shirtNumber": "Nomor Baju"
@@ -13,7 +12,6 @@
 
     "placeholders": {
       "nation": "Pilih Negara",
-      "label": "Masukkan label",
       "startDate": "Pilih tanggal mulai",
       "endDate": "Pilih tanggal akhir",
       "shirtNumber": "Masukkan nomor baju"
@@ -21,7 +19,7 @@
   },
 
   "columns": {
-    "nation": "Negara",
+    "nationalTeam": "Tim Nasional",
     "startDate": "Tanggal Mulai",
     "endDate": "Tanggal Akhir",
     "shirtNumber": "Nomor Baju"

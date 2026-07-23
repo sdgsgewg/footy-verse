@@ -5,7 +5,7 @@ import { NationalityListItem } from "@/types/nationality";
 import { useTranslations } from "next-intl";
 import DynamicFormSection from "../base/DynamicFormSection";
 import { getNationalityOptions } from "@/lib/nationalities/options";
-import { ComboboxField, DateField, NumberField, TextField } from "../fields";
+import { ComboboxField, DateField, NumberField } from "../fields";
 import { PlayerNationalTeamCreateInput } from "@/types/player";
 
 type NationalTeam = NonNullable<PlayerNationalTeamCreateInput>[number];
@@ -34,8 +34,7 @@ const PlayerNationalTeamSection = ({ form, setForm, nationalities }: Props) => {
       noData={tForm("noData")}
       items={form ?? []}
       createItem={() => ({
-        nation_id: "",
-        label: "",
+        national_team_id: "",
         start_date: "",
         end_date: "",
         shirt_number: 1,
@@ -43,6 +42,7 @@ const PlayerNationalTeamSection = ({ form, setForm, nationalities }: Props) => {
       onChange={(items) => setForm(items)}
       renderItem={(item, index, updateItem) => (
         <>
+          {/* National Team */}
           <ComboboxField
             label={tLabels("nation")}
             name={`nationality-${index}`}
@@ -54,17 +54,8 @@ const PlayerNationalTeamSection = ({ form, setForm, nationalities }: Props) => {
             emptyMessage={tCommon("combobox.noEntityFound", {
               entity: tEntities("nationality").toLowerCase(),
             })}
-            value={item.nation_id}
-            onChange={(v) => updateItem(index, "nation_id", v as string)}
-            required
-          />
-
-          <TextField
-            label={tLabels("label")}
-            name={`label-${index}`}
-            placeholder={tPlaceholders("label") || ""}
-            value={item.label}
-            onChange={(v) => updateItem(index, "label", v)}
+            value={item.national_team_id}
+            onChange={(v) => updateItem(index, "national_team_id", v as string)}
             required
           />
 

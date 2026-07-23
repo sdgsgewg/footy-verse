@@ -40,7 +40,6 @@ export async function createPlayerCareerService(
   playerId: string,
   input: UpsertPlayerCareerInput,
 ) {
-  console.log("Player Id: ", playerId);
   const parsedPlayerId = idSchema.parse(playerId);
   const parsed = createPlayerCareerSchema.parse(input);
 

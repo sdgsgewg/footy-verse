@@ -14,20 +14,6 @@
       "clubType": "Select Club Type",
       "nation": "Select Nation",
       "parentClub": "Select Parent Club"
-    },
-
-    "options": {
-      "clubType": {
-        "firstTeam": "First Team",
-        "bTeam": "B Team",
-        "reserve": "Reserve Team",
-        "u23": "U23 Team",
-        "u21": "U21 Team",
-        "u19": "U19 Team",
-        "u18": "U18 Team",
-        "u17": "U17 Team",
-        "academy": "Academy Team"
-      }
     }
   },
 

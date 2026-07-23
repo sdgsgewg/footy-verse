@@ -50,10 +50,15 @@ function getPlayerCareersBaseQuery() {
     joined_at,
     left_at,
 
-    club:clubs (
+    clubTeam:club_teams (
       id,
-      name,
-      image
+      squad_type,
+      age_group,
+      club: clubs (
+        id,
+        name,
+        image
+      )
     )
   `;
 }
@@ -88,8 +93,8 @@ function getPlayerCareerDetailBaseQuery() {
     player_shirt_numbers(*),
     transfer:transfers(
         *,
-        from_club:clubs!transfers_from_club_id_fkey(*),
-        to_club:clubs!transfers_to_club_id_fkey(*),
+        from_club_team:club_teams!transfers_from_club_team_id_fkey(*),
+        to_club_team:club_teams!transfers_to_club_team_id_fkey(*),
         season:seasons!transfers_season_id_fkey(*)
     )
   `;
@@ -173,12 +178,13 @@ async function insertPlayerContracts(
 ) {
   const supabase = await getSupabase();
 
-  const playerContractInserts = playerContracts.map((pc) => ({
-    player_career_id: playerCareerId,
-    contract_start: pc.contract_start,
-    contract_end: pc.contract_end,
-    salary: pc.salary,
-  }));
+  const playerContractInserts: PlayerContractCreateInput[] =
+    playerContracts.map((pc) => ({
+      player_career_id: playerCareerId,
+      contract_start: pc.contract_start,
+      contract_end: pc.contract_end,
+      salary: pc.salary,
+    }));
 
   const { error: playerContractError } = await supabase
     .from(getPlayerContractTable())
@@ -197,12 +203,13 @@ async function insertPlayerShirtNumbers(
 ) {
   const supabase = await getSupabase();
 
-  const playerShirtNumberInserts = playerShirtNumbers.map((psn) => ({
-    player_career_id: playerCareerId,
-    start_date: psn.start_date,
-    end_date: psn.end_date,
-    shirt_number: psn.shirt_number,
-  }));
+  const playerShirtNumberInserts: PlayerShirtNumberCreateInput[] =
+    playerShirtNumbers.map((psn) => ({
+      player_career_id: playerCareerId,
+      start_date: psn.start_date,
+      end_date: psn.end_date,
+      shirt_number: psn.shirt_number,
+    }));
   const { error: playerShirtNumberError } = await supabase
     .from(getPlayerShirtNumberTable())
     .insert(playerShirtNumberInserts);
@@ -222,8 +229,8 @@ async function insertTransfer(
 
   const transferInsert = {
     player_career_id: playerCareerId,
-    from_club_id: transfer.from_club_id,
-    to_club_id: transfer.to_club_id,
+    from_club_team_id: transfer.from_club_team_id,
+    to_club_team_id: transfer.to_club_team_id,
     season_id: transfer.season_id,
     transfer_date: transfer.transfer_date,
     transfer_fee: transfer.transfer_fee,

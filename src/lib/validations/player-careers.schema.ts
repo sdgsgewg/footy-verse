@@ -6,7 +6,7 @@ import { transferMutationSchema } from "./transfers.schema";
 import { idSchema } from "./primitives.schema";
 
 export const playerCareerMutationSchema = z.object({
-  club_id: idSchema,
+  club_team_id: idSchema,
   joined_at: z.string(),
   left_at: nullableDate.optional(),
   contracts: playerContractMutationSchema.array(),

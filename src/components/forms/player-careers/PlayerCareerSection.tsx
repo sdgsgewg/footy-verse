@@ -30,12 +30,12 @@ const PlayerCareerSection = ({ form, setForm, clubs }: Props) => {
   return (
     <FormSection title={tForm("title")}>
       <>
-        {/* Club */}
+        {/* Club Team */}
         <ComboboxField
           label={tLabels("club")}
           name="club"
           options={clubOptions}
-          value={form.club_id}
+          value={form.club_team_id}
           placeholder={tPlaceholders("club")}
           searchPlaceholder={tCommon("combobox.searchEntity", {
             entity: tEntities("club").toLowerCase(),
@@ -46,7 +46,7 @@ const PlayerCareerSection = ({ form, setForm, clubs }: Props) => {
           onChange={(value) =>
             setForm({
               ...form,
-              club_id: value,
+              club_team_id: value,
             })
           }
           required

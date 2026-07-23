@@ -1,12 +1,12 @@
 "use client";
 
 import ConnectionErrorAlert from "@/components/feedback/ConnectionErrorAlert";
-import { useClubActions } from "@/hooks/dashboard/clubs/useClubActions";
 import { useClubs } from "@/hooks/clubs";
 import { isLikelyConnectionError } from "@/lib/utils/connection-error";
 import { CrudColumn } from "@/types/crud";
 import { useTranslations } from "next-intl";
 import { CrudListPage } from "@/components/templates/crud";
+import { useClubActions } from "@/hooks/dashboard/clubs";
 
 export default function ClubsManagementPage() {
   const t = useTranslations("common.pages.list");

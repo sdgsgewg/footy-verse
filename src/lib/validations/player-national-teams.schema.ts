@@ -3,8 +3,7 @@ import { z } from "zod";
 import { idSchema } from "./primitives.schema";
 
 export const playerNationalTeamMutationSchema = z.object({
-  nation_id: z.string().uuid(),
-  label: z.string(),
+  national_team_id: idSchema,
   start_date: z.string(),
   end_date: nullableDate.optional(),
   shirt_number: z.number().int().min(1).max(99),
@@ -18,7 +17,7 @@ export const updatePlayerNationalTeamSchema = playerNationalTeamMutationSchema;
 export const playerNationalTeamSchema = playerNationalTeamMutationSchema.extend(
   {
     id: idSchema,
-    player_id: z.string().uuid(),
+    player_id: idSchema,
     created_at: z.string(),
     updated_at: z.string().nullable(),
   },

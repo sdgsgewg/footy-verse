@@ -20,17 +20,23 @@ import {
   mapClubEditResponse,
   mapClubListItem,
 } from "../clubs/mapper";
+import { ClubTeamCreateInput } from "@/types/club-team";
+import { SquadType } from "@/enums/SquadType";
 
 async function getSupabase() {
   return createClient();
 }
 
-const getLabel = () => {
+const getClubLabel = () => {
   return ENTITY_CONFIG["club"]["label"];
 };
 
-const getTable = () => {
+const getClubTable = () => {
   return ENTITY_CONFIG["club"]["table"];
+};
+
+const getClubTeamTable = () => {
+  return ENTITY_CONFIG["clubTeam"]["table"];
 };
 
 function getClubsBaseQuery() {
@@ -39,15 +45,8 @@ function getClubsBaseQuery() {
     image,
     name,
     slug,
-    club_type,
 
     nation:nationalities!clubs_nation_id_fkey(
-      id,
-      name,
-      image
-    ),
-
-    parent_club:clubs!parent_club_id(
       id,
       name,
       image
@@ -67,7 +66,7 @@ export async function getClubsRepo(
 
   // Base Query
   let query = supabase
-    .from(getTable())
+    .from(getClubTable())
     .select(getClubsBaseQuery())
     .order("name");
 
@@ -78,10 +77,6 @@ export async function getClubsRepo(
 
   if (params.nationId) {
     query = query.eq("nation_id", params.nationId);
-  }
-
-  if (params.clubType) {
-    query = query.eq("club_type", params.clubType);
   }
 
   const { data, error } = await query.overrideTypes<DbClubListRow[]>();
@@ -96,12 +91,6 @@ function getClubDetailBaseQuery() {
     *,
 
     nation:nationalities!clubs_nation_id_fkey(
-      id,
-      name,
-      image
-    ),
-
-    parent_club:clubs!parent_club_id(
       id,
       name,
       image
@@ -120,7 +109,7 @@ export async function getClubEditRepo(
   const supabase = await getSupabase();
 
   const { data, error } = await supabase
-    .from(getTable())
+    .from(getClubTable())
     .select(getClubDetailBaseQuery())
     .eq("id", id)
     .maybeSingle()
@@ -143,7 +132,7 @@ export async function getClubDetailRepo(
   const supabase = await getSupabase();
 
   const { data, error } = await supabase
-    .from(getTable())
+    .from(getClubTable())
     .select(getClubDetailBaseQuery())
     .eq("id", id)
     .maybeSingle()
@@ -166,7 +155,7 @@ export async function getClubLookupRepo(
   const supabase = await getSupabase();
 
   const { data, error } = await supabase
-    .from(getTable())
+    .from(getClubTable())
     .select(`id, slug`)
     .eq("slug", slug)
     .maybeSingle();
@@ -175,6 +164,26 @@ export async function getClubLookupRepo(
   if (!data) return null;
 
   return data;
+}
+
+/**
+ *
+ * @param clubId
+ */
+async function insertClubTeam(clubId: string) {
+  const supabase = await getSupabase();
+
+  const clubTeamInsert: ClubTeamCreateInput = {
+    squad_type: SquadType.FIRST_TEAM,
+    age_group: null,
+    club_id: clubId,
+  };
+
+  const { error } = await supabase
+    .from(getClubTeamTable())
+    .insert(clubTeamInsert);
+
+  if (error) throw error;
 }
 
 /**
@@ -188,17 +197,20 @@ export async function createClubRepo(
   const supabase = await getSupabase();
 
   const slug = await ensureUniqueSlug({
-    table: getTable(),
+    table: getClubTable(),
     name: club.name,
   });
 
   const { data: insertedClub, error } = await supabase
-    .from(getTable())
+    .from(getClubTable())
     .insert({ ...club, slug })
     .select(`*`)
     .single();
 
   if (error) throw error;
+
+  // Auto insert club first team
+  insertClubTeam(insertedClub.id);
 
   const result = await getClubDetailRepo(insertedClub.id);
   if (!result) {
@@ -220,10 +232,10 @@ export async function updateClubRepo(
 ): Promise<ClubDetailResponse> {
   const supabase = await getSupabase();
 
-  const oldClub = await requireEntity(getClubEditRepo, id, getLabel());
+  const oldClub = await requireEntity(getClubEditRepo, id, getClubLabel());
 
   const slug = await ensureUniqueSlug({
-    table: getTable(),
+    table: getClubTable(),
     name: club.name,
   });
 
@@ -236,12 +248,10 @@ export async function updateClubRepo(
   });
 
   const { error } = await supabase
-    .from(getTable())
+    .from(getClubTable())
     .update({
       name: club.name,
-      club_type: club.club_type,
       nation_id: club.nation_id,
-      parent_club_id: club.parent_club_id,
       image: finalImage,
       slug,
       updated_at: new Date().toISOString(),
@@ -267,11 +277,11 @@ export async function updateClubRepo(
 export async function deleteClubRepo(id: string): Promise<void> {
   const supabase = await getSupabase();
 
-  const club = await requireEntity(getClubEditRepo, id, getLabel());
+  const club = await requireEntity(getClubEditRepo, id, getClubLabel());
 
   await deleteEntityImage(club.image, STORAGE_BUCKETS.CLUBS);
 
-  const { error } = await supabase.from(getTable()).delete().eq("id", id);
+  const { error } = await supabase.from(getClubTable()).delete().eq("id", id);
 
   if (error) throw error;
 }

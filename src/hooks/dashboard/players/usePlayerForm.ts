@@ -25,7 +25,6 @@ const emptyPlayerForm: UpsertPlayerInput = {
   market_value: 0,
 
   positions: [],
-  national_teams: [],
 };
 
 function mapPlayer(player: PlayerEditResponse): UpsertPlayerInput {
@@ -51,14 +50,6 @@ function mapPlayer(player: PlayerEditResponse): UpsertPlayerInput {
       position_id: position.positionId,
       display_order: position.displayOrder,
     })),
-
-    national_teams: player.nationalTeams.map((pnt) => ({
-      nation_id: pnt.nationality.id,
-      start_date: pnt.startDate,
-      end_date: pnt.endDate,
-      label: pnt.label,
-      shirt_number: pnt.shirtNumber,
-    })),
   };
 }
 
@@ -78,17 +69,6 @@ export function usePlayerForm(player?: PlayerEditResponse) {
     form.positions.length > 0 &&
     form.positions.every((position) => position.position_id.trim().length > 0);
 
-  const areNationalTeamsValid =
-    form.national_teams &&
-    form.national_teams.every((item) => {
-      return (
-        item.nation_id.trim().length > 0 &&
-        item.start_date.trim().length > 0 &&
-        item.label.trim().length > 0 &&
-        item.shirt_number > 0
-      );
-    });
-
   const canSubmit = useMemo(() => {
     const isFilled =
       form.name.trim().length > 0 &&
@@ -98,8 +78,7 @@ export function usePlayerForm(player?: PlayerEditResponse) {
       form.height > 0 &&
       form.weight > 0 &&
       form.market_value > 0 &&
-      arePositionsValid &&
-      areNationalTeamsValid;
+      arePositionsValid;
 
     if (!isFilled) {
       return false;
@@ -119,12 +98,10 @@ export function usePlayerForm(player?: PlayerEditResponse) {
       form.market_value !== initialForm.market_value ||
       JSON.stringify(form.positions) !==
         JSON.stringify(initialForm.positions) ||
-      JSON.stringify(form.national_teams) !==
-        JSON.stringify(initialForm.national_teams) ||
       form.image !== initialForm.image ||
       form.imageFile != null
     );
-  }, [form, arePositionsValid, areNationalTeamsValid, initialForm, isEditing]);
+  }, [form, arePositionsValid, initialForm, isEditing]);
 
   const buildPayload = () => {
     const payload = new FormData();
@@ -138,18 +115,6 @@ export function usePlayerForm(player?: PlayerEditResponse) {
     payload.append("market_value", String(form.market_value));
 
     payload.append("positions", JSON.stringify(form.positions));
-
-    if (form.national_teams) {
-      payload.append(
-        "national_teams",
-        JSON.stringify(
-          form.national_teams.map((item) => ({
-            ...item,
-            end_date: item.end_date || null,
-          })),
-        ),
-      );
-    }
 
     if (form.image) {
       payload.append("existingImage", form.image);

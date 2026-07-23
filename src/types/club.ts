@@ -21,8 +21,6 @@ export type ClubUpdateInput = z.infer<typeof updateClubSchema>;
 
 // Data type for relation tables (can be used as a type for supabase query or DTO)
 
-type ClubSummary = Pick<Club, "id" | "name" | "image">;
-
 type NationalitySummary = Pick<
   Tables<"nationalities">,
   "id" | "name" | "image"
@@ -32,30 +30,19 @@ type NationalitySummary = Pick<
 
 // Club List
 
-export type DbClubListRow = Pick<
-  Club,
-  "id" | "image" | "name" | "slug" | "club_type"
-> & {
+export type DbClubListRow = Pick<Club, "id" | "image" | "name" | "slug"> & {
   nation: NationalitySummary | null;
-  parent_club: ClubSummary | null;
 };
 
 // Club Detail
 
 export type DbClubDetailRow = Club & {
   nation: NationalitySummary | null;
-  parent_club: ClubSummary | null;
 };
 
 // API Response DTO
 
 export interface Nationality {
-  id: string;
-  imageUrl: string;
-  name: string;
-}
-
-export interface ParentClub {
   id: string;
   imageUrl: string;
   name: string;
@@ -68,10 +55,8 @@ export interface ClubListItem {
   imageUrl: string;
   name: string;
   slug: string;
-  clubType: string | null;
-  
+
   nation: Nationality | null;
-  parentClub: ParentClub | null;
 }
 
 // Club Detail
@@ -82,9 +67,7 @@ export interface ClubEditResponse {
   id: string;
   image: string | null;
   name: string;
-  clubType: string | null;
   nationId: string | null;
-  parentClubId: string | null;
 }
 
 // Model View Detail
@@ -94,10 +77,8 @@ export interface ClubDetailResponse {
   imageUrl: string;
   name: string;
   slug: string;
-  clubType: string | null;
 
   nation: Nationality | null;
-  parentClub: ParentClub | null;
 }
 
 export interface ClubLookupResponse {

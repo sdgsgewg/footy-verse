@@ -1,13 +1,13 @@
+import { getImageUrl } from "@/lib/images/image-url";
+import { formatNationalTeamName } from "@/lib/national-teams/formatter";
+import { STORAGE_BUCKETS } from "@/lib/storage";
 import {
   ContractSummary,
   DbPlayerDetailCareer,
   DbPlayerDetailRow,
   DbPlayerPosition,
-  NationalitySummary,
-  PlayerCareer,
-  PlayerNationalTeam,
+  NationalTeam,
   PositionSummary,
-  ShirtNumberSummary,
 } from "@/types/player";
 
 /**
@@ -75,6 +75,7 @@ export function formatMarketValue(marketValue: number): string {
     ? `€${modifiedMarketValue.toFixed(2)}m`
     : `€${(modifiedMarketValue * 1000).toFixed(0)}k`;
 }
+
 /**
  *
  * @param playerPositions
@@ -95,74 +96,22 @@ export function getOtherPositions(
 /**
  *
  * @param player
- * @returns NationalitySummary[]
+ * @returns NationalTeam[]
  */
-export function getNationalities(
-  player: DbPlayerDetailRow,
-): NationalitySummary[] {
+export function getNationalTeams(player: DbPlayerDetailRow): NationalTeam[] {
   if (!player.player_national_teams) return [];
 
-  const nationalities: NationalitySummary[] = player.player_national_teams.map(
+  const nationalTeams: NationalTeam[] = player.player_national_teams.map(
     (pnt) => ({
-      id: pnt.nationality.id,
-      name: pnt.nationality.name,
-      image: pnt.nationality.image,
-    }),
-  );
-
-  return nationalities;
-}
-
-function getCurrentPlayerShirtNumber(
-  playerCareer: DbPlayerDetailCareer,
-): ShirtNumberSummary {
-  const current = playerCareer.player_shirt_numbers.find(
-    (psn) => psn.end_date === null,
-  );
-
-  if (current) {
-    return current;
-  }
-
-  return [...playerCareer.player_shirt_numbers].sort(
-    (a, b) =>
-      new Date(b.end_date ?? b.start_date).getTime() -
-      new Date(a.end_date ?? a.start_date).getTime(),
-  )[0];
-}
-
-/**
- *
- * @param player
- * @returns
- */
-export function getPlayerCareers(player: DbPlayerDetailRow): PlayerCareer[] {
-  if (!player.player_careers) return [];
-
-  const careers: PlayerCareer[] = player.player_careers.map((pc) => ({
-    id: pc.id,
-    joinedAt: pc.joined_at,
-    leftAt: pc.left_at ?? null,
-    club: pc.club,
-    shirtNumber: getCurrentPlayerShirtNumber(pc),
-  }));
-
-  return careers;
-}
-
-export function getPlayerNationalTeams(
-  player: DbPlayerDetailRow,
-): PlayerNationalTeam[] {
-  if (!player.player_national_teams) return [];
-
-  const nationalTeams: PlayerNationalTeam[] = player.player_national_teams.map(
-    (pnt) => ({
-      id: pnt.id,
-      label: pnt.label,
-      startDate: pnt.start_date,
-      endDate: pnt.end_date ?? null,
-      shirtNumber: pnt.shirt_number,
-      nationality: pnt.nationality,
+      id: pnt.national_team.id,
+      imageUrl: getImageUrl(
+        "nationality",
+        STORAGE_BUCKETS.NATIONALITIES,
+        pnt.national_team.nation.image,
+      ),
+      name: formatNationalTeamName(pnt.national_team),
+      teamCategory: pnt.national_team.team_category,
+      ageGroup: pnt.national_team.age_group,
     }),
   );
 

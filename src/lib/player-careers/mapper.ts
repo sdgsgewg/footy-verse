@@ -5,20 +5,21 @@ import {
   PlayerCareerEditResponse,
   PlayerCareerListItem,
 } from "@/types/player-career";
+import { getImageUrl } from "../images/image-url";
+import { STORAGE_BUCKETS } from "../storage";
+import { formatClubName } from "../club-teams/formatter";
 
 export function mapPlayerCareerListItem(
   playerCareer: DbPlayerCareerListRow,
 ): PlayerCareerListItem {
-  const { id, joined_at, left_at } = playerCareer;
+  const { id, joined_at, left_at, clubTeam } = playerCareer;
+
   return {
     id,
+    imageUrl: getImageUrl("club", STORAGE_BUCKETS.CLUBS, clubTeam.club.image),
+    name: formatClubName(clubTeam),
     joinedAt: joined_at,
     leftAt: left_at,
-    club: {
-      id: playerCareer.club.id,
-      name: playerCareer.club.name,
-      image: playerCareer.club.image,
-    },
   };
 }
 
@@ -27,7 +28,7 @@ export function mapPlayerCareerEditResponse(
 ): PlayerCareerEditResponse {
   return {
     id: playerCareer.id,
-    clubId: playerCareer.club_id,
+    clubTeamId: playerCareer.club_team_id,
     joinedAt: playerCareer.joined_at,
     leftAt: playerCareer.left_at,
 
@@ -45,8 +46,8 @@ export function mapPlayerCareerEditResponse(
 
     transfer: {
       seasonId: playerCareer.transfer.season_id,
-      fromClubId: playerCareer.transfer.from_club_id,
-      toClubId: playerCareer.transfer.to_club_id,
+      fromClubTeamId: playerCareer.transfer.from_club_team_id,
+      toClubTeamId: playerCareer.transfer.to_club_team_id,
       transferType: playerCareer.transfer.transfer_type,
       transferFee: playerCareer.transfer.transfer_fee,
       transferDate: playerCareer.transfer.transfer_date,
@@ -59,7 +60,7 @@ export function mapPlayerCareerDetailResponse(
 ): PlayerCareerDetailResponse {
   return {
     id: playerCareer.id,
-    clubId: playerCareer.club_id,
+    clubTeamId: playerCareer.club_team_id,
     joinedAt: playerCareer.joined_at,
     leftAt: playerCareer.left_at,
 
@@ -77,8 +78,8 @@ export function mapPlayerCareerDetailResponse(
 
     transfer: {
       seasonId: playerCareer.transfer.season_id,
-      fromClubId: playerCareer.transfer.from_club_id,
-      toClubId: playerCareer.transfer.to_club_id,
+      fromClubTeamId: playerCareer.transfer.from_club_team_id,
+      toClubTeamId: playerCareer.transfer.to_club_team_id,
       transferType: playerCareer.transfer.transfer_type,
       transferFee: playerCareer.transfer.transfer_fee,
       transferDate: playerCareer.transfer.transfer_date,

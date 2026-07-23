@@ -30,9 +30,15 @@ async function getMessages(locale: string) {
 
     clubs: (await import(`./messages/${locale}/dashboard/clubs.json`)).default,
 
+    clubTeams: (await import(`./messages/${locale}/dashboard/club-teams.json`))
+      .default,
+
     nationalities: (
       await import(`./messages/${locale}/dashboard/nationalities.json`)
     ).default,
+
+    nationalTeams: (await import(`./messages/${locale}/dashboard/national-teams.json`))
+      .default,
 
     positions: (await import(`./messages/${locale}/dashboard/positions.json`))
       .default,

@@ -2,8 +2,6 @@
 
 import { X } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { getClubTypeLabel } from "@/lib/clubs/labels";
-import { ClubType } from "@/enums/ClubType";
 import { useNationalities } from "@/hooks/dashboard/nationalities";
 import { useMemo } from "react";
 import { ClubFilter } from "@/hooks/clubs";
@@ -28,8 +26,6 @@ export default function ActiveFiltersBar({
     return new Map(nationalities.map((nation) => [nation.id, nation.name]));
   }, [nationalities]);
 
-  const tClubType = useTranslations("dashboard.clubs.form.options.clubType");
-
   const chips: {
     label: string;
     onRemove: () => void;
@@ -48,14 +44,6 @@ export default function ActiveFiltersBar({
     chips.push({
       label: nationMap.get(filters.nationId) ?? filters.nationId,
       onRemove: () => setFilters((prev) => ({ ...prev, nationId: undefined })),
-    });
-  }
-
-  // Club Type
-  if (filters.clubType) {
-    chips.push({
-      label: `${getClubTypeLabel(filters.clubType as ClubType, tClubType)}`,
-      onRemove: () => setFilters((prev) => ({ ...prev, clubType: undefined })),
     });
   }
 

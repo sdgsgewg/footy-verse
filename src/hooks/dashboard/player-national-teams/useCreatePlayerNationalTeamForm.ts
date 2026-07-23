@@ -5,8 +5,7 @@ import { useMemo, useState } from "react";
 
 const emptyPlayerNationalTeamForm: PlayerNationalTeamCreateInput = [
   {
-    nation_id: "",
-    label: "",
+    national_team_id: "",
     start_date: "",
     end_date: "",
     shirt_number: 1,
@@ -23,9 +22,8 @@ export function useCreatePlayerNationalTeamForm() {
       form &&
       form.every((item) => {
         return (
-          item.nation_id.trim().length > 0 &&
+          item.national_team_id.trim().length > 0 &&
           item.start_date.trim().length > 0 &&
-          item.label.trim().length > 0 &&
           item.shirt_number > 0
         );
       });
@@ -39,8 +37,7 @@ export function useCreatePlayerNationalTeamForm() {
 
   const buildPayload = () => {
     const payload: PlayerNationalTeamCreateInput = form.map((form) => ({
-      nation_id: form.nation_id,
-      label: form.label,
+      national_team_id: form.national_team_id,
       start_date: form.start_date,
       end_date: form.end_date || null,
       shirt_number: form.shirt_number,
