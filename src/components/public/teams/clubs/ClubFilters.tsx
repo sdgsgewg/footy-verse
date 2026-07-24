@@ -2,11 +2,11 @@ import { Loader2, Search } from "lucide-react";
 import { useTranslations } from "next-intl";
 import React from "react";
 import { motion } from "framer-motion";
-import { ClubFilter } from "@/hooks/clubs/useClubFilter";
 import { Input } from "@/components/ui/input";
 import ComboboxField from "@/components/forms/fields/ComboboxField";
 import { getNationalityOptions } from "@/lib/nationalities/options";
 import { useNationalities } from "@/hooks/dashboard/nationalities";
+import { ClubFilter } from "@/types/club";
 
 interface ClubFiltersProps {
   filters: ClubFilter;

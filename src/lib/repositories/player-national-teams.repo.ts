@@ -4,6 +4,7 @@ import { requireEntity } from "./helpers/require-entity";
 import {
   DbPlayerNationalTeamDetailRow,
   DbPlayerNationalTeamListRow,
+  PlayerNationalTeamCreateInput,
   PlayerNationalTeamDetailResponse,
   PlayerNationalTeamEditResponse,
   PlayerNationalTeamListItem,
@@ -15,7 +16,6 @@ import {
   mapPlayerNationalTeamEditResponse,
   mapPlayerNationalTeamListItem,
 } from "../player-national-teams/mapper";
-import { PlayerNationalTeamCreateInput } from "@/types/player";
 
 async function getSupabase() {
   return createClient();

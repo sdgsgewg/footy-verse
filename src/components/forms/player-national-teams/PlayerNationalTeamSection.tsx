@@ -6,7 +6,7 @@ import { useTranslations } from "next-intl";
 import DynamicFormSection from "../base/DynamicFormSection";
 import { getNationalityOptions } from "@/lib/nationalities/options";
 import { ComboboxField, DateField, NumberField } from "../fields";
-import { PlayerNationalTeamCreateInput } from "@/types/player";
+import { PlayerNationalTeamCreateInput } from "@/types/player-national-teams";
 
 type NationalTeam = NonNullable<PlayerNationalTeamCreateInput>[number];
 

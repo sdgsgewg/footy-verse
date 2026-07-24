@@ -18,15 +18,21 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
 
     const query = {
-      name: searchParams.get("name") || undefined,
-      nationId: searchParams.get("nationId") || undefined,
-      clubId: searchParams.get("clubId") || undefined,
+      name: searchParams.get("name") ?? undefined,
+      nationId: searchParams.get("nationId") ?? undefined,
+      clubTeamId: searchParams.get("clubTeamId") ?? undefined,
+
+      page: searchParams.get("page") ?? undefined,
+      limit: searchParams.get("limit") ?? undefined,
+
+      sortBy: searchParams.get("sortBy") ?? undefined,
+      sortOrder: searchParams.get("sortOrder") ?? undefined,
     };
 
     const data = await getPlayersService(query);
 
     return successResponse(data);
-  } catch (error: unknown) {
+  } catch (error) {
     return errorResponse(error);
   }
 }

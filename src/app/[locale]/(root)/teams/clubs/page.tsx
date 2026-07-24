@@ -6,9 +6,10 @@ import TeamSection from "@/components/public/teams/TeamSection";
 import PageHeader from "@/components/shared/PageHeader";
 import PublicPageWrapper from "@/components/wrappers/PublicPageWrapper";
 import { useClubs } from "@/hooks/clubs";
-import useClubFilter, { ClubFilter } from "@/hooks/clubs/useClubFilter";
+import useClubFilter from "@/hooks/clubs/useClubFilter";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useRouter } from "@/navigation";
+import { ClubFilter } from "@/types/club";
 import { TeamItem } from "@/types/team";
 import { useTranslations } from "next-intl";
 
@@ -36,7 +37,7 @@ export default function ClubsPage() {
   const updateQuery = (newFilters: ClubFilter) => {
     const params = new URLSearchParams();
 
-    if (newFilters.sort) params.set("sort", newFilters.sort);
+    if (newFilters.sortOrder) params.set("sortOrder", newFilters.sortOrder);
     if (newFilters.name) params.set("name", newFilters.name);
     if (newFilters.nationId) params.set("nationId", newFilters.nationId);
     if (newFilters.clubType) params.set("clubType", newFilters.clubType);

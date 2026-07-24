@@ -17,15 +17,13 @@
       "instruction": "Add at least one position, then drag to set priority."
     },
 
-    "nationalTeams": {
-      "title": "National Team History",
-      "noData": "No national team history added."
+    "nationalities": {
+      "instruction": "Add at least one nationality, then drag to set priority."
     },
 
     "labels": {
       "image": "Player Image",
       "name": "Player Name",
-      "positions": "Positions",
       "dob": "Date of Birth",
       "pob": "Place of Birth",
       "height": "Height (cm)",
@@ -33,19 +31,13 @@
       "preferredFoot": "Preferred Foot",
       "marketValue": "Market Value (Million Euro)",
 
-      "nationalTeams": {
-        "nation": "Nation",
-        "label": "Label",
-        "startDate": "Start Date",
-        "endDate": "End Date",
-        "shirtNumber": "Shirt Number"
-      }
+      "positions": "Positions",
+      "nationalities": "Nationalities"
     },
 
     "placeholders": {
       "image": "Choose Image",
       "name": "Input Player Name",
-      "positions": "Select Positions",
       "dob": "Select Date of Birth",
       "pob": "Input Place of Birth",
       "height": "Input Height",
@@ -53,13 +45,8 @@
       "preferredFoot": "Select Preferred Foot",
       "marketValue": "Input Market Value",
 
-      "nationalTeams": {
-        "nation": "Select Nation",
-        "label": "Input Label",
-        "startDate": "Select Start Date",
-        "endDate": "Select End Date",
-        "shirtNumber": "Input Shirt Number"
-      }
+      "positions": "Select Positions",
+      "nationalities": "Select Nationalities"
     },
 
     "options": {

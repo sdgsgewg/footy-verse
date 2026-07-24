@@ -71,6 +71,13 @@ export const ENTITY_CONFIG = {
     supportsSlug: false,
   },
 
+  playerNationality: {
+    table: "player_nationalities",
+    label: "Player Nationality",
+    supportsImage: false,
+    supportsSlug: false,
+  },
+
   playerNationalTeam: {
     table: "player_national_teams",
     label: "Player Position",

@@ -13,8 +13,11 @@ import {
   updatePlayerSchema,
 } from "@/lib/validations/players.schema";
 import { idSchema, slugSchema } from "../validations/primitives.schema";
+import { PlayerListResponse } from "@/types/player";
 
-export async function getPlayersService(query: unknown) {
+export async function getPlayersService(
+  query: unknown,
+): Promise<PlayerListResponse> {
   const parsed = playersQuerySchema.parse(query);
 
   return getPlayersRepo(parsed);

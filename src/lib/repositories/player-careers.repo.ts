@@ -2,6 +2,7 @@ import { createClient } from "@/utils/supabase/server";
 import {
   DbPlayerCareerDetailRow,
   DbPlayerCareerListRow,
+  PlayerCareerCreateInput,
   PlayerCareerDetailResponse,
   PlayerCareerEditResponse,
   PlayerCareerListItem,
@@ -16,7 +17,6 @@ import {
   mapPlayerCareerEditResponse,
   mapPlayerCareerListItem,
 } from "../player-careers/mapper";
-import { PlayerCareerCreateInput } from "@/types/player";
 import { ENTITY_CONFIG } from "@/config/entities";
 import { requireEntity } from "./helpers/require-entity";
 

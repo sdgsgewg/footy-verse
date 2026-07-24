@@ -1,12 +1,12 @@
 import { getImageUrl } from "@/lib/images/image-url";
-import { formatNationalTeamName } from "@/lib/national-teams/formatter";
 import { STORAGE_BUCKETS } from "@/lib/storage";
 import {
-  ContractSummary,
   DbPlayerDetailCareer,
   DbPlayerDetailRow,
+  DbPlayerNationality,
   DbPlayerPosition,
-  NationalTeam,
+  NationalityResponse,
+  PlayerContractSummary,
   PositionSummary,
 } from "@/types/player";
 
@@ -93,29 +93,21 @@ export function getOtherPositions(
     }));
 }
 
-/**
- *
- * @param player
- * @returns NationalTeam[]
- */
-export function getNationalTeams(player: DbPlayerDetailRow): NationalTeam[] {
-  if (!player.player_national_teams) return [];
-
-  const nationalTeams: NationalTeam[] = player.player_national_teams.map(
-    (pnt) => ({
-      id: pnt.national_team.id,
+export function getNationalities(
+  playerNationalities: DbPlayerNationality[],
+): NationalityResponse[] {
+  return playerNationalities.map((pn) => {
+    const { nationality } = pn;
+    return {
+      id: nationality.id,
       imageUrl: getImageUrl(
         "nationality",
         STORAGE_BUCKETS.NATIONALITIES,
-        pnt.national_team.nation.image,
+        nationality.image,
       ),
-      name: formatNationalTeamName(pnt.national_team),
-      teamCategory: pnt.national_team.team_category,
-      ageGroup: pnt.national_team.age_group,
-    }),
-  );
-
-  return nationalTeams;
+      name: nationality.name,
+    };
+  });
 }
 
 /**
@@ -142,8 +134,8 @@ export function getPlayerDetailCurrentCareer(
 }
 
 export function getCurrentContract(
-  playerContracts: ContractSummary[],
-): ContractSummary | null {
+  playerContracts: PlayerContractSummary[],
+): PlayerContractSummary | null {
   if (!playerContracts || playerContracts.length === 0) return null;
 
   return playerContracts.sort(

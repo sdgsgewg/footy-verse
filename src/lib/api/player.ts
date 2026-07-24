@@ -7,23 +7,27 @@ import {
   GetPlayersParams,
   PlayerDetailResponse,
   PlayerEditResponse,
-  PlayerListItem,
+  PlayerListResponse,
 } from "@/types/player";
+import { ApiResponse } from "@/types/api";
+
+const baseRoute = "/players";
+const baseRouteWithApi = "/api/players";
 
 /**
  *
  * @param params
- * @returns PlayerListItem[]
+ * @returns PlayerListResponse
  */
 export const fetchPlayers = async (
   params?: GetPlayersParams,
-): Promise<PlayerListItem[]> => {
-  const { data } = await apiClient.get<{
-    success: boolean;
-    data: PlayerListItem[];
-  }>("/players", {
-    params,
-  });
+): Promise<PlayerListResponse> => {
+  const { data } = await apiClient.get<ApiResponse<PlayerListResponse>>(
+    `${baseRoute}`,
+    {
+      params,
+    },
+  );
 
   return data.data;
 };
@@ -36,10 +40,9 @@ export const fetchPlayers = async (
 export const fetchPlayerEdit = async (
   id: string,
 ): Promise<PlayerEditResponse> => {
-  const { data } = await apiClient.get<{
-    success: boolean;
-    data: PlayerEditResponse;
-  }>(`/players/${id}/edit`);
+  const { data } = await apiClient.get<ApiResponse<PlayerEditResponse>>(
+    `${baseRoute}/${id}/edit`,
+  );
 
   return data.data;
 };
@@ -52,10 +55,9 @@ export const fetchPlayerEdit = async (
 export const fetchPlayerDetail = async (
   id: string,
 ): Promise<PlayerDetailResponse> => {
-  const { data } = await apiClient.get<{
-    success: boolean;
-    data: PlayerDetailResponse;
-  }>(`/players/${id}`);
+  const { data } = await apiClient.get<ApiResponse<PlayerDetailResponse>>(
+    `${baseRoute}/${id}`,
+  );
 
   return data.data;
 };
@@ -67,7 +69,7 @@ export const fetchPlayerDetail = async (
  */
 export const createPlayer = async (payload: unknown): Promise<void> => {
   if (payload instanceof FormData) {
-    const response = await fetch("/api/players", {
+    const response = await fetch(`${baseRouteWithApi}`, {
       method: "POST",
       body: payload,
     });
@@ -83,7 +85,7 @@ export const createPlayer = async (payload: unknown): Promise<void> => {
 
   const parsed = createPlayerSchema.parse(payload); // validation
 
-  await apiClient.post("/players", parsed);
+  await apiClient.post(`${baseRoute}`, parsed);
 };
 
 /**
@@ -97,7 +99,7 @@ export const updatePlayer = async (
   payload: unknown,
 ): Promise<void> => {
   if (payload instanceof FormData) {
-    const response = await fetch(`/api/players/${id}`, {
+    const response = await fetch(`${baseRouteWithApi}/${id}`, {
       method: "PUT",
       body: payload,
     });
@@ -113,7 +115,7 @@ export const updatePlayer = async (
 
   const parsed = updatePlayerSchema.parse(payload); // validation
 
-  await apiClient.put(`/players/${id}`, parsed);
+  await apiClient.put(`${baseRoute}/${id}`, parsed);
 };
 
 /**
@@ -121,5 +123,5 @@ export const updatePlayer = async (
  * @param id
  */
 export const deletePlayer = async (id: string): Promise<void> => {
-  await apiClient.delete(`/players/${id}`);
+  await apiClient.delete(`${baseRoute}/${id}`);
 };

@@ -8,6 +8,7 @@ import {
 } from "@/lib/validations/clubs.schema";
 import { ImagePayload } from "./image";
 import { Tables, TablesInsert, TablesUpdate } from "@/lib/database.types";
+import { SortOrder } from "./sort";
 
 // Supabase Table
 export type Club = Tables<"clubs">;
@@ -90,5 +91,13 @@ export interface ClubLookupResponse {
 export type UpsertClubInput = z.infer<typeof clubMutationSchema> & {
   id?: string;
 } & ImagePayload;
+
+// Filter
+export interface ClubFilter {
+  name: string;
+  nationId: string | null | undefined;
+  clubType: string | null | undefined;
+  sortOrder: SortOrder;
+}
 
 // Others

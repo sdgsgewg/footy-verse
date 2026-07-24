@@ -4,7 +4,7 @@ import { X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useNationalities } from "@/hooks/dashboard/nationalities";
 import { useMemo } from "react";
-import { ClubFilter } from "@/hooks/clubs";
+import { ClubFilter } from "@/types/club";
 
 interface Props {
   filters: ClubFilter;
@@ -48,10 +48,10 @@ export default function ActiveFiltersBar({
   }
 
   // 🔽 Sort (optional)
-  if (filters.sort !== "newest") {
+  if (filters.sortOrder !== "asc") {
     chips.push({
-      label: `${tCommon("sort.title")}: ${tCommon(`sort.${filters.sort}`)}`,
-      onRemove: () => setFilters((prev) => ({ ...prev, sort: "newest" })),
+      label: `${tCommon("sort.title")}: ${tCommon(`sort.${filters.sortOrder}`)}`,
+      onRemove: () => setFilters((prev) => ({ ...prev, sort: "asc" })),
     });
   }
 

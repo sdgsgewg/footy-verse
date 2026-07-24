@@ -1,9 +1,9 @@
+import { NationalityResponse } from "@/types/player";
 import RecordRow from "./RecordRow";
 import Image from "next/image";
-import { NationalTeam } from "@/types/player";
 
 interface PlayerNationalitiesRecordDataProps {
-  nationalities: NationalTeam[];
+  nationalities: NationalityResponse[];
 }
 
 const PlayerNationalitiesRecordData = ({

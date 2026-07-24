@@ -14,7 +14,7 @@ export default function PlayerCard({ teamType, player, onNavigate }: Props) {
     name,
     shirtNumber,
     mainPosition,
-    currentNationalTeam,
+    currentNationality,
     currentClubTeam,
   } = player;
 
@@ -28,7 +28,7 @@ export default function PlayerCard({ teamType, player, onNavigate }: Props) {
     ? shirtNumber.club
     : shirtNumber.nationalTeam;
 
-  const playerOrigin = isClubPlayer ? currentNationalTeam : currentClubTeam;
+  const playerOrigin = isClubPlayer ? currentNationality : currentClubTeam;
 
   return (
     <div

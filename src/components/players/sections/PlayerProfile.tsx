@@ -21,7 +21,7 @@ const PlayerProfile = ({ player }: Props) => {
     marketValue,
     mainPosition,
     otherPositions,
-    nationalTeams,
+    nationalities,
     currentClubTeam,
   } = player.profile;
 
@@ -44,12 +44,14 @@ const PlayerProfile = ({ player }: Props) => {
       <RecordData label="Preferred Foot" value={preferredFoot} />
 
       {/* Nationalities */}
-      {nationalTeams && nationalTeams.length > 0 && (
-        <PlayerNationalitiesRecordData nationalities={nationalTeams} />
+      {nationalities && nationalities.length > 0 && (
+        <PlayerNationalitiesRecordData nationalities={nationalities} />
       )}
 
       {/* Current Club */}
-      {currentClubTeam && <PlayerCurrentClubRecordData club={currentClubTeam} />}
+      {currentClubTeam && (
+        <PlayerCurrentClubRecordData club={currentClubTeam} />
+      )}
 
       <RecordData label="Market Value" value={marketValue} />
     </div>

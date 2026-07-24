@@ -7,7 +7,7 @@ import {
 } from "@/types/player";
 import {
   getCurrentClubTeam,
-  getCurrentNationalTeam,
+  getCurrentNationality,
   getCurrentShirtNumber,
   getMainPosition,
 } from "./formatter";
@@ -16,7 +16,7 @@ import {
   getCurrentContract,
   getDateOfBirth,
   getHeight,
-  getNationalTeams,
+  getNationalities,
   getOtherPositions,
   getPlayerDetailCurrentCareer,
   getWeight,
@@ -29,17 +29,17 @@ export function mapPlayerListItem(player: DbPlayerListRow): PlayerListItem {
 
   const mainPosition = getMainPosition(player.player_positions);
 
-  const currentClub = getCurrentClubTeam(player);
+  const currentNationality = getCurrentNationality(player.player_nationalities);
 
-  const currentNationalTeam = getCurrentNationalTeam(player);
+  const currentClub = getCurrentClubTeam(player);
 
   return {
     ...player,
     imageUrl: getImageUrl("player", STORAGE_BUCKETS.PLAYERS, player.image),
     shirtNumber,
     mainPosition,
+    currentNationality,
     currentClubTeam: currentClub ?? null,
-    currentNationalTeam: currentNationalTeam ?? null,
     marketValue: player.market_value,
   };
 }
@@ -47,15 +47,26 @@ export function mapPlayerListItem(player: DbPlayerListRow): PlayerListItem {
 export function mapPlayerEditResponse(
   player: DbPlayerDetailRow,
 ): PlayerEditResponse {
-  const { preferred_foot, market_value, player_positions } = player;
+  const {
+    preferred_foot,
+    market_value,
+    player_positions,
+    player_nationalities,
+  } = player;
 
   return {
     ...player,
     preferredFoot: preferred_foot,
     marketValue: market_value,
+
     positions: player_positions.map((pp) => ({
       positionId: pp.position.id,
       displayOrder: pp.display_order,
+    })),
+    
+    nationalities: player_nationalities.map((pn) => ({
+      nationId: pn.nationality.id,
+      displayOrder: pn.display_order,
     })),
   };
 }
@@ -73,6 +84,10 @@ export function mapPlayerDetailResponse(
   const mainPosition = getMainPosition(player.player_positions);
   const otherPositions = getOtherPositions(player.player_positions);
 
+  const nationalities = getNationalities(player.player_nationalities);
+
+  const currentNationality = getCurrentNationality(player.player_nationalities);
+
   const currentCareer = getPlayerDetailCurrentCareer(player);
   const currentContract = getCurrentContract(
     currentCareer ? currentCareer.player_contracts : [],
@@ -82,9 +97,6 @@ export function mapPlayerDetailResponse(
   const contractEnd = currentContract ? currentContract.contract_end : null;
 
   const currentClubTeam = getCurrentClubTeam(player);
-  const currentNationalTeam = getCurrentNationalTeam(player);
-
-  const nationalTeams = getNationalTeams(player);
 
   return {
     id: player.id,
@@ -98,7 +110,7 @@ export function mapPlayerDetailResponse(
       name: player.name,
       dob,
       pob: player.pob,
-      currentNationalTeam: currentNationalTeam ?? null,
+      currentNationality: currentNationality ?? null,
       height,
       mainPosition,
       currentClub: currentClubTeam ?? null,
@@ -116,7 +128,7 @@ export function mapPlayerDetailResponse(
       marketValue,
       mainPosition,
       otherPositions,
-      nationalTeams,
+      nationalities,
       currentClubTeam: currentClubTeam ?? null,
       joinedAt,
       contractEnd,

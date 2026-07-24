@@ -5,7 +5,7 @@ import { GetPlayersParams } from "@/types/player";
 import { playerKeys } from "@/lib/react-query/keys/playerKeys";
 
 export function usePlayers(params?: GetPlayersParams, enabled: boolean = true) {
-  const query = useQuery({
+  const { data, isLoading, isRefetching, error, refetch } = useQuery({
     queryKey: playerKeys.list(params),
     queryFn: () => fetchPlayers(params),
     enabled,
@@ -13,10 +13,15 @@ export function usePlayers(params?: GetPlayersParams, enabled: boolean = true) {
   });
 
   return {
-    players: query.data ?? [],
-    loading: query.isLoading,
-    retrying: query.isRefetching,
-    loadError: query.error ?? null,
-    retryLoad: query.refetch,
+    players: data?.items ?? [],
+    total: data?.total ?? 0,
+    totalPages: data?.totalPages ?? 0,
+    page: data?.page ?? 1,
+    limit: data?.limit ?? 20,
+
+    loading: isLoading,
+    retrying: isRefetching,
+    loadError: error ?? null,
+    retryLoad: refetch,
   };
 }

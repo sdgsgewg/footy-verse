@@ -12,8 +12,10 @@ import {
   createPlayerNationalTeamSchema,
   updatePlayerNationalTeamSchema,
 } from "../validations/player-national-teams.schema";
-import { PlayerNationalTeamCreateInput } from "@/types/player";
-import { PlayerNationalTeamUpdateInput } from "@/types/player-national-teams";
+import {
+  PlayerNationalTeamCreateInput,
+  PlayerNationalTeamUpdateInput,
+} from "@/types/player-national-teams";
 
 export async function getPlayerNationalTeamsService(playerId: string) {
   return getPlayerNationalTeamsRepo(playerId);

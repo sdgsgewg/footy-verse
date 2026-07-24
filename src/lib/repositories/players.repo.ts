@@ -1,17 +1,6 @@
 import { createClient } from "@/utils/supabase/server";
 import { STORAGE_BUCKETS } from "@/lib/storage";
-import {
-  DbPlayerDetailRow,
-  DbPlayerListRow,
-  GetPlayersParams,
-  PlayerCreateInput,
-  PlayerDetailResponse,
-  PlayerEditResponse,
-  PlayerListItem,
-  PlayerLookupResponse,
-  PlayerPositionCreateInput,
-  PlayerUpdateInput,
-} from "@/types/player";
+
 import {
   mapPlayerDetailResponse,
   mapPlayerEditResponse,
@@ -22,6 +11,19 @@ import { ensureUniqueSlug } from "./helpers/slug";
 import { requireEntity } from "./helpers/require-entity";
 import { deleteEntityImage, prepareUpdatedImage } from "./helpers/image";
 import { slugify } from "@/utils/string";
+import {
+  DbPlayerDetailRow,
+  DbPlayerListRow,
+  ParsedPlayersParams,
+  PlayerCreateInput,
+  PlayerDetailResponse,
+  PlayerEditResponse,
+  PlayerListResponse,
+  PlayerLookupResponse,
+  PlayerNationalityCreateInput,
+  PlayerPositionCreateInput,
+  PlayerUpdateInput,
+} from "@/types/player";
 
 async function getSupabase() {
   return createClient();
@@ -39,19 +41,15 @@ const getPlayerPositionTable = () => {
   return ENTITY_CONFIG["playerPosition"]["table"];
 };
 
-const getPlayerCareerTable = () => {
-  return ENTITY_CONFIG["playerCareer"]["table"];
-};
-
-const getPlayerNationalTeamTable = () => {
-  return ENTITY_CONFIG["playerNationalTeam"]["table"];
+const getPlayerNationalityTable = () => {
+  return ENTITY_CONFIG["playerNationality"]["table"];
 };
 
 function getPlayersBaseQuery(options?: {
-  isClubFiltered?: boolean;
+  isClubTeamFiltered?: boolean;
   isNationFiltered?: boolean;
 }) {
-  const clubJoin = options?.isClubFiltered ? "!inner" : "";
+  const clubJoin = options?.isClubTeamFiltered ? "!inner" : "";
   const nationJoin = options?.isNationFiltered ? "!inner" : "";
 
   return `
@@ -63,9 +61,21 @@ function getPlayersBaseQuery(options?: {
 
     player_positions (
       display_order,
+
       position:positions!player_positions_position_id_fkey (
         id,
         name
+      )
+    ),
+
+    player_nationalities${nationJoin} (
+      display_order,
+      nation_id,
+
+      nationality:positions!player_nationalities_nationality_id_fkey (
+        id,
+        name,
+        image
       )
     ),
 
@@ -94,7 +104,7 @@ function getPlayersBaseQuery(options?: {
       )
     ),
 
-    player_national_teams${nationJoin} (
+    player_national_teams (
       id,
       start_date,
       end_date,
@@ -119,22 +129,22 @@ function getPlayersBaseQuery(options?: {
 /**
  *
  * @param params
- * @returns PlayerListItem[]
+ * @returns PlayerListResponse
  */
 export async function getPlayersRepo(
-  params: GetPlayersParams,
-): Promise<PlayerListItem[]> {
+  params: ParsedPlayersParams,
+): Promise<PlayerListResponse> {
   const supabase = await getSupabase();
 
-  let query = supabase
-    .from(getPlayerTable())
-    .select(
-      getPlayersBaseQuery({
-        isClubFiltered: !!params.clubId,
-        isNationFiltered: !!params.nationId,
-      }),
-    )
-    .order("name");
+  let query = supabase.from(getPlayerTable()).select(
+    getPlayersBaseQuery({
+      isClubTeamFiltered: !!params.clubTeamId,
+      isNationFiltered: !!params.nationId,
+    }),
+    {
+      count: "exact",
+    },
+  );
 
   // Filter
   if (params.name) {
@@ -142,18 +152,39 @@ export async function getPlayersRepo(
   }
 
   if (params.nationId) {
-    query = query.eq("player_national_teams.nation_id", params.nationId);
+    query = query.eq("player_nationalities.nation_id", params.nationId);
   }
 
-  if (params.clubId) {
-    query = query.eq("player_careers.club_id", params.clubId);
+  if (params.clubTeamId) {
+    query = query.eq("player_careers.club_team_id", params.clubTeamId);
   }
 
-  const { data, error } = await query.overrideTypes<DbPlayerListRow[]>();
+  // Sort
+
+  query = query.order(params.sortBy, {
+    ascending: params.sortOrder === "asc",
+  });
+
+  // Pagination
+
+  const from = (params.page - 1) * params.limit;
+  const to = from + params.limit - 1;
+
+  query = query.range(from, to);
+
+  // Execute
+
+  const { data, error, count } = await query.overrideTypes<DbPlayerListRow[]>();
 
   if (error) throw error;
 
-  return (data ?? []).map(mapPlayerListItem);
+  return {
+    items: (data ?? []).map(mapPlayerListItem),
+    total: count ?? 0,
+    page: params.page,
+    limit: params.limit,
+    totalPages: Math.ceil((count ?? 0) / params.limit),
+  };
 }
 
 function getPlayerDetailBaseQuery() {
@@ -162,9 +193,21 @@ function getPlayerDetailBaseQuery() {
 
     player_positions (
       display_order,
+
       position:positions!player_positions_position_id_fkey (
         id,
         name
+      )
+    ),
+
+    player_nationalities (
+      display_order,
+      nation_id,
+
+      nationality:positions!player_nationalities_nationality_id_fkey (
+        id,
+        name,
+        image
       )
     ),
 
@@ -312,6 +355,24 @@ async function insertPlayerPositions(
   if (playerPositionError) throw playerPositionError;
 }
 
+async function insertPlayerNationalities(
+  playerId: string,
+  playerNationalities: PlayerNationalityCreateInput[],
+) {
+  const supabase = await getSupabase();
+
+  const playerNationalityInserts = playerNationalities.map((pn, index) => ({
+    player_id: playerId,
+    nation_id: pn.nation_id,
+    display_order: pn.display_order ?? index + 1,
+  }));
+
+  const { error: playerNationalityError } = await supabase
+    .from(getPlayerPositionTable())
+    .insert(playerNationalityInserts);
+  if (playerNationalityError) throw playerNationalityError;
+}
+
 /**
  *
  * @param player
@@ -327,7 +388,7 @@ export async function createPlayerRepo(
     name: player.name,
   });
 
-  const { market_value, positions, ...rest } = player;
+  const { market_value, positions, nationalities, ...rest } = player;
 
   const { data: insertedPlayer, error: playerError } = await supabase
     .from(getPlayerTable())
@@ -342,9 +403,10 @@ export async function createPlayerRepo(
   if (playerError) throw playerError;
 
   //  Insert player positions (table player_positions)
-  if (positions && positions.length > 0) {
-    insertPlayerPositions(insertedPlayer.id, positions);
-  }
+  insertPlayerPositions(insertedPlayer.id, positions);
+
+  //  Insert player nationalities (table player_nationalities)
+  insertPlayerNationalities(insertedPlayer.id, nationalities);
 
   const result = await getPlayerEditRepo(insertedPlayer.id);
   if (!result) {
@@ -382,7 +444,7 @@ export async function updatePlayerRepo(
     bucket: STORAGE_BUCKETS.PLAYERS,
   });
 
-  const { market_value, positions, ...rest } = player;
+  const { market_value, positions, nationalities, ...rest } = player;
 
   const { error: playerError } = await supabase
     .from(getPlayerTable())
@@ -405,9 +467,17 @@ export async function updatePlayerRepo(
     .eq("player_id", id);
   if (deletePosError) throw deletePosError;
 
-  if (positions && positions.length > 0) {
-    insertPlayerPositions(id, positions);
-  }
+  insertPlayerPositions(id, positions);
+
+  // Nationalities: Delete existing nationalities and insert new ones
+
+  const { error: deleteNationalityError } = await supabase
+    .from(getPlayerNationalityTable())
+    .delete()
+    .eq("player_id", id);
+  if (deleteNationalityError) throw deleteNationalityError;
+
+  insertPlayerNationalities(id, nationalities);
 
   const result = await getPlayerEditRepo(id);
   if (!result) {
@@ -434,14 +504,8 @@ export async function deletePlayerRepo(id: string): Promise<void> {
     .eq("player_id", id);
   if (deletePosError) throw deletePosError;
 
-  const { error: deleteCareerError } = await supabase
-    .from(getPlayerCareerTable())
-    .delete()
-    .eq("player_id", id);
-  if (deleteCareerError) throw deleteCareerError;
-
   const { error: deleteNatError } = await supabase
-    .from(getPlayerNationalTeamTable())
+    .from(getPlayerNationalityTable())
     .delete()
     .eq("player_id", id);
   if (deleteNatError) throw deleteNatError;

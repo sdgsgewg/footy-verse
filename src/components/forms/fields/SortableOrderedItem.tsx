@@ -7,23 +7,23 @@ import { GripVertical, Star, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-export interface SortablePositionItemValue {
+export interface SortableOrderedItemValue {
   id: string;
   name: string;
   display_order: number;
 }
 
-interface SortablePositionItemProps {
-  position: SortablePositionItemValue;
+interface SortableOrderedItemProps {
+  position: SortableOrderedItemValue;
   disabled?: boolean;
   onRemove: (positionId: string) => void;
 }
 
-const SortablePositionItem = ({
+const SortableOrderedItem = ({
   position,
   disabled = false,
   onRemove,
-}: SortablePositionItemProps) => {
+}: SortableOrderedItemProps) => {
   const {
     attributes,
     listeners,
@@ -92,4 +92,4 @@ const SortablePositionItem = ({
   );
 };
 
-export default SortablePositionItem;
+export default SortableOrderedItem;

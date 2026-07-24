@@ -1,5 +1,7 @@
 {
   "player": "Player",
+  "playerPosition": "Player Position",
+  "playerNationality": "Player Nationality",
   "playerCareer": "Player Career",
   "playerNationalTeam": "Player National Team",
   "club": "Club",

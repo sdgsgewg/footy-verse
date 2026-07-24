@@ -1,11 +1,15 @@
 {
   "player": "Pemain",
+  "playerPosition": "Posisi Pemain",
+  "playerNationality": "Kebangsaan Pemain",
   "playerCareer": "Karir Pemain",
   "playerNationalTeam": "Tim Nasional Pemain",
   "club": "Klub",
-  "season": "Musim",
+  "clubTeam": "Tim Klub",
+  "nationalTeam": "Tim Nasional",
   "nationality": "Kebangsaan",
   "position": "Posisi",
+  "season": "Musim",
   "competition": "Kompetisi",
   "region": "Zona Wilayah"
 }

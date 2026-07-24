@@ -1,15 +1,20 @@
 import { useDebounce } from "../useDebounce";
 import { useRouter } from "@/navigation";
+import { PlayerFilter } from "@/types/player";
 import { useState } from "react";
-import { ClubFilter } from "@/types/club";
 
-export default function useClubFilter() {
+export default function usePlayerFilter() {
   const router = useRouter();
 
-  const [filters, setFilters] = useState<ClubFilter>({
+  const [filters, setFilters] = useState<PlayerFilter>({
     name: "",
     nationId: undefined,
-    clubType: undefined,
+    clubTeamId: undefined,
+
+    page: 1,
+    limit: 20,
+
+    sortBy: "name",
     sortOrder: "asc",
   });
 
@@ -18,10 +23,15 @@ export default function useClubFilter() {
   const isSearching = filters.name !== debouncedname;
 
   const clearFilters = () => {
-    const reset: ClubFilter = {
+    const reset: PlayerFilter = {
       name: "",
       nationId: undefined,
-      clubType: undefined,
+      clubTeamId: undefined,
+
+      page: 1,
+      limit: 20,
+
+      sortBy: "name",
       sortOrder: "asc",
     };
 

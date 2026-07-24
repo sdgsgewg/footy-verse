@@ -1,7 +1,10 @@
 import { AgeGroup } from "@/enums/AgeGroup";
+import { PreferredFoot } from "@/enums/PreferredFoot";
 import { SquadType } from "@/enums/SquadType";
 import { TeamCategory } from "@/enums/TeamCategory";
 import z from "zod";
+
+// Club Team
 
 export const squadTypeSchema = z.enum([
   SquadType.FIRST_TEAM,
@@ -9,6 +12,8 @@ export const squadTypeSchema = z.enum([
   SquadType.RESERVE,
   SquadType.ACADEMY,
 ]);
+
+// Both Club and National Team
 
 export const teamCategorySchema = z.enum([
   TeamCategory.MEN,
@@ -23,3 +28,14 @@ export const ageGroupSchema = z.enum([
   AgeGroup.U18,
   AgeGroup.U17,
 ]);
+
+//Player
+
+export const prefFootSchema = z.enum([
+  PreferredFoot.RIGHT,
+  PreferredFoot.LEFT,
+  PreferredFoot.BOTH,
+]);
+
+// Filter, Sort, Pagination
+export const sortOrderSchema = z.enum(["asc", "desc"]).default("asc");

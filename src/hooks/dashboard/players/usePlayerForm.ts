@@ -25,6 +25,7 @@ const emptyPlayerForm: UpsertPlayerInput = {
   market_value: 0,
 
   positions: [],
+  nationalities: [],
 };
 
 function mapPlayer(player: PlayerEditResponse): UpsertPlayerInput {
@@ -49,6 +50,11 @@ function mapPlayer(player: PlayerEditResponse): UpsertPlayerInput {
     positions: player.positions.map((position) => ({
       position_id: position.positionId,
       display_order: position.displayOrder,
+    })),
+
+    nationalities: player.nationalities.map((nation) => ({
+      nation_id: nation.nationId,
+      display_order: nation.displayOrder,
     })),
   };
 }

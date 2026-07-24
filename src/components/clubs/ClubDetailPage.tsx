@@ -8,6 +8,10 @@ import { ClubLookupResponse } from "@/types/club";
 import PlayerList from "../players/PlayerList";
 import { usePlayers } from "@/hooks/dashboard/players";
 import { ROUTES } from "@/constants/routes";
+import { useClubTeams } from "@/hooks/club-teams";
+import { SelectField } from "../forms/fields";
+import { getClubTeamOptions } from "@/lib/club-teams/options";
+import usePlayerFilter from "@/hooks/players/usePlayerFilter";
 
 interface Props {
   clubLookup: ClubLookupResponse;
@@ -16,9 +20,18 @@ interface Props {
 const ClubDetailPage = ({ clubLookup }: Props) => {
   const { club, isLoading, error, refetch } = useClubDetail(clubLookup.id);
 
-  const { players } = usePlayers(
-    clubLookup ? { clubId: clubLookup.id } : undefined,
-  );
+  const { filters, setFilters } = usePlayerFilter();
+
+  const { clubTeams } = useClubTeams({
+    clubId: clubLookup.id,
+    params: {
+      clubId: clubLookup.id,
+    },
+  });
+
+  const { players } = usePlayers({ clubTeamId: filters.clubTeamId });
+
+  const clubTeamOptions = getClubTeamOptions(clubTeams);
 
   // Initial request is still loading and no cached club data is available yet.
   if (!club && isLoading) {
@@ -40,6 +53,17 @@ const ClubDetailPage = ({ clubLookup }: Props) => {
   // Player List in grid style
   const content = (
     <>
+      {/* Test Dropdown Club Teams */}
+      <SelectField
+        label={`Club Teams`}
+        name="club_teams"
+        placeholder={`Select Club Team`}
+        options={clubTeamOptions}
+        value={filters.clubTeamId || ""}
+        onChange={(value) => setFilters({ ...filters, clubTeamId: value })}
+        required
+      />
+
       <PlayerList
         teamType="club"
         players={players}

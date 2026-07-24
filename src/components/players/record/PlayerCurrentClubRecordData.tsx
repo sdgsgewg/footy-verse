@@ -1,9 +1,9 @@
+import { ClubTeamResponse } from "@/types/player";
 import RecordRow from "./RecordRow";
 import Image from "next/image";
-import { ClubTeam } from "@/types/player";
 
 interface PlayerCurrentClubRecordDataProps {
-  club: ClubTeam;
+  club: ClubTeamResponse;
 }
 
 const PlayerCurrentClubRecordData = ({

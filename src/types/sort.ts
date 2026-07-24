@@ -1,1 +1,1 @@
-export type SortType = "newest" | "oldest";
+export type SortOrder = "asc" | "desc";
