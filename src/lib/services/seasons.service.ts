@@ -1,6 +1,16 @@
-import { createSeasonRepo, deleteSeasonRepo, getSeasonByIdRepo, getSeasonsRepo, updateSeasonRepo } from "../repositories/seasons.repo";
-import { createSeasonSchema, seasonIdSchema, seasonsQuerySchema, updateSeasonSchema } from "../validations/seasons.schema";
-
+import {
+  createSeasonRepo,
+  deleteSeasonRepo,
+  getSeasonByIdRepo,
+  getSeasonsRepo,
+  updateSeasonRepo,
+} from "../repositories/seasons.repo";
+import { idSchema } from "../validations/primitives.schema";
+import {
+  createSeasonSchema,
+  seasonsQuerySchema,
+  updateSeasonSchema,
+} from "../validations/seasons.schema";
 
 export async function getSeasonsService(query: unknown) {
   const parsed = seasonsQuerySchema.parse(query);
@@ -9,7 +19,7 @@ export async function getSeasonsService(query: unknown) {
 }
 
 export async function getSeasonByIdService(id: string) {
-  const parsedId = seasonIdSchema.parse(id);
+  const parsedId = idSchema.parse(id);
 
   return getSeasonByIdRepo(parsedId);
 }
@@ -21,14 +31,14 @@ export async function createSeasonService(input: unknown) {
 }
 
 export async function updateSeasonService(id: string, input: unknown) {
-  const parsedId = seasonIdSchema.parse(id);
+  const parsedId = idSchema.parse(id);
   const parsed = updateSeasonSchema.parse(input);
 
   return updateSeasonRepo(parsedId, parsed);
 }
 
 export async function deleteSeasonService(id: string) {
-  const parsedId = seasonIdSchema.parse(id);
+  const parsedId = idSchema.parse(id);
 
   await deleteSeasonRepo(parsedId);
 }

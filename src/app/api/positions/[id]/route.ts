@@ -47,7 +47,6 @@ export async function PUT(request: Request, context: PositionRouteContext) {
 
     return successResponse(data);
   } catch (error: unknown) {
-    console.log("Error: ", error);
     return errorResponse(error);
   }
 }

@@ -2,9 +2,9 @@ import { useQuery } from "@tanstack/react-query";
 import { queryConfig } from "@/lib/react-query/config/queryConfig";
 import { fetchSeasons } from "@/lib/api/season";
 import { seasonKeys } from "@/lib/react-query/keys/seasonKeys";
-import { GetSeasonsParams } from "@/types/season";
+import { SeasonQuery } from "@/types/season";
 
-export function useSeasons(params?: GetSeasonsParams) {
+export function useSeasons(params?: SeasonQuery) {
   const {
     data = [],
     isLoading,

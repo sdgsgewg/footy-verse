@@ -1,3 +1,4 @@
+import { getCrudQuery } from "@/lib/api/query";
 import {
   createdResponse,
   errorResponse,
@@ -8,14 +9,11 @@ import {
   createSeasonService,
   getSeasonsService,
 } from "@/lib/services/seasons.service";
+import { SeasonQuery } from "@/types/season";
 
 export async function GET(request: Request) {
   try {
-    const { searchParams } = new URL(request.url);
-
-    const query = {
-      name: searchParams.get("name") || undefined,
-    };
+    const query = getCrudQuery<SeasonQuery>(request);
 
     const data = await getSeasonsService(query);
 

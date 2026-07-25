@@ -1,9 +1,9 @@
 import { createClient } from "@/utils/supabase/server";
 import { ensureUniqueRecord } from "./helpers/uniqueness";
 import {
-  GetSeasonsParams,
   SeasonCreateInput,
   SeasonDetailResponse,
+  SeasonFilter,
   SeasonListItem,
   SeasonUpdateInput,
 } from "@/types/season";
@@ -22,16 +22,35 @@ const getTable = () => {
   return ENTITY_CONFIG["season"]["table"];
 };
 
+/**
+ *
+ * @param params
+ * @returns SeasonListItem[]
+ */
 export async function getSeasonsRepo(
-  params: GetSeasonsParams,
+  params: SeasonFilter,
 ): Promise<SeasonListItem[]> {
   const supabase = await getSupabase();
 
-  let query = supabase.from(getTable()).select("*").order("name");
+  // Base Query
 
-  if (params.name) {
-    query = query.ilike("name", `%${params.name}%`);
+  let query = supabase.from(getTable()).select("*", {
+    count: "exact",
+  });
+
+  // Filter
+
+  if (params.search) {
+    query = query.ilike("name", `%${params.search}%`);
   }
+
+  // Sort
+
+  query = query.order(params.sortBy, {
+    ascending: params.sortOrder === "asc",
+  });
+
+  // Execute
 
   const { data, error } = await query;
 

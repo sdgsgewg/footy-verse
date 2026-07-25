@@ -57,31 +57,26 @@ export interface CrudMutationOptions<TVariables> {
 
 // Pages
 
-export type CrudFormTablePageProps<
-  TData extends DataRow,
-  TForm extends CrudForm,
-> = {
-  title: string;
+// Supporting Interface and Type
+
+export interface CrudFormProps<T extends CrudForm> {
   formFields: CrudFormField[];
-  columns: DataColumn<TData>[];
-  data: TData[];
-  form: TForm;
-  setForm: Dispatch<SetStateAction<TForm>>;
+
+  form: T;
+  setForm: Dispatch<SetStateAction<T>>;
+
   canSubmit: boolean;
   onSubmit: () => void;
-  onView?: (item: TData) => void;
-  onEdit: (item: TData) => void;
-  onDelete: (item: TData) => void;
+
   isEditing: boolean;
   isSubmitting: boolean;
   buttonText: string;
+
   resetForm: () => void;
-  loading?: boolean;
-  headerContent?: ReactNode;
-};
+}
 
 export interface CrudActions<T extends DataRow> {
-  onCreate: () => void;
+  onCreate?: () => void;
 
   onView?: (item: T) => void;
   onEdit: (item: T) => void;
@@ -114,6 +109,31 @@ export interface CrudPaginationProps {
 
   onPageChange: (page: number) => void;
 }
+
+// Page Props
+
+export type CrudFormTablePageProps<
+  TData extends DataRow,
+  TForm extends CrudForm,
+> = {
+  title: string;
+
+  headerContent?: ReactNode;
+
+  loading?: boolean;
+
+  data: TData[];
+
+  columns: DataColumn<TData>[];
+
+  actions: CrudActions<TData>;
+
+  form: CrudFormProps<TForm>;
+
+  toolbar?: CrudToolbarProps;
+
+  sorting?: CrudSortingProps;
+};
 
 export interface CrudListPageProps<T extends DataRow> {
   title: string;

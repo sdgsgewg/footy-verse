@@ -4,6 +4,7 @@ import { CrudPageHeader } from "./CrudPageHeader";
 import { CrudPageForm } from "./CrudPageForm";
 import { DataRow } from "@/types/table";
 import { DataTable } from "@/components/shared/tables/DataTable";
+import CrudToolbar from "./CrudToolbar";
 
 export function CrudFormTablePage<
   TData extends DataRow,
@@ -11,22 +12,32 @@ export function CrudFormTablePage<
 >(props: CrudFormTablePageProps<TData, TForm>) {
   const {
     title,
-    formFields,
-    columns,
-    data,
-    form,
-    setForm,
-    onSubmit,
-    onView,
-    onEdit,
-    onDelete,
-    isEditing,
-    isSubmitting,
-    canSubmit,
-    buttonText,
-    resetForm,
     loading,
+    data,
+    columns,
     headerContent,
+
+    form: {
+      formFields,
+
+      form,
+      setForm,
+
+      canSubmit,
+      onSubmit,
+
+      isEditing,
+      isSubmitting,
+      buttonText,
+
+      resetForm,
+    },
+
+    actions: { onView, onEdit, onDelete },
+
+    toolbar: { searchValue, searchPlaceholder, onSearchChange, onFilter } = {},
+
+    sorting: { sortBy, sortOrder, onSort } = {},
   } = props;
 
   return (
@@ -36,28 +47,43 @@ export function CrudFormTablePage<
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         {/* FORM SECTION */}
-        <CrudPageForm
-          formFields={formFields}
-          form={form as CrudForm}
-          setForm={setForm as Dispatch<SetStateAction<CrudForm>>}
-          isEditing={isEditing}
-          isSubmitting={isSubmitting}
-          buttonText={buttonText}
-          resetForm={resetForm}
-          canSubmit={canSubmit}
-          onSubmit={onSubmit}
-        />
+        <div className="lg:col-span-4 space-y-6">
+          <CrudPageForm
+            formFields={formFields}
+            form={form as CrudForm}
+            setForm={setForm as Dispatch<SetStateAction<CrudForm>>}
+            isEditing={isEditing}
+            isSubmitting={isSubmitting}
+            buttonText={buttonText}
+            resetForm={resetForm}
+            canSubmit={canSubmit}
+            onSubmit={onSubmit}
+          />
+        </div>
 
         {/* TABLE SECTION */}
-        <DataTable
-          data={data}
-          loading={loading}
-          columns={columns}
-          showActions
-          onView={onView}
-          onEdit={onEdit}
-          onDelete={onDelete}
-        />
+        <div className="lg:col-span-8">
+          <CrudToolbar
+            loading={loading}
+            searchValue={searchValue}
+            searchPlaceholder={searchPlaceholder}
+            onSearchChange={onSearchChange}
+            onFilter={onFilter}
+          />
+
+          <DataTable
+            data={data}
+            loading={loading}
+            columns={columns}
+            showActions
+            onView={onView}
+            onEdit={onEdit}
+            onDelete={onDelete}
+            sortBy={sortBy}
+            sortOrder={sortOrder}
+            onSort={onSort}
+          />
+        </div>
       </div>
     </div>
   );

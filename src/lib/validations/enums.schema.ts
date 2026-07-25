@@ -66,6 +66,9 @@ export const prefFootSchema = z.enum([
 ]);
 
 // Season
+
+export const seasonSortBySchema = z.enum(["name", "created_at"]);
+
 // Region
 // Competition
 
