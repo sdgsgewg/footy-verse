@@ -137,7 +137,7 @@ export default function ClubsManagementPage() {
         totalPages,
         totalItems: total,
         loading,
-        onPageChange: goToPage,
+        onPageChange: goToPage
       }}
     />
   );

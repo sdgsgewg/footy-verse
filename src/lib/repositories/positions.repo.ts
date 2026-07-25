@@ -1,100 +1,216 @@
 import {
-  GetPositionsParams,
-  Position,
+  DbPositionDetailRow,
+  DbPositionListRow,
   PositionCreateInput,
   PositionDetailResponse,
+  PositionEditResponse,
+  PositionFilter,
   PositionListItem,
+  PositionLookupResponse,
   PositionUpdateInput,
 } from "@/types/position";
 import { createClient } from "@/utils/supabase/server";
 import { ensureUniqueSlug } from "./helpers/slug";
 import { requireEntity } from "./helpers/require-entity";
 import { ENTITY_CONFIG } from "@/config/entities";
+import {
+  mapPositionDetailResponse,
+  mapPositionEditResponse,
+  mapPositionListItem,
+} from "../positions/mapper";
+import { slugify } from "@/utils/string";
 
 async function getSupabase() {
   return createClient();
 }
 
-const getLabel = () => {
+const getPositionLabel = () => {
   return ENTITY_CONFIG["position"]["label"];
 };
 
-const getTable = () => {
+const getPositionTable = () => {
   return ENTITY_CONFIG["position"]["table"];
 };
 
+function getPositionsBaseQuery(options?: { isCategoryFiltered?: boolean }) {
+  const categoryJoin = options?.isCategoryFiltered ? "!inner" : "";
+
+  return `
+    *,
+
+    category:position_categories!positions_position_category_id_fkey${categoryJoin} (
+      id,
+      name
+    )
+  `;
+}
+
+/**
+ *
+ * @param params
+ * @returns PositionListItem[]
+ */
 export async function getPositionsRepo(
-  params: GetPositionsParams,
+  params: PositionFilter,
 ): Promise<PositionListItem[]> {
   const supabase = await getSupabase();
 
-  let query = supabase.from(getTable()).select("*").order("name");
+  // Base Query
 
-  if (params.name) {
-    query = query.ilike("name", `%${params.name}%`);
+  let query = supabase.from(getPositionTable()).select(
+    getPositionsBaseQuery({
+      isCategoryFiltered: !!params.categoryId,
+    }),
+    {
+      count: "exact",
+    },
+  );
+
+  // Filter
+
+  if (params.search) {
+    query = query.ilike("name", `%${params.search}%`);
   }
 
-  const { data, error } = await query;
+  // Sort
+
+  query = query.order(params.sortBy, {
+    ascending: params.sortOrder === "asc",
+  });
+
+  // Execute
+
+  const { data, error } = await query.overrideTypes<DbPositionListRow[]>();
 
   if (error) throw error;
 
-  return data ?? [];
+  return (data ?? []).map(mapPositionListItem);
 }
 
-export async function getPositionByIdRepo(
+function getPositionDetailQuery() {
+  return `
+    *,
+
+    category:position_categories!positions_position_category_id_fkey (
+      id,
+      name
+    )
+  `;
+}
+
+/**
+ *
+ * @param id
+ * @returns PositionEditResponse | null
+ */
+export async function getPositionEditRepo(
+  id: string,
+): Promise<PositionEditResponse | null> {
+  const supabase = await getSupabase();
+
+  const { data, error } = await supabase
+    .from(getPositionTable())
+    .select(getPositionDetailQuery())
+    .eq("id", id)
+    .maybeSingle()
+    .overrideTypes<DbPositionDetailRow>();
+
+  if (error) throw error;
+  if (!data) return null;
+
+  return mapPositionEditResponse(data);
+}
+
+/**
+ *
+ * @param id
+ * @returns PositionDetailResponse | null
+ */
+export async function getPositionDetailRepo(
   id: string,
 ): Promise<PositionDetailResponse | null> {
   const supabase = await getSupabase();
 
   const { data, error } = await supabase
-    .from(getTable())
-    .select("*")
+    .from(getPositionTable())
+    .select(getPositionDetailQuery())
     .eq("id", id)
+    .maybeSingle()
+    .overrideTypes<DbPositionDetailRow>();
+
+  if (error) throw error;
+  if (!data) return null;
+
+  return mapPositionDetailResponse(data);
+}
+
+/**
+ *
+ * @param slug
+ * @returns PositionLookupResponse | null
+ */
+export async function getPositionLookupRepo(
+  slug: string,
+): Promise<PositionLookupResponse | null> {
+  const supabase = await getSupabase();
+
+  const { data, error } = await supabase
+    .from(getPositionTable())
+    .select(`id, slug`)
+    .eq("slug", slug)
     .maybeSingle();
 
   if (error) throw error;
+  if (!data) return null;
 
   return data;
 }
 
+/**
+ *
+ * @param position
+ * @returns PositionDetailResponse
+ */
 export async function createPositionRepo(
   position: PositionCreateInput,
-): Promise<Position> {
+): Promise<PositionDetailResponse> {
   const supabase = await getSupabase();
 
   const slug = await ensureUniqueSlug({
-    table: getTable(),
+    table: getPositionTable(),
     name: position.name,
   });
 
-  const { data, error } = await supabase
-    .from(getTable())
+  const { data: insertedPosition, error } = await supabase
+    .from(getPositionTable())
     .insert({ ...position, slug })
     .select("*")
     .single();
 
   if (error) throw error;
 
-  return data;
+  const result = await getPositionDetailRepo(insertedPosition.id);
+  if (!result) {
+    throw new Error("Failed to retrieve created position");
+  }
+
+  return result;
 }
 
 export async function updatePositionRepo(
   id: string,
   position: PositionUpdateInput,
-): Promise<Position> {
+): Promise<PositionDetailResponse> {
   const supabase = await getSupabase();
 
-  await requireEntity(getPositionByIdRepo, id, getLabel());
+  await requireEntity(getPositionDetailRepo, id, getPositionLabel());
 
-  const slug = await ensureUniqueSlug({
-    table: getTable(),
-    name: position.name,
-  });
+  const slug = slugify(position.name);
 
-  const { data, error } = await supabase
-    .from(getTable())
+  const { error } = await supabase
+    .from(getPositionTable())
     .update({
-      name: position.name,
+      ...position,
       slug,
       updated_at: new Date().toISOString(),
     })
@@ -104,15 +220,23 @@ export async function updatePositionRepo(
 
   if (error) throw error;
 
-  return data;
+  const result = await getPositionDetailRepo(id);
+  if (!result) {
+    throw new Error("Failed to retrieve updated position");
+  }
+
+  return result;
 }
 
 export async function deletePositionRepo(id: string): Promise<void> {
   const supabase = await getSupabase();
 
-  await requireEntity(getPositionByIdRepo, id, getLabel());
+  await requireEntity(getPositionDetailRepo, id, getPositionLabel());
 
-  const { error } = await supabase.from(getTable()).delete().eq("id", id);
+  const { error } = await supabase
+    .from(getPositionTable())
+    .delete()
+    .eq("id", id);
 
   if (error) throw error;
 }

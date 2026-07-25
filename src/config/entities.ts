@@ -54,6 +54,14 @@ export const ENTITY_CONFIG = {
     dashboardRoute: ROUTES.DASHBOARD.CONTENT.POSITIONS.BASE,
   },
 
+  positionCategory: {
+    table: "position_categories",
+    label: "Position Category",
+    supportsImage: false,
+    supportsSlug: true,
+    dashboardRoute: ROUTES.DASHBOARD.CONTENT.POSITIONS.CATEGORIES.BASE,
+  },
+
   player: {
     table: "players",
     label: "Player",

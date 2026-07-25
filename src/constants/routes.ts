@@ -33,6 +33,10 @@ export const ROUTES = {
       POSITIONS: {
         BASE: "/dashboard/positions",
         CREATE: "/dashboard/positions/create",
+        CATEGORIES: {
+          BASE: "/dashboard/positions/categories",
+          CREATE: "/dashboard/positions/categories/create",
+        },
       },
       SEASONS: {
         BASE: "/dashboard/seasons",

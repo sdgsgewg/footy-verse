@@ -1,3 +1,4 @@
+import { getCrudQuery } from "@/lib/api/query";
 import {
   createdResponse,
   errorResponse,
@@ -8,19 +9,17 @@ import {
   createPositionService,
   getPositionsService,
 } from "@/lib/services/positions.service";
+import { PositionQuery } from "@/types/position";
 
 export async function GET(request: Request) {
   try {
-    const { searchParams } = new URL(request.url);
-
-    const query = {
-      name: searchParams.get("name") || undefined,
-    };
+    const query = getCrudQuery<PositionQuery>(request, ["categoryId"]);
 
     const data = await getPositionsService(query);
 
     return successResponse(data);
   } catch (error: unknown) {
+    console.error("Error: ", error);
     return errorResponse(error);
   }
 }

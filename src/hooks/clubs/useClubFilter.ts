@@ -1,5 +1,6 @@
 import { ClubFilter } from "@/types/club";
 import { useCrudFilters } from "../crud/useCrudFilters";
+import { useCrudPagination } from "../crud/useCrudPagination";
 
 const DEFAULT_FILTER: ClubFilter = {
   search: "",
@@ -14,11 +15,18 @@ const DEFAULT_FILTER: ClubFilter = {
 };
 
 export default function useClubFilter() {
-  return useCrudFilters(DEFAULT_FILTER, {
+  const crud = useCrudFilters(DEFAULT_FILTER);
+
+  const pagination = useCrudPagination(crud.filters, crud.setFilters, {
     shouldResetPage: (previous, next) =>
       previous.search !== next.search ||
       previous.nationId !== next.nationId ||
       previous.sortBy !== next.sortBy ||
       previous.sortOrder !== next.sortOrder,
   });
+
+  return {
+    ...crud,
+    ...pagination,
+  };
 }

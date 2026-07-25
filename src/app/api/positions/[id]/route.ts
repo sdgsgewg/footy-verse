@@ -7,7 +7,7 @@ import { authorizeManageContent } from "@/lib/auth/api-authorization";
 import { NotFoundError } from "@/lib/errors/http-error";
 import {
   deletePositionService,
-  getPositionByIdService,
+  getPositionDetailService,
   updatePositionService,
 } from "@/lib/services/positions.service";
 
@@ -18,7 +18,7 @@ type PositionRouteContext = {
 export async function GET(_request: Request, context: PositionRouteContext) {
   try {
     const { id } = await context.params;
-    const data = await getPositionByIdService(id);
+    const data = await getPositionDetailService(id);
 
     if (!data) {
       return errorResponse(new NotFoundError("Position not found"));
@@ -36,7 +36,7 @@ export async function PUT(request: Request, context: PositionRouteContext) {
 
     const { id } = await context.params;
 
-    const currentPosition = await getPositionByIdService(id);
+    const currentPosition = await getPositionDetailService(id);
 
     if (!currentPosition) {
       return errorResponse(new NotFoundError("Position not found"));
@@ -47,6 +47,7 @@ export async function PUT(request: Request, context: PositionRouteContext) {
 
     return successResponse(data);
   } catch (error: unknown) {
+    console.log("Error: ", error);
     return errorResponse(error);
   }
 }
@@ -57,7 +58,7 @@ export async function DELETE(_request: Request, context: PositionRouteContext) {
 
     const { id } = await context.params;
 
-    const position = await getPositionByIdService(id);
+    const position = await getPositionDetailService(id);
 
     if (!position) {
       return errorResponse(new NotFoundError("Position not found"));

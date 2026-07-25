@@ -2,13 +2,13 @@
 
 import { Nationality } from "./database";
 
-// Club List
+// Nationality List
 
 export type DbNationalityListRow = Pick<
   Nationality,
   "id" | "image" | "name" | "slug"
 >;
 
-// Club Detail
+// Nationality Detail
 
 export type DbNationalityDetailRow = Nationality;

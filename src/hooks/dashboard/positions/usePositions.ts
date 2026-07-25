@@ -2,9 +2,9 @@ import { useQuery } from "@tanstack/react-query";
 import { queryConfig } from "@/lib/react-query/config/queryConfig";
 import { fetchPositions } from "@/lib/api/position";
 import { positionKeys } from "@/lib/react-query/keys/positionKeys";
-import { GetPositionsParams } from "@/types/position";
+import { PositionQuery } from "@/types/position";
 
-export function usePositions(params?: GetPositionsParams) {
+export function usePositions(params?: PositionQuery) {
   const {
     data = [],
     isLoading,

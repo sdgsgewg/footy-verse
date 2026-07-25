@@ -1,19 +1,21 @@
 {
-  "title": "Kelola Posisi",
-  "subtitle": "Tambah, edit, atau hapus posisi.",
+  "navLabel": "Posisi",
 
   "form": {
     "labels": {
-      "name": "Nama Posisi"
+      "name": "Nama Posisi",
+      "category": "Kategori Posisi"
     },
 
     "placeholders": {
-      "name": "Input nama"
+      "name": "Input nama",
+      "category": "Pilih Kategori"
     }
   },
 
   "columns": {
-    "name": "Nama"
+    "name": "Nama",
+    "category": "Kategori"
   },
 
   "actions": {

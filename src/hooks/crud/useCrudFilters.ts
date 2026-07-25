@@ -6,11 +6,10 @@ import { useDebounce } from "../useDebounce";
 
 interface CrudFilterBase {
   search: string;
-  page: number;
 }
 
 interface UseCrudFiltersOptions<TFilter> {
-  shouldResetPage?: (previous: TFilter, next: TFilter) => boolean;
+  onFilterChange?: (previous: TFilter, next: TFilter) => TFilter;
 }
 
 export function useCrudFilters<TFilter extends CrudFilterBase>(
@@ -19,7 +18,7 @@ export function useCrudFilters<TFilter extends CrudFilterBase>(
 ) {
   const router = useRouter();
 
-  const [filters, setFilters] = useState<TFilter>(defaultFilter);
+  const [filters, setFilters] = useState(defaultFilter);
 
   const debouncedSearch = useDebounce(filters.search, 500);
 
@@ -31,7 +30,7 @@ export function useCrudFilters<TFilter extends CrudFilterBase>(
     [filters, debouncedSearch],
   );
 
-  function createQuery(filter: TFilter) {
+  const createQuery = useCallback((filter: TFilter) => {
     const params = new URLSearchParams();
 
     Object.entries(filter).forEach(([key, value]) => {
@@ -41,7 +40,7 @@ export function useCrudFilters<TFilter extends CrudFilterBase>(
     });
 
     return params.toString();
-  }
+  }, []);
 
   const syncUrl = useCallback(
     (next: TFilter) => {
@@ -53,7 +52,7 @@ export function useCrudFilters<TFilter extends CrudFilterBase>(
 
       router.replace(query ? `?${query}` : "?");
     },
-    [router],
+    [createQuery, router],
   );
 
   function updateFilters(updater: (previous: TFilter) => TFilter) {
@@ -62,13 +61,13 @@ export function useCrudFilters<TFilter extends CrudFilterBase>(
 
   function setFilter<K extends keyof TFilter>(key: K, value: TFilter[K]) {
     updateFilters((previous) => {
-      const next: TFilter = {
+      let next = {
         ...previous,
         [key]: value,
-      };
+      } as TFilter;
 
-      if (options?.shouldResetPage?.(previous, next)) {
-        next.page = 1;
+      if (options?.onFilterChange) {
+        next = options.onFilterChange(previous, next);
       }
 
       return next;
@@ -77,13 +76,13 @@ export function useCrudFilters<TFilter extends CrudFilterBase>(
 
   function setFiltersPartial(values: Partial<TFilter>) {
     updateFilters((previous) => {
-      const next: TFilter = {
+      let next = {
         ...previous,
         ...values,
-      };
+      } as TFilter;
 
-      if (options?.shouldResetPage?.(previous, next)) {
-        next.page = 1;
+      if (options?.onFilterChange) {
+        next = options.onFilterChange(previous, next);
       }
 
       return next;
@@ -92,7 +91,6 @@ export function useCrudFilters<TFilter extends CrudFilterBase>(
 
   function clearFilters() {
     setFilters(defaultFilter);
-
     router.replace("?");
   }
 
@@ -103,14 +101,7 @@ export function useCrudFilters<TFilter extends CrudFilterBase>(
     setFilter,
     setFilters: setFiltersPartial,
 
-    nextPage: () => setFilter("page", filters.page + 1),
-
-    previousPage: () => setFilter("page", filters.page - 1),
-
-    goToPage: (page: number) => setFilter("page", page),
-
     syncUrl,
-
     clearFilters,
   };
 }

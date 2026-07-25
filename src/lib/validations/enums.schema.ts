@@ -41,6 +41,14 @@ export const ageGroupSchema = z.enum([
   AgeGroup.U17,
 ]);
 
+// Position Category
+
+export const positionCategorySortBySchema = z.enum(["name", "created_at"]);
+
+// Position
+
+export const positionSortBySchema = z.enum(["name", "created_at"]);
+
 //Player
 
 export const playerSortBySchema = z.enum([
@@ -56,6 +64,10 @@ export const prefFootSchema = z.enum([
   PreferredFoot.LEFT,
   PreferredFoot.BOTH,
 ]);
+
+// Season
+// Region
+// Competition
 
 // Filter, Sort, Pagination
 export const sortOrderSchema = z.enum(["asc", "desc"]);

@@ -1,18 +1,20 @@
 {
-  "title": "Manage Positions",
-  "subtitle": "Add, edit, or delete positions",
+  "navLabel": "Positions",
 
   "form": {
     "labels": {
-      "name": "Position Name"
+      "name": "Position Name",
+      "category": "Position Category"
     },
     "placeholders": {
-      "name": "Input name"
+      "name": "Input name",
+      "category": "Select Category"
     }
   },
 
   "columns": {
-    "name": "Name"
+    "name": "Name",
+    "category": "Category"
   },
 
   "actions": {

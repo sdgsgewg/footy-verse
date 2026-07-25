@@ -37,11 +37,16 @@ async function getMessages(locale: string) {
       await import(`./messages/${locale}/dashboard/nationalities.json`)
     ).default,
 
-    nationalTeams: (await import(`./messages/${locale}/dashboard/national-teams.json`))
-      .default,
+    nationalTeams: (
+      await import(`./messages/${locale}/dashboard/national-teams.json`)
+    ).default,
 
     positions: (await import(`./messages/${locale}/dashboard/positions.json`))
       .default,
+
+    positionCategories: (
+      await import(`./messages/${locale}/dashboard/position-categories.json`)
+    ).default,
 
     seasons: (await import(`./messages/${locale}/dashboard/seasons.json`))
       .default,

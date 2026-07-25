@@ -1,5 +1,6 @@
 import { NationalityFilter } from "@/types/nationality";
 import { useCrudFilters } from "../crud/useCrudFilters";
+import { useCrudPagination } from "../crud";
 
 const DEFAULT_FILTER: NationalityFilter = {
   search: "",
@@ -12,10 +13,17 @@ const DEFAULT_FILTER: NationalityFilter = {
 };
 
 export default function useNationalityFilter() {
-  return useCrudFilters(DEFAULT_FILTER, {
+  const crud = useCrudFilters(DEFAULT_FILTER);
+
+  const pagination = useCrudPagination(crud.filters, crud.setFilters, {
     shouldResetPage: (previous, next) =>
       previous.search !== next.search ||
       previous.sortBy !== next.sortBy ||
       previous.sortOrder !== next.sortOrder,
   });
+
+  return {
+    ...crud,
+    ...pagination,
+  };
 }

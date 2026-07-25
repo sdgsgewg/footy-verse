@@ -9,6 +9,7 @@
   "nationality": "Nationality",
   "nationalTeam": "National Team",
   "position": "Position",
+  "positionCategory": "Position Category",
   "season": "Season",
   "competition": "Competition",
   "region": "Region"

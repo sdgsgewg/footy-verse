@@ -1,0 +1,16 @@
+{
+  "navLabel": "Categories",
+
+  "form": {
+    "labels": {
+      "name": "Position Category Name"
+    },
+    "placeholders": {
+      "name": "Input name"
+    }
+  },
+
+  "columns": {
+    "name": "Name"
+  }
+}

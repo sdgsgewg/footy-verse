@@ -37,7 +37,7 @@ export const fetchClubEdit = async (id: string): Promise<ClubEditResponse> => {
   const { data } = await apiClient.get<{
     success: boolean;
     data: ClubEditResponse;
-  }>(`/clubs/${id}/edit`);
+  }>(`${baseRoute}/${id}/edit`);
 
   return data.data;
 };
@@ -53,7 +53,7 @@ export const fetchClubDetail = async (
   const { data } = await apiClient.get<{
     success: boolean;
     data: ClubDetailResponse;
-  }>(`/clubs/${id}`);
+  }>(`${baseRoute}/${id}`);
 
   return data.data;
 };
