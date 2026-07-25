@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { SortOrder } from "./sort";
 
 export type DataRow = {
   id: string;
@@ -6,14 +7,16 @@ export type DataRow = {
 
 export interface DataColumn<T> {
   key: keyof T | `${string}.${string}`;
-
   label: string;
 
-  className?: string;
+  sortable?: boolean;
 
-  headerClassName?: string;
+  sortKey?: string;
 
   render?: (item: T) => ReactNode;
+
+  className?: string;
+  headerClassName?: string;
 }
 
 export interface DataTableProps<T extends DataRow> {
@@ -30,6 +33,11 @@ export interface DataTableProps<T extends DataRow> {
   onDelete?: (item: T) => void;
 
   emptyMessage?: string;
+
+  sortBy?: string;
+  sortOrder?: SortOrder;
+
+  onSort?: (column: string) => void;
 }
 
 export type ActionRowProps<T extends DataRow> = {

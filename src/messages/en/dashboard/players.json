@@ -60,8 +60,10 @@
 
   "columns": {
     "name": "Name",
+    "position": "Position",
     "club": "Club",
-    "nationality": "Nationality"
+    "nationality": "Nationality",
+    "marketValue": "Market Value"
   },
 
   "actions": {

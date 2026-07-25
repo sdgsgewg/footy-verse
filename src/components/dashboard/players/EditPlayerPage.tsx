@@ -39,6 +39,7 @@ export default function EditPlayerPage({ playerLookup }: Props) {
     <FormPageLayout
       title={t("title", {
         entity: tEntities("player"),
+        entityName: "",
       })}
       formSize="large"
       form={

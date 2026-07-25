@@ -2,22 +2,23 @@
 
 import { X } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useNationalities } from "@/hooks/dashboard/nationalities";
 import { useMemo } from "react";
 import { ClubFilter } from "@/types/club";
+import { useNationalities } from "@/hooks/nationalities";
 
 interface Props {
   filters: ClubFilter;
-  setFilters: React.Dispatch<React.SetStateAction<ClubFilter>>;
-  onClearAll: () => void;
+
+  setFilter: <K extends keyof ClubFilter>(key: K, value: ClubFilter[K]) => void;
+
+  clearFilters: () => void;
 }
 
 export default function ActiveFiltersBar({
   filters,
-  setFilters,
-  onClearAll,
+  setFilter,
+  clearFilters,
 }: Props) {
-  const tCommon = useTranslations("common");
   const tCommonActions = useTranslations("common.actions");
 
   const { nationalities } = useNationalities();
@@ -32,10 +33,10 @@ export default function ActiveFiltersBar({
   }[] = [];
 
   // 🔍 Search
-  if (filters.name) {
+  if (filters.search) {
     chips.push({
-      label: `Search: ${filters.name}`,
-      onRemove: () => setFilters((prev) => ({ ...prev, name: "" })),
+      label: `Search: ${filters.search}`,
+      onRemove: () => setFilter("search", ""),
     });
   }
 
@@ -43,15 +44,7 @@ export default function ActiveFiltersBar({
   if (filters.nationId) {
     chips.push({
       label: nationMap.get(filters.nationId) ?? filters.nationId,
-      onRemove: () => setFilters((prev) => ({ ...prev, nationId: undefined })),
-    });
-  }
-
-  // 🔽 Sort (optional)
-  if (filters.sortOrder !== "asc") {
-    chips.push({
-      label: `${tCommon("sort.title")}: ${tCommon(`sort.${filters.sortOrder}`)}`,
-      onRemove: () => setFilters((prev) => ({ ...prev, sort: "asc" })),
+      onRemove: () => setFilter("nationId", undefined),
     });
   }
 
@@ -74,7 +67,7 @@ export default function ActiveFiltersBar({
 
       {/* Clear all */}
       <button
-        onClick={onClearAll}
+        onClick={clearFilters}
         className="text-xs underline ml-2 text-muted-foreground hover:text-foreground cursor-pointer transition-colors"
       >
         {tCommonActions("clearAll")}

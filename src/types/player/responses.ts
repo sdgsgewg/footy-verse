@@ -29,11 +29,11 @@ export interface PlayerListItem {
   shirtNumber: ShirtNumberResponse;
 
   mainPosition: PositionResponse;
-  currentNationality: NationalityResponse;
+  currentNationality: NationalityResponse | null;
 
   currentClubTeam: ClubTeamResponse | null;
 
-  marketValue: number;
+  marketValue: string;
 }
 
 export type PlayerListResponse = PaginatedResponse<PlayerListItem>;

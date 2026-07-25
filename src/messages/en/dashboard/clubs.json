@@ -18,7 +18,8 @@
   },
 
   "columns": {
-    "name": "Name"
+    "name": "Name",
+    "nation": "Nation"
   },
 
   "actions": {

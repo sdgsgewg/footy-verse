@@ -5,22 +5,16 @@ import { motion } from "framer-motion";
 import { Input } from "@/components/ui/input";
 import ComboboxField from "@/components/forms/fields/ComboboxField";
 import { getNationalityOptions } from "@/lib/nationalities/options";
-import { useNationalities } from "@/hooks/dashboard/nationalities";
 import { ClubFilter } from "@/types/club";
+import { useNationalities } from "@/hooks/nationalities";
 
 interface ClubFiltersProps {
   filters: ClubFilter;
-  setFilters: React.Dispatch<React.SetStateAction<ClubFilter>>;
-  updateQuery: (filters: ClubFilter) => void;
+  setFilter: <K extends keyof ClubFilter>(key: K, value: ClubFilter[K]) => void;
   isSearching: boolean;
 }
 
-const ClubFilters = ({
-  filters,
-  setFilters,
-  updateQuery,
-  isSearching,
-}: ClubFiltersProps) => {
+const ClubFilters = ({ filters, setFilter, isSearching }: ClubFiltersProps) => {
   const tClub = useTranslations("dashboard.clubs");
   const tCommon = useTranslations("common");
   const tEntities = useTranslations("entities");
@@ -38,13 +32,8 @@ const ClubFilters = ({
           type="text"
           placeholder={tCommon("search.placeholder")}
           className="pl-9 h-9"
-          value={filters.name}
-          onChange={(e) =>
-            setFilters((prev) => ({
-              ...prev,
-              name: e.target.value,
-            }))
-          }
+          value={filters.search}
+          onChange={(e) => setFilter("search", e.target.value)}
         />
 
         {isSearching && (
@@ -53,7 +42,8 @@ const ClubFilters = ({
             animate={{ opacity: isSearching ? 1 : 0 }}
             className="absolute right-3 top-1/2 -translate-y-1/2"
           >
-            <Loader2 className="w-4 h-4 animate-spin" />
+            {" "}
+            <Loader2 className="w-4 h-4 animate-spin" />{" "}
           </motion.div>
         )}
       </div>
@@ -71,14 +61,8 @@ const ClubFilters = ({
           emptyMessage={tCommon("combobox.noEntityFound", {
             entity: tEntities("nationality").toLowerCase(),
           })}
-          value={filters.nationId || null}
-          onChange={(value) =>
-            setFilters((prev) => {
-              const updated = { ...prev, nationId: value };
-              updateQuery(updated);
-              return updated;
-            })
-          }
+          value={filters.nationId ?? null}
+          onChange={(value) => setFilter("nationId", value ?? undefined)}
         />
 
         {/* Sort Dropdown */}
@@ -86,7 +70,7 @@ const ClubFilters = ({
           name="sort"
           options={clubTypeOptions}
           value={filters.sort || ""}
-          onChange={(value) => setFilters({ ...filters, sort: value })}
+          onChange={(value) => setFilter({ ...filters, sort: value })}
         /> */}
       </div>
     </div>

@@ -2,11 +2,11 @@ import { createClient } from "@/utils/supabase/server";
 import { STORAGE_BUCKETS } from "../storage";
 import {
   DbNationalityListRow,
-  GetNationalitiesParams,
   NationalityCreateInput,
   NationalityDetailResponse,
   NationalityEditResponse,
-  NationalityListItem,
+  NationalityFilter,
+  NationalityListResponse,
   NationalityLookupResponse,
   NationalityUpdateInput,
 } from "@/types/nationality";
@@ -22,6 +22,7 @@ import {
 import { NationalTeamCreateInput } from "@/types/national-team";
 import { TeamCategory } from "@/enums/TeamCategory";
 import { AgeGroup } from "@/enums/AgeGroup";
+import { createPaginatedResponse } from "../pagination";
 
 async function getSupabase() {
   return createClient();
@@ -51,28 +52,51 @@ function getNationalitiesBaseQuery() {
 /**
  *
  * @param params
- * @returns NationalityListItem[]
+ * @returns NationalityFilter
  */
 export async function getNationalitiesRepo(
-  params: GetNationalitiesParams,
-): Promise<NationalityListItem[]> {
+  params: NationalityFilter,
+): Promise<NationalityListResponse> {
   const supabase = await getSupabase();
 
+  // Base Query
   let query = supabase
     .from(getNationalityTable())
-    .select(getNationalitiesBaseQuery())
-    .order("name");
+    .select(getNationalitiesBaseQuery(), {
+      count: "exact",
+    });
 
   // Filter
-  if (params.name) {
-    query = query.ilike("name", `%${params.name}%`);
+  if (params.search) {
+    query = query.ilike("name", `%${params.search}%`);
   }
 
-  const { data, error } = await query.overrideTypes<DbNationalityListRow[]>();
+  // Sort
+
+  query = query.order(params.sortBy, {
+    ascending: params.sortOrder === "asc",
+  });
+
+  // Pagination
+
+  const from = (params.page - 1) * params.limit;
+  const to = from + params.limit - 1;
+
+  query = query.range(from, to);
+
+  // Execute
+
+  const { data, error, count } =
+    await query.overrideTypes<DbNationalityListRow[]>();
 
   if (error) throw error;
 
-  return (data ?? []).map(mapNationalityListItem);
+  return createPaginatedResponse({
+    items: (data ?? []).map(mapNationalityListItem),
+    count,
+    page: params.page,
+    limit: params.limit,
+  });
 }
 
 /**

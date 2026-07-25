@@ -1,11 +1,11 @@
-import { GetPlayersParams } from "@/types/player";
+import { PlayerQuery } from "@/types/player";
 
 export const playerKeys = {
   all: ["players"] as const,
 
   lists: () => [...playerKeys.all, "list"] as const,
 
-  list: (params?: GetPlayersParams) => [...playerKeys.lists(), params] as const,
+  list: (params?: PlayerQuery) => [...playerKeys.lists(), params] as const,
 
   details: () => [...playerKeys.all, "detail"] as const,
 

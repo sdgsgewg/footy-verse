@@ -53,6 +53,7 @@ import {
   OrderedSelectFieldProps,
 } from "@/types/ordered-select";
 import { normalizeOrderedValues } from "@/utils/ordered-select";
+import Image from "next/image";
 
 const OrderedSelectField = <T extends OrderedEntity>({
   label,
@@ -95,6 +96,7 @@ const OrderedSelectField = <T extends OrderedEntity>({
 
         return {
           id,
+          imageUrl: optionMap.get(id)?.imageUrl ?? null,
           label: optionMap.get(id)?.label ?? "Unknown",
           display_order: index + 1,
         };
@@ -200,7 +202,17 @@ const OrderedSelectField = <T extends OrderedEntity>({
                       >
                         <Plus className="mr-2 size-4" />
 
-                        {option.label}
+                        {option.imageUrl && (
+                          <Image
+                            src={option.imageUrl}
+                            alt={option.label}
+                            width={20}
+                            height={20}
+                            className="rounded-full object-cover shrink-0"
+                          />
+                        )}
+
+                        <span>{option.label}</span>
 
                         <Check className="ml-auto opacity-0" />
                       </CommandItem>
@@ -213,9 +225,9 @@ const OrderedSelectField = <T extends OrderedEntity>({
         </Popover>
 
         {selectedItems.length === 0 ? (
-          <div className="mt-3 flex min-h-24 flex-col items-center justify-center gap-2 rounded-lg border border-dashed">
+          <div className="mt-3 flex min-h-24 flex-col items-center justify-center gap-2 p-4 rounded-lg border border-dashed">
             <ListOrdered className="size-5" />
-            {instruction}
+            <span className="text-center">{instruction}</span>
           </div>
         ) : (
           <DndContext
@@ -233,6 +245,7 @@ const OrderedSelectField = <T extends OrderedEntity>({
                     key={item.id}
                     position={{
                       id: item.id,
+                      imageUrl: item.imageUrl,
                       name: item.label,
                       display_order: item.display_order,
                     }}

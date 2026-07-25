@@ -13,9 +13,8 @@ import {
   updateClubSchema,
 } from "@/lib/validations/clubs.schema";
 import { idSchema, slugSchema } from "../validations/primitives.schema";
-import { GetClubsParams } from "@/types/club";
 
-export async function getClubsService(query: GetClubsParams) {
+export async function getClubsService(query: unknown) {
   const parsed = clubsQuerySchema.parse(query);
 
   return getClubsRepo(parsed);

@@ -75,6 +75,10 @@ export function usePlayerForm(player?: PlayerEditResponse) {
     form.positions.length > 0 &&
     form.positions.every((position) => position.position_id.trim().length > 0);
 
+  const areNationalitiesValid =
+    form.nationalities.length > 0 &&
+    form.nationalities.every((nation) => nation.nation_id.trim().length > 0);
+
   const canSubmit = useMemo(() => {
     const isFilled =
       form.name.trim().length > 0 &&
@@ -84,7 +88,8 @@ export function usePlayerForm(player?: PlayerEditResponse) {
       form.height > 0 &&
       form.weight > 0 &&
       form.market_value > 0 &&
-      arePositionsValid;
+      arePositionsValid &&
+      areNationalitiesValid;
 
     if (!isFilled) {
       return false;
@@ -104,10 +109,12 @@ export function usePlayerForm(player?: PlayerEditResponse) {
       form.market_value !== initialForm.market_value ||
       JSON.stringify(form.positions) !==
         JSON.stringify(initialForm.positions) ||
+      JSON.stringify(form.nationalities) !==
+        JSON.stringify(initialForm.nationalities) ||
       form.image !== initialForm.image ||
       form.imageFile != null
     );
-  }, [form, arePositionsValid, initialForm, isEditing]);
+  }, [form, arePositionsValid, areNationalitiesValid, initialForm, isEditing]);
 
   const buildPayload = () => {
     const payload = new FormData();
@@ -121,6 +128,7 @@ export function usePlayerForm(player?: PlayerEditResponse) {
     payload.append("market_value", String(form.market_value));
 
     payload.append("positions", JSON.stringify(form.positions));
+    payload.append("nationalities", JSON.stringify(form.nationalities));
 
     if (form.image) {
       payload.append("existingImage", form.image);

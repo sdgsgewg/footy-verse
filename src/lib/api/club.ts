@@ -3,27 +3,27 @@ import {
   createClubSchema,
   updateClubSchema,
 } from "../validations/clubs.schema";
-import {
-  ClubDetailResponse,
-  ClubEditResponse,
-  ClubListItem,
-  GetClubsParams,
-} from "@/types/club";
+import { ClubDetailResponse, ClubEditResponse, ClubQuery } from "@/types/club";
+import { ApiResponse } from "@/types/api";
+import { ClubListResponse } from "@/types/club/responses";
+
+const baseRoute = "/clubs";
+const baseRouteWithApi = "/api/clubs";
 
 /**
  *
  * @param params
- * @returns ClubListItem[]
+ * @returns ClubListResponse
  */
 export const fetchClubs = async (
-  params?: GetClubsParams,
-): Promise<ClubListItem[]> => {
-  const { data } = await apiClient.get<{
-    success: boolean;
-    data: ClubListItem[];
-  }>("/clubs", {
-    params,
-  });
+  params?: ClubQuery,
+): Promise<ClubListResponse> => {
+  const { data } = await apiClient.get<ApiResponse<ClubListResponse>>(
+    `${baseRoute}`,
+    {
+      params,
+    },
+  );
 
   return data.data;
 };
@@ -65,7 +65,7 @@ export const fetchClubDetail = async (
  */
 export const createClub = async (payload: unknown) => {
   if (payload instanceof FormData) {
-    const response = await fetch("/api/clubs", {
+    const response = await fetch(`${baseRouteWithApi}`, {
       method: "POST",
       body: payload,
     });
@@ -81,7 +81,7 @@ export const createClub = async (payload: unknown) => {
 
   const parsed = createClubSchema.parse(payload); // validation
 
-  await apiClient.post("/clubs", parsed);
+  await apiClient.post(`${baseRoute}`, parsed);
 };
 
 /**
@@ -92,7 +92,7 @@ export const createClub = async (payload: unknown) => {
  */
 export const updateClub = async (id: string, payload: unknown) => {
   if (payload instanceof FormData) {
-    const response = await fetch(`/api/clubs/${id}`, {
+    const response = await fetch(`${baseRouteWithApi}/${id}`, {
       method: "PUT",
       body: payload,
     });
@@ -108,7 +108,7 @@ export const updateClub = async (id: string, payload: unknown) => {
 
   const parsed = updateClubSchema.parse(payload); // validation
 
-  await apiClient.put(`/clubs/${id}`, parsed);
+  await apiClient.put(`${baseRoute}/${id}`, parsed);
 };
 
 /**
@@ -116,5 +116,5 @@ export const updateClub = async (id: string, payload: unknown) => {
  * @param id
  */
 export const deleteClub = async (id: string) => {
-  await apiClient.delete(`/clubs/${id}`);
+  await apiClient.delete(`${baseRoute}/${id}`);
 };

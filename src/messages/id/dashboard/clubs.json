@@ -18,7 +18,8 @@
   },
 
   "columns": {
-    "name": "Nama"
+    "name": "Nama",
+    "nation": "Negara"
   },
 
   "actions": {

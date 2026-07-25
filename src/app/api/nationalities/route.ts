@@ -1,3 +1,4 @@
+import { getCrudQuery } from "@/lib/api/query";
 import { isFormDataRequest } from "@/lib/api/request";
 import {
   createdResponse,
@@ -12,15 +13,11 @@ import {
 } from "@/lib/services/nationalities.service";
 import { tryDeleteImage, uploadImage } from "@/lib/services/storage.service";
 import { STORAGE_BUCKETS } from "@/lib/storage";
-import { GetNationalitiesParams } from "@/types/nationality";
+import { NationalityQuery } from "@/types/nationality";
 
 export async function GET(request: Request) {
   try {
-    const { searchParams } = new URL(request.url);
-
-    const query: GetNationalitiesParams = {
-      name: searchParams.get("name") || undefined,
-    };
+    const query = getCrudQuery<NationalityQuery>(request);
 
     const data = await getNationalitiesService(query);
 

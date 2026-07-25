@@ -5,7 +5,7 @@ import TeamSection from "@/components/public/teams/TeamSection";
 import PageHeader from "@/components/shared/PageHeader";
 import PublicPageWrapper from "@/components/wrappers/PublicPageWrapper";
 import { ROUTES } from "@/constants/routes";
-import { useNationalities } from "@/hooks/dashboard/nationalities";
+import { useNationalities } from "@/hooks/nationalities";
 import { useRouter } from "@/navigation";
 import { TeamItem } from "@/types/team";
 import { useTranslations } from "next-intl";

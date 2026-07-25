@@ -59,9 +59,11 @@
   },
 
   "columns": {
-    "name": "Name",
+    "name": "Nama",
+    "position": "Posisi",
     "club": "Klub",
-    "nationality": "Kebangsaan"
+    "nationality": "Kebangsaan",
+    "marketValue": "Nilai Pasar"
   },
 
   "actions": {

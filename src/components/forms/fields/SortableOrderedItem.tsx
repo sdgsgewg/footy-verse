@@ -6,9 +6,11 @@ import { GripVertical, Star, Trash2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 export interface SortableOrderedItemValue {
   id: string;
+  imageUrl?: string | null;
   name: string;
   display_order: number;
 }
@@ -67,6 +69,16 @@ const SortableOrderedItem = ({
 
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-2">
+          {position.imageUrl && (
+            <Image
+              src={position.imageUrl}
+              alt={position.name}
+              width={20}
+              height={20}
+              className="rounded-full object-cover shrink-0"
+            />
+          )}
+
           <span className="truncate text-sm font-medium">{position.name}</span>
           {position.display_order === 1 && (
             <span className="inline-flex shrink-0 items-center gap-1 rounded-md bg-primary/10 px-1.5 py-0.5 text-[11px] font-medium text-primary">

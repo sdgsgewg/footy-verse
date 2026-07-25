@@ -69,7 +69,8 @@ export function getCurrentNationality(
 export function getCurrentClubTeam(
   player: DbPlayerListRow | DbPlayerDetailRow,
 ): ClubTeamResponse | undefined {
-  if (!player.player_careers) return undefined;
+  if (!player.player_careers || player.player_careers.length === 0)
+    return undefined;
 
   const current = player.player_careers.find(
     (career) => career.left_at === null,
@@ -162,7 +163,11 @@ function mapPlayerNationalTeam(
 function getCurrentNationalTeam(
   player: DbPlayerListRow | DbPlayerDetailRow,
 ): PlayerNationalTeamResponse | undefined {
-  if (!player.player_national_teams) return undefined;
+  if (
+    !player.player_national_teams ||
+    player.player_national_teams.length === 0
+  )
+    return undefined;
 
   const current = player.player_national_teams.find((c) => c.end_date === null);
 

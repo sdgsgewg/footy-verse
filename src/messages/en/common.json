@@ -84,6 +84,21 @@
     "retry": "Try Again"
   },
 
+  "pagination": {
+    "showing": "Showing {from}-{to} of {total} items",
+
+    "previous": "Previous",
+    "next": "Next",
+
+    "page": "Page",
+    "of": "of",
+
+    "first": "First",
+    "last": "Last",
+
+    "rowsPerPage": "Rows per page"
+  },
+
   "ui": {
     "toggleTheme": "Toggle theme",
     "switchLanguage": "Switch language",
@@ -115,12 +130,6 @@
     "all": "All",
     "apply": "Apply",
     "clear": "Clear Filters"
-  },
-
-  "sort": {
-    "title": "Sort",
-    "newest": "Newest",
-    "oldest": "Oldest"
   },
 
   "feedback": {

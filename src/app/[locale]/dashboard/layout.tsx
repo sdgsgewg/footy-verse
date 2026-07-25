@@ -12,7 +12,7 @@ export default function DashboardLayout({
   const pathname = usePathname();
 
   return (
-    <div className="h-screen overflow-hidden bg-background">
+    <div className="min-h-screen overflow-hidden bg-background">
       {/* Fixed Navbar */}
       <Navbar />
 

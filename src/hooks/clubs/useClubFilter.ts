@@ -1,38 +1,24 @@
-import { useDebounce } from "../useDebounce";
-import { useRouter } from "@/navigation";
-import { useState } from "react";
 import { ClubFilter } from "@/types/club";
+import { useCrudFilters } from "../crud/useCrudFilters";
+
+const DEFAULT_FILTER: ClubFilter = {
+  search: "",
+
+  nationId: undefined,
+
+  page: 1,
+  limit: 20,
+
+  sortBy: "name",
+  sortOrder: "asc",
+};
 
 export default function useClubFilter() {
-  const router = useRouter();
-
-  const [filters, setFilters] = useState<ClubFilter>({
-    name: "",
-    nationId: undefined,
-    clubType: undefined,
-    sortOrder: "asc",
+  return useCrudFilters(DEFAULT_FILTER, {
+    shouldResetPage: (previous, next) =>
+      previous.search !== next.search ||
+      previous.nationId !== next.nationId ||
+      previous.sortBy !== next.sortBy ||
+      previous.sortOrder !== next.sortOrder,
   });
-
-  const debouncedname = useDebounce(filters.name, 400);
-
-  const isSearching = filters.name !== debouncedname;
-
-  const clearFilters = () => {
-    const reset: ClubFilter = {
-      name: "",
-      nationId: undefined,
-      clubType: undefined,
-      sortOrder: "asc",
-    };
-
-    setFilters(reset);
-    router.push("?"); // reset URL
-  };
-
-  return {
-    filters,
-    setFilters,
-    isSearching,
-    clearFilters,
-  };
 }

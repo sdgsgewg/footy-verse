@@ -1,3 +1,4 @@
+import { getCrudQuery } from "@/lib/api/query";
 import { isFormDataRequest } from "@/lib/api/request";
 import {
   createdResponse,
@@ -12,22 +13,15 @@ import {
 } from "@/lib/services/players.service";
 import { tryDeleteImage, uploadImage } from "@/lib/services/storage.service";
 import { STORAGE_BUCKETS } from "@/lib/storage";
+import { PlayerFilter } from "@/types/player";
 
 export async function GET(request: Request) {
   try {
-    const { searchParams } = new URL(request.url);
-
-    const query = {
-      name: searchParams.get("name") ?? undefined,
-      nationId: searchParams.get("nationId") ?? undefined,
-      clubTeamId: searchParams.get("clubTeamId") ?? undefined,
-
-      page: searchParams.get("page") ?? undefined,
-      limit: searchParams.get("limit") ?? undefined,
-
-      sortBy: searchParams.get("sortBy") ?? undefined,
-      sortOrder: searchParams.get("sortOrder") ?? undefined,
-    };
+    const query = getCrudQuery<PlayerFilter>(request, [
+      "nationId",
+      "clubTeamId",
+      "positionId",
+    ]);
 
     const data = await getPlayersService(query);
 

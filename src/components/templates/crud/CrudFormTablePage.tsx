@@ -1,11 +1,12 @@
 import type { Dispatch, SetStateAction } from "react";
-import { CrudForm, CrudFormTablePageProps, CrudRow } from "@/types/crud";
+import { CrudForm, CrudFormTablePageProps } from "@/types/crud";
 import { CrudPageHeader } from "./CrudPageHeader";
 import { CrudPageForm } from "./CrudPageForm";
-import { CrudPageTable } from "./CrudPageTable";
+import { DataRow } from "@/types/table";
+import { DataTable } from "@/components/shared/tables/DataTable";
 
 export function CrudFormTablePage<
-  TData extends CrudRow,
+  TData extends DataRow,
   TForm extends CrudForm,
 >(props: CrudFormTablePageProps<TData, TForm>) {
   const {
@@ -48,13 +49,14 @@ export function CrudFormTablePage<
         />
 
         {/* TABLE SECTION */}
-        <CrudPageTable
+        <DataTable
+          data={data}
           loading={loading}
-          data={data as CrudRow[]}
           columns={columns}
-          onView={onView as (item: CrudRow) => void}
-          onEdit={onEdit as (item: CrudRow) => void}
-          onDelete={onDelete as (item: CrudRow) => void}
+          showActions
+          onView={onView}
+          onEdit={onEdit}
+          onDelete={onDelete}
         />
       </div>
     </div>

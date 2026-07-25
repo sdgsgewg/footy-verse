@@ -33,6 +33,8 @@ export function mapPlayerListItem(player: DbPlayerListRow): PlayerListItem {
 
   const currentClub = getCurrentClubTeam(player);
 
+  const marketValue = formatMarketValue(player.market_value);
+
   return {
     ...player,
     imageUrl: getImageUrl("player", STORAGE_BUCKETS.PLAYERS, player.image),
@@ -40,7 +42,7 @@ export function mapPlayerListItem(player: DbPlayerListRow): PlayerListItem {
     mainPosition,
     currentNationality,
     currentClubTeam: currentClub ?? null,
-    marketValue: player.market_value,
+    marketValue,
   };
 }
 
@@ -63,7 +65,7 @@ export function mapPlayerEditResponse(
       positionId: pp.position.id,
       displayOrder: pp.display_order,
     })),
-    
+
     nationalities: player_nationalities.map((pn) => ({
       nationId: pn.nationality.id,
       displayOrder: pn.display_order,
@@ -86,7 +88,7 @@ export function mapPlayerDetailResponse(
 
   const nationalities = getNationalities(player.player_nationalities);
 
-  const currentNationality = getCurrentNationality(player.player_nationalities);
+  // const currentNationality = getCurrentNationality(player.player_nationalities);
 
   const currentCareer = getPlayerDetailCurrentCareer(player);
   const currentContract = getCurrentContract(
@@ -110,7 +112,8 @@ export function mapPlayerDetailResponse(
       name: player.name,
       dob,
       pob: player.pob,
-      currentNationality: currentNationality ?? null,
+      // currentNationality: currentNationality ?? null,
+      currentNationality: null,
       height,
       mainPosition,
       currentClub: currentClubTeam ?? null,

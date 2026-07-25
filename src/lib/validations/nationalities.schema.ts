@@ -1,5 +1,7 @@
 import { z } from "zod";
 import { idSchema, slugSchema } from "./primitives.schema";
+import { listQuerySchema } from "./query.schema";
+import { nationalitySortBySchema } from "./enums.schema";
 
 export const nationalityMutationSchema = z.object({
   image: z.string().nullable().optional(),
@@ -19,7 +21,6 @@ export const nationalitySchema = nationalityMutationSchema.extend({
 
 export const nationalitiesSchema = z.array(nationalitySchema);
 
-export const nationalitiesQuerySchema = z.object({
-  name: z.string().trim().min(1).max(255).optional(),
-  slug: z.string().trim().min(1).max(255).optional(),
+export const nationalitiesQuerySchema = listQuerySchema.extend({
+  sortBy: nationalitySortBySchema.default("name"),
 });

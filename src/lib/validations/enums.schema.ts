@@ -4,6 +4,12 @@ import { SquadType } from "@/enums/SquadType";
 import { TeamCategory } from "@/enums/TeamCategory";
 import z from "zod";
 
+// Club
+
+export const clubSortBySchema = z.enum(["name", "nation", "created_at"]);
+
+export type ClubSortBy = z.infer<typeof clubSortBySchema>;
+
 // Club Team
 
 export const squadTypeSchema = z.enum([
@@ -12,6 +18,12 @@ export const squadTypeSchema = z.enum([
   SquadType.RESERVE,
   SquadType.ACADEMY,
 ]);
+
+// Nationality
+
+export const nationalitySortBySchema = z.enum(["name", "created_at"]);
+
+export type NationalitySortBy = z.infer<typeof nationalitySortBySchema>;
 
 // Both Club and National Team
 
@@ -31,6 +43,14 @@ export const ageGroupSchema = z.enum([
 
 //Player
 
+export const playerSortBySchema = z.enum([
+  "name",
+  "market_value",
+  "created_at",
+]);
+
+export type PlayerSortBy = z.infer<typeof playerSortBySchema>;
+
 export const prefFootSchema = z.enum([
   PreferredFoot.RIGHT,
   PreferredFoot.LEFT,
@@ -38,4 +58,4 @@ export const prefFootSchema = z.enum([
 ]);
 
 // Filter, Sort, Pagination
-export const sortOrderSchema = z.enum(["asc", "desc"]).default("asc");
+export const sortOrderSchema = z.enum(["asc", "desc"]);

@@ -4,11 +4,15 @@ import {
   updateNationalitySchema,
 } from "../validations/nationalities.schema";
 import {
-  GetNationalitiesParams,
   NationalityDetailResponse,
   NationalityEditResponse,
-  NationalityListItem,
+  NationalityListResponse,
+  NationalityQuery,
 } from "@/types/nationality";
+import { ApiResponse } from "@/types/api";
+
+const baseRoute = `/nationalities`;
+const baseRouteWithApi = `/api/nationalities`;
 
 /**
  *
@@ -16,14 +20,14 @@ import {
  * @returns NationalityListItem[]
  */
 export const fetchNationalities = async (
-  params?: GetNationalitiesParams,
-): Promise<NationalityListItem[]> => {
-  const { data } = await apiClient.get<{
-    success: boolean;
-    data: NationalityListItem[];
-  }>("/nationalities", {
-    params,
-  });
+  params?: NationalityQuery,
+): Promise<NationalityListResponse> => {
+  const { data } = await apiClient.get<ApiResponse<NationalityListResponse>>(
+    `${baseRoute}`,
+    {
+      params,
+    },
+  );
 
   return data.data;
 };
@@ -36,10 +40,9 @@ export const fetchNationalities = async (
 export const fetchNationalityEdit = async (
   id: string,
 ): Promise<NationalityEditResponse | null> => {
-  const { data } = await apiClient.get<{
-    success: boolean;
-    data: NationalityEditResponse;
-  }>(`/nationalities/${id}/edit`);
+  const { data } = await apiClient.get<ApiResponse<NationalityEditResponse>>(
+    `${baseRoute}/${id}/edit`,
+  );
 
   return data.data;
 };
@@ -52,17 +55,16 @@ export const fetchNationalityEdit = async (
 export const fetchNationalityDetail = async (
   id: string,
 ): Promise<NationalityDetailResponse | null> => {
-  const { data } = await apiClient.get<{
-    success: boolean;
-    data: NationalityDetailResponse;
-  }>(`/nationalities/${id}`);
+  const { data } = await apiClient.get<ApiResponse<NationalityDetailResponse>>(
+    `${baseRoute}/${id}`,
+  );
 
   return data.data;
 };
 
 export const createNationality = async (payload: unknown) => {
   if (payload instanceof FormData) {
-    const response = await fetch("/api/nationalities", {
+    const response = await fetch(`${baseRouteWithApi}`, {
       method: "POST",
       body: payload,
     });
@@ -78,12 +80,12 @@ export const createNationality = async (payload: unknown) => {
 
   const parsed = createNationalitySchema.parse(payload); // validation
 
-  await apiClient.post("/nationalities", parsed);
+  await apiClient.post(`${baseRoute}`, parsed);
 };
 
 export const updateNationality = async (id: string, payload: unknown) => {
   if (payload instanceof FormData) {
-    const response = await fetch(`/api/nationalities/${id}`, {
+    const response = await fetch(`${baseRouteWithApi}/${id}`, {
       method: "PUT",
       body: payload,
     });
@@ -99,9 +101,9 @@ export const updateNationality = async (id: string, payload: unknown) => {
 
   const parsed = updateNationalitySchema.parse(payload); // validation
 
-  await apiClient.put(`/nationalities/${id}`, parsed);
+  await apiClient.put(`${baseRoute}/${id}`, parsed);
 };
 
 export const deleteNationality = async (id: string) => {
-  await apiClient.delete(`/nationalities/${id}`);
+  await apiClient.delete(`${baseRoute}/${id}`);
 };

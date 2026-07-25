@@ -8,22 +8,22 @@ import PublicPageWrapper from "@/components/wrappers/PublicPageWrapper";
 import { useClubs } from "@/hooks/clubs";
 import useClubFilter from "@/hooks/clubs/useClubFilter";
 import { useDebounce } from "@/hooks/useDebounce";
-import { useRouter } from "@/navigation";
-import { ClubFilter } from "@/types/club";
 import { TeamItem } from "@/types/team";
 import { useTranslations } from "next-intl";
+import { useEffect } from "react";
 
 export default function ClubsPage() {
   const t = useTranslations("public.teams");
-  const router = useRouter();
 
-  const { filters, setFilters, isSearching, clearFilters } = useClubFilter();
+  const { filters, setFilter, syncUrl, clearFilters } = useClubFilter();
 
-  const debouncedKeyword = useDebounce(filters.name, 500);
+  const debouncedSearch = useDebounce(filters.search, 500);
+
+  const isSearching = filters.search !== debouncedSearch;
 
   const { clubs, loading } = useClubs({
-    name: debouncedKeyword || undefined,
-    nationId: filters.nationId || undefined,
+    search: debouncedSearch || undefined,
+    nationId: filters.nationId,
   });
 
   const modifiedClubList: TeamItem[] = clubs.map((club) => ({
@@ -34,16 +34,13 @@ export default function ClubsPage() {
     subtitle: "",
   }));
 
-  const updateQuery = (newFilters: ClubFilter) => {
-    const params = new URLSearchParams();
-
-    if (newFilters.sortOrder) params.set("sortOrder", newFilters.sortOrder);
-    if (newFilters.name) params.set("name", newFilters.name);
-    if (newFilters.nationId) params.set("nationId", newFilters.nationId);
-    if (newFilters.clubType) params.set("clubType", newFilters.clubType);
-
-    router.push(`?${params.toString()}`);
-  };
+  // Sync URL on filter
+  useEffect(() => {
+    syncUrl({
+      ...filters,
+      search: debouncedSearch,
+    });
+  }, [debouncedSearch, filters]);
 
   return (
     <PublicPageWrapper>
@@ -53,23 +50,14 @@ export default function ClubsPage() {
       <div className="flex flex-col gap-4 mb-12">
         <ClubFilters
           filters={filters}
-          setFilters={setFilters}
-          updateQuery={updateQuery}
+          setFilter={setFilter}
           isSearching={isSearching}
         />
 
         <ActiveFiltersBar
           filters={filters}
-          setFilters={(updater) =>
-            setFilters((prev) => {
-              const updated =
-                typeof updater === "function" ? updater(prev) : updater;
-
-              updateQuery(updated);
-              return updated;
-            })
-          }
-          onClearAll={clearFilters}
+          setFilter={setFilter}
+          clearFilters={clearFilters}
         />
       </div>
 

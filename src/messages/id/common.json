@@ -84,6 +84,21 @@
     "retry": "Coba Lagi"
   },
 
+  "pagination": {
+    "showing": "Menampilkan {from}-{to} dari {total} data",
+
+    "previous": "Sebelumnya",
+    "next": "Berikutnya",
+
+    "page": "Halaman",
+    "of": "dari",
+
+    "first": "Pertama",
+    "last": "Terakhir",
+
+    "rowsPerPage": "Jumlah data per halaman"
+  },
+
   "ui": {
     "toggleTheme": "Ganti tema",
     "switchLanguage": "Ganti bahasa",
@@ -115,12 +130,6 @@
     "all": "Semua",
     "apply": "Terapkan",
     "clear": "Hapus Filter"
-  },
-
-  "sort": {
-    "title": "Urutkan",
-    "newest": "Terbaru",
-    "oldest": "Terlama"
   },
 
   "feedback": {

@@ -1,5 +1,7 @@
 import { z } from "zod";
 import { idSchema, slugSchema } from "./primitives.schema";
+import { listQuerySchema } from "./query.schema";
+import { clubSortBySchema } from "./enums.schema";
 
 export const clubMutationSchema = z.object({
   image: z.string().nullable().optional(),
@@ -20,8 +22,8 @@ export const clubSchema = clubMutationSchema.extend({
 
 export const clubsSchema = z.array(clubSchema);
 
-export const clubsQuerySchema = z.object({
-  name: z.string().trim().min(1).max(255).optional(),
-
+export const clubsQuerySchema = listQuerySchema.extend({
   nationId: idSchema.optional(),
+
+  sortBy: clubSortBySchema.default("name"),
 });

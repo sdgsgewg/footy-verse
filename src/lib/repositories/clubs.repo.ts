@@ -4,12 +4,11 @@ import {
   ClubCreateInput,
   ClubDetailResponse,
   ClubEditResponse,
-  ClubListItem,
+  ClubFilter,
   ClubLookupResponse,
   ClubUpdateInput,
   DbClubDetailRow,
   DbClubListRow,
-  GetClubsParams,
 } from "@/types/club";
 import { requireEntity } from "./helpers/require-entity";
 import { ensureUniqueSlug } from "./helpers/slug";
@@ -22,6 +21,9 @@ import {
 } from "../clubs/mapper";
 import { ClubTeamCreateInput } from "@/types/club-team";
 import { SquadType } from "@/enums/SquadType";
+import { ClubListResponse } from "@/types/club/responses";
+import { createPaginatedResponse } from "../pagination";
+import { slugify } from "@/utils/string";
 
 async function getSupabase() {
   return createClient();
@@ -39,14 +41,16 @@ const getClubTeamTable = () => {
   return ENTITY_CONFIG["clubTeam"]["table"];
 };
 
-function getClubsBaseQuery() {
+function getClubsBaseQuery(options?: { isNationFiltered?: boolean }) {
+  const nationJoin = options?.isNationFiltered ? "!inner" : "";
+
   return `
     id,
     image,
     name,
     slug,
 
-    nation:nationalities!clubs_nation_id_fkey(
+    nation:nationalities!clubs_nation_id_fkey${nationJoin} (
       id,
       name,
       image
@@ -57,33 +61,57 @@ function getClubsBaseQuery() {
 /**
  *
  * @param params
- * @returns ClubListItem[]
+ * @returns ClubListResponse
  */
 export async function getClubsRepo(
-  params: GetClubsParams,
-): Promise<ClubListItem[]> {
+  params: ClubFilter,
+): Promise<ClubListResponse> {
   const supabase = await getSupabase();
 
   // Base Query
-  let query = supabase
-    .from(getClubTable())
-    .select(getClubsBaseQuery())
-    .order("name");
+  let query = supabase.from(getClubTable()).select(
+    getClubsBaseQuery({
+      isNationFiltered: !!params.nationId,
+    }),
+    {
+      count: "exact",
+    },
+  );
 
   // Filter
-  if (params.name) {
-    query = query.ilike("name", `%${params.name}%`);
+  if (params.search) {
+    query = query.ilike("name", `%${params.search}%`);
   }
 
   if (params.nationId) {
-    query = query.eq("nation_id", params.nationId);
+    query = query.eq("nation.id", params.nationId);
   }
 
-  const { data, error } = await query.overrideTypes<DbClubListRow[]>();
+  // Sort
+
+  query = query.order(params.sortBy, {
+    ascending: params.sortOrder === "asc",
+  });
+
+  // Pagination
+
+  const from = (params.page - 1) * params.limit;
+  const to = from + params.limit - 1;
+
+  query = query.range(from, to);
+
+  // Execute
+
+  const { data, error, count } = await query.overrideTypes<DbClubListRow[]>();
 
   if (error) throw error;
 
-  return (data ?? []).map(mapClubListItem);
+  return createPaginatedResponse({
+    items: (data ?? []).map(mapClubListItem),
+    count,
+    page: params.page,
+    limit: params.limit,
+  });
 }
 
 function getClubDetailBaseQuery() {
@@ -234,10 +262,7 @@ export async function updateClubRepo(
 
   const oldClub = await requireEntity(getClubEditRepo, id, getClubLabel());
 
-  const slug = await ensureUniqueSlug({
-    table: getClubTable(),
-    name: club.name,
-  });
+  const slug = slugify(club.name);
 
   const finalImage = await prepareUpdatedImage({
     oldName: oldClub.name,

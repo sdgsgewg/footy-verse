@@ -37,17 +37,17 @@ export function useSidebarLinks() {
     },
     {
       name: tNav("content.nationalities"),
-      path: ROUTES.DASHBOARD.CONTENT.NATIONALITIES,
+      path: ROUTES.DASHBOARD.CONTENT.NATIONALITIES.BASE,
       icon: Globe,
     },
     {
       name: tNav("content.positions"),
-      path: ROUTES.DASHBOARD.CONTENT.POSITIONS,
+      path: ROUTES.DASHBOARD.CONTENT.POSITIONS.BASE,
       icon: MapPinned,
     },
     {
       name: tNav("content.seasons"),
-      path: ROUTES.DASHBOARD.CONTENT.SEASONS,
+      path: ROUTES.DASHBOARD.CONTENT.SEASONS.BASE,
       icon: CalendarRange,
     },
   ];
@@ -60,7 +60,7 @@ export function useSidebarLinks() {
     },
     {
       name: tNav("system.roles"),
-      path: ROUTES.DASHBOARD.SYSTEM.ROLES,
+      path: ROUTES.DASHBOARD.SYSTEM.ROLES.BASE,
       icon: KeyRound,
     },
   ];

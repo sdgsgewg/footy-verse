@@ -6,6 +6,7 @@ export interface OrderedEntity {
 
 export interface OrderedItem {
   id: string;
+  imageUrl?: string | null;
   label: string;
   display_order: number;
 }

@@ -1,7 +1,7 @@
-import { Nationality } from "@/types/club";
 import { NationalitySummary } from "@/types/player";
 import { getImageUrl } from "../images/image-url";
 import { STORAGE_BUCKETS } from "../storage";
+import { NationalityResponse } from "@/types/club";
 
 /**
  *
@@ -10,7 +10,7 @@ import { STORAGE_BUCKETS } from "../storage";
  */
 export function getModifiedNation(
   nation: NationalitySummary | null,
-): Nationality | null {
+): NationalityResponse | null {
   const modifiedNation = nation
     ? {
         id: nation.id,

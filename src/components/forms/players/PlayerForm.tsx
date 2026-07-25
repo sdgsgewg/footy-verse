@@ -11,10 +11,10 @@ import { DateField, NumberField, SelectField, TextField } from "../fields";
 import { useTranslations } from "next-intl";
 import { getPreferredFootOptions } from "@/lib/players/options";
 import { PreferredFoot } from "@/enums/PreferredFoot";
-import { useNationalities } from "@/hooks/dashboard/nationalities";
 import { getPositionOptions } from "@/lib/positions/options";
 import { getNationalityOptions } from "@/lib/nationalities/options";
 import OrderedSelectField from "../fields/OrderedSelectField";
+import { useNationalities } from "@/hooks/nationalities";
 
 interface Props {
   mode: "create" | "edit";
@@ -57,7 +57,7 @@ const PlayerForm = ({ mode, player, loading = false, onSubmit }: Props) => {
       />
 
       <FormContentWrapper className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <div className="lg:grid-cols-6">
+        <div className="lg:grid-cols-6 space-y-5">
           {/* Image */}
           <ImageUpload
             label={t("form.labels.image")}
@@ -147,7 +147,7 @@ const PlayerForm = ({ mode, player, loading = false, onSubmit }: Props) => {
           />
         </div>
 
-        <div className="lg:grid-cols-6">
+        <div className="lg:grid-cols-6 space-y-5">
           {/* Positions */}
           <OrderedSelectField
             label={t("form.labels.positions")}

@@ -8,10 +8,10 @@ import FormHeader from "../base/FormHeader";
 import FormWrapper from "../base/FormWrapper";
 import { useEditPlayerNationalTeamForm } from "@/hooks/dashboard/player-national-teams";
 import FormContentWrapper from "../base/FormContentWrapper";
-import { useNationalities } from "@/hooks/dashboard/nationalities";
 import { ComboboxField, DateField, NumberField } from "../fields";
 import { useTranslations } from "next-intl";
 import { getNationalityOptions } from "@/lib/nationalities/options";
+import { useNationalities } from "@/hooks/nationalities";
 
 interface Props {
   playerNationalTeam: PlayerNationalTeamEditResponse;

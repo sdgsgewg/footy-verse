@@ -6,10 +6,10 @@ import FormHeader from "../base/FormHeader";
 import FormWrapper from "../base/FormWrapper";
 import ImageUpload from "@/components/shared/ImageUpload";
 import { ClubEditResponse } from "@/types/club";
-import { useNationalities } from "@/hooks/dashboard/nationalities";
 import FormContentWrapper from "../base/FormContentWrapper";
 import { getNationalityOptions } from "@/lib/nationalities/options";
 import { ComboboxField, TextField } from "../fields";
+import { useNationalities } from "@/hooks/nationalities";
 
 interface Props {
   mode: "create" | "edit";

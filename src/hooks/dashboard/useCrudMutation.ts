@@ -46,6 +46,7 @@ export function useCrudMutation<TVariables>({
   const locale = useLocale();
 
   const t = useTranslations();
+  const tCommon = useTranslations("common");
 
   return useMutation({
     mutationFn,
@@ -55,7 +56,7 @@ export function useCrudMutation<TVariables>({
         queryClient.invalidateQueries(filters);
       });
 
-      if (entityKey === "playerCareer") {
+      if (["playerCareer", "playerNationalTeam"].includes(entityKey)) {
         alert(
           `${t(`common.crud.success.${action}`, {
             entity: t(`entities.${entityKey}`),

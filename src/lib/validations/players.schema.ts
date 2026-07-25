@@ -1,8 +1,9 @@
 import { z } from "zod";
 import { playerPositionMutationSchema } from "./player-positions.schema";
 import { idSchema } from "./primitives.schema";
-import { prefFootSchema, sortOrderSchema } from "./enums.schema";
+import { playerSortBySchema, prefFootSchema } from "./enums.schema";
 import { playerNationalityMutationSchema } from "./player-nationalities.schema";
+import { listQuerySchema } from "./query.schema";
 
 export const playerMutationSchema = z.object({
   image: z.string().nullable().optional(),
@@ -29,18 +30,12 @@ export const playerSchema = playerMutationSchema.extend({
 
 export const playersSchema = z.array(playerSchema);
 
-export const playersQuerySchema = z.object({
-  name: z.string().trim().optional(),
-
+export const playersQuerySchema = listQuerySchema.extend({
   nationId: idSchema.optional(),
 
   clubTeamId: idSchema.optional(),
 
-  page: z.coerce.number().int().positive().default(1),
+  positionId: idSchema.optional(),
 
-  limit: z.coerce.number().int().positive().max(100).default(20),
-
-  sortBy: z.enum(["name", "market_value", "dob", "created_at"]).default("name"),
-
-  sortOrder: sortOrderSchema,
+  sortBy: playerSortBySchema.default("name"),
 });

@@ -4,10 +4,10 @@ import {
   updatePlayerSchema,
 } from "../validations/players.schema";
 import {
-  GetPlayersParams,
   PlayerDetailResponse,
   PlayerEditResponse,
   PlayerListResponse,
+  PlayerQuery,
 } from "@/types/player";
 import { ApiResponse } from "@/types/api";
 
@@ -20,7 +20,7 @@ const baseRouteWithApi = "/api/players";
  * @returns PlayerListResponse
  */
 export const fetchPlayers = async (
-  params?: GetPlayersParams,
+  params?: PlayerQuery,
 ): Promise<PlayerListResponse> => {
   const { data } = await apiClient.get<ApiResponse<PlayerListResponse>>(
     `${baseRoute}`,

@@ -13,15 +13,14 @@ import { createPlayerPositionSchema } from "@/lib/validations/player-positions.s
 import { createPlayerNationalitySchema } from "@/lib/validations/player-nationalities.schema";
 
 /**
- * Input dari client
- * Dipakai oleh: fetchPlayers(), usePlayers(), URLSearchParams
+ * Input dari client (dari URL / API route)
  */
-export type GetPlayersParams = Partial<z.input<typeof playersQuerySchema>>;
+export type PlayerQuery = Partial<z.input<typeof playersQuerySchema>>;
 
 /**
- * Khusus untuk repo
+ * Khusus dipakai setelah parse, termasuk state React
  */
-export type ParsedPlayersParams = z.infer<typeof playersQuerySchema>;
+export type PlayerFilter = z.infer<typeof playersQuerySchema>;
 
 export type PlayerCreateInput = z.infer<typeof createPlayerSchema>;
 export type PlayerUpdateInput = z.infer<typeof updatePlayerSchema>;

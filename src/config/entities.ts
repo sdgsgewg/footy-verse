@@ -34,7 +34,7 @@ export const ENTITY_CONFIG = {
     label: "Nationality",
     supportsImage: true,
     supportsSlug: true,
-    dashboardRoute: ROUTES.DASHBOARD.CONTENT.NATIONALITIES,
+    dashboardRoute: ROUTES.DASHBOARD.CONTENT.NATIONALITIES.BASE,
     storageBucket: STORAGE_BUCKETS.NATIONALITIES,
     imageFolder: "nationalities",
   },
@@ -51,7 +51,7 @@ export const ENTITY_CONFIG = {
     label: "Position",
     supportsImage: false,
     supportsSlug: true,
-    dashboardRoute: ROUTES.DASHBOARD.CONTENT.POSITIONS,
+    dashboardRoute: ROUTES.DASHBOARD.CONTENT.POSITIONS.BASE,
   },
 
   player: {
@@ -118,7 +118,7 @@ export const ENTITY_CONFIG = {
     label: "Season",
     supportsImage: false,
     supportsSlug: false,
-    dashboardRoute: ROUTES.DASHBOARD.CONTENT.SEASONS,
+    dashboardRoute: ROUTES.DASHBOARD.CONTENT.SEASONS.BASE,
   },
 
   region: {
@@ -126,7 +126,7 @@ export const ENTITY_CONFIG = {
     label: "Region",
     supportsImage: false,
     supportsSlug: true,
-    dashboardRoute: ROUTES.DASHBOARD.CONTENT.REGIONS,
+    dashboardRoute: ROUTES.DASHBOARD.CONTENT.REGIONS.BASE,
   },
 
   competition: {

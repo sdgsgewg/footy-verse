@@ -1,3 +1,5 @@
+"use client";
+
 import EntityLoading from "@/components/feedback/loading/EntityLoading";
 import ErrorState from "@/components/feedback/ErrorState";
 import ClubForm from "@/components/forms/clubs/ClubForm";
@@ -38,6 +40,7 @@ const EditClubPage = ({ clubLookup }: Props) => {
     <FormPageLayout
       title={t("title", {
         entity: tEntities("club"),
+        entityName: "",
       })}
       formSize="small"
       form={

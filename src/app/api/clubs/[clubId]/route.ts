@@ -80,6 +80,7 @@ export async function PUT(request: Request, context: ClubRouteContext) {
       throw error;
     }
   } catch (error) {
+    console.error(error);
     return errorResponse(error);
   }
 }

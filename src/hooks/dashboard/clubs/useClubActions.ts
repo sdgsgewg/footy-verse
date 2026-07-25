@@ -20,7 +20,7 @@ export function useClubActions() {
   };
 
   const handleEdit = (club: ClubListItem) => {
-    router.push(`${ROUTES.DASHBOARD.CONTENT.CLUBS}/${club.slug}/edit`);
+    router.push(`${ROUTES.DASHBOARD.CONTENT.CLUBS.BASE}/${club.slug}/edit`);
   };
 
   const handleDelete = (club: ClubListItem) => {

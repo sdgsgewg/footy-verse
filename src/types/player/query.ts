@@ -13,7 +13,7 @@ import { Player } from "./database";
 
 export type DbPlayerPosition = Pick<
   Tables<"player_positions">,
-  "display_order"
+  "display_order" | "position_id"
 > & {
   position: PositionSummary;
 };

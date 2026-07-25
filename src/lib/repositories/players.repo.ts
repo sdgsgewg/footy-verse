@@ -14,16 +14,17 @@ import { slugify } from "@/utils/string";
 import {
   DbPlayerDetailRow,
   DbPlayerListRow,
-  ParsedPlayersParams,
   PlayerCreateInput,
   PlayerDetailResponse,
   PlayerEditResponse,
+  PlayerFilter,
   PlayerListResponse,
   PlayerLookupResponse,
   PlayerNationalityCreateInput,
   PlayerPositionCreateInput,
   PlayerUpdateInput,
 } from "@/types/player";
+import { createPaginatedResponse } from "../pagination";
 
 async function getSupabase() {
   return createClient();
@@ -61,6 +62,7 @@ function getPlayersBaseQuery(options?: {
 
     player_positions (
       display_order,
+      position_id,
 
       position:positions!player_positions_position_id_fkey (
         id,
@@ -72,7 +74,7 @@ function getPlayersBaseQuery(options?: {
       display_order,
       nation_id,
 
-      nationality:positions!player_nationalities_nationality_id_fkey (
+      nationality:nationalities!player_nationalities_nationality_id_fkey (
         id,
         name,
         image
@@ -93,7 +95,7 @@ function getPlayersBaseQuery(options?: {
         club:clubs!club_teams_club_id_fkey (
           id,
           name,
-          image,
+          image
         )
       ),
 
@@ -109,7 +111,7 @@ function getPlayersBaseQuery(options?: {
       start_date,
       end_date,
       shirt_number,
-      nation_id,
+      national_team_id,
 
       national_team:national_teams!player_national_teams_national_team_id_fkey (
         id,
@@ -132,7 +134,7 @@ function getPlayersBaseQuery(options?: {
  * @returns PlayerListResponse
  */
 export async function getPlayersRepo(
-  params: ParsedPlayersParams,
+  params: PlayerFilter,
 ): Promise<PlayerListResponse> {
   const supabase = await getSupabase();
 
@@ -147,8 +149,8 @@ export async function getPlayersRepo(
   );
 
   // Filter
-  if (params.name) {
-    query = query.ilike("name", `%${params.name}%`);
+  if (params.search) {
+    query = query.ilike("name", `%${params.search}%`);
   }
 
   if (params.nationId) {
@@ -157,6 +159,12 @@ export async function getPlayersRepo(
 
   if (params.clubTeamId) {
     query = query.eq("player_careers.club_team_id", params.clubTeamId);
+  }
+
+  if (params.positionId) {
+    query = query
+      .eq("player_positions.position_id", params.positionId)
+      .eq("player_positions.display_order", 1);
   }
 
   // Sort
@@ -178,13 +186,12 @@ export async function getPlayersRepo(
 
   if (error) throw error;
 
-  return {
+  return createPaginatedResponse({
     items: (data ?? []).map(mapPlayerListItem),
-    total: count ?? 0,
+    count,
     page: params.page,
     limit: params.limit,
-    totalPages: Math.ceil((count ?? 0) / params.limit),
-  };
+  });
 }
 
 function getPlayerDetailBaseQuery() {
@@ -204,7 +211,7 @@ function getPlayerDetailBaseQuery() {
       display_order,
       nation_id,
 
-      nationality:positions!player_nationalities_nationality_id_fkey (
+      nationality:nationalities!player_nationalities_nationality_id_fkey (
         id,
         name,
         image
@@ -215,7 +222,7 @@ function getPlayerDetailBaseQuery() {
       id,
       joined_at,
       left_at,
-      club_id,
+      club_team_id,
 
       club_team:club_teams!player_careers_club_team_id_fkey (
         id,
@@ -225,7 +232,7 @@ function getPlayerDetailBaseQuery() {
         club:clubs!club_teams_club_id_fkey (
           id,
           name,
-          image,
+          image
         )
       ),
 
@@ -243,11 +250,10 @@ function getPlayerDetailBaseQuery() {
 
     player_national_teams (
       id,
-      label,
       start_date,
       end_date,
       shirt_number,
-      nation_id,
+      national_team_id,
 
       national_team:national_teams!player_national_teams_national_team_id_fkey (
         id,
@@ -368,7 +374,7 @@ async function insertPlayerNationalities(
   }));
 
   const { error: playerNationalityError } = await supabase
-    .from(getPlayerPositionTable())
+    .from(getPlayerNationalityTable())
     .insert(playerNationalityInserts);
   if (playerNationalityError) throw playerNationalityError;
 }
