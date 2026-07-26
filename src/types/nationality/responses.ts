@@ -33,3 +33,11 @@ export interface NationalityDetailResponse {
   imageUrl: string;
   name: string;
 }
+
+// Helper for other entity
+
+export interface NationalityResponse {
+  id: string;
+  imageUrl: string;
+  name: string;
+}

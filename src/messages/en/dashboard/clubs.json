@@ -20,9 +20,5 @@
   "columns": {
     "name": "Name",
     "nation": "Nation"
-  },
-
-  "actions": {
-    "addNew": "Add New Club"
   }
 }

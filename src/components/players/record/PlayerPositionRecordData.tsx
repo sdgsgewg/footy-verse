@@ -1,5 +1,5 @@
+import { PositionSummary } from "@/types/position";
 import RecordRow from "./RecordRow";
-import { PositionSummary } from "@/types/player";
 
 interface PlayerPositionRecordDataProps {
   mainPosition: PositionSummary;

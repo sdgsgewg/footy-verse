@@ -2,6 +2,8 @@ import {
   ClubTeamDetailResponse,
   ClubTeamEditResponse,
   ClubTeamListItem,
+  ClubTeamResponse,
+  ClubTeamSummary,
   DbClubTeamDetailRow,
   DbClubTeamListRow,
 } from "@/types/club-team";
@@ -37,14 +39,31 @@ export function mapClubTeamEditResponse(
 }
 
 export function mapClubTeamDetailResponse(
-  clubTeam: DbClubTeamDetailRow,
+  clubTeam: DbClubTeamDetailRow | ClubTeamSummary,
 ): ClubTeamDetailResponse {
-  const { id, squad_type, age_group, club_id } = clubTeam;
+  const { id, squad_type, age_group, club } = clubTeam;
 
   return {
     id,
     squadType: squad_type,
     ageGroup: age_group,
-    clubId: club_id,
+
+    club: {
+      id: club.id,
+      imageUrl: getImageUrl("club", STORAGE_BUCKETS.CLUBS, club.image),
+      name: formatClubName(clubTeam),
+    },
+  };
+}
+
+export function mapClubTeam(clubTeam: ClubTeamSummary): ClubTeamResponse {
+  const { id, squad_type, age_group, club } = clubTeam;
+
+  return {
+    id,
+    imageUrl: getImageUrl("club", STORAGE_BUCKETS.CLUBS, club.image),
+    name: formatClubName(clubTeam),
+    squadType: squad_type,
+    ageGroup: age_group,
   };
 }

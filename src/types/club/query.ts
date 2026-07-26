@@ -1,7 +1,7 @@
 // Supabase Query Result
 
+import { NationalitySummary } from "../nationality";
 import { Club } from "./database";
-import { NationalitySummary } from "./summaries";
 
 // Club List
 

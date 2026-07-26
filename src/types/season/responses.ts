@@ -15,3 +15,7 @@ export type SeasonEditResponse = Pick<Season, "id" | "name">;
 // Model View Detail
 
 export type SeasonDetailResponse = Pick<Season, "id" | "name">;
+
+// Helper for other entity response model
+
+export type SeasonResponse = Pick<Season, "id" | "name">;

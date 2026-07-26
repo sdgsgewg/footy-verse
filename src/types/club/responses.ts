@@ -1,12 +1,7 @@
 // DTO API Response
 
 import { PaginatedResponse } from "../api";
-
-export interface NationalityResponse {
-  id: string;
-  imageUrl: string;
-  name: string;
-}
+import { NationalityResponse } from "../nationality";
 
 // Club List
 
@@ -41,4 +36,12 @@ export interface ClubDetailResponse {
   slug: string;
 
   nation: NationalityResponse | null;
+}
+
+// Helper for other entity response model
+
+export interface ClubResponse {
+  id: string;
+  imageUrl: string;
+  name: string;
 }

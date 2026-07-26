@@ -1,4 +1,4 @@
-import { NationalityResponse } from "@/types/player";
+import { NationalityResponse } from "@/types/nationality";
 import RecordRow from "./RecordRow";
 import Image from "next/image";
 

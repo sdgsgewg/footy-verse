@@ -20,9 +20,5 @@
   "columns": {
     "name": "Nama",
     "nation": "Negara"
-  },
-
-  "actions": {
-    "addNew": "Tambah Klub Baru"
   }
 }

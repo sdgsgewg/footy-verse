@@ -1,6 +1,3 @@
-import { Tables } from "@/lib/database.types";
+import { Club } from "./database";
 
-export type NationalitySummary = Pick<
-  Tables<"nationalities">,
-  "id" | "name" | "image"
->;
+export type ClubSummary = Pick<Club, "id" | "image" | "name">;

@@ -1,14 +1,14 @@
 import { AgeGroup } from "@/enums/AgeGroup";
+import { CareerType } from "@/enums/CareerType";
 import { PreferredFoot } from "@/enums/PreferredFoot";
 import { SquadType } from "@/enums/SquadType";
 import { TeamCategory } from "@/enums/TeamCategory";
+import { TransferType } from "@/enums/TransferType";
 import z from "zod";
 
 // Club
 
 export const clubSortBySchema = z.enum(["name", "nation", "created_at"]);
-
-export type ClubSortBy = z.infer<typeof clubSortBySchema>;
 
 // Club Team
 
@@ -22,8 +22,6 @@ export const squadTypeSchema = z.enum([
 // Nationality
 
 export const nationalitySortBySchema = z.enum(["name", "created_at"]);
-
-export type NationalitySortBy = z.infer<typeof nationalitySortBySchema>;
 
 // Both Club and National Team
 
@@ -57,13 +55,32 @@ export const playerSortBySchema = z.enum([
   "created_at",
 ]);
 
-export type PlayerSortBy = z.infer<typeof playerSortBySchema>;
-
 export const prefFootSchema = z.enum([
   PreferredFoot.RIGHT,
   PreferredFoot.LEFT,
   PreferredFoot.BOTH,
 ]);
+
+// Player Career
+
+export const careerTypeSchema = z.enum([
+  CareerType.CLUB,
+  CareerType.NATIONAL_TEAM,
+]);
+
+// Player Club Career
+
+export const transferTypeSchema = z.enum([
+  TransferType.TRANSFER,
+  TransferType.LOAN,
+  TransferType.LOAN_RETURN,
+  TransferType.FREE,
+  TransferType.RELEASED,
+  TransferType.YOUTH_PROMOTION,
+  TransferType.RETIRED,
+]);
+
+// Player National Team Career
 
 // Season
 

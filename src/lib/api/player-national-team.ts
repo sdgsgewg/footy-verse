@@ -1,22 +1,25 @@
 import {
-    PlayerNationalTeamDetailResponse,
-  PlayerNationalTeamEditResponse,
-  PlayerNationalTeamListItem,
-} from "@/types/player-national-teams";
+  PlayerNationalTeamCareerDetailResponse,
+  PlayerNationalTeamCareerEditResponse,
+  PlayerNationalTeamCareerListItem,
+} from "@/types/player-national-team-career";
 import { apiClient } from "./client";
-import { createPlayerNationalTeamSchema, updatePlayerNationalTeamSchema } from "../validations/player-national-teams.schema";
+import {
+  createPlayerNationalTeamCareerSchema,
+  updatePlayerNationalTeamCareerSchema,
+} from "../validations/player-national-team-careers.schema";
 
 /**
  *
  * @param playerId
- * @returns PlayerNationalTeamListItem[]
+ * @returns PlayerNationalTeamCareerListItem[]
  */
-export const fetchPlayerNationalTeams = async (
+export const fetchPlayerNationalTeamCareers = async (
   playerId: string,
-): Promise<PlayerNationalTeamListItem[]> => {
+): Promise<PlayerNationalTeamCareerListItem[]> => {
   const { data } = await apiClient.get<{
     success: boolean;
-    data: PlayerNationalTeamListItem[];
+    data: PlayerNationalTeamCareerListItem[];
   }>(`/players/${playerId}/national-teams`);
 
   return data.data;
@@ -26,15 +29,15 @@ export const fetchPlayerNationalTeams = async (
  *
  * @param playerId
  * @param nationalTeamId
- * @returns PlayerNationalTeamEditResponse
+ * @returns PlayerNationalTeamCareerEditResponse
  */
-export const fetchPlayerNationalTeamEdit = async (
+export const fetchPlayerNationalTeamCareerEdit = async (
   playerId: string,
   nationalTeamId: string,
-): Promise<PlayerNationalTeamEditResponse> => {
+): Promise<PlayerNationalTeamCareerEditResponse> => {
   const { data } = await apiClient.get<{
     success: boolean;
-    data: PlayerNationalTeamEditResponse;
+    data: PlayerNationalTeamCareerEditResponse;
   }>(`/players/${playerId}/national-teams/${nationalTeamId}/edit`);
 
   return data.data;
@@ -44,15 +47,15 @@ export const fetchPlayerNationalTeamEdit = async (
  *
  * @param playerId
  * @param nationalTeamId
- * @returns PlayerNationalTeamDetailResponse
+ * @returns PlayerNationalTeamCareerDetailResponse
  */
-export const fetchPlayerNationalTeamDetail = async (
+export const fetchPlayerNationalTeamCareerDetail = async (
   playerId: string,
   nationalTeamId: string,
-): Promise<PlayerNationalTeamDetailResponse> => {
+): Promise<PlayerNationalTeamCareerDetailResponse> => {
   const { data } = await apiClient.get<{
     success: boolean;
-    data: PlayerNationalTeamDetailResponse;
+    data: PlayerNationalTeamCareerDetailResponse;
   }>(`/players/${playerId}/national-teams/${nationalTeamId}`);
 
   return data.data;
@@ -63,11 +66,11 @@ export const fetchPlayerNationalTeamDetail = async (
  * @param playerId
  * @param payload
  */
-export const createPlayerNationalTeam = async (
+export const createPlayerNationalTeamCareer = async (
   playerId: string,
   payload: unknown,
 ) => {
-  const parsed = createPlayerNationalTeamSchema.parse(payload); // validation
+  const parsed = createPlayerNationalTeamCareerSchema.parse(payload); // validation
 
   await apiClient.post(`/players/${playerId}/national-teams`, parsed);
 };
@@ -78,12 +81,12 @@ export const createPlayerNationalTeam = async (
  * @param nationalTeamId
  * @param payload
  */
-export const updatePlayerNationalTeam = async (
+export const updatePlayerNationalTeamCareer = async (
   playerId: string,
   nationalTeamId: string,
   payload: unknown,
 ) => {
-  const parsed = updatePlayerNationalTeamSchema.parse(payload); // validation
+  const parsed = updatePlayerNationalTeamCareerSchema.parse(payload); // validation
 
   await apiClient.put(
     `/players/${playerId}/national-teams/${nationalTeamId}`,
@@ -96,7 +99,7 @@ export const updatePlayerNationalTeam = async (
  * @param playerId
  * @param nationalTeamId
  */
-export const deletePlayerNationalTeam = async (
+export const deletePlayerNationalTeamCareer = async (
   playerId: string,
   nationalTeamId: string,
 ) => {

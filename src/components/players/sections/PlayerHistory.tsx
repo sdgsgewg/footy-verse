@@ -9,8 +9,8 @@ import {
   PlayerCareerHistoryTable,
   PlayerNationalTeamHistoryTable,
 } from "@/components/shared/tables";
-import { usePlayerCareers } from "@/hooks/dashboard/player-careers";
-import { usePlayerNationalTeams } from "@/hooks/dashboard/player-national-teams";
+import { usePlayerClubCareers } from "@/hooks/dashboard/player-club-careers";
+import { usePlayerNationalTeamCareers } from "@/hooks/dashboard/player-national-teams";
 
 interface Props {
   player: PlayerDetailResponse;
@@ -25,8 +25,8 @@ const PlayerHistory = ({ player }: Props) => {
   const pathname = usePathname();
   const isDashboard = isDashboardPath(pathname);
 
-  const { playerCareers } = usePlayerCareers({ playerId: player.id });
-  const { playerNationalTeams } = usePlayerNationalTeams({
+  const { playerClubCareers } = usePlayerClubCareers({ playerId: player.id });
+  const { playerNationalTeamCareers } = usePlayerNationalTeamCareers({
     playerId: player.id,
   });
 
@@ -51,7 +51,10 @@ const PlayerHistory = ({ player }: Props) => {
           <SectionHeader title="Career History" />
         )}
 
-        <PlayerCareerHistoryTable playerCareers={playerCareers} showActions />
+        <PlayerCareerHistoryTable
+          playerClubCareers={playerClubCareers}
+          showActions
+        />
       </section>
 
       <section>
@@ -65,7 +68,7 @@ const PlayerHistory = ({ player }: Props) => {
         )}
 
         <PlayerNationalTeamHistoryTable
-          playerNationalTeams={playerNationalTeams}
+          playerNationalTeamCareers={playerNationalTeamCareers}
           showActions
         />
       </section>

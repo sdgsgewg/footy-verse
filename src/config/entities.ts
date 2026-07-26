@@ -86,16 +86,23 @@ export const ENTITY_CONFIG = {
     supportsSlug: false,
   },
 
-  playerNationalTeam: {
-    table: "player_national_teams",
-    label: "Player Position",
+  playerCareer: {
+    table: "player_careers",
+    label: "Player career",
     supportsImage: false,
     supportsSlug: false,
   },
 
-  playerCareer: {
-    table: "player_careers",
-    label: "Player career",
+  playerClubCareer: {
+    table: "player_club_careers",
+    label: "Player club career",
+    supportsImage: false,
+    supportsSlug: false,
+  },
+
+  playerNationalTeamCareer: {
+    table: "player_national_team_careers",
+    label: "Player national team career",
     supportsImage: false,
     supportsSlug: false,
   },
@@ -114,9 +121,9 @@ export const ENTITY_CONFIG = {
     supportsSlug: false,
   },
 
-  transfer: {
-    table: "transfers",
-    label: "Transfer",
+  playerTransfer: {
+    table: "player_transfers",
+    label: "Player Transfer",
     supportsImage: false,
     supportsSlug: false,
   },

@@ -1,7 +1,6 @@
-import { NationalitySummary } from "@/types/player";
+import { NationalityResponse, NationalitySummary } from "@/types/nationality";
 import { getImageUrl } from "../images/image-url";
 import { STORAGE_BUCKETS } from "../storage";
-import { NationalityResponse } from "@/types/club";
 
 /**
  *

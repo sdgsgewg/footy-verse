@@ -1,238 +1,67 @@
-import {
-  ClubTeamResponse,
-  DbPlayerCareer,
-  DbPlayerDetailCareer,
-  DbPlayerDetailRow,
-  DbPlayerListRow,
-  DbPlayerNationality,
-  DbPlayerNationalTeam,
-  DbPlayerPosition,
-  NationalityResponse,
-  PlayerNationalTeamResponse,
-  PositionSummary,
-  ShirtNumberResponse,
-} from "@/types/player";
-import { getImageUrl } from "../images/image-url";
-import { STORAGE_BUCKETS } from "../storage";
-import { formatClubName } from "../club-teams/formatter";
-import { formatNationalTeamName } from "../national-teams/formatter";
+import { DbPlayerDetailRow } from "@/types/player";
 
 /**
  *
- * @param playerPositions
- * @returns PositionSummary
- */
-export function getMainPosition(
-  playerPositions: DbPlayerPosition[],
-): PositionSummary {
-  const playerPosition = playerPositions.find((p) => p.display_order === 1);
-
-  if (!playerPosition) {
-    throw new Error("Player must have a main position.");
-  }
-
-  return playerPosition.position;
-}
-
-/**
- *
- * @param playerNationalities
- * @returns NationalityResponse
- */
-export function getCurrentNationality(
-  playerNationalities: DbPlayerNationality[],
-): NationalityResponse {
-  const playerNationality = playerNationalities.find(
-    (n) => n.display_order === 1,
-  );
-
-  if (!playerNationality) {
-    throw new Error("Player must have a main nationality.");
-  }
-
-  const { id, image, name } = playerNationality.nationality;
-
-  const data: NationalityResponse = {
-    id,
-    imageUrl: getImageUrl("nationality", STORAGE_BUCKETS.NATIONALITIES, image),
-    name,
-  };
-
-  return data;
-}
-
-/**
- *
- * @param player
- * @returns ClubTeamResponse | undefined
- */
-export function getCurrentClubTeam(
-  player: DbPlayerListRow | DbPlayerDetailRow,
-): ClubTeamResponse | undefined {
-  if (!player.player_careers || player.player_careers.length === 0)
-    return undefined;
-
-  const current = player.player_careers.find(
-    (career) => career.left_at === null,
-  );
-
-  if (current) {
-    const { id, squad_type, age_group, club } = current.club_team;
-
-    return {
-      id,
-      imageUrl: getImageUrl("club", STORAGE_BUCKETS.CLUBS, club.image),
-      name: formatClubName(current.club_team),
-      squadType: squad_type,
-      ageGroup: age_group,
-    };
-  }
-
-  const prev = [...player.player_careers].sort(
-    (a, b) =>
-      new Date(b.left_at ?? b.joined_at).getTime() -
-      new Date(a.left_at ?? a.joined_at).getTime(),
-  )[0]?.club_team;
-
-  const { id, squad_type, age_group, club } = prev;
-
-  return {
-    id,
-    imageUrl: getImageUrl("club", STORAGE_BUCKETS.CLUBS, club.image),
-    name: formatClubName(prev),
-    squadType: squad_type,
-    ageGroup: age_group,
-  };
-}
-
-// ========================== Current Shirt Number Section ================================
-
-/**
- *
- * @param player
- * @returns DbPlayerCareer
- */
-function getCurrentCareer(player: DbPlayerListRow): DbPlayerCareer {
-  const current = player.player_careers.find(
-    (career) => career.left_at == null,
-  );
-
-  if (current) return current;
-
-  return [...player.player_careers].sort(
-    (a, b) =>
-      new Date(b.left_at ?? b.joined_at).getTime() -
-      new Date(a.left_at ?? a.joined_at).getTime(),
-  )[0];
-}
-
-/**
- *
- * @param pnt
- * @returns PlayerNationalTeamResponse
- */
-function mapPlayerNationalTeam(
-  pnt: DbPlayerNationalTeam,
-): PlayerNationalTeamResponse {
-  const { id, shirt_number, start_date, end_date, national_team } = pnt;
-
-  return {
-    id,
-    shirtNumber: shirt_number,
-    startDate: start_date,
-    endDate: end_date,
-    nationalTeam: {
-      id: national_team.id,
-      imageUrl: getImageUrl(
-        "nationality",
-        STORAGE_BUCKETS.NATIONALITIES,
-        national_team.nation.image,
-      ),
-      name: formatNationalTeamName(national_team),
-      teamCategory: national_team.team_category,
-      ageGroup: national_team.age_group,
-    },
-  };
-}
-
-/**
- *
- * @param player
- * @returns PlayerNationalTeamResponse | undefined
- */
-function getCurrentNationalTeam(
-  player: DbPlayerListRow | DbPlayerDetailRow,
-): PlayerNationalTeamResponse | undefined {
-  if (
-    !player.player_national_teams ||
-    player.player_national_teams.length === 0
-  )
-    return undefined;
-
-  const current = player.player_national_teams.find((c) => c.end_date === null);
-
-  if (current) {
-    return mapPlayerNationalTeam(current);
-  }
-
-  const prev = [...player.player_national_teams].sort(
-    (a, b) =>
-      new Date(b.end_date ?? b.start_date).getTime() -
-      new Date(a.end_date ?? a.start_date).getTime(),
-  )[0];
-
-  return mapPlayerNationalTeam(prev);
-}
-
-/**
- *
- * @param currentCareer
+ * @param dob
  * @returns number
  */
-function getCurrentClubShirtNumber(
-  currentCareer: DbPlayerCareer | DbPlayerDetailCareer,
-): number {
-  const current = currentCareer.player_shirt_numbers.find(
-    (psn) => psn.end_date === null,
-  );
+function calculateAge(dob: string): number {
+  const birthDate = new Date(dob); // Mengubah string jadi objek Date
+  const today = new Date(); // Tanggal saat ini
 
-  if (current) {
-    return current.shirt_number;
+  let age = today.getFullYear() - birthDate.getFullYear(); // Hitung selisih tahun
+
+  // Cek apakah ulang tahun sudah lewat dalam tahun ini
+  const hasBirthdayPassed =
+    today.getMonth() > birthDate.getMonth() ||
+    (today.getMonth() === birthDate.getMonth() &&
+      today.getDate() >= birthDate.getDate());
+
+  if (!hasBirthdayPassed) {
+    age -= 1; // Kurangi umur jika ulang tahun belum lewat
   }
 
-  return [...currentCareer.player_shirt_numbers].sort(
-    (a, b) =>
-      new Date(b.end_date ?? b.start_date).getTime() -
-      new Date(a.end_date ?? a.start_date).getTime(),
-  )[0].shirt_number;
+  return age;
 }
 
 /**
  *
  * @param player
- * @returns ShirtNumberResponse
+ * @returns string
  */
-export function getCurrentShirtNumber(
-  player: DbPlayerListRow | DbPlayerDetailRow,
-): ShirtNumberResponse {
-  const currentCareer =
-    player.player_careers && player.player_careers.length > 0
-      ? getCurrentCareer(player)
-      : undefined;
+export function formatDateOfBirth(player: DbPlayerDetailRow): string {
+  const age = calculateAge(player.dob);
+  const dob = player.dob;
+  return `${dob} (${age})`;
+}
 
-  const currentNationalTeam =
-    player.player_national_teams && player.player_national_teams.length > 0
-      ? getCurrentNationalTeam(player)
-      : undefined;
+/**
+ *
+ * @param height
+ * @returns string
+ */
+export function formatPlayerHeight(height: number): string {
+  return `${height / 100} m`;
+}
 
-  const currentClubShirtNumber = currentCareer
-    ? getCurrentClubShirtNumber(currentCareer)
-    : null;
+/**
+ *
+ * @param weight
+ * @returns string
+ */
+export function formatPlayerWeight(weight: number): string {
+  return `${weight} kg`;
+}
 
-  const data: ShirtNumberResponse = {
-    club: currentClubShirtNumber,
-    nationalTeam: currentNationalTeam ? currentNationalTeam.shirtNumber : null,
-  };
+/**
+ *
+ * @param marketValue
+ * @returns string
+ */
+export function formatMarketValue(marketValue: number): string {
+  const modifiedMarketValue = marketValue / 1000000;
 
-  return data;
+  return modifiedMarketValue >= 1
+    ? `€${modifiedMarketValue.toFixed(2)}m`
+    : `€${(modifiedMarketValue * 1000).toFixed(0)}k`;
 }

@@ -1,17 +1,11 @@
-// DTO API Response
-
 import { PaginatedResponse } from "../api";
+import { ClubTeamResponse } from "../club-team";
+import { NationalityResponse } from "../nationality";
+import { PlayerNationalityResponse } from "../player-nationality";
+import { PlayerPositionResponse } from "../player-position";
+import { PositionResponse } from "../position";
 
-export interface NationalityResponse {
-  id: string;
-  imageUrl: string;
-  name: string;
-}
-
-export interface PositionResponse {
-  id: string;
-  name: string;
-}
+// DTO API Response
 
 export interface ShirtNumberResponse {
   club: number | null;
@@ -42,16 +36,6 @@ export type PlayerListResponse = PaginatedResponse<PlayerListItem>;
 
 // Model For Edit
 
-export interface PlayerPositionResponse {
-  positionId: string;
-  displayOrder: number;
-}
-
-export interface PlayerNationalityResponse {
-  nationId: string;
-  displayOrder: number;
-}
-
 export interface PlayerEditResponse {
   id: string;
   name: string;
@@ -72,22 +56,6 @@ export interface PlayerEditResponse {
 
 // Model View Detail
 
-export interface ClubTeamResponse {
-  id: string;
-  imageUrl: string;
-  name: string;
-  squadType: string;
-  ageGroup: string | null;
-}
-
-export interface NationalTeamResponse {
-  id: string;
-  imageUrl: string;
-  name: string;
-  teamCategory: string;
-  ageGroup: string | null;
-}
-
 export interface PlayerDetailResponse {
   id: string;
   image: string | null;
@@ -105,7 +73,7 @@ export interface PlayerDetailResponse {
     height: string;
     mainPosition: PositionResponse;
 
-    currentClub: ClubTeamResponse | null;
+    currentClubTeam: ClubTeamResponse | null;
     joinedAt: string | null;
     contractEnd: string | null;
   };
@@ -128,15 +96,4 @@ export interface PlayerDetailResponse {
     joinedAt: string | null;
     contractEnd: string | null;
   };
-}
-
-// Formatter
-
-export interface PlayerNationalTeamResponse {
-  id: string;
-  shirtNumber: number;
-  startDate: string;
-  endDate: string | null;
-
-  nationalTeam: NationalTeamResponse;
 }

@@ -1,0 +1,93 @@
+"use client";
+
+import { useNationalities } from "@/hooks/nationalities";
+import { getNationalityOptions } from "@/lib/nationalities/options";
+import { UpsertPlayerNationalTeamCareerInput } from "@/types/player-national-team-career";
+import { useTranslations } from "next-intl";
+import React, { Dispatch, SetStateAction } from "react";
+import FormSection from "../../base/FormSection";
+import { ComboboxField, DateField } from "../../fields";
+
+const PlayerCareerSection = ({
+  form,
+  setForm,
+}: {
+  form: UpsertPlayerNationalTeamCareerInput;
+  setForm: Dispatch<SetStateAction<UpsertPlayerNationalTeamCareerInput>>;
+}) => {
+  const tForm = useTranslations("dashboard.playerNationalTeamCareers.form.career");
+
+  const tLabels = useTranslations(
+    "dashboard.playerNationalTeamCareers.form.labels.career",
+  );
+  const tPlaceholders = useTranslations(
+    "dashboard.playerNationalTeamCareers.form.placeholders.career",
+  );
+
+  const tEntities = useTranslations("entities");
+  const tCommon = useTranslations("common");
+
+  const { national_team_id, career } = form;
+  const { joined_at, left_at } = form.career;
+
+  const { nationalities } = useNationalities();
+  const nationOptions = getNationalityOptions(nationalities);
+
+  return (
+    <FormSection title={tForm("career.title")}>
+      {/* Nation */}
+      <ComboboxField
+        label={tLabels("nation")}
+        name={`nationality`}
+        options={nationOptions}
+        placeholder={tPlaceholders("nation") || ""}
+        searchPlaceholder={tCommon("combobox.searchEntity", {
+          entity: tEntities("nationality").toLowerCase(),
+        })}
+        emptyMessage={tCommon("combobox.noEntityFound", {
+          entity: tEntities("nationality").toLowerCase(),
+        })}
+        value={national_team_id}
+        onChange={(value) => setForm({ ...form, national_team_id: value })}
+        required
+      />
+
+      {/* Join Date */}
+      <DateField
+        label={tLabels("joinedAt")}
+        name={`joined_at`}
+        placeholder={tPlaceholders("joinedAt") || ""}
+        value={joined_at}
+        onChange={(value) =>
+          setForm({
+            ...form,
+            career: {
+              ...career,
+              joined_at: value,
+            },
+          })
+        }
+        required
+      />
+
+      {/* Left Date */}
+      <DateField
+        label={tLabels("leftAt")}
+        name={`left_at`}
+        placeholder={tPlaceholders("leftAt") || ""}
+        value={left_at ?? ""}
+        onChange={(value) =>
+          setForm({
+            ...form,
+            career: {
+              ...career,
+              left_at: value,
+            },
+          })
+        }
+      />
+    </FormSection>
+  );
+};
+
+export default PlayerCareerSection;

@@ -1,3 +1,3 @@
-import { PositionCategory } from "../position-category";
+import { Position } from "./database";
 
-export type PositionCategorySummary = Pick<PositionCategory, "id" | "name">;
+export type PositionSummary = Pick<Position, "id" | "name">;

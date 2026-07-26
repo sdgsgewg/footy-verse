@@ -1,0 +1,56 @@
+{
+  "form": {
+    "title": "National Team History",
+    "noData": "No national team history added.",
+
+    "career": {
+      "title": "Career",
+      "noData": "No career found",
+      "instruction": "Please add career."
+    },
+
+    "shirtNumbers": {
+      "title": "Shirt Number History",
+      "noData": "No shirt number found",
+      "instruction": "Please add at least one shirt number"
+    },
+
+    "labels": {
+      "career": {
+        "nation": "National Team",
+        "joinedAt": "Join Date",
+        "leftAt": "Left Date"
+      },
+
+      "shirtNumbers": {
+        "shirtNumber": "Shirt Number",
+        "startDate": "Start Date",
+        "endDate": "End Date"
+      }
+    },
+
+    "placeholders": {
+      "career": {
+        "nation": "Select Nation",
+        "joinedAt": "Select Join Date",
+        "leftAt": "Select Left Date"
+      },
+
+      "shirtNumbers": {
+        "shirtNumber": "Input Shirt Number",
+        "startDate": "Select Start Date",
+        "endDate": "Select End Date"
+      }
+    }
+  },
+
+  "columns": {
+    "nationalTeam": "National Team",
+    "joinedAt": "Join Date",
+    "leftAt": "Left Date"
+  },
+
+  "actions": {
+    "addNew": "Add New Player National Team"
+  }
+}

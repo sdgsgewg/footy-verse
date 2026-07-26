@@ -1,5 +1,5 @@
+import { PositionCategorySummary } from "../position-category";
 import { Position } from "./database";
-import { PositionCategorySummary } from "./summaries";
 
 // Position List
 

@@ -81,47 +81,57 @@ function getPlayersBaseQuery(options?: {
       )
     ),
 
-    player_careers${clubJoin} (
+    player_careers (
       id,
       joined_at,
       left_at,
-      club_team_id,
+      career_type,
 
-      club_team:club_teams!player_careers_club_team_id_fkey (
+      player_shirt_numbers (
         id,
-        squad_type,
-        age_group,
-
-        club:clubs!club_teams_club_id_fkey (
-          id,
-          name,
-          image
-        )
+        shirt_number,
+        start_date,
+        end_date
       ),
 
-      player_shirt_numbers:player_shirt_numbers!player_shirt_numbers_player_career_id_fkey (
-        start_date,
-        end_date,
-        shirt_number
-      )
-    ),
-
-    player_national_teams (
-      id,
-      start_date,
-      end_date,
-      shirt_number,
-      national_team_id,
-
-      national_team:national_teams!player_national_teams_national_team_id_fkey (
+      player_club_careers${clubJoin} (
         id,
-        team_category,
-        age_group,
-
-        nationality:nationalities!national_teams_nation_id_fkey (
+        club_team_id,
+  
+        club_team:club_teams!player_club_careers_club_team_id_fkey (
           id,
-          name,
-          image
+          squad_type,
+          age_group,
+  
+          club:clubs!club_teams_club_id_fkey (
+            id,
+            name,
+            image
+          )
+        ),
+
+        player_contracts (
+          id,
+          salary,
+          contract_start,
+          contract_end
+        )
+      ),
+  
+      player_national_team_careers (
+        id,
+        national_team_id,
+  
+        national_team:national_teams!player_national_team_careers_national_team_id_fkey (
+          id,
+          team_category,
+          age_group,
+  
+          nationality:nationalities!national_teams_nation_id_fkey (
+            id,
+            name,
+            image
+          )
         )
       )
     )
@@ -158,7 +168,7 @@ export async function getPlayersRepo(
   }
 
   if (params.clubTeamId) {
-    query = query.eq("player_careers.club_team_id", params.clubTeamId);
+    query = query.eq("player_club_careers.club_team_id", params.clubTeamId);
   }
 
   if (params.positionId) {
@@ -222,48 +232,51 @@ function getPlayerDetailBaseQuery() {
       id,
       joined_at,
       left_at,
-      club_team_id,
-
-      club_team:club_teams!player_careers_club_team_id_fkey (
+      career_type,
+  
+      player_shirt_numbers (
         id,
-        squad_type,
-        age_group,
+        shirt_number,
+        start_date,
+        end_date
+      ),
 
-        club:clubs!club_teams_club_id_fkey (
+      player_club_careers (
+        id,
+        club_team_id,
+  
+        club_team:club_teams!player_club_careers_club_team_id_fkey (
           id,
-          name,
-          image
+          squad_type,
+          age_group,
+  
+          club:clubs!club_teams_club_id_fkey (
+            id,
+            name,
+            image
+          )
+        ),
+  
+        player_contracts:player_contracts!player_contracts_player_club_career_id_fkey (
+          contract_start,
+          contract_end
         )
       ),
-
-      player_contracts:player_contracts!player_contracts_player_career_id_fkey (
-        contract_start,
-        contract_end
-      ),
-
-      player_shirt_numbers:player_shirt_numbers!player_shirt_numbers_player_career_id_fkey (
-        start_date,
-        end_date,
-        shirt_number
-      )
-    ),
-
-    player_national_teams (
-      id,
-      start_date,
-      end_date,
-      shirt_number,
-      national_team_id,
-
-      national_team:national_teams!player_national_teams_national_team_id_fkey (
+  
+      player_national_team_careers (
         id,
-        team_category,
-        age_group,
-
-        nationality:nationalities!national_teams_nation_id_fkey (
+        national_team_id,
+  
+        national_team:national_teams!player_national_team_careers_national_team_id_fkey (
           id,
-          name,
-          image
+          team_category,
+          age_group,
+  
+          nationality:nationalities!national_teams_nation_id_fkey (
+            id,
+            name,
+            image
+          )
         )
       )
     )

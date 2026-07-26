@@ -1,0 +1,52 @@
+{
+  "form": {
+    "title": "Riwayat Tim Nasional",
+    "noData": "Belum ada riwayat tim nasional yang ditambahkan.",
+
+    "career": {
+      "title": "Karir",
+      "noData": "Karir tidak ditemukan",
+      "instruction": "Mohon tambahkan karir."
+    },
+
+    "shirtNumbers": {
+      "title": "Riwayat Nomor Baju",
+      "noData": "Nomor baju tidak ditemukan",
+      "instruction": "Mohon tambahkan minimal satu nomor baju"
+    },
+
+    "labels": {
+      "career": {
+        "nation": "Tim Nasional",
+        "joinedAt": "Tanggal Bergabung",
+        "leftAt": "Tanggal Keluar"
+      },
+
+      "shirtNumbers": {
+        "shirtNumber": "Nomor Baju",
+        "startDate": "Tanggal Mulai",
+        "endDate": "Tanggal Akhir"
+      }
+    },
+
+    "placeholders": {
+      "career": {
+        "nation": "Pilih Negara",
+        "joinedAt": "Pilih Tanggal Bergabung",
+        "leftAt": "Pilih Tanggal Keluar"
+      },
+
+      "shirtNumbers": {
+        "shirtNumber": "Masukkan Nomor Baju",
+        "startDate": "Plih Tanggal Mulai",
+        "endDate": "Pilih Tanggal Akhir"
+      }
+    }
+  },
+
+  "columns": {
+    "nationalTeam": "Tim Nasional",
+    "joinedAt": "Tanggal Bergabung",
+    "leftAt": "Tanggal Keluar"
+  }
+}

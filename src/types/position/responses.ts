@@ -27,3 +27,7 @@ export type PositionEditResponse = Pick<Position, "id" | "name"> & {
 export type PositionDetailResponse = Pick<Position, "id" | "name"> & {
   category: PositionCategoryResponse;
 };
+
+// Helper for other entity
+
+export type PositionResponse = Pick<Position, "id" | "name">;

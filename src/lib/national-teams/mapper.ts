@@ -4,6 +4,8 @@ import {
   NationalTeamDetailResponse,
   NationalTeamEditResponse,
   NationalTeamListItem,
+  NationalTeamResponse,
+  NationalTeamSummary,
 } from "@/types/national-team";
 import { getImageUrl } from "../images/image-url";
 import { STORAGE_BUCKETS } from "../storage";
@@ -41,14 +43,41 @@ export function mapNationalTeamEditResponse(
 }
 
 export function mapNationalTeamDetailResponse(
-  nationalTeam: DbNationalTeamDetailRow,
+  nationalTeam: DbNationalTeamDetailRow | NationalTeamSummary,
 ): NationalTeamDetailResponse {
-  const { id, team_category, age_group, nation_id } = nationalTeam;
+  const { id, team_category, age_group, nation } = nationalTeam;
 
   return {
     id,
     teamCategory: team_category,
     ageGroup: age_group,
-    nationId: nation_id,
+
+    nation: {
+      id: nation.id,
+      imageUrl: getImageUrl(
+        "nationality",
+        STORAGE_BUCKETS.NATIONALITIES,
+        nation.image,
+      ),
+      name: formatNationalTeamName(nationalTeam),
+    },
+  };
+}
+
+export function mapNationalTeam(
+  nationalTeam: NationalTeamSummary,
+): NationalTeamResponse {
+  const { id, team_category, age_group, nation } = nationalTeam;
+
+  return {
+    id,
+    imageUrl: getImageUrl(
+      "nationality",
+      STORAGE_BUCKETS.NATIONALITIES,
+      nation.image,
+    ),
+    name: formatNationalTeamName(nationalTeam),
+    teamCategory: team_category,
+    ageGroup: age_group,
   };
 }
