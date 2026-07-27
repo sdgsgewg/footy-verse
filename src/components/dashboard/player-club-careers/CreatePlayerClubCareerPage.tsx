@@ -8,16 +8,15 @@ import { usePlayerClubCareerSubmit } from "@/hooks/dashboard/player-club-careers
 import PlayerClubCareerForm from "@/components/forms/player-club-careers/PlayerClubCareerForm";
 import { PlayerCareerHistoryTable } from "@/components/shared/tables";
 import TableFormLayout from "@/components/layout/dashboard/TableFormLayout";
-import { useTranslations } from "next-intl";
 import { usePlayerClubCareers } from "@/hooks/dashboard/player-club-careers";
+import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
 
 interface Props {
   playerLookup: PlayerLookupResponse;
 }
 
 export default function CreatePlayerClubCareerPage({ playerLookup }: Props) {
-  const t = useTranslations("common.pages.create");
-  const tEntities = useTranslations("entities");
+  const { getTitle } = useCrudPageTitle();
 
   const { player, isLoading, error, refetch } = usePlayerDetail(
     playerLookup.id,
@@ -46,10 +45,7 @@ export default function CreatePlayerClubCareerPage({ playerLookup }: Props) {
 
   return (
     <TableFormLayout
-      title={t("title", {
-        entity: tEntities("playerCareer"),
-        entityName: player ? `(${player.name})` : "",
-      })}
+      title={getTitle("create", "playerClubCareer", `${player.name}`)}
       columns={1}
       tableTitle="Career History"
       table={<PlayerCareerHistoryTable playerClubCareers={playerClubCareers} />}

@@ -12,13 +12,13 @@ import useNationalityFilter from "@/hooks/nationalities/useNationalityFilter";
 import { useNationalities } from "@/hooks/nationalities";
 import { useNationalityActions } from "@/hooks/dashboard/nationalities";
 import { NationalityListItem } from "@/types/nationality";
+import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
 
 export default function NationalitiesManagementPage() {
-  const tListPage = useTranslations("common.pages.list");
   const tCommon = useTranslations("common");
-
   const tColumn = useTranslations("dashboard.nationalities.columns");
-  const tEntities = useTranslations("entities");
+
+  const { getTitle } = useCrudPageTitle();
 
   const {
     filters,
@@ -81,9 +81,7 @@ export default function NationalitiesManagementPage() {
 
   return (
     <CrudListPage
-      title={tListPage("title", {
-        entity: tEntities("nationality"),
-      })}
+      title={getTitle("list", "nationality")}
       loading={loading}
       data={nationalities}
       columns={columns}

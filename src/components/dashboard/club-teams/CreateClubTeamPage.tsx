@@ -2,7 +2,6 @@
 
 import EntityLoading from "@/components/feedback/loading/EntityLoading";
 import ErrorState from "@/components/feedback/ErrorState";
-import { useTranslations } from "next-intl";
 import { ClubLookupResponse } from "@/types/club";
 import { useClubDetail } from "@/hooks/dashboard/clubs";
 import { useClubTeams } from "@/hooks/club-teams";
@@ -10,14 +9,14 @@ import { useClubTeamSubmit } from "@/hooks/dashboard/club-teams";
 import TableFormLayout from "@/components/layout/dashboard/TableFormLayout";
 import ClubTeamForm from "@/components/forms/club-teams/ClubTeamForm";
 import ClubTeamTable from "@/components/shared/tables/ClubTeamTable";
+import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
 
 interface Props {
   clubLookup: ClubLookupResponse;
 }
 
 export default function CreateClubTeamPage({ clubLookup }: Props) {
-  const t = useTranslations("common.pages.create");
-  const tEntities = useTranslations("entities");
+  const { getTitle } = useCrudPageTitle();
 
   const { club, isLoading, error, refetch } = useClubDetail(clubLookup.id);
 
@@ -41,10 +40,7 @@ export default function CreateClubTeamPage({ clubLookup }: Props) {
 
   return (
     <TableFormLayout
-      title={t("title", {
-        entity: tEntities("clubTeam"),
-        entityName: club ? `(${club.name})` : "",
-      })}
+      title={getTitle("create", "clubTeam", `${club.name}`)}
       columns={2}
       tableTitle="Club Teams"
       table={<ClubTeamTable clubTeams={clubTeams} />}

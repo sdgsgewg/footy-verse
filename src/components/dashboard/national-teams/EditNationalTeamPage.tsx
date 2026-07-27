@@ -1,6 +1,5 @@
 import EntityLoading from "@/components/feedback/loading/EntityLoading";
 import ErrorState from "@/components/feedback/ErrorState";
-import { useTranslations } from "next-intl";
 import TableFormLayout from "@/components/layout/dashboard/TableFormLayout";
 import { NationalityLookupResponse } from "@/types/nationality";
 import { NationalTeamLookupResponse } from "@/types/national-team";
@@ -12,6 +11,7 @@ import {
 import { useNationalTeams } from "@/hooks/national-teams";
 import NationalTeamTable from "@/components/shared/tables/NationalTeamTable";
 import NationalTeamForm from "@/components/forms/national-teams/NationalTeamForm";
+import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
 
 interface Props {
   nationLookup: NationalityLookupResponse;
@@ -19,8 +19,7 @@ interface Props {
 }
 
 const EditNationalTeamPage = ({ nationLookup, nationalTeamLookup }: Props) => {
-  const t = useTranslations("common.pages.edit");
-  const tEntities = useTranslations("entities");
+  const { getTitle } = useCrudPageTitle();
 
   const { nationality } = useNationalityDetail(nationLookup.id);
 
@@ -59,10 +58,7 @@ const EditNationalTeamPage = ({ nationLookup, nationalTeamLookup }: Props) => {
 
   return (
     <TableFormLayout
-      title={t("title", {
-        entity: tEntities("nationalTeam"),
-        entityName: nationality ? `(${nationality.name})` : "",
-      })}
+      title={getTitle("edit", "nationalTeam", `${nationality.name}`)}
       columns={2}
       tableTitle="National Teams"
       table={<NationalTeamTable nationalTeams={nationalTeams} />}

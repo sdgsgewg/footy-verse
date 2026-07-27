@@ -2,7 +2,6 @@ import EntityLoading from "@/components/feedback/loading/EntityLoading";
 import ErrorState from "@/components/feedback/ErrorState";
 import { useClubDetail } from "@/hooks/dashboard/clubs";
 import { ClubLookupResponse } from "@/types/club";
-import { useTranslations } from "next-intl";
 import { ClubTeamLookupResponse } from "@/types/club-team";
 import {
   useClubTeamEdit,
@@ -12,6 +11,7 @@ import { useClubTeams } from "@/hooks/club-teams";
 import TableFormLayout from "@/components/layout/dashboard/TableFormLayout";
 import ClubTeamTable from "@/components/shared/tables/ClubTeamTable";
 import ClubTeamForm from "@/components/forms/club-teams/ClubTeamForm";
+import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
 
 interface Props {
   clubLookup: ClubLookupResponse;
@@ -19,8 +19,7 @@ interface Props {
 }
 
 const EditClubTeamPage = ({ clubLookup, clubTeamLookup }: Props) => {
-  const t = useTranslations("common.pages.edit");
-  const tEntities = useTranslations("entities");
+  const { getTitle } = useCrudPageTitle();
 
   const { club } = useClubDetail(clubLookup.id);
 
@@ -59,10 +58,7 @@ const EditClubTeamPage = ({ clubLookup, clubTeamLookup }: Props) => {
 
   return (
     <TableFormLayout
-      title={t("title", {
-        entity: tEntities("clubTeam"),
-        entityName: club ? `(${club.name})` : "",
-      })}
+      title={getTitle("edit", "clubTeam", `${club.name}`)}
       columns={2}
       tableTitle="Club Teams"
       table={<ClubTeamTable clubTeams={clubTeams} />}

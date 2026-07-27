@@ -2,20 +2,17 @@
 
 import ClubForm from "@/components/forms/clubs/ClubForm";
 import FormPageLayout from "@/components/layout/dashboard/FormPageLayout";
+import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
 import { useClubSubmit } from "@/hooks/dashboard/clubs";
-import { useTranslations } from "next-intl";
 
 export default function CreateClubPage() {
-  const t = useTranslations("common.pages.create");
-  const tEntities = useTranslations("entities");
+  const { getTitle } = useCrudPageTitle();
 
   const { submit, isSubmitting } = useClubSubmit();
 
   return (
     <FormPageLayout
-      title={t("title", {
-        entity: tEntities("club"),
-      })}
+      title={getTitle("create", "club")}
       formSize="small"
       form={
         <ClubForm

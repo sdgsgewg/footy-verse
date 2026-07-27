@@ -2,21 +2,17 @@
 
 import NationalityForm from "@/components/forms/nationalities/NationalityForm";
 import FormPageLayout from "@/components/layout/dashboard/FormPageLayout";
+import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
 import { useNationalitySubmit } from "@/hooks/dashboard/nationalities";
-import { useTranslations } from "next-intl";
 
 export default function CreateNationalityPage() {
-  const t = useTranslations("common.pages.create");
-  const tEntities = useTranslations("entities");
+  const { getTitle } = useCrudPageTitle();
 
   const { submit, isSubmitting } = useNationalitySubmit();
 
   return (
     <FormPageLayout
-      title={t("title", {
-        entity: tEntities("nationality"),
-        entityName: "",
-      })}
+      title={getTitle("create", "nationality")}
       formSize="small"
       form={
         <NationalityForm

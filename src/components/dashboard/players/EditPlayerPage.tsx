@@ -4,17 +4,16 @@ import { usePlayerEdit, usePlayerSubmit } from "@/hooks/dashboard/players";
 import { PlayerLookupResponse } from "@/types/player";
 import EntityLoading from "@/components/feedback/loading/EntityLoading";
 import ErrorState from "@/components/feedback/ErrorState";
-import { useTranslations } from "next-intl";
 import PlayerForm from "@/components/forms/players/PlayerForm";
 import FormPageLayout from "@/components/layout/dashboard/FormPageLayout";
+import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
 
 interface Props {
   playerLookup: PlayerLookupResponse;
 }
 
 export default function EditPlayerPage({ playerLookup }: Props) {
-  const t = useTranslations("common.pages.edit");
-  const tEntities = useTranslations("entities");
+  const { getTitle } = useCrudPageTitle();
 
   const { player, isLoading, error, refetch } = usePlayerEdit(playerLookup.id);
 
@@ -37,10 +36,7 @@ export default function EditPlayerPage({ playerLookup }: Props) {
 
   return (
     <FormPageLayout
-      title={t("title", {
-        entity: tEntities("player"),
-        entityName: "",
-      })}
+      title={getTitle("edit", "player")}
       formSize="large"
       form={
         <PlayerForm

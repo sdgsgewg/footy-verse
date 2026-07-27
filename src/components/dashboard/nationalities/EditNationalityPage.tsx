@@ -2,8 +2,6 @@
 
 import EntityLoading from "@/components/feedback/loading/EntityLoading";
 import ErrorState from "@/components/feedback/ErrorState";
-import { useTranslations } from "next-intl";
-import React from "react";
 import FormPageLayout from "@/components/layout/dashboard/FormPageLayout";
 import { NationalityLookupResponse } from "@/types/nationality";
 import {
@@ -11,14 +9,14 @@ import {
   useNationalitySubmit,
 } from "@/hooks/dashboard/nationalities";
 import NationalityForm from "@/components/forms/nationalities/NationalityForm";
+import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
 
 interface Props {
   nationalityLookup: NationalityLookupResponse;
 }
 
 const EditNationalityPage = ({ nationalityLookup }: Props) => {
-  const t = useTranslations("common.pages.edit");
-  const tEntities = useTranslations("entities");
+  const { getTitle } = useCrudPageTitle();
 
   const { nationality, isLoading, error, refetch } = useNationalityEdit(
     nationalityLookup.id,
@@ -43,10 +41,7 @@ const EditNationalityPage = ({ nationalityLookup }: Props) => {
 
   return (
     <FormPageLayout
-      title={t("title", {
-        entity: tEntities("nationality"),
-        entityName: "",
-      })}
+      title={getTitle("edit", "nationality")}
       formSize="small"
       form={
         <NationalityForm

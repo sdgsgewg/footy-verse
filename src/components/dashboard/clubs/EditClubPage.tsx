@@ -5,17 +5,15 @@ import ErrorState from "@/components/feedback/ErrorState";
 import ClubForm from "@/components/forms/clubs/ClubForm";
 import { useClubEdit, useClubSubmit } from "@/hooks/dashboard/clubs";
 import { ClubLookupResponse } from "@/types/club";
-import { useTranslations } from "next-intl";
-import React from "react";
 import FormPageLayout from "@/components/layout/dashboard/FormPageLayout";
+import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
 
 interface Props {
   clubLookup: ClubLookupResponse;
 }
 
 const EditClubPage = ({ clubLookup }: Props) => {
-  const t = useTranslations("common.pages.edit");
-  const tEntities = useTranslations("entities");
+  const { getTitle } = useCrudPageTitle();
 
   const { club, isLoading, error, refetch } = useClubEdit(clubLookup.id);
 
@@ -38,10 +36,7 @@ const EditClubPage = ({ clubLookup }: Props) => {
 
   return (
     <FormPageLayout
-      title={t("title", {
-        entity: tEntities("club"),
-        entityName: "",
-      })}
+      title={getTitle("edit", "club")}
       formSize="small"
       form={
         <ClubForm

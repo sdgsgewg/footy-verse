@@ -9,11 +9,11 @@ import {
   usePlayerClubCareerSubmit,
 } from "@/hooks/dashboard/player-club-careers";
 import { PlayerLookupResponse } from "@/types/player";
-import { useTranslations } from "next-intl";
 import { usePlayerDetail } from "@/hooks/dashboard/players";
 import TableFormLayout from "@/components/layout/dashboard/TableFormLayout";
 import { PlayerClubCareerLookupResponse } from "@/types/player-club-career";
 import PlayerClubCareerHistoryTable from "@/components/shared/tables/PlayerClubCareerHistoryTable";
+import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
 
 interface Props {
   playerLookup: PlayerLookupResponse;
@@ -24,8 +24,7 @@ export default function EditPlayerClubCareerPage({
   playerLookup,
   playerClubCareerLookup,
 }: Props) {
-  const t = useTranslations("common.pages.edit");
-  const tEntities = useTranslations("entities");
+  const { getTitle } = useCrudPageTitle();
 
   const { player } = usePlayerDetail(playerLookup.id);
 
@@ -70,10 +69,7 @@ export default function EditPlayerClubCareerPage({
 
   return (
     <TableFormLayout
-      title={t("title", {
-        entity: tEntities("playerClubCareer"),
-        entityName: player ? `(${player.name})` : "",
-      })}
+      title={getTitle("edit", "playerClubCareer", `${player.name}`)}
       columns={1}
       tableTitle="Career History"
       table={
