@@ -4,7 +4,7 @@ import { Menu } from "lucide-react";
 import { useAuth } from "@/providers/auth-provider";
 import NavbarLogo from "../NavbarLogo";
 import NavbarDesktopAuth from "../desktop/NavbarDesktopAuth";
-import NavbarMobileMenu from "./NavbarMobileMenu";
+import SidebarMobileMenu from "../../sidebar/SidebarMobileMenu";
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -40,7 +40,7 @@ const Navbar = () => {
       </nav>
 
       {/* Mobile Menu Overlay */}
-      <NavbarMobileMenu
+      <SidebarMobileMenu
         open={mobileMenuOpen}
         pathname={pathname}
         isContentManager={isContentManager}

@@ -1,10 +1,10 @@
-import { useTranslations } from "next-intl";
-import NavbarMobileSheet from "../mobile/NavbarMobileSheet";
-import MobileNavLinks from "../mobile/MobileNavLinks";
 import { useSidebarLinks } from "@/hooks/useSidebarLinks";
-import MobileDropdownMenu from "../mobile/MobileDropdownMenu";
+import { useTranslations } from "next-intl";
+import NavbarMobileSheet from "../navbar/mobile/NavbarMobileSheet";
+import MobileNavLinks from "../navbar/mobile/MobileNavLinks";
+import MobileDropdownMenu from "../navbar/mobile/MobileDropdownMenu";
 
-interface NavbarMobileMenuProps {
+interface SidebarMobileMenuProps {
   open: boolean;
   pathname: string;
   isContentManager: boolean;
@@ -12,13 +12,13 @@ interface NavbarMobileMenuProps {
   onClose: () => void;
 }
 
-const NavbarMobileMenu = ({
+const SidebarMobileMenu = ({
   open,
   pathname,
   isContentManager,
   isSystemManager,
   onClose,
-}: NavbarMobileMenuProps) => {
+}: SidebarMobileMenuProps) => {
   const tNav = useTranslations("navigation");
 
   const { navLinks, contentManageLinks, systemManageLinks } = useSidebarLinks();
@@ -52,4 +52,4 @@ const NavbarMobileMenu = ({
   );
 };
 
-export default NavbarMobileMenu;
+export default SidebarMobileMenu;

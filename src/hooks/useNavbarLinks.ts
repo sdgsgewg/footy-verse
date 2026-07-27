@@ -5,7 +5,6 @@ import { useTranslations } from "next-intl";
 export function useNavbarLinks() {
   const tNav = useTranslations("navigation");
   const tTeams = useTranslations("navigation.teams");
-  const tManage = useTranslations("navigation.manage");
 
   const navLinks: NavLink[] = [
     { name: tNav("home"), path: ROUTES.HOME },
