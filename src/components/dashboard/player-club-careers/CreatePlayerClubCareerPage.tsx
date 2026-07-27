@@ -5,7 +5,7 @@ import { PlayerLookupResponse } from "@/types/player";
 import EntityLoading from "@/components/feedback/loading/EntityLoading";
 import ErrorState from "@/components/feedback/ErrorState";
 import { usePlayerClubCareerSubmit } from "@/hooks/dashboard/player-club-careers/usePlayerClubCareerSubmit";
-import PlayerCareerForm from "@/components/forms/player-club-careers/PlayerClubCareerForm";
+import PlayerClubCareerForm from "@/components/forms/player-club-careers/PlayerClubCareerForm";
 import { PlayerCareerHistoryTable } from "@/components/shared/tables";
 import TableFormLayout from "@/components/layout/dashboard/TableFormLayout";
 import { useTranslations } from "next-intl";
@@ -15,7 +15,7 @@ interface Props {
   playerLookup: PlayerLookupResponse;
 }
 
-export default function CreatePlayerCareerPage({ playerLookup }: Props) {
+export default function CreatePlayerClubCareerPage({ playerLookup }: Props) {
   const t = useTranslations("common.pages.create");
   const tEntities = useTranslations("entities");
 
@@ -54,7 +54,7 @@ export default function CreatePlayerCareerPage({ playerLookup }: Props) {
       tableTitle="Career History"
       table={<PlayerCareerHistoryTable playerClubCareers={playerClubCareers} />}
       form={
-        <PlayerCareerForm
+        <PlayerClubCareerForm
           mode="create"
           loading={isSubmitting}
           onSubmit={(payload) =>

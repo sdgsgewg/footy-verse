@@ -43,7 +43,7 @@ export function mapPlayerClubCareerListItem(
     imageUrl: getImageUrl("club", STORAGE_BUCKETS.CLUBS, club_team.club.image),
     name: formatClubName(club_team),
     joinedAt: joined_at,
-    leftAt: left_at ?? "-",
+    leftAt: left_at,
   };
 }
 
@@ -61,9 +61,10 @@ export function mapPlayerClubCareerEditResponse(
     player_career_id,
     player_career,
     player_contracts,
-    player_shirt_numbers,
     player_transfer,
   } = playerClubCareer;
+
+  const { player_shirt_numbers } = player_career;
 
   const career = mapPlayerCareerEditResponse(player_career);
 
@@ -98,9 +99,10 @@ export function mapPlayerClubCareerDetailResponse(
     club_team,
     player_career,
     player_contracts,
-    player_shirt_numbers,
     player_transfer,
   } = playerClubCareer;
+
+  const { player_shirt_numbers } = player_career;
 
   const clubTeam = mapClubTeamDetailResponse(club_team);
 

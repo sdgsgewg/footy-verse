@@ -1,8 +1,4 @@
-import {
-  ClubTeamCreateInput,
-  ClubTeamUpdateInput,
-  GetClubTeamsParams,
-} from "@/types/club-team";
+import { ClubTeamCreateInput, ClubTeamUpdateInput } from "@/types/club-team";
 import {
   createClubTeamRepo,
   deleteClubTeamRepo,
@@ -19,7 +15,7 @@ import {
   updateClubTeamSchema,
 } from "../validations/club-teams.schema";
 
-export async function getClubTeamsService(query: GetClubTeamsParams) {
+export async function getClubTeamsService(query: unknown) {
   const parsed = clubTeamsQuerySchema.parse(query);
 
   return getClubTeamsRepo(parsed);

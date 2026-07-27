@@ -1,12 +1,11 @@
-import { GetClubTeamsParams } from "@/types/club-team";
+import { ClubTeamFilter } from "@/types/club-team";
 
 export const clubTeamKeys = {
   all: ["club-teams"] as const,
 
   lists: () => [...clubTeamKeys.all, "list"] as const,
 
-  list: (clubId: string, params?: GetClubTeamsParams) =>
-    [...clubTeamKeys.lists(), clubId, params] as const,
+  list: (params?: ClubTeamFilter) => [...clubTeamKeys.lists(), params] as const,
 
   details: () => [...clubTeamKeys.all, "detail"] as const,
 

@@ -1,5 +1,4 @@
-import { AgeGroup } from "@/enums/AgeGroup";
-import { SquadType } from "@/enums/SquadType";
+import { getCrudQuery } from "@/lib/api/query";
 import {
   createdResponse,
   errorResponse,
@@ -10,7 +9,7 @@ import {
   createClubTeamService,
   getClubTeamsService,
 } from "@/lib/services/club-teams.service";
-import { GetClubTeamsParams } from "@/types/club-team";
+import { ClubTeamQuery } from "@/types/club-team";
 
 type ClubTeamRouteContext = {
   params: Promise<{ clubId: string }>;
@@ -18,13 +17,11 @@ type ClubTeamRouteContext = {
 
 export async function GET(request: Request) {
   try {
-    const { searchParams } = new URL(request.url);
-
-    const query: GetClubTeamsParams = {
-      squadType: (searchParams.get("squadType") as SquadType) || undefined,
-      ageGroup: (searchParams.get("ageGroup") as AgeGroup) || undefined,
-      clubId: searchParams.get("clubId") || undefined,
-    };
+    const query = getCrudQuery<ClubTeamQuery>(request, [
+      "squadType",
+      "ageGroup",
+      "clubId",
+    ]);
 
     const data = await getClubTeamsService(query);
 

@@ -1,7 +1,7 @@
 import { ROUTES } from "@/constants/routes";
 import { useCrudMutation } from "../useCrudMutation";
 import { PlayerLookupResponse } from "@/types/player";
-import { updatePlayerNationalTeamCareer } from "@/lib/api/player-national-team";
+import { updatePlayerNationalTeamCareer } from "@/lib/api/player-national-team-career";
 import { playerNationalTeamCareerKeys } from "@/lib/react-query/keys/playerNationalTeamCareerKeys";
 
 interface UpdatePlayerNationalTeamCareerPayload {

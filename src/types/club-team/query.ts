@@ -7,7 +7,7 @@ import { ClubTeam } from "./database";
 
 export type DbClubTeamListRow = Pick<
   ClubTeam,
-  "id" | "squad_type" | "age_group"
+  "id" | "club_id" | "squad_type" | "age_group" | "created_at"
 > & {
   club: ClubSummary;
 };

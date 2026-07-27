@@ -3,7 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { queryConfig } from "@/lib/react-query/config/queryConfig";
 import { playerNationalTeamCareerKeys } from "@/lib/react-query/keys/playerNationalTeamCareerKeys";
-import { fetchPlayerNationalTeamCareerEdit } from "@/lib/api/player-national-team";
+import { fetchPlayerNationalTeamCareerEdit } from "@/lib/api/player-national-team-career";
 
 interface UsePlayerNationalTeamCareerOptions {
   playerId: string;

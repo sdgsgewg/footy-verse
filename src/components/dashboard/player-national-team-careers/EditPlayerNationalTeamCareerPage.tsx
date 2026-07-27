@@ -4,16 +4,16 @@ import { usePlayerDetail } from "@/hooks/dashboard/players";
 import { PlayerLookupResponse } from "@/types/player";
 import EntityLoading from "@/components/feedback/loading/EntityLoading";
 import ErrorState from "@/components/feedback/ErrorState";
-import { useTranslations } from "next-intl";
 import {
   usePlayerNationalTeamCareerEdit,
   usePlayerNationalTeamCareers,
   usePlayerNationalTeamCareerSubmit,
 } from "@/hooks/dashboard/player-national-teams";
-import EditPlayerNationalTeamForm from "@/components/forms/player-national-team-careers/edit/EditPlayerNationalTeamCareerForm";
+import EditPlayerNationalTeamCareerForm from "@/components/forms/player-national-team-careers/edit/EditPlayerNationalTeamCareerForm";
 import { PlayerNationalTeamHistoryTable } from "@/components/shared/tables";
 import TableFormLayout from "@/components/layout/dashboard/TableFormLayout";
 import { PlayerNationalTeamCareerLookupResponse } from "@/types/player-national-team-career";
+import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
 
 interface Props {
   playerLookup: PlayerLookupResponse;
@@ -24,20 +24,15 @@ export default function EditPlayerNationalTeamPage({
   playerLookup,
   playerNationalTeamLookup,
 }: Props) {
-  const t = useTranslations("common.pages.edit");
-  const tEntities = useTranslations("entities");
+  const { getTitle } = useCrudPageTitle();
 
   const { player } = usePlayerDetail(playerLookup.id);
 
-  const {
-    playerNationalTeamCareer: playerNationalTeam,
-    isLoading,
-    error,
-    refetch,
-  } = usePlayerNationalTeamCareerEdit({
-    playerId: playerLookup.id,
-    nationalTeamId: playerNationalTeamLookup.id,
-  });
+  const { playerNationalTeamCareer, isLoading, error, refetch } =
+    usePlayerNationalTeamCareerEdit({
+      playerId: playerLookup.id,
+      nationalTeamId: playerNationalTeamLookup.id,
+    });
 
   const { playerNationalTeamCareers: playerNationalTeams } =
     usePlayerNationalTeamCareers({
@@ -59,25 +54,22 @@ export default function EditPlayerNationalTeamPage({
     return <ErrorState onRetry={() => void refetch()} />;
   }
 
-  if (!playerNationalTeam && isLoading) {
+  if (!playerNationalTeamCareer && isLoading) {
     return <EntityLoading entity="playerNationalTeamCareer" />;
   }
 
-  if (!playerNationalTeam && error) {
+  if (!playerNationalTeamCareer && error) {
     return <ErrorState onRetry={() => void refetch()} />;
   }
 
-  if (!playerNationalTeam) {
+  if (!playerNationalTeamCareer) {
     return <ErrorState onRetry={() => void refetch()} />;
   }
 
   return (
     <TableFormLayout
-      title={t("title", {
-        entity: tEntities("playerNationalTeam"),
-        entityName: player ? `(${player.name})` : "",
-      })}
-      columns={2}
+      title={getTitle("edit", "playerNationalTeamCareer", `${player.name}`)}
+      columns={1}
       tableTitle="National Team History"
       table={
         <PlayerNationalTeamHistoryTable
@@ -85,8 +77,8 @@ export default function EditPlayerNationalTeamPage({
         />
       }
       form={
-        <EditPlayerNationalTeamForm
-          playerNationalTeamCareer={playerNationalTeam}
+        <EditPlayerNationalTeamCareerForm
+          playerNationalTeamCareer={playerNationalTeamCareer}
           loading={isSubmitting}
           onSubmit={(payload) =>
             submit({

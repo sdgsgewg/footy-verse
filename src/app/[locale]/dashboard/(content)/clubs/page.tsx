@@ -12,13 +12,13 @@ import Image from "next/image";
 import useClubFilter from "@/hooks/clubs/useClubFilter";
 import { createSortHandler } from "@/lib/utils/crud";
 import { useCrudFilterSync } from "@/hooks/crud";
+import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
 
 export default function ClubsManagementPage() {
-  const tListPage = useTranslations("common.pages.list");
   const tCommon = useTranslations("common");
-
   const tColumn = useTranslations("dashboard.clubs.columns");
-  const tEntities = useTranslations("entities");
+
+  const { getTitle } = useCrudPageTitle();
 
   const {
     filters,
@@ -104,9 +104,7 @@ export default function ClubsManagementPage() {
 
   return (
     <CrudListPage
-      title={tListPage("title", {
-        entity: tEntities("club"),
-      })}
+      title={getTitle("list", "club")}
       loading={loading}
       data={clubs}
       columns={columns}
@@ -137,7 +135,7 @@ export default function ClubsManagementPage() {
         totalPages,
         totalItems: total,
         loading,
-        onPageChange: goToPage
+        onPageChange: goToPage,
       }}
     />
   );

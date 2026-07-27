@@ -1,12 +1,12 @@
 "use client";
 
-import { useNationalities } from "@/hooks/nationalities";
-import { getNationalityOptions } from "@/lib/nationalities/options";
 import { UpsertPlayerNationalTeamCareerInput } from "@/types/player-national-team-career";
 import { useTranslations } from "next-intl";
 import React, { Dispatch, SetStateAction } from "react";
 import FormSection from "../../base/FormSection";
 import { ComboboxField, DateField } from "../../fields";
+import { useNationalTeams } from "@/hooks/national-teams";
+import { getNationalTeamOptions } from "@/lib/national-teams/options";
 
 const PlayerCareerSection = ({
   form,
@@ -15,7 +15,9 @@ const PlayerCareerSection = ({
   form: UpsertPlayerNationalTeamCareerInput;
   setForm: Dispatch<SetStateAction<UpsertPlayerNationalTeamCareerInput>>;
 }) => {
-  const tForm = useTranslations("dashboard.playerNationalTeamCareers.form.career");
+  const tForm = useTranslations(
+    "dashboard.playerNationalTeamCareers.form.career",
+  );
 
   const tLabels = useTranslations(
     "dashboard.playerNationalTeamCareers.form.labels.career",
@@ -30,16 +32,16 @@ const PlayerCareerSection = ({
   const { national_team_id, career } = form;
   const { joined_at, left_at } = form.career;
 
-  const { nationalities } = useNationalities();
-  const nationOptions = getNationalityOptions(nationalities);
+  const { nationalTeams } = useNationalTeams();
+  const nationalTeamOptions = getNationalTeamOptions(nationalTeams);
 
   return (
-    <FormSection title={tForm("career.title")}>
+    <FormSection title={tForm("title")}>
       {/* Nation */}
       <ComboboxField
         label={tLabels("nation")}
-        name={`nationality`}
-        options={nationOptions}
+        name={`national_team`}
+        options={nationalTeamOptions}
         placeholder={tPlaceholders("nation") || ""}
         searchPlaceholder={tCommon("combobox.searchEntity", {
           entity: tEntities("nationality").toLowerCase(),

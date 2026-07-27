@@ -51,6 +51,7 @@ export async function getPlayerCareerDetailRepo(
 export async function createPlayerCareerRepo(
   playerId: string,
   career: PlayerCareerCreateInput,
+  careerType: CareerType,
 ) {
   const supabase = await getSupabase();
 
@@ -62,7 +63,7 @@ export async function createPlayerCareerRepo(
       .insert({
         ...careerRest,
         player_id: playerId,
-        career_type: CareerType.CLUB,
+        career_type: careerType,
       })
       .select("id")
       .single();

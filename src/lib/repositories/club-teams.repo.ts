@@ -5,12 +5,12 @@ import {
   ClubTeamCreateInput,
   ClubTeamDetailResponse,
   ClubTeamEditResponse,
+  ClubTeamFilter,
   ClubTeamListItem,
   ClubTeamLookupResponse,
   ClubTeamUpdateInput,
   DbClubTeamDetailRow,
   DbClubTeamListRow,
-  GetClubTeamsParams,
 } from "@/types/club-team";
 import {
   mapClubTeamDetailResponse,
@@ -35,11 +35,12 @@ function getClubTeamsBaseQuery(options?: { isClubFiltered?: boolean }) {
 
   return `
     id,
+    club_id,
     squad_type,
     age_group,
     created_at,
 
-    club:clubs!club_teams_club_id_fkey(
+    club:clubs!club_teams_club_id_fkey (
       id,
       name,
       image
@@ -53,7 +54,7 @@ function getClubTeamsBaseQuery(options?: { isClubFiltered?: boolean }) {
  * @returns ClubTeamListItem[]
  */
 export async function getClubTeamsRepo(
-  params: GetClubTeamsParams,
+  params: ClubTeamFilter,
 ): Promise<ClubTeamListItem[]> {
   const supabase = await getSupabase();
 

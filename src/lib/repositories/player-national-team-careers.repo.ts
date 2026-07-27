@@ -25,6 +25,7 @@ import {
   createPlayerShirtNumbersRepo,
   deletePlayerShirtNumberRepo,
 } from "./player-shirt-numbers.repo";
+import { CareerType } from "@/enums/CareerType";
 
 async function getSupabase() {
   return createClient();
@@ -41,18 +42,23 @@ const getTable = () => {
 function getPlayerNationalTeamCareersBaseQuery() {
   return `
     id,
-    shirt_number,
-    start_date,
-    end_date,
 
-    nationalTeam:national_teams (
+    national_team:national_teams (
       team_category,
       age_group,
-      nationality:nationalities (
+
+      nation:nationalities (
         id,
         name,
         image
       )
+    ),
+    
+    player_career:player_careers (
+      id,
+      player_id,
+      joined_at,
+      left_at
     )
   `;
 }
@@ -70,8 +76,11 @@ export async function getPlayerNationalTeamCareersRepo(
   const query = supabase
     .from(getTable())
     .select(getPlayerNationalTeamCareersBaseQuery())
-    .eq("player_id", playerId)
-    .order("start_date");
+    .eq("player_career.player_id", playerId)
+    .order("joined_at", {
+      referencedTable: "player_careers",
+      ascending: true,
+    });
 
   const { data, error } =
     await query.overrideTypes<DbPlayerNationalTeamCareerListRow[]>();
@@ -85,13 +94,30 @@ function getPlayerNationalTeamCareerDetailBaseQuery() {
   return `
     *,
 
-    nationalTeam:national_teams (
+    national_team:national_teams (
+      id,
       team_category,
       age_group,
+
       nationality:nationalities (
         id,
         name,
         image
+      )
+    ),
+
+    player_career: player_careers (
+      id,
+      player_id,
+      joined_at,
+      left_at,
+      career_type,
+
+      player_shirt_numbers(
+        id,
+        shirt_number,
+        start_date,
+        end_date
       )
     )
   `;
@@ -186,6 +212,7 @@ export async function createPlayerNationalTeamCareerRepo(
       const insertedPlayerCareer = await createPlayerCareerRepo(
         playerId,
         career,
+        CareerType.NATIONAL_TEAM
       );
 
       /**

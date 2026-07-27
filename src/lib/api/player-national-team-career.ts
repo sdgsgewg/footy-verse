@@ -20,7 +20,7 @@ export const fetchPlayerNationalTeamCareers = async (
   const { data } = await apiClient.get<{
     success: boolean;
     data: PlayerNationalTeamCareerListItem[];
-  }>(`/players/${playerId}/national-teams`);
+  }>(`/players/${playerId}/national-team-careers`);
 
   return data.data;
 };
@@ -38,7 +38,7 @@ export const fetchPlayerNationalTeamCareerEdit = async (
   const { data } = await apiClient.get<{
     success: boolean;
     data: PlayerNationalTeamCareerEditResponse;
-  }>(`/players/${playerId}/national-teams/${nationalTeamId}/edit`);
+  }>(`/players/${playerId}/national-team-careers/${nationalTeamId}/edit`);
 
   return data.data;
 };
@@ -56,7 +56,7 @@ export const fetchPlayerNationalTeamCareerDetail = async (
   const { data } = await apiClient.get<{
     success: boolean;
     data: PlayerNationalTeamCareerDetailResponse;
-  }>(`/players/${playerId}/national-teams/${nationalTeamId}`);
+  }>(`/players/${playerId}/national-team-careers/${nationalTeamId}`);
 
   return data.data;
 };
@@ -72,7 +72,7 @@ export const createPlayerNationalTeamCareer = async (
 ) => {
   const parsed = createPlayerNationalTeamCareerSchema.parse(payload); // validation
 
-  await apiClient.post(`/players/${playerId}/national-teams`, parsed);
+  await apiClient.post(`/players/${playerId}/national-team-careers`, parsed);
 };
 
 /**
@@ -89,7 +89,7 @@ export const updatePlayerNationalTeamCareer = async (
   const parsed = updatePlayerNationalTeamCareerSchema.parse(payload); // validation
 
   await apiClient.put(
-    `/players/${playerId}/national-teams/${nationalTeamId}`,
+    `/players/${playerId}/national-team-careers/${nationalTeamId}`,
     parsed,
   );
 };
@@ -104,6 +104,6 @@ export const deletePlayerNationalTeamCareer = async (
   nationalTeamId: string,
 ) => {
   await apiClient.delete(
-    `/players/${playerId}/national-teams/${nationalTeamId}`,
+    `/players/${playerId}/national-team-careers/${nationalTeamId}`,
   );
 };

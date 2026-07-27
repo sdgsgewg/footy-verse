@@ -2,6 +2,7 @@ import {
   DbPlayerTransferDetailRow,
   PlayerTransferDetailResponse,
   PlayerTransferEditResponse,
+  PlayerTransferQuery,
 } from "@/types/player-transfer";
 import { getImageUrl } from "../images/image-url";
 import { STORAGE_BUCKETS } from "../storage";
@@ -32,7 +33,7 @@ export function mapPlayerTransferEditResponse(
 }
 
 export function mapPlayerTransferDetailResponse(
-  playerTransfer: DbPlayerTransferDetailRow,
+  playerTransfer: DbPlayerTransferDetailRow | PlayerTransferQuery,
 ): PlayerTransferDetailResponse {
   const {
     id,

@@ -5,11 +5,11 @@ import FormHeader from "../base/FormHeader";
 import FormWrapper from "../base/FormWrapper";
 import { useCreatePlayerNationalTeamCareerForm } from "@/hooks/dashboard/player-national-teams";
 import FormContentWrapper from "../base/FormContentWrapper";
-import { useNationalities } from "@/hooks/nationalities";
-import { getNationalityOptions } from "@/lib/nationalities/options";
 import { useTranslations } from "next-intl";
 import DynamicFormSection from "../base/DynamicFormSection";
 import { ComboboxField, DateField, NumberField } from "../fields";
+import { useNationalTeams } from "@/hooks/national-teams";
+import { getNationalTeamOptions } from "@/lib/national-teams/options";
 
 type PlayerNationalTeamCareer =
   NonNullable<PlayerNationalTeamCareerCreateInput>[number];
@@ -39,8 +39,8 @@ const CreatePlayerNationalTeamCareerForm = ({
   const { form, setForm, canSubmit, buildPayload } =
     useCreatePlayerNationalTeamCareerForm();
 
-  const { nationalities } = useNationalities();
-  const nationOptions = getNationalityOptions(nationalities);
+  const { nationalTeams } = useNationalTeams();
+  const nationalTeamOptions = getNationalTeamOptions(nationalTeams);
 
   const handleSubmit = () => {
     onSubmit(buildPayload());
@@ -77,7 +77,7 @@ const CreatePlayerNationalTeamCareerForm = ({
               <ComboboxField
                 label={tLabels("career.nation")}
                 name={`nationality-${careerIndex}`}
-                options={nationOptions}
+                options={nationalTeamOptions}
                 placeholder={tPlaceholders("career.nation") || ""}
                 searchPlaceholder={tCommon("combobox.searchEntity", {
                   entity: tEntities("nationality").toLowerCase(),
@@ -134,7 +134,11 @@ const CreatePlayerNationalTeamCareerForm = ({
                     end_date: "",
                   })}
                   onChange={(newShirtNumbers) =>
-                    updateCareerItem(careerIndex, "shirt_numbers", newShirtNumbers)
+                    updateCareerItem(
+                      careerIndex,
+                      "shirt_numbers",
+                      newShirtNumbers,
+                    )
                   }
                   renderItem={(shirtItem, shirtIndex, updateShirtItem) => (
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

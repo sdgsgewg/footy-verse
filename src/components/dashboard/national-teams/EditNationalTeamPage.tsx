@@ -29,10 +29,7 @@ const EditNationalTeamPage = ({ nationLookup, nationalTeamLookup }: Props) => {
     teamId: nationalTeamLookup.id,
   });
 
-  const { nationalTeams } = useNationalTeams({
-    nationId: nationLookup.id,
-    params: { nationId: nationLookup.id },
-  });
+  const { nationalTeams } = useNationalTeams({ nationId: nationLookup.id });
 
   const { submit, isSubmitting } = useNationalTeamSubmit(nationLookup);
 

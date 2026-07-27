@@ -1,8 +1,8 @@
 import {
   ClubTeamDetailResponse,
   ClubTeamEditResponse,
+  ClubTeamFilter,
   ClubTeamListItem,
-  GetClubTeamsParams,
 } from "@/types/club-team";
 import { apiClient } from "./client";
 import {
@@ -19,13 +19,12 @@ const baseRoute = "/clubs";
  * @returns ClubTeamListItem[]
  */
 export const fetchClubTeams = async (
-  clubId: string,
-  params?: GetClubTeamsParams,
+  params?: ClubTeamFilter,
 ): Promise<ClubTeamListItem[]> => {
   const { data } = await apiClient.get<{
     success: boolean;
     data: ClubTeamListItem[];
-  }>(`${baseRoute}/${clubId}/teams`, {
+  }>(`/club-teams`, {
     params,
   });
 

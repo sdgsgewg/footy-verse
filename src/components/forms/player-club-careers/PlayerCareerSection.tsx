@@ -2,20 +2,19 @@
 
 import { Dispatch, SetStateAction } from "react";
 import { useTranslations } from "next-intl";
-import { ClubListItem } from "@/types/club";
 import FormSection from "../base/FormSection";
 import ComboboxField from "../fields/ComboboxField";
-import { getClubOptions } from "@/lib/clubs/options";
 import DateField from "../fields/DateField";
 import { UpsertPlayerClubCareerInput } from "@/types/player-club-career";
+import { useClubTeams } from "@/hooks/club-teams";
+import { getClubTeamOptions } from "@/lib/club-teams/options";
 
 interface Props {
   form: UpsertPlayerClubCareerInput;
   setForm: Dispatch<SetStateAction<UpsertPlayerClubCareerInput>>;
-  clubs: ClubListItem[];
 }
 
-const PlayerClubCareerSection = ({ form, setForm, clubs }: Props) => {
+const PlayerClubCareerSection = ({ form, setForm }: Props) => {
   const tForm = useTranslations("dashboard.playerClubCareers.form.career");
   const tLabels = useTranslations(
     "dashboard.playerClubCareers.form.labels.career",
@@ -30,7 +29,9 @@ const PlayerClubCareerSection = ({ form, setForm, clubs }: Props) => {
   const { club_team_id, career } = form;
   const { joined_at, left_at } = form.career;
 
-  const clubOptions = getClubOptions(clubs);
+  const { clubTeams } = useClubTeams();
+
+  const clubTeamOptions = getClubTeamOptions(clubTeams);
 
   return (
     <FormSection title={tForm("title")}>
@@ -38,7 +39,7 @@ const PlayerClubCareerSection = ({ form, setForm, clubs }: Props) => {
       <ComboboxField
         label={tLabels("club")}
         name="club"
-        options={clubOptions}
+        options={clubTeamOptions}
         value={club_team_id}
         placeholder={tPlaceholders("club")}
         searchPlaceholder={tCommon("combobox.searchEntity", {

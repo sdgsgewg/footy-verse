@@ -13,8 +13,6 @@ import z from "zod";
  */
 export type ClubTeamQuery = Partial<z.input<typeof clubTeamsQuerySchema>>;
 
-export type GetClubTeamsParams = ClubTeamQuery;
-
 /**
  * Khusus dipakai setelah parse, termasuk state React
  */

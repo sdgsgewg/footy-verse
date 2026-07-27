@@ -71,7 +71,7 @@ export const DataTable = <T extends DataRow>({
 
   return (
     <div className="lg:col-span-8">
-      <div className="bg-card border border-border/50 shadow-sm rounded-2xl overflow-hidden">
+      <div className="bg-card border border-border/50 shadow-sm rounded-sm overflow-hidden">
         <div className="max-h-[50vh] lg:max-h-[60vh] overflow-auto">
           <Table>
             <TableHeader>

@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import EditPlayerCareerPage from "@/components/dashboard/player-club-careers/EditPlayerClubCareerPage";
+import EditPlayerClubCareerPage from "@/components/dashboard/player-club-careers/EditPlayerClubCareerPage";
 import { getPlayerClubCareerLookupService } from "@/lib/services/player-club-careers.service";
 import { getPlayerLookupService } from "@/lib/services/players.service";
 
@@ -20,7 +20,7 @@ export default async function Page({
   }
 
   return (
-    <EditPlayerCareerPage
+    <EditPlayerClubCareerPage
       playerLookup={playerLookup}
       playerClubCareerLookup={playerClubCareerLookup}
     />

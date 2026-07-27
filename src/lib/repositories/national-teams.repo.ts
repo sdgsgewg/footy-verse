@@ -1,9 +1,22 @@
 import { createClient } from "@/utils/supabase/server";
 import { requireEntity } from "./helpers/require-entity";
 import { ENTITY_CONFIG } from "@/config/entities";
-import { DbNationalTeamDetailRow, DbNationalTeamListRow, GetNationalTeamsParams, NationalTeamCreateInput, NationalTeamDetailResponse, NationalTeamEditResponse, NationalTeamListItem, NationalTeamLookupResponse, NationalTeamUpdateInput } from "@/types/national-team";
-import { mapNationalTeamDetailResponse, mapNationalTeamEditResponse, mapNationalTeamListItem } from "../national-teams/mapper";
-
+import {
+  DbNationalTeamDetailRow,
+  DbNationalTeamListRow,
+  NationalTeamCreateInput,
+  NationalTeamDetailResponse,
+  NationalTeamEditResponse,
+  NationalTeamListItem,
+  NationalTeamLookupResponse,
+  NationalTeamQuery,
+  NationalTeamUpdateInput,
+} from "@/types/national-team";
+import {
+  mapNationalTeamDetailResponse,
+  mapNationalTeamEditResponse,
+  mapNationalTeamListItem,
+} from "../national-teams/mapper";
 
 async function getSupabase() {
   return createClient();
@@ -38,7 +51,7 @@ function getNationalTeamsBaseQuery() {
  * @returns NationalTeamListItem[]
  */
 export async function getNationalTeamsRepo(
-  params: GetNationalTeamsParams,
+  params: NationalTeamQuery,
 ): Promise<NationalTeamListItem[]> {
   const supabase = await getSupabase();
 

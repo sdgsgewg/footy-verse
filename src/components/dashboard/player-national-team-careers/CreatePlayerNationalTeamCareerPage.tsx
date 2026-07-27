@@ -4,7 +4,6 @@ import { usePlayerDetail } from "@/hooks/dashboard/players";
 import { PlayerLookupResponse } from "@/types/player";
 import EntityLoading from "@/components/feedback/loading/EntityLoading";
 import ErrorState from "@/components/feedback/ErrorState";
-import { useTranslations } from "next-intl";
 import {
   usePlayerNationalTeamCareers,
   usePlayerNationalTeamCareerSubmit,
@@ -12,6 +11,7 @@ import {
 import CreatePlayerNationalTeamCareerForm from "@/components/forms/player-national-team-careers/CreatePlayerNationalTeamCareerForm";
 import TableFormLayout from "@/components/layout/dashboard/TableFormLayout";
 import { PlayerNationalTeamHistoryTable } from "@/components/shared/tables";
+import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
 
 interface Props {
   playerLookup: PlayerLookupResponse;
@@ -20,8 +20,7 @@ interface Props {
 export default function CreatePlayerNationalTeamCareerPage({
   playerLookup,
 }: Props) {
-  const t = useTranslations("common.pages.create");
-  const tEntities = useTranslations("entities");
+  const { getTitle } = useCrudPageTitle();
 
   const { player, isLoading, error, refetch } = usePlayerDetail(
     playerLookup.id,
@@ -51,11 +50,8 @@ export default function CreatePlayerNationalTeamCareerPage({
 
   return (
     <TableFormLayout
-      title={t("title", {
-        entity: tEntities("playerNationalTeamCareer"),
-        entityName: player ? `(${player.name})` : "",
-      })}
-      columns={2}
+      title={getTitle("create", "playerNationalTeamCareer", `${player.name}`)}
+      columns={1}
       tableTitle="National Team History"
       table={
         <PlayerNationalTeamHistoryTable

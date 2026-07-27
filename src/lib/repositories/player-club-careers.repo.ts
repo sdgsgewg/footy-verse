@@ -35,6 +35,7 @@ import {
   deletePlayerTransferRepo,
   updatePlayerTransferByPlayerClubCareerIdRepo,
 } from "./player-transfers.repo";
+import { CareerType } from "@/enums/CareerType";
 
 async function getSupabase() {
   return createClient();
@@ -52,7 +53,7 @@ function getPlayerClubCareersBaseQuery() {
   return `
     id,
 
-    clubTeam:club_teams (
+    club_team:club_teams (
       id,
       squad_type,
       age_group,
@@ -64,8 +65,9 @@ function getPlayerClubCareersBaseQuery() {
       )
     ),
 
-    career:player_careers (
+    player_career:player_careers (
       id,
+      player_id,
       joined_at,
       left_at
     )
@@ -85,8 +87,11 @@ export async function getPlayerClubCareersRepo(
   const query = supabase
     .from(getTable())
     .select(getPlayerClubCareersBaseQuery())
-    .eq("player_id", playerId)
-    .order("joined_at");
+    .eq("player_career.player_id", playerId)
+    .order("joined_at", {
+      referencedTable: "player_careers",
+      ascending: true,
+    });
 
   const { data, error } =
     await query.overrideTypes<DbPlayerClubCareerListRow[]>();
@@ -100,54 +105,68 @@ function getPlayerClubCareerDetailBaseQuery() {
   return `
     *,
 
-    career: player_careers (
+    club_team:club_teams (
       id,
-      joined_at,
-      left_at
+      squad_type,
+      age_group,
+
+      club: clubs (
+        id,
+        name,
+        image
+      )
     ),
 
-    player_contracts(
+    player_career: player_careers (
+      id,
+      player_id,
+      joined_at,
+      left_at,
+      career_type,
+
+      player_shirt_numbers(
+        id,
+        shirt_number,
+        start_date,
+        end_date
+      )
+    ),
+
+    player_contracts (
       id,
       salary,
       contract_start,
       contract_end
     ),
 
-    player_shirt_numbers(
-      id,
-      shirt_number,
-      start_date,
-      end_date
-    ),
-
-    transfer:player_transfers (
+    player_transfer:player_transfers (
         *,
 
-        from_club_team:club_teams (
+        from_club_team:club_teams!transfers_from_club_team_id_fkey (
           id,
           squad_type,
           age_group,
 
-          club:clubs {
+          club:clubs!club_teams_club_id_fkey (
             id,
             name,
             image
-          }
+          )
         ),
 
-        to_club_team:club_teams (
+        to_club_team:club_teams!transfers_to_club_team_id_fkey (
           id,
           squad_type,
           age_group,
 
-          club:clubs {
+          club:clubs!club_teams_club_id_fkey (
             id,
             name,
             image
-          }
+          )
         ),
 
-        season:seasons (
+        season:seasons!transfers_season_id_fkey (
           id,
           name
         )
@@ -234,12 +253,16 @@ export async function createPlayerClubCareerRepo(
 ): Promise<PlayerClubCareerDetailResponse> {
   const supabase = await getSupabase();
 
-  const { career, contracts, shirt_numbers, transfer, ...rest } =
+  const { club_team_id, career, contracts, shirt_numbers, transfer } =
     playerClubCareer;
 
   //  Insert player career (table player_careers)
 
-  const insertedPlayerCareer = await createPlayerCareerRepo(playerId, career);
+  const insertedPlayerCareer = await createPlayerCareerRepo(
+    playerId,
+    career,
+    CareerType.CLUB,
+  );
 
   //  Insert player club career (table player_club_careers)
 
@@ -247,7 +270,8 @@ export async function createPlayerClubCareerRepo(
     await supabase
       .from(getTable())
       .insert({
-        ...rest,
+        player_career_id: insertedPlayerCareer.id,
+        club_team_id,
       })
       .select("id")
       .single();

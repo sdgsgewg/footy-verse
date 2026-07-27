@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { queryConfig } from "@/lib/react-query/config/queryConfig";
-import { fetchPlayerNationalTeamCareers } from "@/lib/api/player-national-team";
+import { fetchPlayerNationalTeamCareers } from "@/lib/api/player-national-team-career";
 import { playerNationalTeamCareerKeys } from "@/lib/react-query/keys/playerNationalTeamCareerKeys";
 
 interface UsePlayerNationalTeamCareersOptions {

@@ -15,13 +15,10 @@ export type NationalTeamQuery = Partial<
   z.input<typeof nationalTeamsQuerySchema>
 >;
 
-export type GetNationalTeamsParams = NationalTeamQuery;
-
 /**
  * Khusus dipakai setelah parse, termasuk state React
  */
-
-export type NationalTeamsFilter = z.infer<typeof nationalTeamsQuerySchema>;
+export type NationalTeamFilter = z.infer<typeof nationalTeamsQuerySchema>;
 
 export type NationalTeamCreateInput = z.infer<typeof createNationalTeamSchema>;
 export type NationalTeamUpdateInput = z.infer<typeof updateNationalTeamSchema>;

@@ -15,7 +15,7 @@ export function useCrudPageTitle() {
   ) {
     return tPages(`${action}.title`, {
       entity: tEntities(entity),
-      entityName,
+      entityName: entityName.trim().length > 0 ? `(${entityName})` : entityName,
     });
   }
 

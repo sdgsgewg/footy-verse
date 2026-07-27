@@ -15,12 +15,12 @@ interface Props {
 }
 
 const PlayerContractSection = ({ form, setForm }: Props) => {
-  const tForm = useTranslations("dashboard.playerCareers.form.contracts");
+  const tForm = useTranslations("dashboard.playerClubCareers.form.contracts");
   const tLabels = useTranslations(
-    "dashboard.playerCareers.form.labels.contracts",
+    "dashboard.playerClubCareers.form.labels.contracts",
   );
   const tPlaceholders = useTranslations(
-    "dashboard.playerCareers.form.placeholders.contracts",
+    "dashboard.playerClubCareers.form.placeholders.contracts",
   );
 
   return (
@@ -59,6 +59,7 @@ const PlayerContractSection = ({ form, setForm }: Props) => {
             placeholder={tPlaceholders("contractEnd") || ""}
             value={item.contract_end ?? ""}
             onChange={(v) => updateItem(index, "contract_end", v)}
+            required
           />
 
           {/* Salary */}

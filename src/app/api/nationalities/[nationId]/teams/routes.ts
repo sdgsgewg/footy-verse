@@ -1,13 +1,15 @@
-import { AgeGroup } from "@/enums/AgeGroup";
-import { TeamCategory } from "@/enums/TeamCategory";
+import { getCrudQuery } from "@/lib/api/query";
 import {
   createdResponse,
   errorResponse,
   successResponse,
 } from "@/lib/api/response";
 import { authorizeManageContent } from "@/lib/auth/api-authorization";
-import { createNationalTeamService, getNationalTeamsService } from "@/lib/services/national-teams.service";
-import { GetNationalTeamsParams } from "@/types/national-team";
+import {
+  createNationalTeamService,
+  getNationalTeamsService,
+} from "@/lib/services/national-teams.service";
+import { NationalTeamQuery } from "@/types/national-team";
 
 type NationalTeamRouteContext = {
   params: Promise<{ nationId: string }>;
@@ -15,14 +17,11 @@ type NationalTeamRouteContext = {
 
 export async function GET(request: Request) {
   try {
-    const { searchParams } = new URL(request.url);
-
-    const query: GetNationalTeamsParams = {
-      teamCategory:
-        (searchParams.get("teamCategory") as TeamCategory) || undefined,
-      ageGroup: (searchParams.get("ageGroup") as AgeGroup) || undefined,
-      nationId: searchParams.get("nationId") || undefined,
-    };
+    const query = getCrudQuery<NationalTeamQuery>(request, [
+      "teamCategory",
+      "ageGroup",
+      "nationId",
+    ]);
 
     const data = await getNationalTeamsService(query);
 

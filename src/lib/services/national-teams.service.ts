@@ -1,9 +1,25 @@
-import { GetNationalTeamsParams, NationalTeamCreateInput, NationalTeamUpdateInput } from "@/types/national-team";
+import {
+  NationalTeamCreateInput,
+  NationalTeamQuery,
+  NationalTeamUpdateInput,
+} from "@/types/national-team";
 import { idSchema } from "../validations/primitives.schema";
-import { createNationalTeamSchema, nationalTeamsQuerySchema, updateNationalTeamSchema } from "../validations/national-teams.schema";
-import { createNationalTeamRepo, deleteNationalTeamRepo, getNationalTeamDetailRepo, getNationalTeamEditRepo, getNationalTeamLookupRepo, getNationalTeamsRepo, updateNationalTeamRepo } from "../repositories/national-teams.repo";
+import {
+  createNationalTeamSchema,
+  nationalTeamsQuerySchema,
+  updateNationalTeamSchema,
+} from "../validations/national-teams.schema";
+import {
+  createNationalTeamRepo,
+  deleteNationalTeamRepo,
+  getNationalTeamDetailRepo,
+  getNationalTeamEditRepo,
+  getNationalTeamLookupRepo,
+  getNationalTeamsRepo,
+  updateNationalTeamRepo,
+} from "../repositories/national-teams.repo";
 
-export async function getNationalTeamsService(query: GetNationalTeamsParams) {
+export async function getNationalTeamsService(query: unknown) {
   const parsed = nationalTeamsQuerySchema.parse(query);
 
   return getNationalTeamsRepo(parsed);

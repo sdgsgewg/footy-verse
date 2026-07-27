@@ -32,13 +32,13 @@ const PlayerHistory = ({ player }: Props) => {
 
   const handleAddCareer = () => {
     router.push(
-      `${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${playerSlug}/careers/create`,
+      `${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${playerSlug}/club-careers/create`,
     );
   };
 
   const handleAddNationalTeam = () => {
     router.push(
-      `${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${playerSlug}/national-teams/create`,
+      `${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${playerSlug}/national-team-careers/create`,
     );
   };
 

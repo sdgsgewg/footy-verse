@@ -14,19 +14,19 @@ export function usePlayerNationalTeamCareerActions(playerId: string) {
 
   const handleCreate = () => {
     router.push(
-      `${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${playerId}/national-teams/create`,
+      `${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${playerId}/national-team-careers/create`,
     );
   };
 
   const handleView = (nationalTeamId: string) => {
     router.push(
-      `${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${playerId}/national-teams/${nationalTeamId}`,
+      `${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${playerId}/national-team-careers/${nationalTeamId}`,
     );
   };
 
   const handleEdit = (nationalTeamId: string) => {
     router.push(
-      `${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${playerId}/national-teams/${nationalTeamId}/edit`,
+      `${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${playerId}/national-team-careers/${nationalTeamId}/edit`,
     );
   };
 

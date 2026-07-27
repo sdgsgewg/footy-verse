@@ -39,7 +39,7 @@ export function mapPlayerNationalTeamCareerListItem(
     ),
     name: formatNationalTeamName(national_team),
     joinedAt: joined_at,
-    leftAt: left_at ?? "-",
+    leftAt: left_at,
   };
 }
 
@@ -51,13 +51,10 @@ export function mapPlayerNationalTeamCareerListItem(
 export function mapPlayerNationalTeamCareerEditResponse(
   playerNationalTeamCareer: DbPlayerNationalTeamCareerDetailRow,
 ): PlayerNationalTeamCareerEditResponse {
-  const {
-    id,
-    national_team_id,
-    player_career_id,
-    player_career,
-    player_shirt_numbers,
-  } = playerNationalTeamCareer;
+  const { id, national_team_id, player_career_id, player_career } =
+    playerNationalTeamCareer;
+
+  const { player_shirt_numbers } = player_career;
 
   const career = mapPlayerCareerEditResponse(player_career);
 
@@ -78,8 +75,9 @@ export function mapPlayerNationalTeamCareerEditResponse(
 export function mapPlayerNationalTeamCareerDetailResponse(
   playerNationalTeamCareer: DbPlayerNationalTeamCareerDetailRow,
 ): PlayerNationalTeamCareerDetailResponse {
-  const { id, national_team, player_career, player_shirt_numbers } =
-    playerNationalTeamCareer;
+  const { id, national_team, player_career } = playerNationalTeamCareer;
+
+  const { player_shirt_numbers } = player_career;
 
   const nationalTeam = mapNationalTeamDetailResponse(national_team);
 

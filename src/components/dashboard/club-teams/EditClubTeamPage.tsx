@@ -29,10 +29,7 @@ const EditClubTeamPage = ({ clubLookup, clubTeamLookup }: Props) => {
     teamId: clubTeamLookup.id,
   });
 
-  const { clubTeams } = useClubTeams({
-    clubId: clubLookup.id,
-    params: { clubId: clubLookup.id },
-  });
+  const { clubTeams } = useClubTeams({ clubId: clubLookup.id });
 
   const { submit, isSubmitting } = useClubTeamSubmit(clubLookup);
 

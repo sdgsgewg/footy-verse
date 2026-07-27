@@ -38,15 +38,13 @@ const EditPlayerNationalTeamCareerForm = ({
         onSubmit={handleSubmit}
       />
 
-      <FormContentWrapper className="space-y-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div className="lg:grid-cols-6">
-            <PlayerCareerSection form={form} setForm={setForm} />
-          </div>
+      <FormContentWrapper className="space-y-6">
+        <div className="">
+          <PlayerCareerSection form={form} setForm={setForm} />
+        </div>
 
-          <div className="lg:grid-cols-6">
-            <PlayerShirtNumberSection form={form} setForm={setForm} />
-          </div>
+        <div className="">
+          <PlayerShirtNumberSection form={form} setForm={setForm} />
         </div>
       </FormContentWrapper>
     </FormWrapper>

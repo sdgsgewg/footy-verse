@@ -22,7 +22,7 @@ const PlayerClubCareerHistoryTable = ({
     playerSlug: string;
   };
 
-  const tColumn = useTranslations("dashboard.playerNationalTeams.columns");
+  const tColumn = useTranslations("dashboard.playerClubCareers.columns");
 
   const locale = useLocale();
 

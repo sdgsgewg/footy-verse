@@ -24,9 +24,6 @@ const ClubDetailPage = ({ clubLookup }: Props) => {
 
   const { clubTeams } = useClubTeams({
     clubId: clubLookup.id,
-    params: {
-      clubId: clubLookup.id,
-    },
   });
 
   const { players } = usePlayers({ clubTeamId: filters.clubTeamId });

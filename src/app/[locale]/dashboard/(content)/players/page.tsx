@@ -2,6 +2,7 @@
 
 import ConnectionErrorAlert from "@/components/feedback/ConnectionErrorAlert";
 import { CrudListPage } from "@/components/templates/crud";
+import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
 import { useCrudFilterSync } from "@/hooks/crud";
 import { usePlayers } from "@/hooks/dashboard/players";
 import { usePlayerActions } from "@/hooks/dashboard/players/usePlayerActions";
@@ -14,11 +15,10 @@ import { useTranslations } from "next-intl";
 import Image from "next/image";
 
 export default function PlayersManagementPage() {
-  const tListPage = useTranslations("common.pages.list");
   const tCommon = useTranslations("common");
-
   const tColumn = useTranslations("dashboard.players.columns");
-  const tEntities = useTranslations("entities");
+
+  const { getTitle } = useCrudPageTitle();
 
   const {
     filters,
@@ -146,9 +146,7 @@ export default function PlayersManagementPage() {
 
   return (
     <CrudListPage
-      title={tListPage("title", {
-        entity: tEntities("player"),
-      })}
+      title={getTitle("list", "player")}
       loading={loading}
       data={players}
       columns={columns}

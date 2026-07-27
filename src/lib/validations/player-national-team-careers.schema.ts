@@ -5,7 +5,7 @@ import { playerShirtNumberMutationSchema } from "./player-shirt-numbers.schema";
 
 export const playerNationalTeamCareerMutationSchema = z.object({
   national_team_id: idSchema,
-  player_career_id: idSchema.nullable().optional(),
+  player_career_id: z.string().nullable().optional(),
   career: playerCareerMutationSchema,
   shirt_numbers: playerShirtNumberMutationSchema.array(),
 });

@@ -1,4 +1,4 @@
-import { deletePlayerNationalTeamCareer } from "@/lib/api/player-national-team";
+import { deletePlayerNationalTeamCareer } from "@/lib/api/player-national-team-career";
 import { useCrudMutation } from "../useCrudMutation";
 import { playerNationalTeamCareerKeys } from "@/lib/react-query/keys/playerNationalTeamCareerKeys";
 

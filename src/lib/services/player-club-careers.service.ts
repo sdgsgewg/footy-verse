@@ -15,7 +15,9 @@ import {
 import { idSchema } from "../validations/primitives.schema";
 
 export async function getPlayerClubCareersService(playerId: string) {
-  return getPlayerClubCareersRepo(playerId);
+  const parsedId = idSchema.parse(playerId);
+
+  return getPlayerClubCareersRepo(parsedId);
 }
 
 export async function getPlayerClubCareerEditService(careerId: string) {

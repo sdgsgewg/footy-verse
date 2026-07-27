@@ -98,7 +98,11 @@ export function usePlayerClubCareerForm(
   const isCareerValid = form.career.joined_at.trim().length > 0;
 
   const areContractsValid = form.contracts.every((item) => {
-    return item.contract_start.trim().length > 0 && item.salary > 0;
+    return (
+      item.contract_start.trim().length > 0 &&
+      item.contract_end.trim().length > 0 &&
+      item.salary > 0
+    );
   });
 
   const areShirtNumbersValid = form.shirt_numbers.every((item) => {

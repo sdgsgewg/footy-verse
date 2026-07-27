@@ -1,8 +1,11 @@
 import { AgeGroup } from "@/enums/AgeGroup";
-import { DbNationalTeamListRow } from "@/types/national-team";
+import {
+  DbNationalTeamListRow,
+  NationalTeamSummary,
+} from "@/types/national-team";
 
 export function formatNationalTeamName(
-  nationalTeam: DbNationalTeamListRow,
+  nationalTeam: DbNationalTeamListRow | NationalTeamSummary,
 ): string {
   const { age_group, nation } = nationalTeam;
 

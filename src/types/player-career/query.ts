@@ -17,3 +17,10 @@ export type PlayerCareerQuery = Pick<
   player_club_career: PlayerClubCareerQuery | null;
   player_national_team_career: PlayerNationalTeamCareerQuery | null;
 };
+
+export type PlayerCareerWithShirtNumbersQuery = Pick<
+  PlayerCareer,
+  "id" | "player_id" | "joined_at" | "left_at" | "career_type"
+> & {
+  player_shirt_numbers: PlayerShirtNumberSummary[];
+};

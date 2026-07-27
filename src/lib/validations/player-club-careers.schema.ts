@@ -7,7 +7,7 @@ import { playerCareerMutationSchema } from "./player-careers.schema";
 
 export const playerClubCareerMutationSchema = z.object({
   club_team_id: idSchema,
-  player_career_id: idSchema.nullable().optional(),
+  player_career_id: z.string().nullable().optional(),
   career: playerCareerMutationSchema,
   contracts: playerContractMutationSchema.array(),
   shirt_numbers: playerShirtNumberMutationSchema.array(),

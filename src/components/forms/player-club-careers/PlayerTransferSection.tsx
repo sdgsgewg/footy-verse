@@ -3,9 +3,7 @@
 import { Dispatch, SetStateAction } from "react";
 import { useTranslations } from "next-intl";
 import { UpsertPlayerClubCareerInput } from "@/types/player-club-career";
-import { ClubListItem } from "@/types/club";
 import FormSection from "../base/FormSection";
-import { SeasonListItem } from "@/types/season";
 import { TransferType } from "@/enums/TransferType";
 import ComboboxField from "../fields/ComboboxField";
 import { SelectOption } from "@/types/select";
@@ -13,17 +11,17 @@ import SelectField from "../fields/SelectField";
 import NumberField from "../fields/NumberField";
 import { getTransferTypeOptions } from "@/lib/transfers/options";
 import { getSeasonOptions } from "@/lib/seasons/options";
-import { getClubOptions } from "@/lib/clubs/options";
 import DateField from "../fields/DateField";
+import { useSeasons } from "@/hooks/dashboard/seasons";
+import { useClubTeams } from "@/hooks/club-teams";
+import { getClubTeamOptions } from "@/lib/club-teams/options";
 
 interface Props {
   form: UpsertPlayerClubCareerInput;
   setForm: Dispatch<SetStateAction<UpsertPlayerClubCareerInput>>;
-  seasons: SeasonListItem[];
-  clubs: ClubListItem[];
 }
 
-const TransferSection = ({ form, setForm, seasons, clubs }: Props) => {
+const PlayerTransferSection = ({ form, setForm }: Props) => {
   const tForm = useTranslations("dashboard.playerClubCareers.form.transfer");
   const tLabels = useTranslations(
     "dashboard.playerClubCareers.form.labels.transfer",
@@ -51,8 +49,11 @@ const TransferSection = ({ form, setForm, seasons, clubs }: Props) => {
   const transferTypeOptions: SelectOption[] =
     getTransferTypeOptions(tTransferType);
 
+  const { seasons } = useSeasons();
   const seasonOptions = getSeasonOptions(seasons);
-  const clubOptions = getClubOptions(clubs);
+
+  const { clubTeams } = useClubTeams();
+  const clubTeamOptions = getClubTeamOptions(clubTeams);
 
   return (
     <FormSection title={tForm("title")}>
@@ -86,7 +87,7 @@ const TransferSection = ({ form, setForm, seasons, clubs }: Props) => {
         <ComboboxField
           label={tLabels("fromClub")}
           name={`from-club`}
-          options={clubOptions}
+          options={clubTeamOptions}
           placeholder={tPlaceholders("fromClub") || ""}
           searchPlaceholder={tCommon("combobox.searchEntity", {
             entity: tEntities("club").toLowerCase(),
@@ -111,7 +112,7 @@ const TransferSection = ({ form, setForm, seasons, clubs }: Props) => {
         <ComboboxField
           label={tLabels("toClub")}
           name={`to-club`}
-          options={clubOptions}
+          options={clubTeamOptions}
           placeholder={tPlaceholders("toClub") || ""}
           searchPlaceholder={tCommon("combobox.searchEntity", {
             entity: tEntities("club").toLowerCase(),
@@ -191,4 +192,4 @@ const TransferSection = ({ form, setForm, seasons, clubs }: Props) => {
   );
 };
 
-export default TransferSection;
+export default PlayerTransferSection;

@@ -1,24 +1,29 @@
-
-import { GetNationalTeamsParams, NationalTeamDetailResponse, NationalTeamEditResponse, NationalTeamListItem } from "@/types/national-team";
+import {
+  NationalTeamDetailResponse,
+  NationalTeamEditResponse,
+  NationalTeamListItem,
+  NationalTeamQuery,
+} from "@/types/national-team";
 import { apiClient } from "./client";
-import { createNationalTeamSchema, updateNationalTeamSchema } from "../validations/national-teams.schema";
+import {
+  createNationalTeamSchema,
+  updateNationalTeamSchema,
+} from "../validations/national-teams.schema";
 
 const baseRoute = "/nationalities";
 
 /**
  *
- * @param nationId
  * @param params
  * @returns NationalTeamListItem[]
  */
 export const fetchNationalTeams = async (
-  nationId: string,
-  params?: GetNationalTeamsParams,
+  params?: NationalTeamQuery,
 ): Promise<NationalTeamListItem[]> => {
   const { data } = await apiClient.get<{
     success: boolean;
     data: NationalTeamListItem[];
-  }>(`${baseRoute}/${nationId}/teams`, {
+  }>(`/national-teams`, {
     params,
   });
 
@@ -66,7 +71,10 @@ export const fetchNationalTeamDetail = async (
  * @param nationId
  * @param payload
  */
-export const createNationalTeam = async (nationId: string, payload: unknown) => {
+export const createNationalTeam = async (
+  nationId: string,
+  payload: unknown,
+) => {
   const parsed = createNationalTeamSchema.parse(payload); // validation
 
   await apiClient.post(`${baseRoute}/${nationId}/teams`, parsed);
