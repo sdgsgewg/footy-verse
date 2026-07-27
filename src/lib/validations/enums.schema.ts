@@ -1,6 +1,10 @@
 import { AgeGroup } from "@/enums/AgeGroup";
 import { CareerType } from "@/enums/CareerType";
+import { CompetitionSquadPlayerStatus } from "@/enums/CompetitionSquadPlayerStatus";
+import { Gender } from "@/enums/Gender";
+import { ParticipantType } from "@/enums/ParticipantType";
 import { PreferredFoot } from "@/enums/PreferredFoot";
+import { RegionType } from "@/enums/RegionType";
 import { SquadType } from "@/enums/SquadType";
 import { TeamCategory } from "@/enums/TeamCategory";
 import { TransferType } from "@/enums/TransferType";
@@ -87,7 +91,28 @@ export const transferTypeSchema = z.enum([
 export const seasonSortBySchema = z.enum(["name", "created_at"]);
 
 // Region
+
+export const regionTypeSchema = z.enum([
+  RegionType.CONTINENT,
+  RegionType.SUBREGION,
+]);
+
 // Competition
+
+export const participantTypeSchema = z.enum([
+  ParticipantType.CLUB,
+  ParticipantType.NATIONAL_TEAM,
+]);
+
+export const genderSchema = z.enum([Gender.MEN, Gender.WOMEN]);
+
+// Competition Squad Player
+
+export const competitionSquadPlayerStatusSchema = z.enum([
+  CompetitionSquadPlayerStatus.REGISTERED,
+  CompetitionSquadPlayerStatus.WITHDRAWN,
+  CompetitionSquadPlayerStatus.REPLACED,
+]);
 
 // Filter, Sort, Pagination
 export const sortOrderSchema = z.enum(["asc", "desc"]);
