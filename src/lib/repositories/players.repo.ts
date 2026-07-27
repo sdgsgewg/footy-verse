@@ -94,7 +94,7 @@ function getPlayersBaseQuery(options?: {
         end_date
       ),
 
-      player_club_careers${clubJoin} (
+      player_club_career:player_club_careers${clubJoin} (
         id,
         club_team_id,
   
@@ -118,7 +118,7 @@ function getPlayersBaseQuery(options?: {
         )
       ),
   
-      player_national_team_careers (
+      player_national_team_career:player_national_team_careers (
         id,
         national_team_id,
   
