@@ -29,7 +29,7 @@
       "height": "Tinggi (cm)",
       "weight": "Berat (kg)",
       "preferredFoot": "Kaki Dominan",
-      "marketValue": "Nilai Pasar",
+      "marketValue": "Nilai Pasar (Euro)",
 
       "positions": "Posisi",
       "nationalities": "Kebangsaan"

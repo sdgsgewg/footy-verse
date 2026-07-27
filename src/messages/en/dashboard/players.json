@@ -29,7 +29,7 @@
       "height": "Height (cm)",
       "weight": "Weight (kg)",
       "preferredFoot": "Preferred Foot",
-      "marketValue": "Market Value (Million Euro)",
+      "marketValue": "Market Value (Euro)",
 
       "positions": "Positions",
       "nationalities": "Nationalities"
