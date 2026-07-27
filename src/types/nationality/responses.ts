@@ -24,6 +24,8 @@ export interface NationalityEditResponse {
   id: string;
   image: string | null;
   name: string;
+  fifaCode: string;
+  regoinId: string | null;
 }
 
 // Model View Detail

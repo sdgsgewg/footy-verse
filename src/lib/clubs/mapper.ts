@@ -28,7 +28,7 @@ export function mapClubEditResponse(club: DbClubDetailRow): ClubEditResponse {
     id,
     image,
     name,
-    nationId: nation_id ?? null,
+    nationId: nation_id,
   };
 }
 

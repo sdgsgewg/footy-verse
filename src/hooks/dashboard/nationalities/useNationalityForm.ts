@@ -17,12 +17,14 @@ const emptyNationalityForm: UpsertNationalityInput = {
   previewUrl: null,
 
   name: "",
+  fifa_code: "",
+  region_id: null,
 };
 
 function mapNationality(
   nationality: NationalityEditResponse,
 ): UpsertNationalityInput {
-  const { id, image, name } = nationality;
+  const { id, image, name, fifaCode, regoinId } = nationality;
 
   return {
     id,
@@ -33,6 +35,8 @@ function mapNationality(
     previewUrl: null,
 
     name,
+    fifa_code: fifaCode,
+    region_id: regoinId ?? null,
   };
 }
 
@@ -49,7 +53,8 @@ export function useNationalityForm(nationality?: NationalityEditResponse) {
   const isEditing = nationality != null;
 
   const canSubmit = useMemo(() => {
-    const isFilled = form.name.trim().length > 0;
+    const isFilled =
+      form.name.trim().length > 0 && form.fifa_code.trim().length > 0;
 
     if (!isFilled) {
       return false;
@@ -61,6 +66,8 @@ export function useNationalityForm(nationality?: NationalityEditResponse) {
 
     return (
       form.name !== initialForm.name ||
+      form.fifa_code !== initialForm.fifa_code ||
+      form.region_id !== initialForm.region_id ||
       form.image !== initialForm.image ||
       form.imageFile != null
     );
@@ -70,6 +77,8 @@ export function useNationalityForm(nationality?: NationalityEditResponse) {
     const payload = new FormData();
 
     payload.append("name", form.name);
+    payload.append("fifa_code", form.fifa_code);
+    payload.append("region_id", form.region_id ?? "");
 
     if (form.image) {
       payload.append("existingImage", form.image);

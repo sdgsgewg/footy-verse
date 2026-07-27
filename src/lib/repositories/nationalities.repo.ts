@@ -10,7 +10,6 @@ import {
   NationalityLookupResponse,
   NationalityUpdateInput,
 } from "@/types/nationality";
-import { ensureUniqueSlug } from "./helpers/slug";
 import { requireEntity } from "./helpers/require-entity";
 import { ENTITY_CONFIG } from "@/config/entities";
 import { deleteEntityImage, prepareUpdatedImage } from "./helpers/image";
@@ -23,6 +22,7 @@ import { NationalTeamCreateInput } from "@/types/national-team";
 import { TeamCategory } from "@/enums/TeamCategory";
 import { AgeGroup } from "@/enums/AgeGroup";
 import { createPaginatedResponse } from "../pagination";
+import { slugify } from "@/utils/string";
 
 async function getSupabase() {
   return createClient();
@@ -191,10 +191,7 @@ export async function createNationalityRepo(
 ): Promise<NationalityDetailResponse> {
   const supabase = await getSupabase();
 
-  const slug = await ensureUniqueSlug({
-    table: getNationalityTable(),
-    name: nationality.name,
-  });
+  const slug = slugify(nationality.name);
 
   const { data: insertedNationality, error } = await supabase
     .from(getNationalityTable())
@@ -227,10 +224,7 @@ export async function updateNationalityRepo(
     getNationalityLabel(),
   );
 
-  const slug = await ensureUniqueSlug({
-    table: getNationalityTable(),
-    name: nationality.name,
-  });
+  const slug = slugify(nationality.name);
 
   const finalImage = await prepareUpdatedImage({
     oldName: oldNationality.name,

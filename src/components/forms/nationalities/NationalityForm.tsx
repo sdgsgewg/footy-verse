@@ -24,7 +24,8 @@ const NationalityForm = ({
   loading = false,
   onSubmit,
 }: Props) => {
-  const t = useTranslations("dashboard.nationalities");
+  const tLabels = useTranslations("dashboard.nationalities.form");
+  const tPlaceholders = useTranslations("dashboard.nationalities.form");
 
   const { form, setForm, canSubmit, buildPayload } =
     useNationalityForm(nationality);
@@ -47,7 +48,7 @@ const NationalityForm = ({
       <FormContentWrapper className="space-y-5">
         {/* Image */}
         <ImageUpload
-          label={t("form.labels.image")}
+          label={tLabels("image")}
           name="image"
           value={(form.previewUrl ?? form.imageUrl) as string}
           onChange={(file) =>
@@ -62,13 +63,25 @@ const NationalityForm = ({
 
         {/* Name */}
         <TextField
-          label={t("form.labels.name")}
+          label={tLabels("name")}
           name="name"
-          placeholder={t("form.placeholders.name") || ""}
+          placeholder={tPlaceholders("name") || ""}
           value={(form.name as string) ?? ""}
           onChange={(value) => setForm({ ...form, name: value })}
           required
         />
+
+        {/* Fifa Code */}
+        <TextField
+          label={tLabels("fifaCode")}
+          name="fifa_code"
+          placeholder={tPlaceholders("fifaCode") || ""}
+          value={(form.fifa_code as string) ?? ""}
+          onChange={(value) => setForm({ ...form, fifa_code: value })}
+          required
+        />
+
+        {/* Region */}
       </FormContentWrapper>
     </FormWrapper>
   );

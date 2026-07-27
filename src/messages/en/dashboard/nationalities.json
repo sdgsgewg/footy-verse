@@ -5,12 +5,16 @@
   "form": {
     "labels": {
       "image": "Nationality Image",
-      "name": "Nationality Name"
+      "name": "Nationality Name",
+      "fifaCode": "FIFA Code",
+      "region": "Region"
     },
 
     "placeholders": {
       "image": "Input image",
-      "name": "Input name"
+      "name": "Input name",
+      "fifaCode": "Input FIFA code (format in 3 characters)",
+      "region": "Select Region"
     }
   },
 

@@ -3,17 +3,13 @@
     "labels": {
       "image": "Club Image",
       "name": "Club Name",
-      "clubType": "Club Type",
-      "nation": "Nation",
-      "parentClub": "Parent Club"
+      "nation": "Nation"
     },
 
     "placeholders": {
       "image": "Choose Image",
       "name": "Input name",
-      "clubType": "Select Club Type",
-      "nation": "Select Nation",
-      "parentClub": "Select Parent Club"
+      "nation": "Select Nation"
     }
   },
 

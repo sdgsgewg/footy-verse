@@ -25,12 +25,14 @@ export function mapNationalityListItem(
 export function mapNationalityEditResponse(
   nationality: DbNationalityDetailRow,
 ): NationalityEditResponse {
-  const { id, image, name } = nationality;
+  const { id, image, name, fifa_code, region_id } = nationality;
 
   return {
     id,
     image,
     name,
+    fifaCode: fifa_code,
+    regoinId: region_id ?? null,
   };
 }
 

@@ -24,7 +24,7 @@ export interface ClubEditResponse {
   id: string;
   image: string | null;
   name: string;
-  nationId: string | null;
+  nationId: string;
 }
 
 // Model View Detail

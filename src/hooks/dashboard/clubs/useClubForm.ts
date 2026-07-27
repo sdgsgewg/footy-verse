@@ -48,12 +48,8 @@ export function useClubForm(club?: ClubEditResponse) {
   const isEditing = club != null;
 
   const canSubmit = useMemo(() => {
-    // sementara dicomment karena club data masih belum lengkap
-    // const isFilled =
-    //   form.name.trim().length > 0 &&
-    //   form.club_type.trim().length > 0 &&
-    //   form.nation_id.trim().length > 0;
-    const isFilled = form.name.trim().length > 0;
+    const isFilled =
+      form.name.trim().length > 0 && form.nation_id.trim().length > 0;
 
     if (!isFilled) {
       return false;
@@ -75,7 +71,7 @@ export function useClubForm(club?: ClubEditResponse) {
     const payload = new FormData();
 
     payload.append("name", form.name);
-    payload.append("nation_id", form.nation_id ?? "");
+    payload.append("nation_id", form.nation_id);
 
     if (form.image) {
       payload.append("existingImage", form.image);

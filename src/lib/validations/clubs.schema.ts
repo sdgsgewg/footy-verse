@@ -6,7 +6,7 @@ import { clubSortBySchema } from "./enums.schema";
 export const clubMutationSchema = z.object({
   image: z.string().nullable().optional(),
   name: z.string().min(1).max(255),
-  nation_id: idSchema.nullable(),
+  nation_id: idSchema,
 });
 
 export const createClubSchema = clubMutationSchema;

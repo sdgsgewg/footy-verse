@@ -3,17 +3,13 @@
     "labels": {
       "image": "Gambar Klub",
       "name": "Nama Klub",
-      "clubType": "Tipe Klub",
-      "nation": "Asal Negara",
-      "parentClub": "Klub Induk"
+      "nation": "Asal Negara"
     },
 
     "placeholders": {
       "image": "Pilih Gambar",
       "name": "Input nama",
-      "clubType": "Pilih Tipe Klub",
-      "nation": "Pilih Asal Negara",
-      "parentClub": "Pilih Klub Induk"
+      "nation": "Pilih Asal Negara"
     }
   },
 
