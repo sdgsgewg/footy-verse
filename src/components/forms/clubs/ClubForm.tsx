@@ -4,11 +4,10 @@ import { useClubForm } from "@/hooks/dashboard/clubs";
 import { useTranslations } from "next-intl";
 import FormHeader from "../base/FormHeader";
 import FormWrapper from "../base/FormWrapper";
-import ImageUpload from "@/components/shared/ImageUpload";
 import { ClubEditResponse } from "@/types/club";
 import FormContentWrapper from "../base/FormContentWrapper";
 import { getNationalityOptions } from "@/lib/nationalities/options";
-import { ComboboxField, TextField } from "../fields";
+import { ComboboxField, ImageField, TextField } from "../fields";
 import { useNationalities } from "@/hooks/nationalities";
 
 interface Props {
@@ -48,7 +47,7 @@ const ClubForm = ({ mode, club, loading = false, onSubmit }: Props) => {
 
       <FormContentWrapper className="space-y-5">
         {/* Image */}
-        <ImageUpload
+        <ImageField
           label={t("form.labels.image")}
           name="image"
           value={(form.previewUrl ?? form.imageUrl) as string}

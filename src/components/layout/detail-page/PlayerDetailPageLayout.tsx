@@ -1,9 +1,8 @@
-import React from "react";
 import DetailPageLayout from "./DetailPageLayout";
-import Image from "next/image";
 import { PlayerDetailResponse } from "@/types/player";
 import PlayerProfile from "@/components/players/sections/PlayerProfile";
 import PlayerHistory from "@/components/players/sections/PlayerHistory";
+import ImageWrapper from "@/components/shared/ImageWrapper";
 
 interface Props {
   title: string;
@@ -18,15 +17,17 @@ const PlayerDetailPageLayout = ({ title, imageUrl, player }: Props) => {
   const summary = (
     <>
       <div
-        className="flex overflow-hidden"
+        className="w-full flex overflow-hidden"
         // style={{ width: "100%", height: "350px" }}
       >
-        <Image
+        <ImageWrapper
           src={imageUrl}
           alt={title}
-          className="w-full h-full object-contain"
-          width={180}
-          height={180}
+          className={{
+            container: "w-full max-w-sm",
+          }}
+          hoverOverlay
+          clickable
         />
       </div>
 

@@ -4,9 +4,8 @@ import { useNationalityForm } from "@/hooks/dashboard/nationalities";
 import { useTranslations } from "next-intl";
 import FormHeader from "../base/FormHeader";
 import FormWrapper from "../base/FormWrapper";
-import ImageUpload from "@/components/shared/ImageUpload";
 import FormContentWrapper from "../base/FormContentWrapper";
-import { TextField } from "../fields";
+import { ImageField, TextField } from "../fields";
 import { NationalityEditResponse } from "@/types/nationality";
 
 interface Props {
@@ -47,7 +46,7 @@ const NationalityForm = ({
 
       <FormContentWrapper className="space-y-5">
         {/* Image */}
-        <ImageUpload
+        <ImageField
           label={tLabels("image")}
           name="image"
           value={(form.previewUrl ?? form.imageUrl) as string}

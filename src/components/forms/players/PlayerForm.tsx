@@ -6,8 +6,7 @@ import FormWrapper from "../base/FormWrapper";
 import { PlayerEditResponse } from "@/types/player";
 import { usePositions } from "@/hooks/dashboard/positions";
 import FormContentWrapper from "../base/FormContentWrapper";
-import ImageUpload from "@/components/shared/ImageUpload";
-import { DateField, NumberField, SelectField, TextField } from "../fields";
+import { DateField, ImageField, NumberField, SelectField, TextField } from "../fields";
 import { useTranslations } from "next-intl";
 import { getPreferredFootOptions } from "@/lib/players/options";
 import { PreferredFoot } from "@/enums/PreferredFoot";
@@ -59,7 +58,7 @@ const PlayerForm = ({ mode, player, loading = false, onSubmit }: Props) => {
       <FormContentWrapper className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <div className="lg:grid-cols-6 space-y-5">
           {/* Image */}
-          <ImageUpload
+          <ImageField
             label={t("form.labels.image")}
             name="image"
             value={(form.previewUrl ?? form.imageUrl) as string}

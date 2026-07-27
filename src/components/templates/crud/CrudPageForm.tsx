@@ -1,10 +1,10 @@
 import {
   DateField,
+  ImageField,
   NumberField,
   SelectField,
   TextField,
 } from "@/components/forms/fields";
-import ImageUpload from "@/components/shared/ImageUpload";
 import { Button } from "@/components/ui/button";
 import { CrudForm, CrudPageFormProps } from "@/types/crud";
 import { Edit2, Plus, Save, X } from "lucide-react";
@@ -113,7 +113,7 @@ export const CrudPageForm = <TForm extends CrudForm>({
             // Image Field
             if (field.type === "image") {
               return (
-                <ImageUpload
+                <ImageField
                   key={field.name}
                   label={field.label}
                   name={field.name}

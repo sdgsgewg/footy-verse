@@ -1,7 +1,7 @@
 "use client";
 
+import { LightboxProvider } from "@/context/LightboxContext";
 // import { AudioProvider } from "@/context/AudioContext";
-import { PlayerProvider } from "@/context/PlayerContext";
 import { AuthProvider } from "@/providers/auth-provider";
 import { QueryProvider } from "@/providers/query-provider";
 import { ThemeProvider } from "@/providers/theme-provider";
@@ -28,9 +28,9 @@ export default function Providers({
     >
       <AuthProvider initialUser={initialUser} initialProfile={initialProfile}>
         {/* <AudioProvider> */}
-        <PlayerProvider>
-          <QueryProvider>{children}</QueryProvider>
-        </PlayerProvider>
+        <QueryProvider>
+          <LightboxProvider>{children}</LightboxProvider>
+        </QueryProvider>
         {/* </AudioProvider> */}
       </AuthProvider>
     </ThemeProvider>

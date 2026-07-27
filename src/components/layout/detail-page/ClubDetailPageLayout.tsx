@@ -2,6 +2,7 @@ import React from "react";
 import DetailPageLayout from "./DetailPageLayout";
 import Image from "next/image";
 import { ClubDetailResponse } from "@/types/club";
+import ImageWrapper from "@/components/shared/ImageWrapper";
 
 interface Props {
   title: string;
@@ -18,12 +19,14 @@ const ClubDetailPageLayout = ({ title, club, content }: Props) => {
         className="flex overflow-hidden"
         // style={{ width: "100%", height: "350px" }}
       >
-        <Image
+        <ImageWrapper
           src={imageUrl}
           alt={title}
-          className="w-full h-full object-contain"
-          width={180}
-          height={180}
+          className={{
+            container: "w-full max-w-sm",
+          }}
+          hoverOverlay
+          clickable
         />
       </div>
 

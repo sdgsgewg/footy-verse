@@ -1,0 +1,84 @@
+"use client";
+
+import { IMAGES } from "@/constants/images";
+import { useLightbox } from "@/context/LightboxContext";
+import Image from "next/image";
+import { useState } from "react";
+
+export default function ImageWrapper({
+  src,
+  alt,
+  gallery,
+  index,
+  className,
+  hoverOverlay,
+  priority,
+  sizes = "100vw",
+  clickable,
+  children,
+}: {
+  src: string;
+  alt: string;
+  gallery?: string[];
+  index?: number;
+  className?: {
+    container?: string;
+    image?: string;
+    overlay?: string;
+  };
+  hoverOverlay?: boolean;
+  priority?: boolean;
+  sizes?: string;
+  clickable?: boolean;
+  children?: React.ReactNode;
+}) {
+  const [isLoading, setIsLoading] = useState(true);
+  const { openLightbox } = useLightbox();
+
+  const safeSrc = src || IMAGES.COMMON.DEFAULT;
+
+  return (
+    <div
+      onClick={
+        clickable
+          ? () =>
+              openLightbox(
+                (gallery ?? [safeSrc]).map((img) => ({
+                  src: img,
+                })),
+                index ?? 0,
+              )
+          : undefined
+      }
+      className={`relative aspect-video overflow-hidden ${
+        clickable ? "cursor-pointer" : ""
+      } ${className?.container || ""}`}
+    >
+      {isLoading && (
+        <div className="absolute inset-0 animate-pulse bg-zinc-200 dark:bg-zinc-800 rounded-lg" />
+      )}
+
+      <Image
+        src={safeSrc}
+        alt={alt}
+        fill
+        sizes={sizes}
+        priority={priority}
+        className={`${
+          isLoading ? "opacity-0" : "opacity-100"
+        } ${className?.image || "w-full h-auto"} object-cover transition duration-500`}
+        onLoad={() => setIsLoading(false)}
+      />
+
+      {hoverOverlay && (
+        <div
+          className={`absolute inset-0 ${
+            className?.overlay || "bg-black/0 group-hover:bg-black/20"
+          } transition`}
+        />
+      )}
+
+      {children}
+    </div>
+  );
+}
