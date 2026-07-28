@@ -17,7 +17,7 @@ const baseRouteWithApi = `/api/nationalities`;
 /**
  *
  * @param params
- * @returns NationalityListItem[]
+ * @returns NationalityListResponse
  */
 export const fetchNationalities = async (
   params?: NationalityQuery,

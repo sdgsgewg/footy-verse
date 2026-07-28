@@ -1,6 +1,6 @@
-// Supabase Query Result
-
 import { Nationality } from "./database";
+
+// Supabase Query Result
 
 // Nationality List
 

@@ -1,12 +1,15 @@
 {
   "home": "Beranda",
+
   "teams": {
     "base": "Tim",
     "indonesia": "Indonesia",
     "arsenal": "Arsenal"
   },
+
   "dashboard": {
     "base": "Dasbor",
+
     "content": {
       "base": "Manajemen Konten",
       "players": "Pemain",
@@ -17,6 +20,7 @@
       "regions": "Zona Wilayah",
       "competitions": "Kompetisi"
     },
+    
     "system": {
       "base": "Manajemen Sistem",
       "users": "Pengguna",

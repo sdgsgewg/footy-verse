@@ -95,7 +95,10 @@ export const seasonSortBySchema = z.enum(["name", "created_at"]);
 export const regionTypeSchema = z.enum([
   RegionType.CONTINENT,
   RegionType.SUBREGION,
+  "",
 ]);
+
+export const regionSortBySchema = z.enum(["name", "created_at"]);
 
 // Competition
 

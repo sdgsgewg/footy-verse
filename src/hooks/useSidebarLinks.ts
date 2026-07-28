@@ -3,6 +3,7 @@ import { NavLink } from "@/types/NavLink";
 import {
   CalendarRange,
   Globe,
+  Globe2,
   KeyRound,
   LayoutDashboard,
   MapPinned,
@@ -49,6 +50,11 @@ export function useSidebarLinks() {
       name: tNav("content.seasons"),
       path: ROUTES.DASHBOARD.CONTENT.SEASONS.BASE,
       icon: CalendarRange,
+    },
+    {
+      name: tNav("content.regions"),
+      path: ROUTES.DASHBOARD.CONTENT.REGIONS.BASE,
+      icon: Globe2,
     },
   ];
 

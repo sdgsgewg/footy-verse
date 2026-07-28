@@ -1,5 +1,3 @@
-// Repo Request (from zod)
-
 import {
   createNationalitySchema,
   nationalitiesQuerySchema,
@@ -8,6 +6,8 @@ import {
 } from "@/lib/validations/nationalities.schema";
 import z from "zod";
 import { ImagePayload } from "../image";
+
+// Repo Request (from zod)
 
 export type NationalityQuery = Partial<
   z.input<typeof nationalitiesQuerySchema>

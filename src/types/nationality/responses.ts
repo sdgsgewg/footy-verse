@@ -1,6 +1,6 @@
-// DTO helper
-
 import { PaginatedResponse } from "../api";
+
+// DTO helper
 
 // API Response DTO
 
@@ -25,7 +25,7 @@ export interface NationalityEditResponse {
   image: string | null;
   name: string;
   fifaCode: string;
-  regoinId: string | null;
+  regionId: string | null;
 }
 
 // Model View Detail

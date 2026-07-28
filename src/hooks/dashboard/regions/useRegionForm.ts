@@ -3,12 +3,9 @@
 import { useMemo, useState } from "react";
 import { getImageUrl } from "@/lib/images/image-url";
 import { STORAGE_BUCKETS } from "@/lib/storage";
-import {
-  NationalityEditResponse,
-  UpsertNationalityInput,
-} from "@/types/nationality";
+import { RegionEditResponse, UpsertRegionInput } from "@/types/region";
 
-const emptyNationalityForm: UpsertNationalityInput = {
+const emptyRegionForm: UpsertRegionInput = {
   id: "",
 
   image: null,
@@ -17,44 +14,42 @@ const emptyNationalityForm: UpsertNationalityInput = {
   previewUrl: null,
 
   name: "",
-  fifa_code: "",
-  region_id: null,
+  region_type: "",
+  parent_region_id: null,
 };
 
-function mapNationality(
-  nationality: NationalityEditResponse,
-): UpsertNationalityInput {
-  const { id, image, name, fifaCode, regionId } = nationality;
+function mapRegion(region: RegionEditResponse): UpsertRegionInput {
+  const { id, image, name, regionType, parentRegionId } = region;
 
   return {
     id,
 
     image,
-    imageUrl: getImageUrl("nationality", STORAGE_BUCKETS.NATIONALITIES, image),
+    imageUrl: getImageUrl("region", STORAGE_BUCKETS.REGIONS, image),
     imageFile: null,
     previewUrl: null,
 
     name,
-    fifa_code: fifaCode,
-    region_id: regionId ?? null,
+    region_type: regionType,
+    parent_region_id: parentRegionId ?? null,
   };
 }
 
-export function useNationalityForm(nationality?: NationalityEditResponse) {
+export function useRegionForm(region?: RegionEditResponse) {
   const initialValue = useMemo(
-    () => (nationality ? mapNationality(nationality) : emptyNationalityForm),
-    [nationality],
+    () => (region ? mapRegion(region) : emptyRegionForm),
+    [region],
   );
 
   const [form, setForm] = useState(initialValue);
 
   const initialForm = initialValue;
 
-  const isEditing = nationality != null;
+  const isEditing = region != null;
 
   const canSubmit = useMemo(() => {
     const isFilled =
-      form.name.trim().length > 0 && form.fifa_code.trim().length > 0;
+      form.name.trim().length > 0 && form.region_type.trim().length > 0;
 
     if (!isFilled) {
       return false;
@@ -66,8 +61,8 @@ export function useNationalityForm(nationality?: NationalityEditResponse) {
 
     return (
       form.name !== initialForm.name ||
-      form.fifa_code !== initialForm.fifa_code ||
-      form.region_id !== initialForm.region_id ||
+      form.region_type !== initialForm.region_type ||
+      form.parent_region_id !== initialForm.parent_region_id ||
       form.image !== initialForm.image ||
       form.imageFile != null
     );
@@ -77,8 +72,8 @@ export function useNationalityForm(nationality?: NationalityEditResponse) {
     const payload = new FormData();
 
     payload.append("name", form.name);
-    payload.append("fifa_code", form.fifa_code);
-    payload.append("region_id", form.region_id ?? "");
+    payload.append("region_type", form.region_type);
+    payload.append("parent_region_id", form.parent_region_id ?? "");
 
     if (form.image) {
       payload.append("existingImage", form.image);

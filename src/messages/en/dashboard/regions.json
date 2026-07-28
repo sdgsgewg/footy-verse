@@ -1,0 +1,30 @@
+{
+  "form": {
+    "labels": {
+      "image": "Region Image",
+      "name": "Region Name",
+      "regionType": "Region Type",
+      "parentRegion": "Parent Region"
+    },
+
+    "placeholders": {
+      "image": "Input image",
+      "name": "Input name",
+      "regionType": "Input region type",
+      "parentRegion": "Select Parent Region"
+    },
+
+    "options": {
+      "regionType": {
+        "continent": "Continent",
+        "subregion": "Subregion"
+      }
+    }
+  },
+
+  "columns": {
+    "name": "Name",
+    "regionType": "Type",
+    "parentRegion": "Parent"
+  }
+}

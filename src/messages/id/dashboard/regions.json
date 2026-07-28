@@ -1,0 +1,30 @@
+{
+  "form": {
+    "labels": {
+      "image": "Gambar Zona Wilayah",
+      "name": "Nama Zona Wilayah",
+      "regionType": "Tipe Zona Wilayah",
+      "parentRegion": "Induk Zona Wilayah"
+    },
+
+    "placeholders": {
+      "image": "Input gambar zona wilayah",
+      "name": "Input nama zona wilayah",
+      "regionType": "Masukkan tipe zona wilayah",
+      "parentRegion": "Pilih Induk Zona Wilayah"
+    },
+
+    "options": {
+      "regionType": {
+        "continent": "Benua",
+        "subregion": "Subkawasan"
+      }
+    }
+  },
+
+  "columns": {
+    "name": "Nama",
+    "regionType": "Tipe",
+    "parentRegion": "Induk"
+  }
+}

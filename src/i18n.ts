@@ -52,6 +52,9 @@ async function getMessages(locale: string) {
 
     seasons: (await import(`./messages/${locale}/dashboard/seasons.json`))
       .default,
+
+    regions: (await import(`./messages/${locale}/dashboard/regions.json`))
+      .default,
   };
 
   return {

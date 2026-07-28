@@ -32,7 +32,7 @@ export function mapNationalityEditResponse(
     image,
     name,
     fifaCode: fifa_code,
-    regoinId: region_id ?? null,
+    regionId: region_id ?? null,
   };
 }
 

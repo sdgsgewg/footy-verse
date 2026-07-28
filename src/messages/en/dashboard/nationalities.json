@@ -1,7 +1,4 @@
 {
-  "title": "Manage Nationalities",
-  "subtitle": "Add, edit, or delete nationalities",
-
   "form": {
     "labels": {
       "image": "Nationality Image",

@@ -7,56 +7,74 @@ import { CrudListPage } from "@/components/templates/crud";
 import { DataColumn } from "@/types/table";
 import { createSortHandler } from "@/lib/utils/crud";
 import { useCrudFilterSync } from "@/hooks/crud";
-import useNationalityFilter from "@/hooks/nationalities/useNationalityFilter";
-import { useNationalities } from "@/hooks/nationalities";
-import { useNationalityActions } from "@/hooks/dashboard/nationalities";
-import { NationalityListItem } from "@/types/nationality";
 import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
+import useRegionFilter from "@/hooks/dashboard/regions/useRegionFilter";
+import { useRegionActions, useRegions } from "@/hooks/dashboard/regions";
+import { RegionListItem } from "@/types/region";
 import { ImageLabel } from "@/components/shared/ImageLabel";
+import { getRegionTypeLabel } from "@/lib/regions/labels";
+import { RegionType } from "@/enums/RegionType";
 
-export default function NationalitiesManagementPage() {
+export default function Page() {
   const tCommon = useTranslations("common");
-  const tColumn = useTranslations("dashboard.nationalities.columns");
+  const tColumn = useTranslations("dashboard.regions.columns");
+  const tRegionType = useTranslations(
+    "dashboard.regions.form.options.regionType",
+  );
 
   const { getTitle } = useCrudPageTitle();
 
-  const {
-    filters,
-    debouncedFilters,
-    setFilter,
-    setFilters,
-    goToPage,
-    syncUrl,
-  } = useNationalityFilter();
+  const { filters, debouncedFilters, setFilter, setFilters, syncUrl } =
+    useRegionFilter();
 
-  const {
-    nationalities,
-    limit,
-    totalPages,
-    total,
-    loading,
-    loadError,
-    retrying,
-    retryLoad,
-  } = useNationalities({
+  const { regions, loading, loadError, retrying, retryLoad } = useRegions({
     ...debouncedFilters,
     search: debouncedFilters.search || undefined,
   });
 
   const { handleCreate, handleView, handleEdit, handleDelete } =
-    useNationalityActions();
+    useRegionActions();
 
-  const columns: DataColumn<NationalityListItem>[] = [
+  const columns: DataColumn<RegionListItem>[] = [
     {
       key: "name",
       label: tColumn("name"),
-      className: "min-w-[320px]",
+      className: "min-w-[300px]",
 
-      render: (nation) => (
-        <ImageLabel imageUrl={nation.imageUrl} label={nation.name} />
+      render: (region) => (
+        <ImageLabel imageUrl={region.imageUrl} label={region.name} />
       ),
 
       sortable: true,
+    },
+
+    {
+      key: "regionType",
+      label: tColumn("regionType"),
+      className: "min-w-[300px]",
+      render: (region) =>
+        getRegionTypeLabel(region.regionType as RegionType, tRegionType),
+      sortable: true,
+    },
+
+    {
+      key: "parentRegion",
+      label: tColumn("parentRegion"),
+
+      render: (region) => (
+        <>
+          {region.parentRegion || region.parentRegion !== null ? (
+            <ImageLabel
+              imageUrl={region.parentRegion.imageUrl}
+              label={region.parentRegion.name}
+            />
+          ) : (
+            <span>-</span>
+          )}
+        </>
+      ),
+
+      className: "min-w-[200px]",
     },
   ];
 
@@ -71,9 +89,9 @@ export default function NationalitiesManagementPage() {
 
   return (
     <CrudListPage
-      title={getTitle("list", "nationality")}
+      title={getTitle("list", "region")}
       loading={loading}
-      data={nationalities}
+      data={regions}
       columns={columns}
       headerContent={
         isLikelyConnectionError(loadError) ? (
@@ -95,14 +113,6 @@ export default function NationalitiesManagementPage() {
         sortBy: filters.sortBy,
         sortOrder: filters.sortOrder,
         onSort: handleSort,
-      }}
-      pagination={{
-        page: filters.page,
-        limit,
-        totalPages,
-        totalItems: total,
-        loading,
-        onPageChange: goToPage,
       }}
     />
   );

@@ -10,7 +10,6 @@ type Translate = (key: string) => string;
  * @param t
  * @returns
  */
-
 export const getPreferredFootOptions = (t: Translate): SelectOption[] =>
   Object.values(PreferredFoot).map((type) => ({
     label: getPreferredFootLabel(type, t),

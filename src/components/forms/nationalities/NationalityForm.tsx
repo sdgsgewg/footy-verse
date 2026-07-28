@@ -23,8 +23,8 @@ const NationalityForm = ({
   loading = false,
   onSubmit,
 }: Props) => {
-  const tLabels = useTranslations("dashboard.nationalities.form");
-  const tPlaceholders = useTranslations("dashboard.nationalities.form");
+  const tLabels = useTranslations("dashboard.nationalities.form.labels");
+  const tPlaceholders = useTranslations("dashboard.nationalities.form.placeholders");
 
   const { form, setForm, canSubmit, buildPayload } =
     useNationalityForm(nationality);

@@ -9,6 +9,7 @@ import {
 } from "@/types/season";
 import { ENTITY_CONFIG } from "@/config/entities";
 import { requireEntity } from "./helpers/require-entity";
+import { ensureUniqueSlug } from "./helpers/slug";
 
 async function getSupabase() {
   return createClient();
@@ -80,14 +81,14 @@ export async function createSeasonRepo(
 ): Promise<SeasonDetailResponse> {
   const supabase = await getSupabase();
 
-  await ensureUniqueRecord({
+  const slug = await ensureUniqueSlug({
     table: getTable(),
     name: season.name,
   });
 
   const { data, error } = await supabase
     .from(getTable())
-    .insert({ ...season })
+    .insert({ ...season, slug })
     .select("*")
     .single();
 
