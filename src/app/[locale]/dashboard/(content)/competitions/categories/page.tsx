@@ -4,28 +4,31 @@ import ConnectionErrorAlert from "@/components/feedback/ConnectionErrorAlert";
 import { CrudFormTablePage } from "@/components/templates/crud";
 import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
 import { useCrudFilterSync } from "@/hooks/crud";
-import { useSeasonData } from "@/hooks/dashboard/seasons/useSeasonData";
-import { useSeasons } from "@/hooks/dashboard/seasons/useSeasons";
-import useSeasonFilter from "@/hooks/seasons/useSeasonFilter";
+import {
+  useCompetitionCategories,
+  useCompetitionCategoryData,
+} from "@/hooks/dashboard/competition-categories";
+import useCompetitionCategoryFilter from "@/hooks/dashboard/competition-categories/useCompetitionCategoryFilter";
 import { isLikelyConnectionError } from "@/lib/utils/connection-error";
 import { createSortHandler } from "@/lib/utils/crud";
-import { SeasonListItem } from "@/types/season";
+import { CompetitionCategoryListItem } from "@/types/competition-category";
 import { DataColumn } from "@/types/table";
 import { useTranslations } from "next-intl";
 
-export default function SeasonsManagementPage() {
-  const t = useTranslations("dashboard.seasons");
+export default function Page() {
+  const t = useTranslations("dashboard.competitionCategories");
   const tCommon = useTranslations("common");
-  const tColumn = useTranslations("dashboard.positions.columns");
+  const tColumn = useTranslations("dashboard.competitionCategories.columns");
   const { getTitle } = useCrudPageTitle();
 
   const { filters, debouncedFilters, setFilter, setFilters, syncUrl } =
-    useSeasonFilter();
+    useCompetitionCategoryFilter();
 
-  const { seasons, loading, retrying, loadError, retryLoad } = useSeasons({
-    ...debouncedFilters,
-    search: debouncedFilters.search || undefined,
-  });
+  const { competitionCategories, loading, retrying, loadError, retryLoad } =
+    useCompetitionCategories({
+      ...debouncedFilters,
+      search: debouncedFilters.search || undefined,
+    });
 
   const {
     isEditing,
@@ -38,14 +41,18 @@ export default function SeasonsManagementPage() {
     handleEdit,
     handleDelete,
     resetForm,
-  } = useSeasonData();
+  } = useCompetitionCategoryData();
 
-  const columns: DataColumn<SeasonListItem>[] = [
+  const columns: DataColumn<CompetitionCategoryListItem>[] = [
     {
       key: "name",
       label: tColumn("name"),
       className: "min-w-[300px]",
       sortable: true,
+    },
+    {
+      key: "description",
+      label: tColumn("description"),
     },
   ];
 
@@ -60,9 +67,9 @@ export default function SeasonsManagementPage() {
 
   return (
     <CrudFormTablePage
-      title={getTitle("list", "season")}
+      title={getTitle("list", "competitionCategory")}
       loading={loading}
-      data={seasons}
+      data={competitionCategories}
       columns={columns}
       headerContent={
         isLikelyConnectionError(loadError) ? (
@@ -76,6 +83,14 @@ export default function SeasonsManagementPage() {
             label: t("form.labels.name"),
             placeholder: t("form.placeholders.name"),
             type: "text",
+            required: true,
+          },
+          {
+            name: "description",
+            label: t("form.labels.description"),
+            placeholder: t("form.placeholders.description"),
+            type: "text",
+            required: false,
           },
         ],
         form: form,

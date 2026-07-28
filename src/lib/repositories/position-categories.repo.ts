@@ -159,7 +159,7 @@ export async function createPositionCategoryRepo(
     insertedPositionCategory.id,
   );
   if (!result) {
-    throw new Error("Failed to retrieve created positionCategory");
+    throw new Error("Failed to retrieve created position category");
   }
 
   return result;

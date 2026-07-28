@@ -55,6 +55,14 @@ async function getMessages(locale: string) {
 
     regions: (await import(`./messages/${locale}/dashboard/regions.json`))
       .default,
+
+    competitions: (
+      await import(`./messages/${locale}/dashboard/competitions.json`)
+    ).default,
+
+    competitionCategories: (
+      await import(`./messages/${locale}/dashboard/competition-categories.json`)
+    ).default,
   };
 
   return {

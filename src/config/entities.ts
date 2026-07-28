@@ -144,6 +144,14 @@ export const ENTITY_CONFIG = {
     dashboardRoute: ROUTES.DASHBOARD.CONTENT.REGIONS.BASE,
   },
 
+  competitionCategory: {
+    table: "competition_categories",
+    label: "Competition Category",
+    supportsImage: false,
+    supportsSlug: true,
+    dashboardRoute: ROUTES.DASHBOARD.CONTENT.COMPETITIONS.CATEGORIES,
+  },
+
   competition: {
     table: "competitions",
     label: "Competition",

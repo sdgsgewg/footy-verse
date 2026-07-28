@@ -43,6 +43,8 @@ export const ageGroupSchema = z.enum([
   AgeGroup.U17,
 ]);
 
+// Position Related
+
 // Position Category
 
 export const positionCategorySortBySchema = z.enum(["name", "created_at"]);
@@ -99,6 +101,12 @@ export const regionTypeSchema = z.enum([
 ]);
 
 export const regionSortBySchema = z.enum(["name", "created_at"]);
+
+// Competition Related
+
+// Competition Category
+
+export const competitionCategorySortBySchema = z.enum(["name", "created_at"]);
 
 // Competition
 

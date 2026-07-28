@@ -5,14 +5,15 @@
   "playerCareer": "Karir Pemain",
   "playerClubCareer": "Karir Klub Pemain",
   "playerNationalTeamCareer": "Karir Tim Nasional Pemain",
-  "playerNationalTeam": "Tim Nasional Pemain",
   "club": "Klub",
   "clubTeam": "Tim Klub",
-  "nationalTeam": "Tim Nasional",
   "nationality": "Kebangsaan",
+  "nationalTeam": "Tim Nasional",
   "position": "Posisi",
   "positionCategory": "Kategori Posisi",
   "season": "Musim",
+  "competitionCategory": "Kategori Kompetisi",
+  "competitionScope": "Cakupan Kompetisi",
   "competition": "Kompetisi",
   "region": "Zona Wilayah"
 }

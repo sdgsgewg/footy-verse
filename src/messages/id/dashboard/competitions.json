@@ -1,11 +1,13 @@
 {
+  "navLabel": "Kompetisi",
+
   "form": {
     "labels": {
-      "name": "Nama Musim"
+      "name": "Nama"
     },
 
     "placeholders": {
-      "name": "Input nama"
+      "name": "Masukkan nama"
     }
   },
 

@@ -8,6 +8,7 @@ import {
   LayoutDashboard,
   MapPinned,
   Shield,
+  Trophy,
   User,
   Users,
 } from "lucide-react";
@@ -55,6 +56,11 @@ export function useSidebarLinks() {
       name: tNav("content.regions"),
       path: ROUTES.DASHBOARD.CONTENT.REGIONS.BASE,
       icon: Globe2,
+    },
+    {
+      name: tNav("content.competitions"),
+      path: ROUTES.DASHBOARD.CONTENT.COMPETITIONS.BASE,
+      icon: Trophy,
     },
   ];
 

@@ -49,6 +49,7 @@ export const ROUTES = {
       COMPETITIONS: {
         BASE: "/dashboard/competitions",
         CREATE: "/dashboard/competitions/create",
+        CATEGORIES: "/dashboard/competitions/categories",
       },
     },
     SYSTEM: {

@@ -1,8 +1,6 @@
 import {
-  DateField,
   ImageField,
-  NumberField,
-  SelectField,
+  TextAreaField,
   TextField,
 } from "@/components/forms/fields";
 import { Button } from "@/components/ui/button";
@@ -57,30 +55,15 @@ export const CrudPageForm = <TForm extends CrudForm>({
                   onChange={(value) =>
                     setForm({ ...form, [field.name]: value })
                   }
+                  required={field.required}
                 />
               );
             }
 
-            // Number Field
-            if (field.type === "number") {
+            // Text Area Field
+            if (field.type === "textarea") {
               return (
-                <NumberField
-                  key={field.name}
-                  label={field.label}
-                  name={field.name}
-                  placeholder={field.placeholder || ""}
-                  value={(form[field.name] as number) ?? ""}
-                  onChange={(value) =>
-                    setForm({ ...form, [field.name]: value })
-                  }
-                />
-              );
-            }
-
-            // Date Field
-            if (field.type === "date") {
-              return (
-                <DateField
+                <TextAreaField
                   key={field.name}
                   label={field.label}
                   name={field.name}
@@ -89,23 +72,7 @@ export const CrudPageForm = <TForm extends CrudForm>({
                   onChange={(value) =>
                     setForm({ ...form, [field.name]: value })
                   }
-                />
-              );
-            }
-
-            // Select Field
-            if (field.type === "select") {
-              return (
-                <SelectField
-                  key={field.name}
-                  label={field.label}
-                  name={field.name}
-                  placeholder={field.placeholder || ""}
-                  value={(form[field.name] as string) || ""}
-                  options={field.options || []}
-                  onChange={(value) =>
-                    setForm({ ...form, [field.name]: value })
-                  }
+                  required={field.required}
                 />
               );
             }
@@ -125,6 +92,7 @@ export const CrudPageForm = <TForm extends CrudForm>({
                       previewUrl: URL.createObjectURL(file),
                     }))
                   }
+                  required={field.required}
                 />
               );
             }

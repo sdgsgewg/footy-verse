@@ -4,30 +4,32 @@ import { useTranslations } from "next-intl";
 import { ROUTES } from "@/constants/routes";
 import TabsNavigation from "@/components/navigations/TabsNavigation";
 
-export default function PositionPageLayout({
+export default function CompetitionPageLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const tPosition = useTranslations("dashboard.positions");
-  const tPositionCategory = useTranslations("dashboard.positionCategories");
+  const tCompetition = useTranslations("dashboard.competitions");
+  const tCompetitionCategory = useTranslations(
+    "dashboard.competitionCategories",
+  );
 
   return (
     <div className="min-h-screen space-y-6 bg-background">
       <TabsNavigation
         items={[
           {
-            value: "positions",
-            label: tPosition("navLabel"),
-            href: ROUTES.DASHBOARD.CONTENT.POSITIONS.BASE,
+            value: "competitions",
+            label: tCompetition("navLabel"),
+            href: ROUTES.DASHBOARD.CONTENT.COMPETITIONS.BASE,
           },
           {
             value: "categories",
-            label: tPositionCategory("navLabel"),
-            href: ROUTES.DASHBOARD.CONTENT.POSITIONS.CATEGORIES.BASE,
+            label: tCompetitionCategory("navLabel"),
+            href: ROUTES.DASHBOARD.CONTENT.COMPETITIONS.CATEGORIES,
             isActive: (pathname) =>
               pathname.startsWith(
-                ROUTES.DASHBOARD.CONTENT.POSITIONS.CATEGORIES.BASE,
+                ROUTES.DASHBOARD.CONTENT.COMPETITIONS.CATEGORIES,
               ),
           },
         ]}

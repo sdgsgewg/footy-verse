@@ -3,7 +3,7 @@ import { SelectOption } from "./select";
 import { DataColumn, DataRow } from "./table";
 import { SortOrder } from "./sort";
 
-type FieldType = "text" | "number" | "date" | "select" | "image";
+type FieldType = "text" | "textarea" | "number" | "date" | "select" | "image";
 
 type CrudFormField = {
   name: string;
@@ -11,6 +11,7 @@ type CrudFormField = {
   placeholder?: string;
   type: FieldType;
   options?: SelectOption[];
+  required?: boolean;
 };
 
 export type CrudForm = {

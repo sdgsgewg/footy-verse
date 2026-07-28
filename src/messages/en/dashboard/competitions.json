@@ -1,7 +1,9 @@
 {
+  "navLabel": "Competitions",
+
   "form": {
     "labels": {
-      "name": "Season Name"
+      "name": "Name"
     },
 
     "placeholders": {

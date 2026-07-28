@@ -1,0 +1,208 @@
+import { createClient } from "@/utils/supabase/server";
+import { ensureUniqueSlug } from "./helpers/slug";
+import { requireEntity } from "./helpers/require-entity";
+import { ENTITY_CONFIG } from "@/config/entities";
+import {
+  CompetitionCategoryCreateInput,
+  CompetitionCategoryDetailResponse,
+  CompetitionCategoryEditResponse,
+  CompetitionCategoryFilter,
+  CompetitionCategoryListItem,
+  CompetitionCategoryLookupResponse,
+  CompetitionCategoryUpdateInput,
+} from "@/types/competition-category";
+import {
+  mapCompetitionCategoryDetailResponse,
+  mapCompetitionCategoryEditResponse,
+  mapCompetitionCategoryListItem,
+} from "../competition-categories/mapper";
+import { slugify } from "@/utils/string";
+
+async function getSupabase() {
+  return createClient();
+}
+
+const getLabel = () => {
+  return ENTITY_CONFIG["competitionCategory"]["label"];
+};
+
+const getTable = () => {
+  return ENTITY_CONFIG["competitionCategory"]["table"];
+};
+
+/**
+ *
+ * @param params
+ * @returns CompetitionCategoryListItem[]
+ */
+export async function getCompetitionCategoriesRepo(
+  params: CompetitionCategoryFilter,
+): Promise<CompetitionCategoryListItem[]> {
+  const supabase = await getSupabase();
+
+  // Base Query
+
+  let query = supabase.from(getTable()).select("*", {
+    count: "exact",
+  });
+
+  // Filter
+
+  if (params.search) {
+    query = query.ilike("name", `%${params.search}%`);
+  }
+
+  // Sort
+
+  query = query.order(params.sortBy, {
+    ascending: params.sortOrder === "asc",
+  });
+
+  // Execute
+
+  const { data, error } = await query;
+
+  if (error) throw error;
+
+  return (data ?? []).map(mapCompetitionCategoryListItem);
+}
+
+/**
+ *
+ * @param id
+ * @returns CompetitionCategoryEditResponse | null
+ */
+export async function getCompetitionCategoryEditRepo(
+  id: string,
+): Promise<CompetitionCategoryEditResponse | null> {
+  const supabase = await getSupabase();
+
+  const { data, error } = await supabase
+    .from(getTable())
+    .select("*")
+    .eq("id", id)
+    .maybeSingle();
+
+  if (error) throw error;
+  if (!data) return null;
+
+  return mapCompetitionCategoryEditResponse(data);
+}
+
+/**
+ *
+ * @param id
+ * @returns CompetitionCategoryDetailResponse | null
+ */
+export async function getCompetitionCategoryDetailRepo(
+  id: string,
+): Promise<CompetitionCategoryDetailResponse | null> {
+  const supabase = await getSupabase();
+
+  const { data, error } = await supabase
+    .from(getTable())
+    .select("*")
+    .eq("id", id)
+    .maybeSingle();
+
+  if (error) throw error;
+  if (!data) return null;
+
+  return mapCompetitionCategoryDetailResponse(data);
+}
+
+/**
+ *
+ * @param slug
+ * @returns CompetitionCategoryLookupResponse | null
+ */
+export async function getCompetitionCategoryLookupRepo(
+  slug: string,
+): Promise<CompetitionCategoryLookupResponse | null> {
+  const supabase = await getSupabase();
+
+  const { data, error } = await supabase
+    .from(getTable())
+    .select(`id, slug`)
+    .eq("slug", slug)
+    .maybeSingle();
+
+  if (error) throw error;
+  if (!data) return null;
+
+  return data;
+}
+
+/**
+ *
+ * @param competitionCategory
+ * @returns CompetitionCategoryDetailResponse
+ */
+export async function createCompetitionCategoryRepo(
+  competitionCategory: CompetitionCategoryCreateInput,
+): Promise<CompetitionCategoryDetailResponse> {
+  const supabase = await getSupabase();
+
+  const slug = await ensureUniqueSlug({
+    table: getTable(),
+    name: competitionCategory.name,
+  });
+
+  const { data: insertedCompetitionCategory, error } = await supabase
+    .from(getTable())
+    .insert({ ...competitionCategory, slug })
+    .select("*")
+    .single();
+
+  if (error) throw error;
+
+  const result = await getCompetitionCategoryDetailRepo(
+    insertedCompetitionCategory.id,
+  );
+  if (!result) {
+    throw new Error("Failed to retrieve created competition category");
+  }
+
+  return result;
+}
+
+export async function updateCompetitionCategoryRepo(
+  id: string,
+  competitionCategory: CompetitionCategoryUpdateInput,
+): Promise<CompetitionCategoryDetailResponse> {
+  const supabase = await getSupabase();
+
+  await requireEntity(getCompetitionCategoryDetailRepo, id, getLabel());
+
+  const slug = slugify(competitionCategory.name);
+
+  const { error } = await supabase
+    .from(getTable())
+    .update({
+      ...competitionCategory,
+      slug,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", id)
+    .select("*")
+    .single();
+
+  if (error) throw error;
+
+  const result = await getCompetitionCategoryDetailRepo(id);
+  if (!result) {
+    throw new Error("Failed to retrieve updated competition category");
+  }
+
+  return result;
+}
+
+export async function deleteCompetitionCategoryRepo(id: string): Promise<void> {
+  const supabase = await getSupabase();
+
+  await requireEntity(getCompetitionCategoryDetailRepo, id, getLabel());
+
+  const { error } = await supabase.from(getTable()).delete().eq("id", id);
+
+  if (error) throw error;
+}
