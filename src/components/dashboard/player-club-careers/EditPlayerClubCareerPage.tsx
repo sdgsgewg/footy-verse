@@ -82,6 +82,7 @@ export default function EditPlayerClubCareerPage({
           loading={isSubmitting}
           onSubmit={(payload) =>
             submit({
+              careerId: playerClubCareer.id,
               payload,
             })
           }

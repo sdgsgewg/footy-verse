@@ -56,7 +56,11 @@ export function mapClubTeamDetailResponse(
   };
 }
 
-export function mapClubTeam(clubTeam: ClubTeamSummary): ClubTeamResponse {
+// Helper
+
+export function mapClubTeamResponse(
+  clubTeam: ClubTeamSummary,
+): ClubTeamResponse {
   const { id, squad_type, age_group, club } = clubTeam;
 
   return {

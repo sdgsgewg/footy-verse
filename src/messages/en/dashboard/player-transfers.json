@@ -1,0 +1,14 @@
+{
+  "table": {
+    "title": "Transfer History",
+
+    "columns": {
+      "season": "Season",
+      "date": "Date",
+      "left": "Left",
+      "join": "Joined",
+      "fee": "Fee",
+      "type": "Type"
+    }
+  }
+}

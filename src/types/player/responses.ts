@@ -56,29 +56,31 @@ export interface PlayerEditResponse {
 
 // Model View Detail
 
+export interface PlayerSummaryResponse {
+  shirtNumber: ShirtNumberResponse;
+  imageUrl: string | null;
+  name: string;
+
+  dob: string;
+  pob: string;
+  currentNationality: NationalityResponse;
+  height: string;
+  mainPosition: PositionResponse;
+
+  marketValue: string;
+
+  currentClubTeam: ClubTeamResponse | null;
+  joinedAt: string | null;
+  contractEnd: string | null;
+}
+
 export interface PlayerDetailResponse {
   id: string;
   image: string | null;
   name: string;
   slug: string;
 
-  summary: {
-    shirtNumber: ShirtNumberResponse;
-    imageUrl: string | null;
-    name: string;
-
-    dob: string;
-    pob: string;
-    currentNationality: NationalityResponse;
-    height: string;
-    mainPosition: PositionResponse;
-
-    marketValue: string;
-
-    currentClubTeam: ClubTeamResponse | null;
-    joinedAt: string | null;
-    contractEnd: string | null;
-  };
+  summary: PlayerSummaryResponse;
 
   profile: {
     name: string;

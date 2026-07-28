@@ -1,7 +1,7 @@
 import { UpsertPlayerClubCareerInput } from "@/types/player-club-career";
 import { useCreatePlayerClubCareer } from "./useCreatePlayerClubCareer";
 import { PlayerLookupResponse } from "@/types/player";
-import { useUpdatePlayerClubCareer } from "./useUpdatePlayerCareer";
+import { useUpdatePlayerClubCareer } from "./useUpdatePlayerClubCareer";
 
 type SubmitOptions = {
   careerId?: string;

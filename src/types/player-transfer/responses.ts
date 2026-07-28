@@ -1,19 +1,19 @@
-// API Response DTO
-
-import { ClubResponse } from "../club";
+import { ClubTeamResponse } from "../club-team";
 import { SeasonResponse } from "../season";
+
+// API Response DTO
 
 // Player Transfer List
 
 export interface PlayerTransferListItem {
   id: string;
   transferType: string;
-  transferFee: number;
+  transferFee: string;
   transferDate: string;
 
   season: SeasonResponse;
-  fromClub: ClubResponse;
-  toClub: ClubResponse;
+  fromClubTeam: ClubTeamResponse;
+  toClubTeam: ClubTeamResponse;
 }
 
 // Player Transfer Detail
@@ -39,6 +39,6 @@ export interface PlayerTransferDetailResponse {
   transferDate: string;
 
   season: SeasonResponse;
-  fromClub: ClubResponse;
-  toClub: ClubResponse;
+  fromClubTeam: ClubTeamResponse;
+  toClubTeam: ClubTeamResponse;
 }

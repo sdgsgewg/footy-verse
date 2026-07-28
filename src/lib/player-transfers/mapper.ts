@@ -1,12 +1,40 @@
 import {
   DbPlayerTransferDetailRow,
+  DbPlayerTransferListRow,
   PlayerTransferDetailResponse,
   PlayerTransferEditResponse,
-  PlayerTransferQuery,
+  PlayerTransferListItem,
 } from "@/types/player-transfer";
-import { getImageUrl } from "../images/image-url";
-import { STORAGE_BUCKETS } from "../storage";
-import { formatClubName } from "../club-teams/formatter";
+
+import { DbPlayerTransferRow } from "@/types/player-transfer";
+import { mapSeasonResponse } from "../seasons/mapper";
+import { mapClubTeamResponse } from "../club-teams/mapper";
+import { formatEuroValue } from "../formatters/currency";
+
+export function mapPlayerTransferListItem(
+  playerTransfer: DbPlayerTransferListRow,
+): PlayerTransferListItem {
+  const {
+    id,
+    transfer_type,
+    transfer_fee,
+    transfer_date,
+    season,
+    from_club_team,
+    to_club_team,
+  } = playerTransfer;
+
+  return {
+    id,
+    transferType: transfer_type,
+    transferFee: formatEuroValue(transfer_fee),
+    transferDate: transfer_date,
+
+    season: mapSeasonResponse(season),
+    fromClubTeam: mapClubTeamResponse(from_club_team),
+    toClubTeam: mapClubTeamResponse(to_club_team),
+  };
+}
 
 export function mapPlayerTransferEditResponse(
   playerTransfer: DbPlayerTransferDetailRow,
@@ -33,14 +61,13 @@ export function mapPlayerTransferEditResponse(
 }
 
 export function mapPlayerTransferDetailResponse(
-  playerTransfer: DbPlayerTransferDetailRow | PlayerTransferQuery,
+  playerTransfer: DbPlayerTransferDetailRow | DbPlayerTransferRow,
 ): PlayerTransferDetailResponse {
   const {
     id,
     transfer_type,
     transfer_fee,
     transfer_date,
-
     season,
     from_club_team,
     to_club_team,
@@ -52,29 +79,8 @@ export function mapPlayerTransferDetailResponse(
     transferFee: transfer_fee,
     transferDate: transfer_date,
 
-    season: {
-      id: season.id,
-      name: season.name,
-    },
-
-    fromClub: {
-      id: from_club_team.id,
-      imageUrl: getImageUrl(
-        "club",
-        STORAGE_BUCKETS.CLUBS,
-        from_club_team.club.image,
-      ),
-      name: formatClubName(from_club_team),
-    },
-
-    toClub: {
-      id: to_club_team.id,
-      imageUrl: getImageUrl(
-        "club",
-        STORAGE_BUCKETS.CLUBS,
-        to_club_team.club.image,
-      ),
-      name: formatClubName(to_club_team),
-    },
+    season: mapSeasonResponse(season),
+    fromClubTeam: mapClubTeamResponse(from_club_team),
+    toClubTeam: mapClubTeamResponse(to_club_team),
   };
 }

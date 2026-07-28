@@ -5,7 +5,7 @@ import { updatePlayerNationalTeamCareer } from "@/lib/api/player-national-team-c
 import { playerNationalTeamCareerKeys } from "@/lib/react-query/keys/playerNationalTeamCareerKeys";
 
 interface UpdatePlayerNationalTeamCareerPayload {
-  nationalTeamId: string;
+  careerId: string;
   data: unknown;
 }
 
@@ -13,8 +13,8 @@ export function useUpdatePlayerNationalTeamCareer(
   player: PlayerLookupResponse,
 ) {
   return useCrudMutation<UpdatePlayerNationalTeamCareerPayload>({
-    mutationFn: ({ nationalTeamId, data }) =>
-      updatePlayerNationalTeamCareer(player.id, nationalTeamId, data),
+    mutationFn: ({ careerId, data }) =>
+      updatePlayerNationalTeamCareer(player.id, careerId, data),
 
     invalidateQueries: [
       { queryKey: playerNationalTeamCareerKeys.lists() },

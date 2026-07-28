@@ -1,0 +1,14 @@
+{
+  "table": {
+    "title": "Riwayat Transfer",
+
+    "columns": {
+      "season": "Musim",
+      "date": "Tanggal",
+      "left": "Pergi",
+      "join": "Bergabung",
+      "fee": "Harga",
+      "type": "Tipe"
+    }
+  }
+}

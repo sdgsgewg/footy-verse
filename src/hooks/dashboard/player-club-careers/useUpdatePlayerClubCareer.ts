@@ -3,6 +3,7 @@ import { useCrudMutation } from "../useCrudMutation";
 import { updatePlayerClubCareer } from "@/lib/api/player-club-career";
 import { playerClubCareerKeys } from "@/lib/react-query/keys/playerClubCareerKeys";
 import { PlayerLookupResponse } from "@/types/player";
+import { playerKeys } from "@/lib/react-query/keys/playerKeys";
 
 interface UpdatePlayerClubCareerPayload {
   careerId: string;
@@ -18,6 +19,7 @@ export function useUpdatePlayerClubCareer(player: PlayerLookupResponse) {
       { queryKey: playerClubCareerKeys.lists() },
       { queryKey: playerClubCareerKeys.details() },
       { queryKey: playerClubCareerKeys.edits() },
+      { queryKey: playerKeys.details() },
     ],
 
     redirectTo: `${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${player.slug}`,

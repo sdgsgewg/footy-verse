@@ -21,26 +21,24 @@ export async function getPlayerNationalTeamCareersService(playerId: string) {
   return getPlayerNationalTeamCareersRepo(playerId);
 }
 
-export async function getPlayerNationalTeamCareerEditService(
-  nationalTeamId: string,
-) {
-  const parsedId = idSchema.parse(nationalTeamId);
+export async function getPlayerNationalTeamCareerEditService(careerId: string) {
+  const parsedId = idSchema.parse(careerId);
 
   return getPlayerNationalTeamCareerEditRepo(parsedId);
 }
 
 export async function getPlayerNationalTeamCareerDetailService(
-  nationalTeamId: string,
+  careerId: string,
 ) {
-  const parsedId = idSchema.parse(nationalTeamId);
+  const parsedId = idSchema.parse(careerId);
 
   return getPlayerNationalTeamCareerDetailRepo(parsedId);
 }
 
 export async function getPlayerNationalTeamCareerLookupService(
-  nationalTeamId: string,
+  careerId: string,
 ) {
-  const parsedId = idSchema.parse(nationalTeamId);
+  const parsedId = idSchema.parse(careerId);
 
   return getPlayerNationalTeamCareerLookupRepo(parsedId);
 }
@@ -56,21 +54,19 @@ export async function createPlayerNationalTeamCareerService(
 }
 
 export async function updatePlayerNationalTeamCareerService(
-  nationalTeamId: string,
+  careerId: string,
   playerId: string,
   input: PlayerNationalTeamCareerUpdateInput,
 ) {
-  const parsedId = idSchema.parse(nationalTeamId);
+  const parsedId = idSchema.parse(careerId);
   const parsedPlayerId = idSchema.parse(playerId);
   const parsed = updatePlayerNationalTeamCareerSchema.parse(input);
 
   return updatePlayerNationalTeamCareerRepo(parsedId, parsedPlayerId, parsed);
 }
 
-export async function deletePlayerNationalTeamCareerService(
-  nationalTeamId: string,
-) {
-  const parsedId = idSchema.parse(nationalTeamId);
+export async function deletePlayerNationalTeamCareerService(careerId: string) {
+  const parsedId = idSchema.parse(careerId);
 
   await deletePlayerNationalTeamCareerRepo(parsedId);
 }

@@ -86,6 +86,13 @@ export const transferTypeSchema = z.enum([
   TransferType.RETIRED,
 ]);
 
+// Player Transfer
+
+export const playerTransferSortBySchema = z.enum([
+  "transfer_fee",
+  "transfer_date",
+]);
+
 // Player National Team Career
 
 // Season

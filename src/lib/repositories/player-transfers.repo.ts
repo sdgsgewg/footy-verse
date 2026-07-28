@@ -1,11 +1,18 @@
 import { ENTITY_CONFIG } from "@/config/entities";
 import {
+  DbPlayerTransferDetailRow,
+  DbPlayerTransferListRow,
   PlayerTransferCreateInput,
   PlayerTransferDetailResponse,
+  PlayerTransferFilter,
+  PlayerTransferListItem,
   PlayerTransferUpdateInput,
 } from "@/types/player-transfer";
 import { createClient } from "@/utils/supabase/server";
-import { mapPlayerTransferDetailResponse } from "../player-transfers/mapper";
+import {
+  mapPlayerTransferDetailResponse,
+  mapPlayerTransferListItem,
+} from "../player-transfers/mapper";
 import { requireEntity } from "./helpers/require-entity";
 
 const getLabel = () => {
@@ -20,6 +27,118 @@ async function getSupabase() {
   return createClient();
 }
 
+function getPlayerTransfersBaseQuery() {
+  return `
+    *,
+
+    player_club_career:player_club_careers!inner (
+      player_career:player_careers!inner (
+        player_id
+      )
+    ),
+
+    from_club_team:club_teams!transfers_from_club_team_id_fkey (
+      id,
+      squad_type,
+      age_group,
+
+      club:clubs!club_teams_club_id_fkey (
+        id,
+        name,
+        image
+      )
+    ),
+
+    to_club_team:club_teams!transfers_to_club_team_id_fkey (
+      id,
+      squad_type,
+      age_group,
+
+      club:clubs!club_teams_club_id_fkey (
+        id,
+        name,
+        image
+      )
+    ),
+
+    season:seasons!transfers_season_id_fkey (
+      id,
+      name
+    )
+  `;
+}
+
+/**
+ *
+ * @param params playerId
+ * @returns PlayerTransferListItem[]
+ */
+export async function getPlayerTransfersRepo(
+  playerId: string,
+  params: PlayerTransferFilter,
+): Promise<PlayerTransferListItem[]> {
+  const supabase = await getSupabase();
+
+  let query = supabase.from(getTable()).select(getPlayerTransfersBaseQuery(), {
+    count: "exact",
+  });
+
+  // Filter
+
+  query = query.eq("player_club_career.player_career.player_id", playerId);
+
+  // Sort
+
+  query = query.order(params.sortBy, {
+    ascending: params.sortOrder === "asc",
+  });
+
+  // Execute
+
+  const { data, error } =
+    await query.overrideTypes<DbPlayerTransferListRow[]>();
+
+  if (error) throw error;
+  if (!data || data.length === 0) return [];
+
+  return data.map(mapPlayerTransferListItem);
+}
+
+function getPlayerTransferDetailBaseQuery() {
+  return `
+    *,
+
+    from_club_team:club_teams!transfers_from_club_team_id_fkey (
+      id,
+      squad_type,
+      age_group,
+
+      club:clubs!club_teams_club_id_fkey (
+        id,
+        name,
+        image
+      )
+    ),
+
+    to_club_team:club_teams!transfers_to_club_team_id_fkey (
+      id,
+      squad_type,
+      age_group,
+
+      club:clubs!club_teams_club_id_fkey (
+        id,
+        name,
+        image
+      )
+    ),
+
+    season:seasons!transfers_season_id_fkey (
+      id,
+      name
+    )
+  `;
+}
+
 /**
  *
  * @param playerClubCareerId
@@ -32,9 +151,10 @@ export async function getPlayerTransferDetailByPlayerClubCareerIdRepo(
 
   const { data, error } = await supabase
     .from(getTable())
-    .select(`*`)
+    .select(getPlayerTransferDetailBaseQuery())
     .eq("player_club_career_id", playerClubCareerId)
-    .maybeSingle();
+    .maybeSingle()
+    .overrideTypes<DbPlayerTransferDetailRow>();
 
   if (error) throw error;
   if (!data) return null;

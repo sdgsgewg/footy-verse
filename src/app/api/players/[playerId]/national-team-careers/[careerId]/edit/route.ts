@@ -3,7 +3,7 @@ import { NotFoundError } from "@/lib/errors/http-error";
 import { getPlayerNationalTeamCareerEditService } from "@/lib/services/player-national-team-careers.service";
 
 type PlayerNationalTeamCareerRouteContext = {
-  params: Promise<{ playerId: string; nationalTeamId: string }>;
+  params: Promise<{ playerId: string; careerId: string }>;
 };
 
 export async function GET(
@@ -11,8 +11,8 @@ export async function GET(
   context: PlayerNationalTeamCareerRouteContext,
 ) {
   try {
-    const { nationalTeamId } = await context.params;
-    const data = await getPlayerNationalTeamCareerEditService(nationalTeamId);
+    const { careerId } = await context.params;
+    const data = await getPlayerNationalTeamCareerEditService(careerId);
 
     if (!data) {
       return errorResponse(new NotFoundError("Player national team not found"));

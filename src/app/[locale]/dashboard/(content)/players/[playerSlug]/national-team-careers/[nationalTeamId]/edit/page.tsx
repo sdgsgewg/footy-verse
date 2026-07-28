@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { getPlayerLookupService } from "@/lib/services/players.service";
-import EditPlayerNationalTeamPage from "@/components/dashboard/player-national-team-careers/EditPlayerNationalTeamCareerPage";
+import EditPlayerNationalTeamCareerPage from "@/components/dashboard/player-national-team-careers/EditPlayerNationalTeamCareerPage";
 import { getPlayerNationalTeamCareerLookupService } from "@/lib/services/player-national-team-careers.service";
 
 export default async function Page({
@@ -20,7 +20,7 @@ export default async function Page({
   }
 
   return (
-    <EditPlayerNationalTeamPage
+    <EditPlayerNationalTeamCareerPage
       playerLookup={playerLookup}
       playerNationalTeamLookup={playerNationalTeamLookup}
     />

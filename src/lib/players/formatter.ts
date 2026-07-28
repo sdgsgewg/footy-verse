@@ -53,16 +53,3 @@ export function formatPlayerHeight(height: number): string {
 export function formatPlayerWeight(weight: number): string {
   return `${weight} kg`;
 }
-
-/**
- *
- * @param marketValue
- * @returns string
- */
-export function formatMarketValue(marketValue: number): string {
-  const modifiedMarketValue = marketValue / 1000000;
-
-  return modifiedMarketValue >= 1
-    ? `€${modifiedMarketValue.toFixed(2)}m`
-    : `€${(modifiedMarketValue * 1000).toFixed(0)}k`;
-}

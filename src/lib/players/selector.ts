@@ -5,7 +5,7 @@ import {
   ShirtNumberResponse,
 } from "@/types/player";
 import { PlayerCareerQuery } from "@/types/player-career";
-import { mapClubTeam } from "../club-teams/mapper";
+import { mapClubTeamResponse } from "../club-teams/mapper";
 import { PlayerPositionQuery } from "@/types/player-position";
 import { PositionSummary } from "@/types/position";
 import { PlayerNationalityQuery } from "@/types/player-nationality";
@@ -206,7 +206,7 @@ export function getCurrentClubTeam(
   const current = clubCareers.find((career) => career.left_at === null);
 
   if (current && current.player_club_career)
-    return mapClubTeam(current.player_club_career.club_team);
+    return mapClubTeamResponse(current.player_club_career.club_team);
 
   // 4. If no active career, find the latest one
   const latest = clubCareers.toSorted(
@@ -215,7 +215,7 @@ export function getCurrentClubTeam(
 
   if (!latest || !latest.player_club_career) return undefined;
 
-  return mapClubTeam(latest.player_club_career.club_team);
+  return mapClubTeamResponse(latest.player_club_career.club_team);
 }
 
 /**

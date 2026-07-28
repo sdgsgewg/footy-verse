@@ -12,7 +12,7 @@ export function mapPlayerCareerEditResponse(
 
   return {
     joinedAt: joined_at,
-    leftAt: left_at ?? "-",
+    leftAt: left_at,
   };
 }
 

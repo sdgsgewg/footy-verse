@@ -79,7 +79,7 @@ export default function PlayersManagementPage() {
     {
       key: "currentClubTeam",
       label: tColumn("club"),
-      className: "min-w-[10rem]",
+      className: "min-w-[12rem]",
 
       render: (player) => (
         <>

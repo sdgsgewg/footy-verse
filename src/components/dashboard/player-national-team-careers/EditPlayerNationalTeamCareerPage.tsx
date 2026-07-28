@@ -20,7 +20,7 @@ interface Props {
   playerNationalTeamLookup: PlayerNationalTeamCareerLookupResponse;
 }
 
-export default function EditPlayerNationalTeamPage({
+export default function EditPlayerNationalTeamCareerPage({
   playerLookup,
   playerNationalTeamLookup,
 }: Props) {
@@ -82,6 +82,7 @@ export default function EditPlayerNationalTeamPage({
           loading={isSubmitting}
           onSubmit={(payload) =>
             submit({
+              careerId: playerNationalTeamCareer.id,
               payload,
             })
           }

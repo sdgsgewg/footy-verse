@@ -1,7 +1,7 @@
 import { ClubTeamSummary } from "../club-team";
 import { PlayerCareerWithShirtNumbersQuery } from "../player-career";
 import { PlayerContractSummary } from "../player-contract";
-import { PlayerTransferQuery } from "../player-transfer";
+import { DbPlayerTransferRow } from "../player-transfer";
 import { PlayerClubCareer } from "./database";
 
 // Supabase Query Result
@@ -19,7 +19,7 @@ export type DbPlayerClubCareerDetailRow = PlayerClubCareer & {
   club_team: ClubTeamSummary;
   player_career: PlayerCareerWithShirtNumbersQuery;
   player_contracts: PlayerContractSummary[];
-  player_transfer: PlayerTransferQuery;
+  player_transfer: DbPlayerTransferRow;
 };
 
 // Helper for other entity (player)
