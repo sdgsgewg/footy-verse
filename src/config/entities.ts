@@ -152,6 +152,14 @@ export const ENTITY_CONFIG = {
     dashboardRoute: ROUTES.DASHBOARD.CONTENT.COMPETITIONS.CATEGORIES,
   },
 
+  competitionScope: {
+    table: "competition_scopes",
+    label: "Competition Scope",
+    supportsImage: false,
+    supportsSlug: true,
+    dashboardRoute: ROUTES.DASHBOARD.CONTENT.COMPETITIONS.SCOPES,
+  },
+
   competition: {
     table: "competitions",
     label: "Competition",

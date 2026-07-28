@@ -50,6 +50,7 @@ export const ROUTES = {
         BASE: "/dashboard/competitions",
         CREATE: "/dashboard/competitions/create",
         CATEGORIES: "/dashboard/competitions/categories",
+        SCOPES: "/dashboard/competitions/scopes",
       },
     },
     SYSTEM: {

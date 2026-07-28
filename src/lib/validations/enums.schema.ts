@@ -108,6 +108,10 @@ export const regionSortBySchema = z.enum(["name", "created_at"]);
 
 export const competitionCategorySortBySchema = z.enum(["name", "created_at"]);
 
+// Competition Scope
+
+export const competitionScopeSortBySchema = z.enum(["name", "created_at"]);
+
 // Competition
 
 export const participantTypeSchema = z.enum([

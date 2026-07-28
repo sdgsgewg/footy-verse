@@ -1,0 +1,20 @@
+{
+  "navLabel": "Scopes",
+
+  "form": {
+    "labels": {
+      "name": "Name",
+      "description": "Description"
+    },
+
+    "placeholders": {
+      "name": "Input name",
+      "description": "Input description"
+    }
+  },
+
+  "columns": {
+    "name": "Name",
+    "description": "Description"
+  }
+}
