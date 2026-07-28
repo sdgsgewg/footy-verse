@@ -12,6 +12,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { SelectOption } from "@/types/select";
+import Image from "next/image";
 
 interface SelectFieldProps {
   label?: string;
@@ -65,7 +66,17 @@ const SelectField: React.FC<SelectFieldProps> = ({
         <SelectContent>
           {options.map((option) => (
             <SelectItem key={option.value} value={option.value}>
-              {option.label}
+              {option.imageUrl && (
+                <Image
+                  src={option.imageUrl}
+                  alt={option.label}
+                  width={20}
+                  height={20}
+                  className="rounded-full object-cover shrink-0"
+                />
+              )}
+
+              <span className="truncate">{option.label}</span>
             </SelectItem>
           ))}
         </SelectContent>

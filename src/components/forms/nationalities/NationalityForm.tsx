@@ -5,8 +5,10 @@ import { useTranslations } from "next-intl";
 import FormHeader from "../base/FormHeader";
 import FormWrapper from "../base/FormWrapper";
 import FormContentWrapper from "../base/FormContentWrapper";
-import { ImageField, TextField } from "../fields";
+import { ImageField, SelectField, TextField } from "../fields";
 import { NationalityEditResponse } from "@/types/nationality";
+import { useRegions } from "@/hooks/dashboard/regions";
+import { getRegionOptions } from "@/lib/regions/options";
 
 interface Props {
   mode: "create" | "edit";
@@ -24,12 +26,17 @@ const NationalityForm = ({
   onSubmit,
 }: Props) => {
   const tLabels = useTranslations("dashboard.nationalities.form.labels");
-  const tPlaceholders = useTranslations("dashboard.nationalities.form.placeholders");
+  const tPlaceholders = useTranslations(
+    "dashboard.nationalities.form.placeholders",
+  );
 
   const { form, setForm, canSubmit, buildPayload } =
     useNationalityForm(nationality);
 
   const isCreate = mode === "create";
+
+  const { regions } = useRegions();
+  const regionOptions = getRegionOptions(regions);
 
   const handleSubmit = () => {
     onSubmit(buildPayload());
@@ -81,6 +88,14 @@ const NationalityForm = ({
         />
 
         {/* Region */}
+        <SelectField
+          label={tLabels("region")}
+          name={`region`}
+          placeholder={tPlaceholders("region")}
+          options={regionOptions}
+          value={form.region_id || ""}
+          onChange={(value) => setForm({ ...form, region_id: value })}
+        />
       </FormContentWrapper>
     </FormWrapper>
   );

@@ -42,10 +42,13 @@ const getNationalTeamTable = () => {
 
 function getNationalitiesBaseQuery() {
   return `
-    id,
-    image,
-    name,
-    slug
+    *,
+
+    region:regions (
+      id,
+      name,
+      image
+    )
   `;
 }
 
@@ -226,18 +229,20 @@ export async function updateNationalityRepo(
 
   const slug = slugify(nationality.name);
 
+  const { image: newImage, ...rest } = nationality;
+
   const finalImage = await prepareUpdatedImage({
     oldName: oldNationality.name,
     newName: nationality.name,
     oldImage: oldNationality.image,
-    newImage: nationality.image ?? "",
+    newImage: newImage ?? "",
     bucket: STORAGE_BUCKETS.NATIONALITIES,
   });
 
   const { error } = await supabase
     .from(getNationalityTable())
     .update({
-      name: nationality.name,
+      ...rest,
       image: finalImage,
       slug,
       updated_at: new Date().toISOString(),

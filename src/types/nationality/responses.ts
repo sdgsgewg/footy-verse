@@ -1,4 +1,5 @@
 import { PaginatedResponse } from "../api";
+import { RegionResponse } from "../region";
 
 // DTO helper
 
@@ -8,10 +9,12 @@ import { PaginatedResponse } from "../api";
 
 export interface NationalityListItem {
   id: string;
-  image: string | null;
   imageUrl: string;
   name: string;
   slug: string;
+  fifaCode: string;
+
+  region: RegionResponse | null;
 }
 
 export type NationalityListResponse = PaginatedResponse<NationalityListItem>;

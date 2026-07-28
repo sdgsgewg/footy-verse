@@ -1,13 +1,13 @@
+import { RegionSummary } from "../region";
 import { Nationality } from "./database";
 
 // Supabase Query Result
 
 // Nationality List
 
-export type DbNationalityListRow = Pick<
-  Nationality,
-  "id" | "image" | "name" | "slug"
->;
+export type DbNationalityListRow = Nationality & {
+  region: RegionSummary | null;
+};
 
 // Nationality Detail
 

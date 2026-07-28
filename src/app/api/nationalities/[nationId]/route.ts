@@ -80,6 +80,7 @@ export async function PUT(request: Request, context: NationalityRouteContext) {
       throw error;
     }
   } catch (error: unknown) {
+    console.error("Error: ", error);
     return errorResponse(error);
   }
 }

@@ -40,7 +40,7 @@ function getRegionsBaseQuery() {
     slug,
     region_type,
 
-    parent_region:regions!regions_parent_region_id_fkey (
+    parent_region:regions (
       id,
       name,
       image

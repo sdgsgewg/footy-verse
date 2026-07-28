@@ -16,7 +16,9 @@
   },
 
   "columns": {
-    "name": "Name"
+    "name": "Name",
+    "fifaCode": "FIFA Code",
+    "region": "Region"
   },
 
   "actions": {

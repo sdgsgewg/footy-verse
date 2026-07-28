@@ -50,13 +50,34 @@ export default function NationalitiesManagementPage() {
     {
       key: "name",
       label: tColumn("name"),
-      className: "min-w-[320px]",
+      className: "min-w-[240px]",
 
       render: (nation) => (
         <ImageLabel imageUrl={nation.imageUrl} label={nation.name} />
       ),
 
       sortable: true,
+    },
+    {
+      key: "fifaCode",
+      label: tColumn("fifaCode"),
+    },
+    {
+      key: "region",
+      label: tColumn("region"),
+
+      render: (nation) => (
+        <>
+          {nation.region ? (
+            <ImageLabel
+              imageUrl={nation.region.imageUrl}
+              label={nation.region.name}
+            />
+          ) : (
+            <span>-</span>
+          )}
+        </>
+      ),
     },
   ];
 

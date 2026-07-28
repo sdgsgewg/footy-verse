@@ -11,14 +11,26 @@ import { STORAGE_BUCKETS } from "../storage";
 export function mapNationalityListItem(
   nationality: DbNationalityListRow,
 ): NationalityListItem {
-  const { id, image, name, slug } = nationality;
+  const { id, image, name, slug, fifa_code, region } = nationality;
 
   return {
     id,
-    image,
     imageUrl: getImageUrl("nationality", STORAGE_BUCKETS.NATIONALITIES, image),
     name,
     slug,
+    fifaCode: fifa_code,
+
+    region: region
+      ? {
+          id: region.id,
+          name: region.name,
+          imageUrl: getImageUrl(
+            "region",
+            STORAGE_BUCKETS.REGIONS,
+            region.image,
+          ),
+        }
+      : null,
   };
 }
 

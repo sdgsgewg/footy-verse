@@ -16,7 +16,9 @@
   },
 
   "columns": {
-    "name": "Nama"
+    "name": "Nama",
+    "fifaCode": "Kode FIFA ",
+    "region": "Zona Wilayah"
   },
 
   "actions": {
