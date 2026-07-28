@@ -34,7 +34,7 @@
       "contracts": {
         "contractStart": "Tanggal Mulai",
         "contractEnd": "Tanggal Akhir",
-        "salary": "Gaji (per tahun)"
+        "salary": "Gaji (per tahun dalam juta euro)"
       },
 
       "shirtNumbers": {

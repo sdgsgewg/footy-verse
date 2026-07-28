@@ -15,15 +15,12 @@ const ClubDetailPageLayout = ({ title, club, content }: Props) => {
 
   const summary = (
     <>
-      <div
-        className="flex overflow-hidden"
-        // style={{ width: "100%", height: "350px" }}
-      >
+      <div className="w-32 h-48 flex overflow-hidden">
         <ImageWrapper
           src={imageUrl}
           alt={title}
           className={{
-            container: "w-full max-w-sm",
+            image: "w-full object-contain",
           }}
           hoverOverlay
           clickable

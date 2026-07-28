@@ -3,8 +3,6 @@
 import { usePlayerDetail } from "@/hooks/dashboard/players";
 import { PlayerLookupResponse } from "@/types/player";
 import PlayerDetailPageLayout from "../layout/detail-page/PlayerDetailPageLayout";
-import { getImageUrl } from "@/lib/images/image-url";
-import { STORAGE_BUCKETS } from "@/lib/storage";
 import EntityLoading from "../feedback/loading/EntityLoading";
 import ErrorState from "../feedback/ErrorState";
 
@@ -32,15 +30,7 @@ export default function PlayerDetailPage({ playerLookup }: Props) {
     return <ErrorState onRetry={() => void refetch()} />;
   }
 
-  const { image, name } = player;
+  const { name } = player;
 
-  const modifiedImage = getImageUrl("player", STORAGE_BUCKETS.PLAYERS, image);
-
-  return (
-    <PlayerDetailPageLayout
-      title={name}
-      imageUrl={modifiedImage}
-      player={player}
-    />
-  );
+  return <PlayerDetailPageLayout title={name} player={player} />;
 }

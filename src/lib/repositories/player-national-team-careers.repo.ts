@@ -54,7 +54,7 @@ function getPlayerNationalTeamCareersBaseQuery() {
       )
     ),
     
-    player_career:player_careers (
+    player_career:player_careers!player_national_team_careers_player_career_id_fkey!inner (
       id,
       player_id,
       joined_at,
@@ -86,8 +86,9 @@ export async function getPlayerNationalTeamCareersRepo(
     await query.overrideTypes<DbPlayerNationalTeamCareerListRow[]>();
 
   if (error) throw error;
+  if (!data || data.length === 0) return [];
 
-  return (data ?? []).map(mapPlayerNationalTeamCareerListItem);
+  return data.map(mapPlayerNationalTeamCareerListItem);
 }
 
 function getPlayerNationalTeamCareerDetailBaseQuery() {
@@ -212,7 +213,7 @@ export async function createPlayerNationalTeamCareerRepo(
       const insertedPlayerCareer = await createPlayerCareerRepo(
         playerId,
         career,
-        CareerType.NATIONAL_TEAM
+        CareerType.NATIONAL_TEAM,
       );
 
       /**

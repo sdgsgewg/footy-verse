@@ -66,7 +66,7 @@ export default function ImageWrapper({
         priority={priority}
         className={`${
           isLoading ? "opacity-0" : "opacity-100"
-        } ${className?.image || "w-full h-auto"} object-cover transition duration-500`}
+        } ${className?.image || "w-full h-auto"}  transition duration-500`}
         onLoad={() => setIsLoading(false)}
       />
 

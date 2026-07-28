@@ -69,9 +69,11 @@ export interface PlayerDetailResponse {
 
     dob: string;
     pob: string;
-    currentNationality: NationalityResponse | null;
+    currentNationality: NationalityResponse;
     height: string;
     mainPosition: PositionResponse;
+
+    marketValue: string;
 
     currentClubTeam: ClubTeamResponse | null;
     joinedAt: string | null;

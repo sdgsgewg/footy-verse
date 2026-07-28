@@ -241,7 +241,7 @@ function getPlayerDetailBaseQuery() {
         end_date
       ),
 
-      player_club_careers (
+      player_club_career:player_club_careers (
         id,
         club_team_id,
   
@@ -263,7 +263,7 @@ function getPlayerDetailBaseQuery() {
         )
       ),
   
-      player_national_team_careers (
+      player_national_team_career:player_national_team_careers (
         id,
         national_team_id,
   

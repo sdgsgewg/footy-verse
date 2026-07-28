@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
-import { formatDate } from "@/lib/utils/date";
+import { formatLocaleDate } from "@/lib/utils/date";
 import { useParams } from "next/navigation";
 import { PlayerNationalTeamCareerListItem } from "@/types/player-national-team-career";
 import { DataColumn } from "@/types/table";
@@ -56,14 +56,15 @@ const PlayerNationalTeamCareerHistoryTable = ({
       key: "joinedAt",
       label: tColumn("joinedAt"),
 
-      render: (team) => formatDate(team.joinedAt, locale),
+      render: (team) => formatLocaleDate(team.joinedAt, locale),
     },
 
     {
       key: "leftAt",
       label: tColumn("leftAt"),
 
-      render: (team) => (team.leftAt ? formatDate(team.leftAt, locale) : "-"),
+      render: (team) =>
+        team.leftAt ? formatLocaleDate(team.leftAt, locale) : "-",
     },
   ];
 

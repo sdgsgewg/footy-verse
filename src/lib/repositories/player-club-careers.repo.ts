@@ -65,7 +65,7 @@ function getPlayerClubCareersBaseQuery() {
       )
     ),
 
-    player_career:player_careers (
+    player_career:player_careers!inner (
       id,
       player_id,
       joined_at,
@@ -97,8 +97,9 @@ export async function getPlayerClubCareersRepo(
     await query.overrideTypes<DbPlayerClubCareerListRow[]>();
 
   if (error) throw error;
+  if (!data || data.length === 0) return [];
 
-  return (data ?? []).map(mapPlayerClubCareerListItem);
+  return data.map(mapPlayerClubCareerListItem);
 }
 
 function getPlayerClubCareerDetailBaseQuery() {

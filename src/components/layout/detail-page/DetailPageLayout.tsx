@@ -32,7 +32,7 @@ const DetailPageLayout = ({ title, summary, content }: Props) => {
       )}
 
       {/* Entity Image and summary */}
-      <div className="w-full flex gap-8">{summary}</div>
+      <div className="w-full">{summary}</div>
 
       {/* Detail Content */}
       <div className="space-y-6">{content}</div>

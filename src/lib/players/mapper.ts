@@ -26,6 +26,7 @@ import {
   formatPlayerHeight,
   formatPlayerWeight,
 } from "./formatter";
+import { formatDate } from "../utils/date";
 
 export function mapPlayerListItem(player: DbPlayerListRow): PlayerListItem {
   const shirtNumber = getCurrentShirtNumber(player);
@@ -103,9 +104,11 @@ export function mapPlayerDetailResponse(
     ? getCurrentCareer(player.player_careers, currentClubCareer)
     : null;
 
-  const joinedAt = currentCareer ? currentCareer.joined_at : null;
+  const joinedAt = currentCareer ? formatDate(currentCareer.joined_at) : null;
 
-  const contractEnd = currentContract ? currentContract.contract_end : null;
+  const contractEnd = currentContract
+    ? formatDate(currentContract.contract_end)
+    : null;
 
   const currentClubTeam = getCurrentClubTeam(player);
 
@@ -124,6 +127,7 @@ export function mapPlayerDetailResponse(
       currentNationality: currentNationality,
       height,
       mainPosition,
+      marketValue,
       currentClubTeam: currentClubTeam ?? null,
       joinedAt,
       contractEnd,

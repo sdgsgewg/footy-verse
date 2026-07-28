@@ -1,4 +1,5 @@
 import { DbPlayerDetailRow } from "@/types/player";
+import { formatDate } from "../utils/date";
 
 /**
  *
@@ -31,8 +32,8 @@ function calculateAge(dob: string): number {
  */
 export function formatDateOfBirth(player: DbPlayerDetailRow): string {
   const age = calculateAge(player.dob);
-  const dob = player.dob;
-  return `${dob} (${age})`;
+
+  return `${formatDate(player.dob)} (${age})`;
 }
 
 /**

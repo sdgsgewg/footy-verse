@@ -34,7 +34,7 @@
       "contracts": {
         "contractStart": "Start Date",
         "contractEnd": "End Date",
-        "salary": "Salary (per year)"
+        "salary": "Salary (per year in million euro)"
       },
 
       "shirtNumbers": {
