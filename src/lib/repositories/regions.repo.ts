@@ -39,12 +39,7 @@ function getRegionsBaseQuery() {
     name,
     slug,
     region_type,
-
-    parent_region:regions (
-      id,
-      name,
-      image
-    )
+    parent_region_id
   `;
 }
 
@@ -81,7 +76,9 @@ export async function getRegionsRepo(
   if (error) throw error;
   if (!data || data.length === 0) return [];
 
-  return data.map(mapRegionListItem);
+  const regionMap = new Map(data.map((region) => [region.id, region]));
+
+  return data.map((region) => mapRegionListItem(region, regionMap));
 }
 
 /**

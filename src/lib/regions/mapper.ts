@@ -11,10 +11,15 @@ import { getImageUrl } from "../images/image-url";
 import { STORAGE_BUCKETS } from "../storage";
 import { RegionType } from "@/enums/RegionType";
 
-export function mapRegionListItem(region: DbRegionListRow): RegionListItem {
-  const { id, image, name, slug, region_type, parent_region } = region;
+export function mapRegionListItem(
+  region: DbRegionListRow,
+  regionMap: Map<string, DbRegionListRow>,
+): RegionListItem {
+  const { id, image, name, slug, region_type, parent_region_id } = region;
 
-  const parent = parent_region?.[0] ?? null;
+  const parent = parent_region_id
+    ? (regionMap.get(parent_region_id) ?? null)
+    : null;
 
   return {
     id,

@@ -7,7 +7,7 @@ import { RegionSummary } from "./summaries";
 
 export type DbRegionListRow = Pick<
   Region,
-  "id" | "image" | "name" | "slug" | "region_type"
+  "id" | "image" | "name" | "slug" | "region_type" | "parent_region_id"
 > & {
   parent_region: RegionSummary[];
 };
