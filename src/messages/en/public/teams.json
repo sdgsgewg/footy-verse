@@ -13,7 +13,7 @@
   },
 
   "clubs": {
-    "title": "Club Teams",
+    "title": "Clubs",
     "description": "Browse professional football clubs.",
     "empty": {
       "title": "No clubs found",

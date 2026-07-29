@@ -52,8 +52,6 @@ export async function PUT(
 
     return successResponse(data);
   } catch (error: unknown) {
-    console.error("Error: ", error);
-
     return errorResponse(error);
   }
 }

@@ -1,10 +1,10 @@
 import React from "react";
 import { PlayerDetailResponse } from "@/types/player";
 import SectionHeader from "./SectionHeader";
-import RecordData from "../record/RecordData";
-import PlayerPositionRecordData from "../record/PlayerPositionRecordData";
-import PlayerNationalitiesRecordData from "../record/PlayerNationalitiesRecordData";
-import PlayerCurrentClubRecordData from "../record/PlayerCurrentClubRecordData";
+import RecordData from "../profile/RecordData";
+import PlayerPositionRecordData from "../profile/PlayerPositionRecordData";
+import PlayerNationalitiesRecordData from "../profile/PlayerNationalitiesRecordData";
+import PlayerCurrentClubRecordData from "../profile/PlayerCurrentClubRecordData";
 
 interface Props {
   player: PlayerDetailResponse;

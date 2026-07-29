@@ -51,11 +51,12 @@ export function mapNationalityEditResponse(
 export function mapNationalityDetailResponse(
   nationality: DbNationalityDetailRow,
 ): NationalityDetailResponse {
-  const { id, image, name } = nationality;
+  const { id, image, name, slug } = nationality;
 
   return {
     id,
     imageUrl: getImageUrl("nationality", STORAGE_BUCKETS.NATIONALITIES, image),
     name,
+    slug,
   };
 }

@@ -4,6 +4,8 @@ import {
   updatePlayerSchema,
 } from "../validations/players.schema";
 import {
+  GroupedPlayerListItem,
+  GroupedPlayerQuery,
   PlayerDetailResponse,
   PlayerEditResponse,
   PlayerListResponse,
@@ -24,6 +26,24 @@ export const fetchPlayers = async (
 ): Promise<PlayerListResponse> => {
   const { data } = await apiClient.get<ApiResponse<PlayerListResponse>>(
     `${baseRoute}`,
+    {
+      params,
+    },
+  );
+
+  return data.data;
+};
+
+/**
+ *
+ * @param params
+ * @returns GroupedPlayerListItem[]
+ */
+export const fetchGroupedPlayers = async (
+  params?: GroupedPlayerQuery,
+): Promise<GroupedPlayerListItem[]> => {
+  const { data } = await apiClient.get<ApiResponse<GroupedPlayerListItem[]>>(
+    `${baseRoute}/grouped`,
     {
       params,
     },

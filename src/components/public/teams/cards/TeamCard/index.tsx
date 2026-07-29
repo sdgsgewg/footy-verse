@@ -33,7 +33,7 @@ export default function TeamCard({ team }: Props) {
         </div>
 
         <div>
-          <h3 className="font-semibold">{team.name}</h3>
+          <h3 className="font-semibold truncate">{team.name}</h3>
 
           {team.subtitle && (
             <p className="mt-1 text-sm text-muted-foreground">

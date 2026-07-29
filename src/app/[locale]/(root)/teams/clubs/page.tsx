@@ -5,6 +5,7 @@ import ClubFilters from "@/components/public/teams/clubs/ClubFilters";
 import TeamSection from "@/components/public/teams/TeamSection";
 import PageHeader from "@/components/shared/PageHeader";
 import PublicPageWrapper from "@/components/wrappers/PublicPageWrapper";
+import { ROUTES } from "@/constants/routes";
 import { useClubs } from "@/hooks/clubs";
 import useClubFilter from "@/hooks/clubs/useClubFilter";
 import { useDebounce } from "@/hooks/useDebounce";
@@ -30,7 +31,7 @@ export default function ClubsPage() {
     id: club.id,
     name: club.name,
     imageUrl: club.imageUrl,
-    href: "",
+    href: `${ROUTES.TEAMS.CLUBS}/${club.slug}`,
     subtitle: "",
   }));
 

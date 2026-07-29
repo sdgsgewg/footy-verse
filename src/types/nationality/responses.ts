@@ -37,6 +37,7 @@ export interface NationalityDetailResponse {
   id: string;
   imageUrl: string;
   name: string;
+  slug: string;
 }
 
 // Helper for other entity

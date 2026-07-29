@@ -6,12 +6,14 @@ import ClubDetailPageLayout from "@/components/layout/detail-page/ClubDetailPage
 import { useClubDetail } from "@/hooks/dashboard/clubs";
 import { ClubLookupResponse } from "@/types/club";
 import PlayerList from "../players/PlayerList";
-import { usePlayers } from "@/hooks/dashboard/players";
 import { ROUTES } from "@/constants/routes";
 import { useClubTeams } from "@/hooks/club-teams";
-import { SelectField } from "../forms/fields";
-import { getClubTeamOptions } from "@/lib/club-teams/options";
 import usePlayerFilter from "@/hooks/players/usePlayerFilter";
+import { TeamType } from "@/enums/TeamType";
+import { useGroupedPlayers } from "@/hooks/players";
+import { useEffect } from "react";
+import { SquadType } from "@/enums/SquadType";
+import ClubFilter from "./filter/ClubFilter";
 
 interface Props {
   clubLookup: ClubLookupResponse;
@@ -20,15 +22,25 @@ interface Props {
 const ClubDetailPage = ({ clubLookup }: Props) => {
   const { club, isLoading, error, refetch } = useClubDetail(clubLookup.id);
 
-  const { filters, setFilters } = usePlayerFilter();
+  const { filters, setFilter } = usePlayerFilter();
 
   const { clubTeams } = useClubTeams({
     clubId: clubLookup.id,
   });
 
-  const { players } = usePlayers({ clubTeamId: filters.clubTeamId });
+  const { groupedPlayers } = useGroupedPlayers({
+    clubTeamId: filters.clubTeamId,
+  });
 
-  const clubTeamOptions = getClubTeamOptions(clubTeams);
+  useEffect(() => {
+    const seniorTeam = clubTeams.find(
+      (ct) => ct.squadType === SquadType.FIRST_TEAM,
+    );
+
+    if (!seniorTeam) return;
+
+    setFilter("clubTeamId", seniorTeam.id);
+  }, [clubTeams]);
 
   // Initial request is still loading and no cached club data is available yet.
   if (!club && isLoading) {
@@ -50,20 +62,11 @@ const ClubDetailPage = ({ clubLookup }: Props) => {
   // Player List in grid style
   const content = (
     <>
-      {/* Test Dropdown Club Teams */}
-      <SelectField
-        label={`Club Teams`}
-        name="club_teams"
-        placeholder={`Select Club Team`}
-        options={clubTeamOptions}
-        value={filters.clubTeamId || ""}
-        onChange={(value) => setFilters({ ...filters, clubTeamId: value })}
-        required
-      />
+      <ClubFilter clubLookup={clubLookup} />
 
       <PlayerList
-        teamType="club"
-        players={players}
+        teamType={TeamType.CLUB}
+        groupedPlayers={groupedPlayers}
         baseRoute={`${ROUTES.TEAMS.CLUBS}/${slug}`}
       />
     </>

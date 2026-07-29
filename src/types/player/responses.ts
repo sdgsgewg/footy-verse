@@ -4,6 +4,7 @@ import { NationalityResponse } from "../nationality";
 import { PlayerNationalityResponse } from "../player-nationality";
 import { PlayerPositionResponse } from "../player-position";
 import { PositionResponse } from "../position";
+import { PositionCategoryResponse } from "../position-category";
 
 // DTO API Response
 
@@ -31,6 +32,11 @@ export interface PlayerListItem {
 }
 
 export type PlayerListResponse = PaginatedResponse<PlayerListItem>;
+
+export interface GroupedPlayerListItem {
+  category: PositionCategoryResponse;
+  players: PlayerListItem[];
+}
 
 // Player Detail
 

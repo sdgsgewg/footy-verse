@@ -7,6 +7,7 @@ import {
   updatePlayerSchema,
   playersQuerySchema,
   playerMutationSchema,
+  groupedPlayersQuerySchema,
 } from "@/lib/validations/players.schema";
 import { ImagePayload } from "../image";
 import { createPlayerPositionSchema } from "@/lib/validations/player-positions.schema";
@@ -21,6 +22,12 @@ export type PlayerQuery = Partial<z.input<typeof playersQuerySchema>>;
  * Khusus dipakai setelah parse, termasuk state React
  */
 export type PlayerFilter = z.infer<typeof playersQuerySchema>;
+
+export type GroupedPlayerQuery = Partial<
+  z.input<typeof groupedPlayersQuerySchema>
+>;
+
+export type GroupedPlayerFilter = z.infer<typeof groupedPlayersQuerySchema>;
 
 export type PlayerCreateInput = z.infer<typeof createPlayerSchema>;
 export type PlayerUpdateInput = z.infer<typeof updatePlayerSchema>;

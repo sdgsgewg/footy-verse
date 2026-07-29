@@ -2,6 +2,7 @@ import { createClient } from "@/utils/supabase/server";
 import { STORAGE_BUCKETS } from "@/lib/storage";
 
 import {
+  mapGroupedPlayers,
   mapPlayerDetailResponse,
   mapPlayerEditResponse,
   mapPlayerListItem,
@@ -14,6 +15,8 @@ import { slugify } from "@/utils/string";
 import {
   DbPlayerDetailRow,
   DbPlayerListRow,
+  GroupedPlayerFilter,
+  GroupedPlayerListItem,
   PlayerCreateInput,
   PlayerDetailResponse,
   PlayerEditResponse,
@@ -48,10 +51,14 @@ const getPlayerNationalityTable = () => {
 
 function getPlayersBaseQuery(options?: {
   isClubTeamFiltered?: boolean;
+  isNationalTeamFiltered?: boolean;
   isNationFiltered?: boolean;
 }) {
-  const clubJoin = options?.isClubTeamFiltered ? "!inner" : "";
+  const clubTeamJoin = options?.isClubTeamFiltered ? "!inner" : "";
+  const nationalTeamJoin = options?.isNationalTeamFiltered ? "!inner" : "";
   const nationJoin = options?.isNationFiltered ? "!inner" : "";
+
+  const teamJoin = clubTeamJoin || nationalTeamJoin;
 
   return `
     id,
@@ -66,7 +73,12 @@ function getPlayersBaseQuery(options?: {
 
       position:positions!player_positions_position_id_fkey (
         id,
-        name
+        name,
+
+        category:position_categories (
+          id,
+          name
+        )
       )
     ),
 
@@ -81,7 +93,7 @@ function getPlayersBaseQuery(options?: {
       )
     ),
 
-    player_careers (
+    player_careers${teamJoin} (
       id,
       joined_at,
       left_at,
@@ -94,7 +106,7 @@ function getPlayersBaseQuery(options?: {
         end_date
       ),
 
-      player_club_career:player_club_careers${clubJoin} (
+      player_club_career:player_club_careers${clubTeamJoin} (
         id,
         club_team_id,
   
@@ -118,7 +130,7 @@ function getPlayersBaseQuery(options?: {
         )
       ),
   
-      player_national_team_career:player_national_team_careers (
+      player_national_team_career:player_national_team_careers${nationalTeamJoin} (
         id,
         national_team_id,
   
@@ -202,6 +214,69 @@ export async function getPlayersRepo(
     page: params.page,
     limit: params.limit,
   });
+}
+
+/**
+ *
+ * @param params
+ * @returns GroupedPlayerListItem[]
+ */
+export async function getGroupedPlayersRepo(
+  params: GroupedPlayerFilter,
+): Promise<GroupedPlayerListItem[]> {
+  const supabase = await getSupabase();
+
+  let query = supabase.from(getPlayerTable()).select(
+    getPlayersBaseQuery({
+      isClubTeamFiltered: !!params.clubTeamId,
+      isNationalTeamFiltered: !!params.nationalTeamId,
+      isNationFiltered: !!params.nationId,
+    }),
+  );
+
+  // Filter
+  if (params.search) {
+    query = query.ilike("name", `%${params.search}%`);
+  }
+
+  if (params.nationId) {
+    query = query.eq("player_nationalities.nation_id", params.nationId);
+  }
+
+  if (params.clubTeamId) {
+    query = query.eq(
+      "player_careers.player_club_careers.club_team_id",
+      params.clubTeamId,
+    );
+  }
+
+  if (params.nationalTeamId) {
+    query = query.eq(
+      "player_careers.player_national_team_careers.national_team_id",
+      params.nationalTeamId,
+    );
+  }
+
+  if (params.positionId) {
+    query = query
+      .eq("player_positions.position_id", params.positionId)
+      .eq("player_positions.display_order", 1);
+  }
+
+  // Sort
+
+  query = query.order(params.sortBy, {
+    ascending: params.sortOrder === "asc",
+  });
+
+  // Execute
+
+  const { data, error } = await query.overrideTypes<DbPlayerListRow[]>();
+
+  if (error) throw error;
+  if (!data || data.length === 0) return [];
+
+  return mapGroupedPlayers(data);
 }
 
 function getPlayerDetailBaseQuery() {

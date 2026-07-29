@@ -34,7 +34,7 @@ export default function TeamsPage() {
     id: nation.id,
     name: nation.name,
     imageUrl: nation.imageUrl,
-    href: `${ROUTES.TEAMS.NATIONAL_TEAMS}/${nation.slug}`,
+    href: `${ROUTES.TEAMS.NATIONALITIES}/${nation.slug}`,
     subtitle: "",
   }));
 
@@ -75,7 +75,7 @@ export default function TeamsPage() {
           }}
           showMore={{
             visible: modifiedNationalTeamList.length >= 10,
-            onClick: () => router.push(ROUTES.TEAMS.NATIONAL_TEAMS),
+            onClick: () => router.push(ROUTES.TEAMS.NATIONALITIES),
           }}
         />
       </div>

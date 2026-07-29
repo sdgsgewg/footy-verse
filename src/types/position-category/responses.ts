@@ -24,3 +24,7 @@ export type PositionCategoryDetailResponse = Pick<
   PositionCategory,
   "id" | "name"
 >;
+
+// Helper
+
+export type PositionCategoryResponse = Pick<PositionCategory, "id" | "name">;

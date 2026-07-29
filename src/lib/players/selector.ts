@@ -285,6 +285,7 @@ export function getOtherPositions(
     .map((pp) => ({
       id: pp.position.id,
       name: pp.position.name,
+      category: pp.position.category,
     }));
 }
 

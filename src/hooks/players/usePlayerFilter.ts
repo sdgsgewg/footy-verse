@@ -6,6 +6,7 @@ const DEFAULT_FILTER: PlayerFilter = {
   search: "",
 
   nationId: undefined,
+  
   clubTeamId: undefined,
 
   page: 1,

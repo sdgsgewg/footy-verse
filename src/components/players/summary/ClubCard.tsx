@@ -1,6 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { IMAGES } from "@/constants/images";
-import RecordData from "./RecordData";
+import RecordData from "../../shared/summary/RecordData";
 import ImageWrapper from "@/components/shared/ImageWrapper";
 import { ClubTeamResponse } from "@/types/club-team";
 
@@ -14,8 +14,8 @@ const ClubCard = ({ club, joinedAt, contractEnd }: Props) => {
   const { imageUrl, name } = club;
 
   return (
-    <Card className="w-full max-w-72">
-      <CardContent className="flex gap-4 p-4">
+    <Card className="w-full max-w-72 lg:max-w-64">
+      <CardContent className="flex gap-4">
         <ImageWrapper
           src={imageUrl ?? IMAGES.COMMON.DEFAULT_PLAYER}
           alt={name}

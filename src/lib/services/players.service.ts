@@ -6,14 +6,16 @@ import {
   getPlayersRepo,
   updatePlayerRepo,
   getPlayerLookupRepo,
+  getGroupedPlayersRepo,
 } from "@/lib/repositories/players.repo";
 import {
   playersQuerySchema,
   createPlayerSchema,
   updatePlayerSchema,
+  groupedPlayersQuerySchema,
 } from "@/lib/validations/players.schema";
 import { idSchema, slugSchema } from "../validations/primitives.schema";
-import { PlayerListResponse } from "@/types/player";
+import { GroupedPlayerListItem, PlayerListResponse } from "@/types/player";
 
 export async function getPlayersService(
   query: unknown,
@@ -21,6 +23,14 @@ export async function getPlayersService(
   const parsed = playersQuerySchema.parse(query);
 
   return getPlayersRepo(parsed);
+}
+
+export async function getGroupedPlayersService(
+  query: unknown,
+): Promise<GroupedPlayerListItem[]> {
+  const parsed = groupedPlayersQuerySchema.parse(query);
+
+  return getGroupedPlayersRepo(parsed);
 }
 
 export async function getPlayerEditService(id: string) {

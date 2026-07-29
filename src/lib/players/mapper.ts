@@ -1,6 +1,7 @@
 import {
   DbPlayerDetailRow,
   DbPlayerListRow,
+  GroupedPlayerListItem,
   PlayerDetailResponse,
   PlayerEditResponse,
   PlayerListItem,
@@ -48,6 +49,43 @@ export function mapPlayerListItem(player: DbPlayerListRow): PlayerListItem {
     currentClubTeam: currentClub ?? null,
     marketValue,
   };
+}
+
+/**
+ * Group players by their main position category.
+ */
+export function mapGroupedPlayers(
+  players: DbPlayerListRow[],
+): GroupedPlayerListItem[] {
+  const grouped = new Map<string, GroupedPlayerListItem>();
+
+  for (const player of players) {
+    const playerItem = mapPlayerListItem(player);
+
+    const category = playerItem.mainPosition.category;
+
+    const existing = grouped.get(category.id);
+
+    if (existing) {
+      existing.players.push(playerItem);
+      continue;
+    }
+
+    grouped.set(category.id, {
+      category,
+      players: [playerItem],
+    });
+  }
+
+  // Kalau position category sudah ada 'display_order' mending pakai kolom itu buat sorting
+
+  const CATEGORY_ORDER = ["Goalkeepers", "Defenders", "Midfielders", "Forwards"];
+
+  return Array.from(grouped.values()).sort(
+    (a, b) =>
+      CATEGORY_ORDER.indexOf(a.category.name) -
+      CATEGORY_ORDER.indexOf(b.category.name),
+  );
 }
 
 export function mapPlayerEditResponse(

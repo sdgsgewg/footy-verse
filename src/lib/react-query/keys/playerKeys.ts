@@ -1,4 +1,4 @@
-import { PlayerQuery } from "@/types/player";
+import { GroupedPlayerQuery, PlayerQuery } from "@/types/player";
 
 export const playerKeys = {
   all: ["players"] as const,
@@ -6,6 +6,11 @@ export const playerKeys = {
   lists: () => [...playerKeys.all, "list"] as const,
 
   list: (params?: PlayerQuery) => [...playerKeys.lists(), params] as const,
+
+  groupedLists: () => [...playerKeys.all, "grouped"] as const,
+
+  groupedList: (params?: GroupedPlayerQuery) =>
+    [...playerKeys.groupedLists(), params] as const,
 
   details: () => [...playerKeys.all, "detail"] as const,
 

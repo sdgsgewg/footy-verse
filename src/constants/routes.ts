@@ -7,14 +7,17 @@ export const ROUTES = {
     EMAIL_VERIFICATION: "/email-verification",
     COMPLETE_PROFILE: "/complete-profile",
   },
+
   HOME: "/",
+
   TEAMS: {
     BASE: "/teams",
     CLUBS: "/teams/clubs",
-    NATIONAL_TEAMS: "/teams/national-teams",
+    NATIONALITIES: "/teams/nationalities",
     INDONESIA: "/nation/indonesia/men/players/",
     ARSENAL: "/club/arsenal/men/players/",
   },
+
   DASHBOARD: {
     BASE: "/dashboard",
     CONTENT: {

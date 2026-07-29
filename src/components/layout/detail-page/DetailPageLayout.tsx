@@ -51,7 +51,7 @@ const DetailPageLayout = ({
       <div className="w-full">{summary}</div>
 
       {/* Detail Content */}
-      <div className="space-y-6">{content}</div>
+      <div className="space-y-8">{content}</div>
     </div>
   );
 };

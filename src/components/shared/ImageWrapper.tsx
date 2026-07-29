@@ -5,22 +5,12 @@ import { useLightbox } from "@/context/LightboxContext";
 import Image from "next/image";
 import { useState } from "react";
 
-export default function ImageWrapper({
-  src,
-  alt,
-  gallery,
-  index,
-  className,
-  hoverOverlay,
-  priority,
-  sizes = "100vw",
-  clickable,
-  children,
-}: {
+interface Props {
   src: string;
   alt: string;
   gallery?: string[];
   index?: number;
+  aspectRatio?: "square" | "video" | "portrait" | "none";
   className?: {
     container?: string;
     image?: string;
@@ -31,11 +21,32 @@ export default function ImageWrapper({
   sizes?: string;
   clickable?: boolean;
   children?: React.ReactNode;
-}) {
+}
+
+export default function ImageWrapper({
+  src,
+  alt,
+  gallery,
+  index,
+  aspectRatio,
+  className,
+  hoverOverlay,
+  priority,
+  sizes = "100vw",
+  clickable,
+  children,
+}: Props) {
   const [isLoading, setIsLoading] = useState(true);
   const { openLightbox } = useLightbox();
 
   const safeSrc = src || IMAGES.COMMON.DEFAULT;
+
+  const aspectClass = {
+    square: "aspect-square",
+    video: "aspect-video",
+    portrait: "aspect-[3/4]",
+    none: "",
+  }[aspectRatio ?? "video"];
 
   return (
     <div
@@ -50,7 +61,7 @@ export default function ImageWrapper({
               )
           : undefined
       }
-      className={`relative aspect-video overflow-hidden ${
+      className={`relative overflow-hidden ${aspectClass} ${
         clickable ? "cursor-pointer" : ""
       } ${className?.container || ""}`}
     >
