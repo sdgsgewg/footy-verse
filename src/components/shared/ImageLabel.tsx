@@ -1,20 +1,20 @@
-import Image from "next/image";
+import ImageWrapper from "./ImageWrapper";
 
 interface ImageLabelProps {
   imageUrl: string;
   label: string;
-  size?: number;
 }
 
-export function ImageLabel({ imageUrl, label, size = 32 }: ImageLabelProps) {
+export function ImageLabel({ imageUrl, label }: ImageLabelProps) {
   return (
     <div className="flex items-center gap-3">
-      <Image
+      <ImageWrapper
         src={imageUrl}
         alt={label ?? ""}
-        width={size}
-        height={size}
-        className="object-contain"
+        className={{
+          container: "w-8 h-8",
+          image: "object-contain",
+        }}
       />
 
       <span>{label}</span>

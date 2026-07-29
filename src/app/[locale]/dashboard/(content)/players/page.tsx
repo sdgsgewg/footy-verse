@@ -1,6 +1,7 @@
 "use client";
 
 import ConnectionErrorAlert from "@/components/feedback/ConnectionErrorAlert";
+import { ImageLabel } from "@/components/shared/ImageLabel";
 import { CrudListPage } from "@/components/templates/crud";
 import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
 import { useCrudFilterSync } from "@/hooks/crud";
@@ -12,7 +13,6 @@ import { createSortHandler } from "@/lib/utils/crud";
 import { PlayerListItem } from "@/types/player";
 import { DataColumn } from "@/types/table";
 import { useTranslations } from "next-intl";
-import Image from "next/image";
 
 export default function PlayersManagementPage() {
   const tCommon = useTranslations("common");
@@ -53,17 +53,7 @@ export default function PlayersManagementPage() {
       className: "min-w-[16rem]",
 
       render: (player) => (
-        <div className="flex items-center gap-3">
-          <Image
-            src={player.imageUrl}
-            alt={player.name}
-            width={32}
-            height={32}
-            className="size-8 object-contain"
-          />
-
-          <span>{player.name}</span>
-        </div>
+        <ImageLabel imageUrl={player.imageUrl} label={player.name} />
       ),
 
       sortable: true,
@@ -84,17 +74,10 @@ export default function PlayersManagementPage() {
       render: (player) => (
         <>
           {player.currentClubTeam ? (
-            <div className="flex items-center gap-3">
-              <Image
-                src={player.currentClubTeam.imageUrl}
-                alt={player.currentClubTeam.name}
-                width={32}
-                height={32}
-                className="size-8 object-contain"
-              />
-
-              <span>{player.currentClubTeam.name}</span>
-            </div>
+            <ImageLabel
+              imageUrl={player.currentClubTeam.imageUrl}
+              label={player.currentClubTeam.name}
+            />
           ) : (
             <span>{`-`}</span>
           )}
@@ -110,17 +93,10 @@ export default function PlayersManagementPage() {
       render: (player) => (
         <>
           {player.currentNationality ? (
-            <div className="flex items-center gap-3">
-              <Image
-                src={player.currentNationality.imageUrl}
-                alt={player.currentNationality.name}
-                width={32}
-                height={32}
-                className="size-8 object-contain"
-              />
-
-              <span>{player.currentNationality.name}</span>
-            </div>
+            <ImageLabel
+              imageUrl={player.currentNationality.imageUrl}
+              label={player.currentNationality.name}
+            />
           ) : (
             <span>{`-`}</span>
           )}

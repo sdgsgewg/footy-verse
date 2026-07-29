@@ -8,11 +8,11 @@ import { CrudListPage } from "@/components/templates/crud";
 import { useClubActions } from "@/hooks/dashboard/clubs";
 import { DataColumn } from "@/types/table";
 import { ClubListItem } from "@/types/club/responses";
-import Image from "next/image";
 import useClubFilter from "@/hooks/clubs/useClubFilter";
 import { createSortHandler } from "@/lib/utils/crud";
 import { useCrudFilterSync } from "@/hooks/crud";
 import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
+import { ImageLabel } from "@/components/shared/ImageLabel";
 
 export default function ClubsManagementPage() {
   const tCommon = useTranslations("common");
@@ -53,17 +53,7 @@ export default function ClubsManagementPage() {
       className: "min-w-[300px]",
 
       render: (club) => (
-        <div className="flex items-center gap-3">
-          <Image
-            src={club.imageUrl}
-            alt={club.name}
-            width={32}
-            height={32}
-            className="size-8 object-contain"
-          />
-
-          <span>{club.name}</span>
-        </div>
+        <ImageLabel imageUrl={club.imageUrl} label={club.name} />
       ),
 
       sortable: true,
@@ -76,17 +66,10 @@ export default function ClubsManagementPage() {
 
       render: (club) =>
         club.nation ? (
-          <div className="flex items-center gap-3">
-            <Image
-              src={club.nation.imageUrl}
-              alt={club.nation.name}
-              width={32}
-              height={32}
-              className="size-8 object-contain"
-            />
-
-            <span>{club.nation.name}</span>
-          </div>
+          <ImageLabel
+            imageUrl={club.nation.imageUrl}
+            label={club.nation.name}
+          />
         ) : (
           "-"
         ),
