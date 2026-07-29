@@ -32,12 +32,9 @@ export function usePositionForm(position?: PositionEditResponse) {
   const isEditing = position != null;
 
   const canSubmit = useMemo(() => {
-    // sementara dicomment karena club data masih belum lengkap
-    // const isFilled =
-    //   form.name.trim().length > 0 &&
-    //   form.club_type.trim().length > 0 &&
-    //   form.category_id.trim().length > 0;
-    const isFilled = form.name.trim().length > 0;
+    const isFilled =
+      form.name.trim().length > 0 &&
+      form.position_category_id.trim().length > 0;
 
     if (!isFilled) {
       return false;
@@ -49,16 +46,10 @@ export function usePositionForm(position?: PositionEditResponse) {
     );
   }, [form, initialForm]);
 
-  const buildPayload = () => {
-    const { name, position_category_id } = form;
-
-    const payload: UpsertPositionInput = {
-      name,
-      position_category_id,
-    };
-
-    return payload;
-  };
+  const buildPayload = () => ({
+    name: form.name,
+    position_category_id: form.position_category_id,
+  });
 
   const resetForm = () => {
     setForm(initialValue);

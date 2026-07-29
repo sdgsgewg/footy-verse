@@ -44,15 +44,9 @@ export function usePositionCategoryForm(club?: PositionCategoryEditResponse) {
     return form.name !== initialForm.name;
   }, [form, initialForm]);
 
-  const buildPayload = () => {
-    const { name } = form;
-
-    const payload: UpsertPositionCategoryInput = {
-      name,
-    };
-
-    return payload;
-  };
+  const buildPayload = () => ({
+    name: form.name,
+  });
 
   const resetForm = () => {
     setForm(initialValue);

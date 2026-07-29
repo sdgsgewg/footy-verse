@@ -7,6 +7,7 @@ import {
   NationalityEditResponse,
   UpsertNationalityInput,
 } from "@/types/nationality";
+import { buildFormData } from "@/lib/forms/buildFormData";
 
 const emptyNationalityForm: UpsertNationalityInput = {
   id: "",
@@ -74,21 +75,15 @@ export function useNationalityForm(nationality?: NationalityEditResponse) {
   }, [form, initialForm, isEditing]);
 
   const buildPayload = () => {
-    const payload = new FormData();
-
-    payload.append("name", form.name);
-    payload.append("fifa_code", form.fifa_code);
-    payload.append("region_id", form.region_id ?? "");
-
-    if (form.image) {
-      payload.append("existingImage", form.image);
-    }
-
-    if (form.imageFile) {
-      payload.append("image", form.imageFile);
-    }
-
-    return payload;
+    return buildFormData({
+      values: {
+        name: form.name,
+        fifa_code: form.fifa_code,
+        region_id: form.region_id,
+      },
+      existingImage: form.image,
+      imageFile: form.imageFile,
+    });
   };
 
   const resetForm = () => {

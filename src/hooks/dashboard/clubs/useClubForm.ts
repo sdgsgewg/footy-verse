@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { ClubEditResponse, UpsertClubInput } from "@/types/club";
 import { getImageUrl } from "@/lib/images/image-url";
 import { STORAGE_BUCKETS } from "@/lib/storage";
+import { buildFormData } from "@/lib/forms/buildFormData";
 
 const emptyClubForm: UpsertClubInput = {
   id: "",
@@ -68,20 +69,14 @@ export function useClubForm(club?: ClubEditResponse) {
   }, [form, initialForm, isEditing]);
 
   const buildPayload = () => {
-    const payload = new FormData();
-
-    payload.append("name", form.name);
-    payload.append("nation_id", form.nation_id);
-
-    if (form.image) {
-      payload.append("existingImage", form.image);
-    }
-
-    if (form.imageFile) {
-      payload.append("image", form.imageFile);
-    }
-
-    return payload;
+    return buildFormData({
+      values: {
+        name: form.name,
+        nation_id: form.nation_id,
+      },
+      existingImage: form.image,
+      imageFile: form.imageFile,
+    });
   };
 
   const resetForm = () => {

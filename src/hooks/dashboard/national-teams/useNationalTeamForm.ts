@@ -53,16 +53,10 @@ export function useNationalTeamForm(nationalTeam?: NationalTeamEditResponse) {
     );
   }, [form, initialForm]);
 
-  const buildPayload = () => {
-    const { team_category, age_group } = form;
-
-    const payload: UpsertNationalTeamInput = {
-      team_category,
-      age_group: age_group || null,
-    };
-
-    return payload;
-  };
+  const buildPayload = () => ({
+    team_category: form.team_category,
+    age_group: form.age_group,
+  });
 
   const resetForm = () => {
     setForm(initialValue);

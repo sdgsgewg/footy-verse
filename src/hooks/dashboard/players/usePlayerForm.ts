@@ -5,6 +5,7 @@ import { PreferredFoot } from "@/enums/PreferredFoot";
 import { PlayerEditResponse, UpsertPlayerInput } from "@/types/player";
 import { STORAGE_BUCKETS } from "@/lib/storage";
 import { getImageUrl } from "@/lib/images/image-url";
+import { buildFormData } from "@/lib/forms/buildFormData";
 
 const emptyPlayerForm: UpsertPlayerInput = {
   id: "",
@@ -117,28 +118,21 @@ export function usePlayerForm(player?: PlayerEditResponse) {
   }, [form, arePositionsValid, areNationalitiesValid, initialForm, isEditing]);
 
   const buildPayload = () => {
-    const payload = new FormData();
-
-    payload.append("name", form.name);
-    payload.append("dob", form.dob);
-    payload.append("pob", form.pob);
-    payload.append("preferred_foot", form.preferred_foot);
-    payload.append("height", String(form.height));
-    payload.append("weight", String(form.weight));
-    payload.append("market_value", String(form.market_value));
-
-    payload.append("positions", JSON.stringify(form.positions));
-    payload.append("nationalities", JSON.stringify(form.nationalities));
-
-    if (form.image) {
-      payload.append("existingImage", form.image);
-    }
-
-    if (form.imageFile) {
-      payload.append("image", form.imageFile);
-    }
-
-    return payload;
+    return buildFormData({
+      values: {
+        name: form.name,
+        dob: form.dob,
+        pob: form.pob,
+        preferred_foot: form.preferred_foot,
+        height: form.height,
+        weight: form.weight,
+        market_value: form.market_value,
+        positions: form.positions,
+        nationalities: form.nationalities,
+      },
+      existingImage: form.image,
+      imageFile: form.imageFile,
+    });
   };
 
   const resetForm = () => {

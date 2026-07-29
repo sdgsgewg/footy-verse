@@ -46,16 +46,10 @@ export function useClubTeamForm(clubTeam?: ClubTeamEditResponse) {
     );
   }, [form, initialForm]);
 
-  const buildPayload = () => {
-    const { squad_type, age_group } = form;
-
-    const payload: UpsertClubTeamInput = {
-      squad_type,
-      age_group: age_group || null,
-    };
-
-    return payload;
-  };
+  const buildPayload = () => ({
+    squad_type: form.squad_type,
+    age_group: form.age_group,
+  });
 
   const resetForm = () => {
     setForm(initialValue);

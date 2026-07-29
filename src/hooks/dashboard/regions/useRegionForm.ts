@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { getImageUrl } from "@/lib/images/image-url";
 import { STORAGE_BUCKETS } from "@/lib/storage";
 import { RegionEditResponse, UpsertRegionInput } from "@/types/region";
+import { buildFormData } from "@/lib/forms/buildFormData";
 
 const emptyRegionForm: UpsertRegionInput = {
   id: "",
@@ -69,21 +70,15 @@ export function useRegionForm(region?: RegionEditResponse) {
   }, [form, initialForm, isEditing]);
 
   const buildPayload = () => {
-    const payload = new FormData();
-
-    payload.append("name", form.name);
-    payload.append("region_type", form.region_type);
-    payload.append("parent_region_id", form.parent_region_id ?? "");
-
-    if (form.image) {
-      payload.append("existingImage", form.image);
-    }
-
-    if (form.imageFile) {
-      payload.append("image", form.imageFile);
-    }
-
-    return payload;
+    return buildFormData({
+      values: {
+        name: form.name,
+        region_type: form.region_type,
+        parent_region_id: form.parent_region_id,
+      },
+      existingImage: form.image,
+      imageFile: form.imageFile,
+    });
   };
 
   const resetForm = () => {

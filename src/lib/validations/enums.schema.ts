@@ -109,6 +109,10 @@ export const regionTypeSchema = z.enum([
 
 export const regionSortBySchema = z.enum(["name", "created_at"]);
 
+// Confederation
+
+export const confederationSortBySchema = z.enum(["name", "created_at"]);
+
 // Competition Related
 
 // Competition Category
