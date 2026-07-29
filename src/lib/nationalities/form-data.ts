@@ -5,6 +5,6 @@ export function getNationalityInputFromFormData(formData: FormData) {
     image: null as string | null,
     name: parseStringField(formData, "name"),
     fifa_code: parseStringField(formData, "fifa_code"),
-    region_id: parseNullableStringField(formData, "region_id"),
+    confederation_id: parseNullableStringField(formData, "confederation_id"),
   };
 }

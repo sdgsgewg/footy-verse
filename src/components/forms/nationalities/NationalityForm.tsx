@@ -7,8 +7,8 @@ import FormWrapper from "../base/FormWrapper";
 import FormContentWrapper from "../base/FormContentWrapper";
 import { ImageField, SelectField, TextField } from "../fields";
 import { NationalityEditResponse } from "@/types/nationality";
-import { useRegions } from "@/hooks/dashboard/regions";
-import { getRegionOptions } from "@/lib/regions/options";
+import { useConfederations } from "@/hooks/dashboard/confederations";
+import { getConfederationOptions } from "@/lib/confederations/options";
 
 interface Props {
   mode: "create" | "edit";
@@ -35,8 +35,8 @@ const NationalityForm = ({
 
   const isCreate = mode === "create";
 
-  const { regions } = useRegions();
-  const regionOptions = getRegionOptions(regions);
+  const { confederations } = useConfederations();
+  const confederationOptions = getConfederationOptions(confederations);
 
   const handleSubmit = () => {
     onSubmit(buildPayload());
@@ -87,14 +87,14 @@ const NationalityForm = ({
           required
         />
 
-        {/* Region */}
+        {/* Confederation */}
         <SelectField
-          label={tLabels("region")}
-          name={`region`}
-          placeholder={tPlaceholders("region")}
-          options={regionOptions}
-          value={form.region_id || ""}
-          onChange={(value) => setForm({ ...form, region_id: value })}
+          label={tLabels("confederation")}
+          name={`confederation`}
+          placeholder={tPlaceholders("confederation")}
+          options={confederationOptions}
+          value={form.confederation_id || ""}
+          onChange={(value) => setForm({ ...form, confederation_id: value })}
         />
       </FormContentWrapper>
     </FormWrapper>

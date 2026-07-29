@@ -1,4 +1,4 @@
-import { RegionSummary } from "../region";
+import { DbConfederationRow } from "../confederation";
 import { Nationality } from "./database";
 
 // Supabase Query Result
@@ -6,7 +6,7 @@ import { Nationality } from "./database";
 // Nationality List
 
 export type DbNationalityListRow = Nationality & {
-  region: RegionSummary | null;
+  confederation: DbConfederationRow | null;
 };
 
 // Nationality Detail

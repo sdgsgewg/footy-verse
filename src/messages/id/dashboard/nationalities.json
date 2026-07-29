@@ -4,21 +4,21 @@
       "image": "Gambar Kebangsaan",
       "name": "Nama Kebangsaan",
       "fifaCode": "Kode FIFA",
-      "region": "Zona Wilayah"
+      "confederation": "Konfederasi"
     },
 
     "placeholders": {
       "image": "Input gambar kebangsaan",
       "name": "Input nama kebangsaan",
       "fifaCode": "Masukkan kode FIFA (format dalam 3 huruf)",
-      "region": "Pilih Zona Wilayah"
+      "confederation": "Pilih Konfederasi"
     }
   },
 
   "columns": {
     "name": "Nama",
     "fifaCode": "Kode FIFA ",
-    "region": "Zona Wilayah"
+    "confederation": "Konfederasi"
   },
 
   "actions": {

@@ -63,15 +63,15 @@ export default function NationalitiesManagementPage() {
       label: tColumn("fifaCode"),
     },
     {
-      key: "region",
-      label: tColumn("region"),
+      key: "confederation",
+      label: tColumn("confederation"),
 
       render: (nation) => (
         <>
-          {nation.region ? (
+          {nation.confederation ? (
             <ImageLabel
-              imageUrl={nation.region.imageUrl}
-              label={nation.region.name}
+              imageUrl={nation.confederation.imageUrl}
+              label={nation.confederation.name}
             />
           ) : (
             <span>-</span>

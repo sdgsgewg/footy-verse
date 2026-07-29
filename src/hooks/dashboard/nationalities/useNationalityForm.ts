@@ -19,13 +19,13 @@ const emptyNationalityForm: UpsertNationalityInput = {
 
   name: "",
   fifa_code: "",
-  region_id: null,
+  confederation_id: null,
 };
 
 function mapNationality(
   nationality: NationalityEditResponse,
 ): UpsertNationalityInput {
-  const { id, image, name, fifaCode, regionId } = nationality;
+  const { id, image, name, fifaCode, confederationId } = nationality;
 
   return {
     id,
@@ -37,7 +37,7 @@ function mapNationality(
 
     name,
     fifa_code: fifaCode,
-    region_id: regionId ?? null,
+    confederation_id: confederationId ?? null,
   };
 }
 
@@ -68,7 +68,7 @@ export function useNationalityForm(nationality?: NationalityEditResponse) {
     return (
       form.name !== initialForm.name ||
       form.fifa_code !== initialForm.fifa_code ||
-      form.region_id !== initialForm.region_id ||
+      form.confederation_id !== initialForm.confederation_id ||
       form.image !== initialForm.image ||
       form.imageFile != null
     );
@@ -79,7 +79,7 @@ export function useNationalityForm(nationality?: NationalityEditResponse) {
       values: {
         name: form.name,
         fifa_code: form.fifa_code,
-        region_id: form.region_id,
+        confederation_id: form.confederation_id,
       },
       existingImage: form.image,
       imageFile: form.imageFile,

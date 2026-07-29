@@ -11,7 +11,7 @@ import { STORAGE_BUCKETS } from "../storage";
 export function mapNationalityListItem(
   nationality: DbNationalityListRow,
 ): NationalityListItem {
-  const { id, image, name, slug, fifa_code, region } = nationality;
+  const { id, image, name, slug, fifa_code, confederation } = nationality;
 
   return {
     id,
@@ -20,14 +20,14 @@ export function mapNationalityListItem(
     slug,
     fifaCode: fifa_code,
 
-    region: region
+    confederation: confederation
       ? {
-          id: region.id,
-          name: region.name,
+          id: confederation.id,
+          name: confederation.name,
           imageUrl: getImageUrl(
-            "region",
-            STORAGE_BUCKETS.REGIONS,
-            region.image,
+            "confederation",
+            STORAGE_BUCKETS.CONFEDERATIONS,
+            confederation.image,
           ),
         }
       : null,
@@ -37,14 +37,14 @@ export function mapNationalityListItem(
 export function mapNationalityEditResponse(
   nationality: DbNationalityDetailRow,
 ): NationalityEditResponse {
-  const { id, image, name, fifa_code, region_id } = nationality;
+  const { id, image, name, fifa_code, confederation_id } = nationality;
 
   return {
     id,
     image,
     name,
     fifaCode: fifa_code,
-    regionId: region_id ?? null,
+    confederationId: confederation_id ?? null,
   };
 }
 

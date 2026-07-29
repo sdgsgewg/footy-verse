@@ -44,7 +44,7 @@ function getNationalitiesBaseQuery() {
   return `
     *,
 
-    region:regions (
+    confederation:confederations (
       id,
       name,
       image

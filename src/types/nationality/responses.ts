@@ -1,5 +1,5 @@
 import { PaginatedResponse } from "../api";
-import { RegionResponse } from "../region";
+import { ConfederationResponse } from "../confederation";
 
 // DTO helper
 
@@ -14,7 +14,7 @@ export interface NationalityListItem {
   slug: string;
   fifaCode: string;
 
-  region: RegionResponse | null;
+  confederation: ConfederationResponse | null;
 }
 
 export type NationalityListResponse = PaginatedResponse<NationalityListItem>;
@@ -28,7 +28,7 @@ export interface NationalityEditResponse {
   image: string | null;
   name: string;
   fifaCode: string;
-  regionId: string | null;
+  confederationId: string | null;
 }
 
 // Model View Detail
