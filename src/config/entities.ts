@@ -144,6 +144,14 @@ export const ENTITY_CONFIG = {
     dashboardRoute: ROUTES.DASHBOARD.CONTENT.REGIONS.BASE,
   },
 
+  confederation: {
+    table: "confederations",
+    label: "Confederation",
+    supportsImage: true,
+    supportsSlug: true,
+    dashboardRoute: ROUTES.DASHBOARD.CONTENT.CONFEDERATIONS.BASE,
+  },
+
   competitionCategory: {
     table: "competition_categories",
     label: "Competition Category",

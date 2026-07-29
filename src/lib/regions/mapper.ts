@@ -1,9 +1,11 @@
 import {
   DbRegionDetailRow,
   DbRegionListRow,
+  DbRegionRow,
   RegionDetailResponse,
   RegionEditResponse,
   RegionListItem,
+  RegionResponse,
 } from "@/types/region";
 import { getImageUrl } from "../images/image-url";
 import { STORAGE_BUCKETS } from "../storage";
@@ -58,5 +60,15 @@ export function mapRegionDetailResponse(
     id,
     imageUrl: getImageUrl("region", STORAGE_BUCKETS.REGIONS, image),
     name,
+  };
+}
+
+export function mapRegionResponse(region: DbRegionRow): RegionResponse {
+  const { id, image, name } = region;
+
+  return {
+    id,
+    name,
+    imageUrl: getImageUrl("region", STORAGE_BUCKETS.REGIONS, image),
   };
 }

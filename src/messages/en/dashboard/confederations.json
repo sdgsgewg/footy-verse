@@ -1,0 +1,29 @@
+{
+  "form": {
+    "labels": {
+      "image": "Image",
+      "name": "Name",
+      "shortName": "Short Name",
+      "founded": "Founded Date",
+      "headquarters": "Headquarters",
+      "website": "Website",
+      "region": "Region"
+    },
+
+    "placeholders": {
+      "image": "Input image",
+      "name": "Input name",
+      "shortName": "Input short name",
+      "founded": "Select Founded Date",
+      "headquarters": "Input headquarters",
+      "website": "Input website",
+      "region": "Select Region"
+    }
+  },
+
+  "columns": {
+    "name": "Name",
+    "founded": "Founded",
+    "region": "Region"
+  }
+}

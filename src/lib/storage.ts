@@ -3,6 +3,7 @@ export const STORAGE_BUCKETS = {
   CLUBS: "club-images",
   NATIONALITIES: "nation-images",
   REGIONS: "region-images",
+  CONFEDERATIONS: "confederation-images",
   COMPETITIONS: "competition-images",
 } as const;
 

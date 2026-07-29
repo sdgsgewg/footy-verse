@@ -1,6 +1,6 @@
-// DTO helper
-
 import { RegionType } from "@/enums/RegionType";
+
+// DTO helper
 
 // API Response DTO
 

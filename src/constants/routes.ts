@@ -49,6 +49,10 @@ export const ROUTES = {
         BASE: "/dashboard/regions",
         CREATE: "/dashboard/regions/create",
       },
+      CONFEDERATIONS: {
+        BASE: "/dashboard/confederations",
+        CREATE: "/dashboard/confederations/create",
+      },
       COMPETITIONS: {
         BASE: "/dashboard/competitions",
         CREATE: "/dashboard/competitions/create",

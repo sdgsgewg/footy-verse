@@ -9,6 +9,7 @@ import { NotFoundError } from "@/lib/errors/http-error";
 import { getRegionInputFromFormData } from "@/lib/regions/form-data";
 import {
   deleteRegionService,
+  getRegionDetailService,
   getRegionEditService,
   updateRegionService,
 } from "@/lib/services/regions.service";
@@ -22,7 +23,7 @@ type RegionRouteContext = {
 export async function GET(_request: Request, context: RegionRouteContext) {
   try {
     const { id } = await context.params;
-    const data = await getRegionEditService(id);
+    const data = await getRegionDetailService(id);
 
     if (!data) {
       return errorResponse(new NotFoundError("Region not found"));

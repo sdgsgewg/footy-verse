@@ -1,5 +1,3 @@
-// Repo Request (from zod)
-
 import z from "zod";
 import { ImagePayload } from "../image";
 import {
@@ -8,6 +6,8 @@ import {
   regionsQuerySchema,
   updateRegionSchema,
 } from "@/lib/validations/regions.schema";
+
+// Repo Request (from zod)
 
 export type RegionQuery = Partial<z.input<typeof regionsQuerySchema>>;
 export type RegionFilter = z.infer<typeof regionsQuerySchema>;

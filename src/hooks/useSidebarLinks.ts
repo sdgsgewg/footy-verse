@@ -2,11 +2,12 @@ import { ROUTES } from "@/constants/routes";
 import { NavLink } from "@/types/NavLink";
 import {
   CalendarRange,
-  Globe,
-  Globe2,
+  Flag,
+  Goal,
   KeyRound,
   LayoutDashboard,
-  MapPinned,
+  Map,
+  Network,
   Shield,
   Trophy,
   User,
@@ -40,12 +41,12 @@ export function useSidebarLinks() {
     {
       name: tNav("content.nationalities"),
       path: ROUTES.DASHBOARD.CONTENT.NATIONALITIES.BASE,
-      icon: Globe,
+      icon: Flag,
     },
     {
       name: tNav("content.positions"),
       path: ROUTES.DASHBOARD.CONTENT.POSITIONS.BASE,
-      icon: MapPinned,
+      icon: Goal,
     },
     {
       name: tNav("content.seasons"),
@@ -55,7 +56,12 @@ export function useSidebarLinks() {
     {
       name: tNav("content.regions"),
       path: ROUTES.DASHBOARD.CONTENT.REGIONS.BASE,
-      icon: Globe2,
+      icon: Map,
+    },
+    {
+      name: tNav("content.confederations"),
+      path: ROUTES.DASHBOARD.CONTENT.CONFEDERATIONS.BASE,
+      icon: Network,
     },
     {
       name: tNav("content.competitions"),

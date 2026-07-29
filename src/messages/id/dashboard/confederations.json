@@ -1,0 +1,29 @@
+{
+  "form": {
+    "labels": {
+      "image": "Gambar",
+      "name": "Nama",
+      "shortName": "Nama Singkat",
+      "founded": "Tanggal Ditemukan",
+      "headquarters": "Markas",
+      "website": "Situs Web",
+      "region": "Zona Wilayah"
+    },
+
+    "placeholders": {
+      "image": "Pilih Gambar",
+      "name": "Masukkan nama",
+      "shortName": "Masukkan nama singkat",
+      "founded": "Pilih Tanggal Ditemukan",
+      "headquarters": "Masukkan markas",
+      "website": "Masukkan tautan situs web",
+      "region": "Pilih Zona Wilayah"
+    }
+  },
+
+  "columns": {
+    "name": "Nama",
+    "founded": "Tanggal Ditemukan",
+    "region": "Zona Wilayah"
+  }
+}

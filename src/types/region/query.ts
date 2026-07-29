@@ -15,3 +15,7 @@ export type DbRegionListRow = Pick<
 // Region Detail
 
 export type DbRegionDetailRow = Region;
+
+// Helpers
+
+export type DbRegionRow = Pick<Region, "id" | "name" | "image">;
