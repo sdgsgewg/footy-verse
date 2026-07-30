@@ -1,19 +1,11 @@
-import { ROUTES } from "@/constants/routes";
-import { NavLink } from "@/types/NavLink";
-import {
-  CalendarRange,
-  Flag,
-  Goal,
-  KeyRound,
-  LayoutDashboard,
-  Map,
-  Network,
-  Shield,
-  Trophy,
-  User,
-  Users,
-} from "lucide-react";
+import { KeyRound, LayoutDashboard, User } from "lucide-react";
+
 import { useTranslations } from "next-intl";
+
+import { ROUTES } from "@/constants/routes";
+import { DASHBOARD_CONTENT_ITEMS } from "@/constants/dashboard-navigation";
+
+import { NavLink } from "@/types/NavLink";
 
 export function useSidebarLinks() {
   const tNav = useTranslations("navigation.dashboard");
@@ -27,48 +19,11 @@ export function useSidebarLinks() {
     },
   ];
 
-  const contentManageLinks: NavLink[] = [
-    {
-      name: tNav("content.players"),
-      path: ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE,
-      icon: Users,
-    },
-    {
-      name: tNav("content.clubs"),
-      path: ROUTES.DASHBOARD.CONTENT.CLUBS.BASE,
-      icon: Shield,
-    },
-    {
-      name: tNav("content.nationalities"),
-      path: ROUTES.DASHBOARD.CONTENT.NATIONALITIES.BASE,
-      icon: Flag,
-    },
-    {
-      name: tNav("content.positions"),
-      path: ROUTES.DASHBOARD.CONTENT.POSITIONS.BASE,
-      icon: Goal,
-    },
-    {
-      name: tNav("content.seasons"),
-      path: ROUTES.DASHBOARD.CONTENT.SEASONS.BASE,
-      icon: CalendarRange,
-    },
-    {
-      name: tNav("content.regions"),
-      path: ROUTES.DASHBOARD.CONTENT.REGIONS.BASE,
-      icon: Map,
-    },
-    {
-      name: tNav("content.confederations"),
-      path: ROUTES.DASHBOARD.CONTENT.CONFEDERATIONS.BASE,
-      icon: Network,
-    },
-    {
-      name: tNav("content.competitions"),
-      path: ROUTES.DASHBOARD.CONTENT.COMPETITIONS.BASE,
-      icon: Trophy,
-    },
-  ];
+  const contentManageLinks: NavLink[] = DASHBOARD_CONTENT_ITEMS.map((item) => ({
+    name: tNav(`content.${item.key}`),
+    path: item.href,
+    icon: item.icon,
+  }));
 
   const systemManageLinks: NavLink[] = [
     {

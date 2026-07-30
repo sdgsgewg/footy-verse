@@ -1,0 +1,16 @@
+{
+  "title": "Dashboard",
+  "description": "Ringkasan sistem manajemen Footy Verse Anda.",
+  "quickActions": {
+    "title": "Aksi Cepat",
+    "description": "Kelola data sepak bola dengan cepat.",
+    "players": "Kelola Pemain",
+    "clubs": "Kelola Klub",
+    "nationalities": "Kelola Kebangsaan",
+    "positions": "Kelola Posisi",
+    "seasons": "Kelola Musim",
+    "regions": "Kelola Wilayah",
+    "confederations": "Kelola Konfederasi",
+    "competitions": "Kelola Kompetisi"
+  }
+}

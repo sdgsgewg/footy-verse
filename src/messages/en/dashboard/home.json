@@ -1,0 +1,16 @@
+{
+  "title": "Dashboard",
+  "description": "Overview of your Footy Verse management system.",
+  "quickActions": {
+    "title": "Quick Actions",
+    "description": "Manage your football data quickly.",
+    "players": "Manage Players",
+    "clubs": "Manage Clubs",
+    "nationalities": "Manage Nationalities",
+    "positions": "Manage Positions",
+    "seasons": "Manage Seasons",
+    "regions": "Manage Regions",
+    "confederations": "Manage Confederations",
+    "competitions": "Manage Competitions"
+  }
+}
