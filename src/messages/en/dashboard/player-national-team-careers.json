@@ -44,13 +44,13 @@
     }
   },
 
-  "columns": {
-    "nationalTeam": "National Team",
-    "joinedAt": "Join Date",
-    "leftAt": "Left Date"
-  },
+  "table": {
+    "title": "National Team Career",
 
-  "actions": {
-    "addNew": "Add New Player National Team"
+    "columns": {
+      "nationalTeam": "National Team",
+      "joinedAt": "Join Date",
+      "leftAt": "Left Date"
+    }
   }
 }

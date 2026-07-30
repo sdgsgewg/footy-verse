@@ -95,9 +95,13 @@
     }
   },
 
-  "columns": {
-    "club": "Club",
-    "joinedAt": "Join Date",
-    "leftAt": "Left Date"
+  "table": {
+    "title": "Club Career",
+
+    "columns": {
+      "club": "Club",
+      "joinedAt": "Join Date",
+      "leftAt": "Left Date"
+    }
   }
 }

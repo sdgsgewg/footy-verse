@@ -44,9 +44,13 @@
     }
   },
 
-  "columns": {
-    "nationalTeam": "Tim Nasional",
-    "joinedAt": "Tanggal Bergabung",
-    "leftAt": "Tanggal Keluar"
+  "table": {
+    "title": "Karir Tim Nasional",
+
+    "columns": {
+      "nationalTeam": "Tim Nasional",
+      "joinedAt": "Tanggal Bergabung",
+      "leftAt": "Tanggal Keluar"
+    }
   }
 }

@@ -95,9 +95,13 @@
     }
   },
 
-  "columns": {
-    "club": "Klub",
-    "joinedAt": "Tanggal Bergabung",
-    "leftAt": "Tanggal Keluar"
+  "table": {
+    "title": "Karir Klub",
+
+    "columns": {
+      "club": "Klub",
+      "joinedAt": "Tanggal Bergabung",
+      "leftAt": "Tanggal Keluar"
+    }
   }
 }

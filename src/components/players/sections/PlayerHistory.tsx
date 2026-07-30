@@ -11,6 +11,7 @@ import {
   PlayerClubCareerHistoryTable,
   PlayerNationalTeamCareerHistoryTable,
 } from "../table";
+import { useTranslations } from "next-intl";
 
 interface Props {
   player: PlayerDetailResponse;
@@ -24,6 +25,11 @@ const PlayerHistory = ({ player }: Props) => {
   const router = useRouter();
   const pathname = usePathname();
   const isDashboard = isDashboardPath(pathname);
+
+  const tClubCareerTable = useTranslations("dashboard.playerClubCareers.table");
+  const tNationalTeamCareerTable = useTranslations(
+    "dashboard.playerNationalTeamCareers.table",
+  );
 
   const { playerClubCareers } = usePlayerClubCareers({ playerId: player.id });
   const { playerNationalTeamCareers } = usePlayerNationalTeamCareers({
@@ -46,9 +52,12 @@ const PlayerHistory = ({ player }: Props) => {
     <div className="space-y-10">
       <section>
         {isDashboard ? (
-          <SectionHeader title="Career History" onAdd={handleAddClubCareer} />
+          <SectionHeader
+            title={tClubCareerTable("title")}
+            onAdd={handleAddClubCareer}
+          />
         ) : (
-          <SectionHeader title="Career History" />
+          <SectionHeader title={tClubCareerTable("title")} />
         )}
 
         <PlayerClubCareerHistoryTable
@@ -60,11 +69,11 @@ const PlayerHistory = ({ player }: Props) => {
       <section>
         {isDashboard ? (
           <SectionHeader
-            title="National Team History"
+            title={tNationalTeamCareerTable("title")}
             onAdd={handleAddNationalTeamCareer}
           />
         ) : (
-          <SectionHeader title="National Team History" />
+          <SectionHeader title={tNationalTeamCareerTable("title")} />
         )}
 
         <PlayerNationalTeamCareerHistoryTable

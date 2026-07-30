@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 import { formatLocaleDate } from "@/lib/utils/date";
 import { useParams } from "next/navigation";
@@ -8,6 +7,7 @@ import { PlayerNationalTeamCareerListItem } from "@/types/player-national-team-c
 import { DataColumn } from "@/types/table";
 import { usePlayerNationalTeamCareerActions } from "@/hooks/dashboard/player-national-teams/usePlayerNationalTeamCareerActions";
 import { DataTable } from "@/components/shared/tables/DataTable";
+import { ImageLabel } from "@/components/shared/ImageLabel";
 
 interface Props {
   playerNationalTeamCareers: PlayerNationalTeamCareerListItem[];
@@ -23,7 +23,7 @@ const PlayerNationalTeamCareerHistoryTable = ({
   };
 
   const tColumn = useTranslations(
-    "dashboard.playerNationalTeamCareers.columns",
+    "dashboard.playerNationalTeamCareers.table.columns",
   );
 
   const locale = useLocale();
@@ -38,17 +38,7 @@ const PlayerNationalTeamCareerHistoryTable = ({
       className: "min-w-[320px]",
 
       render: (team) => (
-        <div className="flex items-center gap-3">
-          <Image
-            src={team.imageUrl}
-            alt={team.name}
-            width={32}
-            height={32}
-            className="size-8 object-contain"
-          />
-
-          <span>{team.name}</span>
-        </div>
+        <ImageLabel imageUrl={team.imageUrl} label={team.name} />
       ),
     },
 
