@@ -1,17 +1,81 @@
 {
-  "navLabel": "Kompetisi",
+  "navLabel": "Competitions",
 
   "form": {
+    "basicInformation": {
+      "title": "Informasi Umum"
+    },
+
+    "classification": {
+      "title": "Klasifikasi Kompetisi"
+    },
+
+    "scopeAndLocation": {
+      "title": "Cakupan dan Lokasi"
+    },
+
     "labels": {
-      "name": "Nama"
+      "basicInformation": {
+        "image": "Gambar",
+        "name": "Nama",
+        "shortName": "Nama Singkat",
+        "foundedYear": "Tahun Ditemukan",
+        "description": "Deskripsi"
+      },
+
+      "classification": {
+        "gender": "Jenis Kelamin",
+        "ageGroup": "Grup Usia",
+        "participantType": "Tipe Partisipan",
+        "category": "Kategori Kompetisi"
+      },
+
+      "scopeAndLocation": {
+        "scope": "Cakupan Kompetisi",
+        "confederation": "Konfederasi",
+        "region": "Zona Wilayah",
+        "nationality": "Negara"
+      }
     },
 
     "placeholders": {
-      "name": "Masukkan nama"
+      "basicInformation": {
+        "image": "Pilih Gambar",
+        "name": "Masukkan nama",
+        "shortName": "Masukkan nama singkat",
+        "foundedYear": "Masukkan tahun ditemukan",
+        "description": "Masukkan deskripsi"
+      },
+
+      "classification": {
+        "gender": "Pilih Jenis Kelamin",
+        "ageGroup": "Pilih Grup Usia",
+        "participantType": "Pilih Tipe Partisipan",
+        "category": "Pilih Kategori Kompetisi"
+      },
+
+      "scopeAndLocation": {
+        "scope": "Pilih Cakupan Kompetisi",
+        "confederation": "Pilih Konfederasi",
+        "region": "Pilih Zona Wilayah",
+        "nationality": "Pilih Negara"
+      }
+    },
+
+    "options": {
+      "participantType": {
+        "club": "Klub",
+        "nationalTeam": "Tim Nasional"
+      }
     }
   },
 
   "columns": {
-    "name": "Nama"
+    "name": "Nama",
+    "category": "Kategori",
+    "scope": "Cakupan",
+    "participant": "Partisipan",
+    "gender": "Jenis Kelamin",
+    "location": "Lokasi"
   }
 }

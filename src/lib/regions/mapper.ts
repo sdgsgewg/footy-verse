@@ -10,6 +10,7 @@ import {
 import { getImageUrl } from "../images/image-url";
 import { STORAGE_BUCKETS } from "../storage";
 import { RegionType } from "@/enums/RegionType";
+import { LocationResponse } from "@/types/competition";
 
 export function mapRegionListItem(
   region: DbRegionListRow,
@@ -43,9 +44,9 @@ export function mapRegionListItem(
 }
 
 export function mapRegionEditResponse(
-  Region: DbRegionDetailRow,
+  region: DbRegionDetailRow,
 ): RegionEditResponse {
-  const { id, image, name, region_type, parent_region_id } = Region;
+  const { id, image, name, region_type, parent_region_id } = region;
 
   return {
     id,
@@ -68,6 +69,8 @@ export function mapRegionDetailResponse(
   };
 }
 
+// Helpers
+
 export function mapRegionResponse(region: DbRegionRow): RegionResponse {
   const { id, image, name } = region;
 
@@ -75,5 +78,18 @@ export function mapRegionResponse(region: DbRegionRow): RegionResponse {
     id,
     name,
     imageUrl: getImageUrl("region", STORAGE_BUCKETS.REGIONS, image),
+  };
+}
+
+export function mapRegionToLocationResponse(
+  region: DbRegionRow,
+): LocationResponse {
+  const { id, name, image } = region;
+
+  return {
+    type: "region" as const,
+    id,
+    imageUrl: getImageUrl("region", STORAGE_BUCKETS.REGIONS, image),
+    name,
   };
 }

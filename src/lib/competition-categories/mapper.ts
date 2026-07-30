@@ -2,8 +2,10 @@ import {
   CompetitionCategoryDetailResponse,
   CompetitionCategoryEditResponse,
   CompetitionCategoryListItem,
+  CompetitionCategoryResponse,
   DbCompetitionCategoryDetailRow,
   DbCompetitionCategoryListRow,
+  DbCompetitionCategoryRow,
 } from "@/types/competition-category";
 
 /**
@@ -55,5 +57,16 @@ export function mapCompetitionCategoryDetailResponse(
     id,
     name,
     description,
+  };
+}
+
+export function mapCompetitionCategoryResponse(
+  competitionCategory: DbCompetitionCategoryRow,
+): CompetitionCategoryResponse {
+  const { id, name } = competitionCategory;
+
+  return {
+    id,
+    name,
   };
 }

@@ -17,7 +17,7 @@ export function useConfederationActions() {
 
   const handleView = (Confederation: ConfederationListItem) => {
     router.push(
-      `${ROUTES.DASHBOARD.CONTENT.CONFEDERATIONS}/${Confederation.slug}`,
+      `${ROUTES.DASHBOARD.CONTENT.CONFEDERATIONS.BASE}/${Confederation.slug}`,
     );
   };
 

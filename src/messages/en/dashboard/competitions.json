@@ -2,16 +2,80 @@
   "navLabel": "Competitions",
 
   "form": {
+    "basicInformation": {
+      "title": "Basic Information"
+    },
+
+    "classification": {
+      "title": "Competition Classification"
+    },
+
+    "scopeAndLocation": {
+      "title": "Scope and Location"
+    },
+
     "labels": {
-      "name": "Name"
+      "basicInformation": {
+        "image": "Image",
+        "name": "Name",
+        "shortName": "Short Name",
+        "foundedYear": "Founded Year",
+        "description": "Description"
+      },
+
+      "classification": {
+        "gender": "Gender",
+        "ageGroup": "Age Group",
+        "participantType": "Participant Type",
+        "category": "Competition Category"
+      },
+
+      "scopeAndLocation": {
+        "scope": "Competition Scope",
+        "confederation": "Confederation",
+        "region": "Region",
+        "nationality": "Country"
+      }
     },
 
     "placeholders": {
-      "name": "Input name"
+      "basicInformation": {
+        "image": "Choose Image",
+        "name": "Input name",
+        "shortName": "Input short name",
+        "foundedYear": "Input founded year",
+        "description": "Input description"
+      },
+
+      "classification": {
+        "gender": "Select Gender",
+        "ageGroup": "Select Age Group",
+        "participantType": "Select Participant Type",
+        "category": "Select Competition Category"
+      },
+
+      "scopeAndLocation": {
+        "scope": "Select Competition Scope",
+        "confederation": "Select Confederation",
+        "region": "Select Region",
+        "nationality": "Select Nationality"
+      }
+    },
+
+    "options": {
+      "participantType": {
+        "club": "Club",
+        "nationalTeam": "National Team"
+      }
     }
   },
 
   "columns": {
-    "name": "Name"
+    "name": "Name",
+    "category": "Category",
+    "scope": "Scope",
+    "participant": "Participant",
+    "gender": "Gender",
+    "location": "Location"
   }
 }

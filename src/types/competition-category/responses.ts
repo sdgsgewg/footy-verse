@@ -24,3 +24,10 @@ export type CompetitionCategoryDetailResponse = Pick<
   CompetitionCategory,
   "id" | "name" | "description"
 >;
+
+// Helper
+
+export type CompetitionCategoryResponse = Pick<
+  CompetitionCategory,
+  "id" | "name"
+>;

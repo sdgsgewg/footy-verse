@@ -7,3 +7,7 @@ export type DbCompetitionScopeListRow = CompetitionScope;
 // Competition Scope Detail
 
 export type DbCompetitionScopeDetailRow = CompetitionScope;
+
+// Helper
+
+export type DbCompetitionScopeRow = Pick<CompetitionScope, "id" | "name">;

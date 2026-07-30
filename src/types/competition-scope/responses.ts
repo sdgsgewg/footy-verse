@@ -24,3 +24,7 @@ export type CompetitionScopeDetailResponse = Pick<
   CompetitionScope,
   "id" | "name" | "description"
 >;
+
+// Helper
+
+export type CompetitionScopeResponse = Pick<CompetitionScope, "id" | "name">;

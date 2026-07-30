@@ -4,10 +4,12 @@ import {
   ConfederationListItem,
   DbConfederationDetailRow,
   DbConfederationListRow,
+  DbConfederationRow,
 } from "@/types/confederation";
 import { getImageUrl } from "../images/image-url";
 import { STORAGE_BUCKETS } from "../storage";
 import { mapRegionResponse } from "../regions/mapper";
+import { LocationResponse } from "@/types/competition";
 
 export function mapConfederationListItem(
   confederation: DbConfederationListRow,
@@ -83,5 +85,24 @@ export function mapConfederationDetailResponse(
     headquarters: headquarters ?? "-",
     website: website ?? "-",
     region: mapRegionResponse(region),
+  };
+}
+
+// Helpers
+
+export function mapConfederationToLocationResponse(
+  confederation: DbConfederationRow,
+): LocationResponse {
+  const { id, name, image } = confederation;
+
+  return {
+    type: "confederation" as const,
+    id,
+    imageUrl: getImageUrl(
+      "confederation",
+      STORAGE_BUCKETS.CONFEDERATIONS,
+      image,
+    ),
+    name,
   };
 }

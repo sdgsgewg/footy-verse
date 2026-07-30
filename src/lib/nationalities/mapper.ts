@@ -1,12 +1,15 @@
 import {
   DbNationalityDetailRow,
   DbNationalityListRow,
+  DbNationalityRow,
   NationalityDetailResponse,
   NationalityEditResponse,
   NationalityListItem,
+  NationalityResponse,
 } from "@/types/nationality";
 import { getImageUrl } from "../images/image-url";
 import { STORAGE_BUCKETS } from "../storage";
+import { LocationResponse } from "@/types/competition";
 
 export function mapNationalityListItem(
   nationality: DbNationalityListRow,
@@ -58,5 +61,32 @@ export function mapNationalityDetailResponse(
     imageUrl: getImageUrl("nationality", STORAGE_BUCKETS.NATIONALITIES, image),
     name,
     slug,
+  };
+}
+
+// Helpers
+
+export function mapNationalityResponse(
+  nationality: DbNationalityRow,
+): NationalityResponse {
+  const { id, name, image } = nationality;
+
+  return {
+    id,
+    imageUrl: getImageUrl("nationality", STORAGE_BUCKETS.NATIONALITIES, image),
+    name,
+  };
+}
+
+export function mapNationalityToLocationResponse(
+  nationality: DbNationalityRow,
+): LocationResponse {
+  const { id, name, image } = nationality;
+
+  return {
+    type: "nationality" as const,
+    id,
+    imageUrl: getImageUrl("nationality", STORAGE_BUCKETS.NATIONALITIES, image),
+    name,
   };
 }

@@ -1,4 +1,5 @@
 import { AgeGroup } from "@/enums/AgeGroup";
+import { Gender } from "@/enums/Gender";
 import { TeamCategory } from "@/enums/TeamCategory";
 
 type Translate = (key: string) => string;
@@ -18,6 +19,21 @@ export const getTeamCategoryLabel = (
       return t("common.options.teamCategory.men");
     case TeamCategory.WOMEN:
       return t("common.options.teamCategory.women");
+  }
+};
+
+/**
+ *
+ * @param type
+ * @param t
+ * @returns string
+ */
+export const getGenderLabel = (type: Gender, t: Translate): string => {
+  switch (type) {
+    case Gender.MEN:
+      return t("common.options.gender.men");
+    case Gender.WOMEN:
+      return t("common.options.gender.women");
   }
 };
 

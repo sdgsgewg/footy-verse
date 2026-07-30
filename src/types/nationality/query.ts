@@ -12,3 +12,7 @@ export type DbNationalityListRow = Nationality & {
 // Nationality Detail
 
 export type DbNationalityDetailRow = Nationality;
+
+// Helper
+
+export type DbNationalityRow = Pick<Nationality, "id" | "name" | "image">;

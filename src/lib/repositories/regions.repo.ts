@@ -46,7 +46,7 @@ function getRegionsBaseQuery() {
 /**
  *
  * @param params
- * @returns RegionFilter
+ * @returns RegionListItem[]
  */
 export async function getRegionsRepo(
   params: RegionFilter,

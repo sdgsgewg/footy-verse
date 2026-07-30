@@ -62,7 +62,7 @@ const ClubTeamForm = ({ mode, clubTeam, loading = false, onSubmit }: Props) => {
         {/* Age Group */}
         <SelectField
           label={tClubTeams("form.labels.ageGroup")}
-          name="age_griup"
+          name="age_group"
           placeholder={tClubTeams("form.placeholders.ageGroup")}
           options={ageGroupOptions}
           value={form.age_group || ""}

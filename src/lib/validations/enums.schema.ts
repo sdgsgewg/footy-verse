@@ -132,6 +132,8 @@ export const participantTypeSchema = z.enum([
 
 export const genderSchema = z.enum([Gender.MEN, Gender.WOMEN]);
 
+export const competitionSortBySchema = z.enum(["name", "created_at"]);
+
 // Competition Squad Player
 
 export const competitionSquadPlayerStatusSchema = z.enum([

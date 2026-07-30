@@ -17,7 +17,7 @@ interface NumberFieldProps {
   required?: boolean;
   readOnly?: boolean;
 
-  thousandSeparator?: string;
+  thousandSeparator?: string | boolean;
   decimalScale?: number;
   allowNegative?: boolean;
 

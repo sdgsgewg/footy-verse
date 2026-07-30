@@ -16,7 +16,7 @@ export function useRegionActions() {
   };
 
   const handleView = (region: RegionListItem) => {
-    router.push(`${ROUTES.DASHBOARD.CONTENT.REGIONS}/${region.slug}`);
+    router.push(`${ROUTES.DASHBOARD.CONTENT.REGIONS.BASE}/${region.slug}`);
   };
 
   const handleEdit = (region: RegionListItem) => {

@@ -2,8 +2,10 @@ import {
   CompetitionScopeDetailResponse,
   CompetitionScopeEditResponse,
   CompetitionScopeListItem,
+  CompetitionScopeResponse,
   DbCompetitionScopeDetailRow,
   DbCompetitionScopeListRow,
+  DbCompetitionScopeRow,
 } from "@/types/competition-scope";
 
 /**
@@ -55,5 +57,16 @@ export function mapCompetitionScopeDetailResponse(
     id,
     name,
     description,
+  };
+}
+
+export function mapCompetitionScopeResponse(
+  competitionScope: DbCompetitionScopeRow,
+): CompetitionScopeResponse {
+  const { id, name } = competitionScope;
+
+  return {
+    id,
+    name,
   };
 }
