@@ -30,7 +30,7 @@ const PlayerSummary = ({ summary }: Props) => {
   return (
     <EntitySummaryLayout
       title={
-        <>
+        <div className="space-y-1">
           <h1 className="text-4xl font-bold">
             {shirtNumber.club && (
               <span className="mr-2 text-primary">#{shirtNumber.club}</span>
@@ -38,8 +38,8 @@ const PlayerSummary = ({ summary }: Props) => {
             {name}
           </h1>
 
-          <p className="mt-1 text-muted-foreground">{mainPosition.name}</p>
-        </>
+          <p className="text-muted-foreground">{mainPosition.name}</p>
+        </div>
       }
       image={
         <ImageWrapper

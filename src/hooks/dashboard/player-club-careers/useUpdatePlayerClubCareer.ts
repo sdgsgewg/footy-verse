@@ -4,6 +4,7 @@ import { updatePlayerClubCareer } from "@/lib/api/player-club-career";
 import { playerClubCareerKeys } from "@/lib/react-query/keys/playerClubCareerKeys";
 import { PlayerLookupResponse } from "@/types/player";
 import { playerKeys } from "@/lib/react-query/keys/playerKeys";
+import { playerTransferKeys } from "@/lib/react-query/keys/playerTransferKeys";
 
 interface UpdatePlayerClubCareerPayload {
   careerId: string;
@@ -20,6 +21,7 @@ export function useUpdatePlayerClubCareer(player: PlayerLookupResponse) {
       { queryKey: playerClubCareerKeys.details() },
       { queryKey: playerClubCareerKeys.edits() },
       { queryKey: playerKeys.details() },
+      { queryKey: playerTransferKeys.lists() },
     ],
 
     redirectTo: `${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${player.slug}`,
