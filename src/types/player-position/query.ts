@@ -1,9 +1,9 @@
-import { PositionSummary } from "../position";
+import { DbPositionRow } from "../position";
 import { PlayerPosition } from "./database";
 
-export type PlayerPositionQuery = Pick<
+export type DbPlayerPositionRow = Pick<
   PlayerPosition,
   "display_order" | "position_id"
 > & {
-  position: PositionSummary;
+  position: DbPositionRow;
 };

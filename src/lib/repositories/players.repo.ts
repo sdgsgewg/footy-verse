@@ -74,10 +74,12 @@ function getPlayersBaseQuery(options?: {
       position:positions!player_positions_position_id_fkey (
         id,
         name,
+        display_order,
 
         category:position_categories (
           id,
-          name
+          name,
+          display_order
         )
       )
     ),

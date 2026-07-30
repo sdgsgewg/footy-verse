@@ -1,10 +1,13 @@
 import {
   DbPositionDetailRow,
   DbPositionListRow,
+  DbPositionRow,
   PositionDetailResponse,
   PositionEditResponse,
   PositionListItem,
+  PositionResponse,
 } from "@/types/position";
+import { mapPositionCategoryResponse } from "../position-categories/mapper";
 
 /**
  *
@@ -54,6 +57,19 @@ export function mapPositionDetailResponse(
   return {
     id,
     name,
-    category,
+    category: mapPositionCategoryResponse(category),
+  };
+}
+
+// Helper
+
+export function mapPositionResponse(position: DbPositionRow): PositionResponse {
+  const { id, name, display_order, category } = position;
+
+  return {
+    id,
+    name,
+    displayOrder: display_order,
+    category: mapPositionCategoryResponse(category),
   };
 }

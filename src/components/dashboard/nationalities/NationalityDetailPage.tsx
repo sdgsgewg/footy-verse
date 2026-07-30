@@ -4,7 +4,6 @@ import EntityLoading from "@/components/feedback/loading/EntityLoading";
 import ErrorState from "@/components/feedback/ErrorState";
 import { useNationalityDetail } from "@/hooks/dashboard/nationalities";
 import { NationalityLookupResponse } from "@/types/nationality";
-import { NationalTeamTable } from "@/components/shared/tables";
 import { useNationalTeams } from "@/hooks/national-teams";
 import NationalityDetailPageLayout from "@/components/layout/detail-page/NationalityDetailPageLayout";
 import SectionHeader from "@/components/players/sections/SectionHeader";
@@ -12,6 +11,7 @@ import { useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
 import { useRouter } from "@/navigation";
 import { ROUTES } from "@/constants/routes";
+import { NationalTeamTable } from "@/components/nationalities/table";
 
 interface Props {
   nationalityLookup: NationalityLookupResponse;

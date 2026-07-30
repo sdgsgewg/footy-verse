@@ -10,10 +10,10 @@ import {
   usePlayerNationalTeamCareerSubmit,
 } from "@/hooks/dashboard/player-national-teams";
 import EditPlayerNationalTeamCareerForm from "@/components/forms/player-national-team-careers/edit/EditPlayerNationalTeamCareerForm";
-import { PlayerNationalTeamHistoryTable } from "@/components/shared/tables";
 import TableFormLayout from "@/components/layout/dashboard/TableFormLayout";
 import { PlayerNationalTeamCareerLookupResponse } from "@/types/player-national-team-career";
 import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
+import { PlayerNationalTeamCareerHistoryTable } from "@/components/players/table";
 
 interface Props {
   playerLookup: PlayerLookupResponse;
@@ -72,7 +72,7 @@ export default function EditPlayerNationalTeamCareerPage({
       columns={1}
       tableTitle="National Team History"
       table={
-        <PlayerNationalTeamHistoryTable
+        <PlayerNationalTeamCareerHistoryTable
           playerNationalTeamCareers={playerNationalTeams}
         />
       }

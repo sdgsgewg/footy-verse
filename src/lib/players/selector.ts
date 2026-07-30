@@ -6,8 +6,8 @@ import {
 } from "@/types/player";
 import { PlayerCareerQuery } from "@/types/player-career";
 import { mapClubTeamResponse } from "../club-teams/mapper";
-import { PlayerPositionQuery } from "@/types/player-position";
-import { PositionSummary } from "@/types/position";
+import { DbPlayerPositionRow } from "@/types/player-position";
+import { PositionResponse } from "@/types/position";
 import { PlayerNationalityQuery } from "@/types/player-nationality";
 import { NationalityResponse } from "@/types/nationality";
 import { getImageUrl } from "../images/image-url";
@@ -17,6 +17,7 @@ import { NationalTeamResponse } from "@/types/national-team";
 import { PlayerClubCareerQuery } from "@/types/player-club-career";
 import { PlayerNationalTeamCareerQuery } from "@/types/player-national-team-career";
 import { PlayerContractSummary } from "@/types/player-contract";
+import { mapPositionResponse } from "../positions/mapper";
 
 export function getCurrentCareer(
   careers: PlayerCareerQuery[],
@@ -257,36 +258,34 @@ export function getCurrentNationalTeam(
 /**
  *
  * @param playerPositions
- * @returns PositionSummary
+ * @returns PositionResponse
  */
 export function getMainPosition(
-  playerPositions: PlayerPositionQuery[],
-): PositionSummary {
+  playerPositions: DbPlayerPositionRow[],
+): PositionResponse {
   const playerPosition = playerPositions.find((p) => p.display_order === 1);
 
   if (!playerPosition) {
     throw new Error("Player must have a main position.");
   }
 
-  return playerPosition.position;
+  const { position } = playerPosition;
+
+  return mapPositionResponse(position);
 }
 
 /**
  *
  * @param playerPositions
- * @returns PositionSummary[]
+ * @returns PositionResponse[]
  */
 export function getOtherPositions(
-  playerPositions: PlayerPositionQuery[],
-): PositionSummary[] {
+  playerPositions: DbPlayerPositionRow[],
+): PositionResponse[] {
   return playerPositions
     .filter((pos) => pos.display_order !== 1)
     .sort((a, b) => a.display_order - b.display_order)
-    .map((pp) => ({
-      id: pp.position.id,
-      name: pp.position.name,
-      category: pp.position.category,
-    }));
+    .map((pp) => mapPositionResponse(pp.position));
 }
 
 /**

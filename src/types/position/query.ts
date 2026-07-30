@@ -1,14 +1,20 @@
-import { PositionCategorySummary } from "../position-category";
+import { DbPositionCategoryRow } from "../position-category";
 import { Position } from "./database";
 
 // Position List
 
 export type DbPositionListRow = Position & {
-  category: PositionCategorySummary;
+  category: DbPositionCategoryRow;
 };
 
 // Position Detail
 
 export type DbPositionDetailRow = Position & {
-  category: PositionCategorySummary;
+  category: DbPositionCategoryRow;
+};
+
+// Helper
+
+export type DbPositionRow = Pick<Position, "id" | "name" | "display_order"> & {
+  category: DbPositionCategoryRow;
 };

@@ -1,9 +1,9 @@
-import { PositionSummary } from "@/types/position";
+import { PositionResponse } from "@/types/position";
 import RecordRow from "./RecordRow";
 
 interface PlayerPositionRecordDataProps {
-  mainPosition: PositionSummary;
-  otherPositions: PositionSummary[];
+  mainPosition: PositionResponse;
+  otherPositions: PositionResponse[];
 }
 
 const PlayerPositionRecordData = ({

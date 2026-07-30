@@ -42,11 +42,11 @@ export default function TeamsPage() {
     <PublicPageWrapper>
       <PageHeader title={t("title")} description={t("subtitle")} />
 
-      <TeamSearch
+      {/* <TeamSearch
         value={keyword}
         onChange={setKeyword}
         placeholder="Search teams..."
-      />
+      /> */}
 
       <div className="space-y-14">
         <TeamSection

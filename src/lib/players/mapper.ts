@@ -77,15 +77,15 @@ export function mapGroupedPlayers(
     });
   }
 
-  // Kalau position category sudah ada 'display_order' mending pakai kolom itu buat sorting
+  return Array.from(grouped.values())
+    .map((group) => ({
+      ...group,
 
-  const CATEGORY_ORDER = ["Goalkeepers", "Defenders", "Midfielders", "Forwards"];
-
-  return Array.from(grouped.values()).sort(
-    (a, b) =>
-      CATEGORY_ORDER.indexOf(a.category.name) -
-      CATEGORY_ORDER.indexOf(b.category.name),
-  );
+      players: [...group.players].sort(
+        (a, b) => a.mainPosition.displayOrder - b.mainPosition.displayOrder,
+      ),
+    }))
+    .sort((a, b) => a.category.displayOrder - b.category.displayOrder);
 }
 
 export function mapPlayerEditResponse(
