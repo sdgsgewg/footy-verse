@@ -10,8 +10,8 @@ import {
 } from "@/hooks/dashboard/player-national-teams";
 import CreatePlayerNationalTeamCareerForm from "@/components/forms/player-national-team-careers/CreatePlayerNationalTeamCareerForm";
 import TableFormLayout from "@/components/layout/dashboard/TableFormLayout";
-import { PlayerNationalTeamHistoryTable } from "@/components/shared/tables";
 import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
+import { PlayerNationalTeamCareerHistoryTable } from "@/components/players/table";
 
 interface Props {
   playerLookup: PlayerLookupResponse;
@@ -54,7 +54,7 @@ export default function CreatePlayerNationalTeamCareerPage({
       columns={1}
       tableTitle="National Team History"
       table={
-        <PlayerNationalTeamHistoryTable
+        <PlayerNationalTeamCareerHistoryTable
           playerNationalTeamCareers={playerNationalTeamCareers}
         />
       }

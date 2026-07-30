@@ -4,9 +4,9 @@ import PlayerProfile from "@/components/players/sections/PlayerProfile";
 import PlayerHistory from "@/components/players/sections/PlayerHistory";
 import PlayerSummary from "@/components/players/summary/PlayerSummary";
 import SectionHeader from "@/components/players/sections/SectionHeader";
-import PlayerTransferHistoryTable from "@/components/shared/tables/PlayerTransferHistoryTable";
 import { usePlayerTransfers } from "@/hooks/dashboard/player-transfers/usePlayerTransfers";
 import { useTranslations } from "next-intl";
+import { PlayerTransferHistoryTable } from "@/components/players/table";
 
 interface Props {
   title: string;

@@ -20,6 +20,7 @@ export function useUpdatePlayerClubCareer(player: PlayerLookupResponse) {
       { queryKey: playerClubCareerKeys.lists() },
       { queryKey: playerClubCareerKeys.details() },
       { queryKey: playerClubCareerKeys.edits() },
+      { queryKey: playerKeys.lists() },
       { queryKey: playerKeys.details() },
       { queryKey: playerTransferKeys.lists() },
     ],

@@ -3,11 +3,11 @@
 import { useLocale, useTranslations } from "next-intl";
 import { formatLocaleDate } from "@/lib/utils/date";
 import { DataColumn } from "@/types/table";
-import { DataTable } from "./DataTable";
 import { PlayerTransferListItem } from "@/types/player-transfer";
-import { ImageLabel } from "../ImageLabel";
 import { getTransferTypeLabel } from "@/lib/transfers/labels";
 import { TransferType } from "@/enums/TransferType";
+import { ImageLabel } from "@/components/shared/ImageLabel";
+import { DataTable } from "@/components/shared/tables/DataTable";
 
 interface Props {
   playerTransfers: PlayerTransferListItem[];

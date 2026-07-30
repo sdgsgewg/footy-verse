@@ -10,7 +10,7 @@ import { SquadType } from "@/enums/SquadType";
 import { getAgeGroupLabel } from "@/lib/constants/labels";
 import { AgeGroup } from "@/enums/AgeGroup";
 import { DataColumn } from "@/types/table";
-import { DataTable } from "./DataTable";
+import { DataTable } from "@/components/shared/tables/DataTable";
 
 interface Props {
   clubTeams: ClubTeamListItem[];
@@ -23,7 +23,7 @@ const ClubTeamTable = ({ clubTeams, showActions = false }: Props) => {
   };
 
   const t = useTranslations("");
-  const tColumn = useTranslations("dashboard.clubTeams.columns");
+  const tColumn = useTranslations("dashboard.clubTeams.table.columns");
 
   const { handleView, handleEdit, handleDelete } = useClubTeamActions(clubSlug);
 

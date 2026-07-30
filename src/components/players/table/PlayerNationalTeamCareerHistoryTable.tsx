@@ -6,8 +6,8 @@ import { formatLocaleDate } from "@/lib/utils/date";
 import { useParams } from "next/navigation";
 import { PlayerNationalTeamCareerListItem } from "@/types/player-national-team-career";
 import { DataColumn } from "@/types/table";
-import { DataTable } from "./DataTable";
 import { usePlayerNationalTeamCareerActions } from "@/hooks/dashboard/player-national-teams/usePlayerNationalTeamCareerActions";
+import { DataTable } from "@/components/shared/tables/DataTable";
 
 interface Props {
   playerNationalTeamCareers: PlayerNationalTeamCareerListItem[];

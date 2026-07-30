@@ -8,8 +8,8 @@ import { useClubTeams } from "@/hooks/club-teams";
 import { useClubTeamSubmit } from "@/hooks/dashboard/club-teams";
 import TableFormLayout from "@/components/layout/dashboard/TableFormLayout";
 import ClubTeamForm from "@/components/forms/club-teams/ClubTeamForm";
-import ClubTeamTable from "@/components/shared/tables/ClubTeamTable";
 import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
+import { ClubTeamTable } from "@/components/clubs/table";
 
 interface Props {
   clubLookup: ClubLookupResponse;

@@ -11,8 +11,12 @@
     }
   },
 
-  "columns": {
-    "teamCategory": "Kategori",
-    "ageGroup": "Grup Usia"
+  "table": {
+    "title": "Tim Nasional",
+
+    "columns": {
+      "teamCategory": "Kategori",
+      "ageGroup": "Grup Usia"
+    }
   }
 }

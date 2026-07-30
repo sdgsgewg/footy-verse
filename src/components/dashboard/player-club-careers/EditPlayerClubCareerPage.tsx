@@ -12,7 +12,7 @@ import { PlayerLookupResponse } from "@/types/player";
 import { usePlayerDetail } from "@/hooks/dashboard/players";
 import TableFormLayout from "@/components/layout/dashboard/TableFormLayout";
 import { PlayerClubCareerLookupResponse } from "@/types/player-club-career";
-import PlayerClubCareerHistoryTable from "@/components/shared/tables/PlayerClubCareerHistoryTable";
+import PlayerClubCareerHistoryTable from "@/components/players/table/PlayerClubCareerHistoryTable";
 import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
 
 interface Props {

@@ -6,10 +6,10 @@ import EntityLoading from "@/components/feedback/loading/EntityLoading";
 import ErrorState from "@/components/feedback/ErrorState";
 import { usePlayerClubCareerSubmit } from "@/hooks/dashboard/player-club-careers/usePlayerClubCareerSubmit";
 import PlayerClubCareerForm from "@/components/forms/player-club-careers/PlayerClubCareerForm";
-import { PlayerCareerHistoryTable } from "@/components/shared/tables";
 import TableFormLayout from "@/components/layout/dashboard/TableFormLayout";
 import { usePlayerClubCareers } from "@/hooks/dashboard/player-club-careers";
 import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
+import { PlayerClubCareerHistoryTable } from "@/components/players/table";
 
 interface Props {
   playerLookup: PlayerLookupResponse;
@@ -48,7 +48,7 @@ export default function CreatePlayerClubCareerPage({ playerLookup }: Props) {
       title={getTitle("create", "playerClubCareer", `${player.name}`)}
       columns={1}
       tableTitle="Career History"
-      table={<PlayerCareerHistoryTable playerClubCareers={playerClubCareers} />}
+      table={<PlayerClubCareerHistoryTable playerClubCareers={playerClubCareers} />}
       form={
         <PlayerClubCareerForm
           mode="create"

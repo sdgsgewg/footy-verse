@@ -5,12 +5,12 @@ import { usePathname, useRouter } from "@/navigation";
 import { isDashboardPath } from "@/lib/utils/navigation";
 import { ROUTES } from "@/constants/routes";
 import { useParams } from "next/navigation";
-import {
-  PlayerCareerHistoryTable,
-  PlayerNationalTeamHistoryTable,
-} from "@/components/shared/tables";
 import { usePlayerClubCareers } from "@/hooks/dashboard/player-club-careers";
 import { usePlayerNationalTeamCareers } from "@/hooks/dashboard/player-national-teams";
+import {
+  PlayerClubCareerHistoryTable,
+  PlayerNationalTeamCareerHistoryTable,
+} from "../table";
 
 interface Props {
   player: PlayerDetailResponse;
@@ -30,13 +30,13 @@ const PlayerHistory = ({ player }: Props) => {
     playerId: player.id,
   });
 
-  const handleAddCareer = () => {
+  const handleAddClubCareer = () => {
     router.push(
       `${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${playerSlug}/club-careers/create`,
     );
   };
 
-  const handleAddNationalTeam = () => {
+  const handleAddNationalTeamCareer = () => {
     router.push(
       `${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${playerSlug}/national-team-careers/create`,
     );
@@ -46,12 +46,12 @@ const PlayerHistory = ({ player }: Props) => {
     <div className="space-y-10">
       <section>
         {isDashboard ? (
-          <SectionHeader title="Career History" onAdd={handleAddCareer} />
+          <SectionHeader title="Career History" onAdd={handleAddClubCareer} />
         ) : (
           <SectionHeader title="Career History" />
         )}
 
-        <PlayerCareerHistoryTable
+        <PlayerClubCareerHistoryTable
           playerClubCareers={playerClubCareers}
           showActions
         />
@@ -61,13 +61,13 @@ const PlayerHistory = ({ player }: Props) => {
         {isDashboard ? (
           <SectionHeader
             title="National Team History"
-            onAdd={handleAddNationalTeam}
+            onAdd={handleAddNationalTeamCareer}
           />
         ) : (
           <SectionHeader title="National Team History" />
         )}
 
-        <PlayerNationalTeamHistoryTable
+        <PlayerNationalTeamCareerHistoryTable
           playerNationalTeamCareers={playerNationalTeamCareers}
           showActions
         />

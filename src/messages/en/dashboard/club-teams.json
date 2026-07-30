@@ -20,9 +20,13 @@
     }
   },
 
-  "columns": {
-    "name": "Name",
-    "squadType": "Squad Type",
-    "ageGroup": "Age Group"
+  "table": {
+    "title": "Club Teams",
+
+    "columns": {
+      "name": "Name",
+      "squadType": "Squad Type",
+      "ageGroup": "Age Group"
+    }
   }
 }

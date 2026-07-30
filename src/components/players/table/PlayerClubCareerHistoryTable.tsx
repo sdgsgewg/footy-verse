@@ -7,7 +7,7 @@ import { useParams } from "next/navigation";
 import { usePlayerClubCareerActions } from "@/hooks/dashboard/player-club-careers/usePlayerClubCareerActions";
 import { PlayerClubCareerListItem } from "@/types/player-club-career";
 import { DataColumn } from "@/types/table";
-import { DataTable } from "./DataTable";
+import { DataTable } from "../../shared/tables/DataTable";
 
 interface Props {
   playerClubCareers: PlayerClubCareerListItem[];

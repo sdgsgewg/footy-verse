@@ -9,7 +9,7 @@ import { NationalTeamListItem } from "@/types/national-team";
 import { useNationalTeamActions } from "@/hooks/dashboard/national-teams";
 import { TeamCategory } from "@/enums/TeamCategory";
 import { DataColumn } from "@/types/table";
-import { DataTable } from "./DataTable";
+import { DataTable } from "../../shared/tables/DataTable";
 
 interface Props {
   nationalTeams: NationalTeamListItem[];
@@ -22,7 +22,7 @@ const NationalTeamTable = ({ nationalTeams, showActions = false }: Props) => {
   };
 
   const t = useTranslations("");
-  const tColumn = useTranslations("dashboard.nationalTeams.columns");
+  const tColumn = useTranslations("dashboard.nationalTeams.table.columns");
 
   const { handleView, handleEdit, handleDelete } =
     useNationalTeamActions(nationSlug);

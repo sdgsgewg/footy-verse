@@ -9,9 +9,9 @@ import {
 } from "@/hooks/dashboard/club-teams";
 import { useClubTeams } from "@/hooks/club-teams";
 import TableFormLayout from "@/components/layout/dashboard/TableFormLayout";
-import ClubTeamTable from "@/components/shared/tables/ClubTeamTable";
 import ClubTeamForm from "@/components/forms/club-teams/ClubTeamForm";
 import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
+import { ClubTeamTable } from "@/components/clubs/table";
 
 interface Props {
   clubLookup: ClubLookupResponse;

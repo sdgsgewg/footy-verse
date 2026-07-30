@@ -16,6 +16,7 @@ export function useCreatePlayerClubCareer(player: PlayerLookupResponse) {
 
     invalidateQueries: [
       { queryKey: playerClubCareerKeys.lists() },
+      { queryKey: playerKeys.lists() },
       { queryKey: playerKeys.details() },
       { queryKey: playerTransferKeys.lists() },
     ],

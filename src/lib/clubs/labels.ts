@@ -14,12 +14,12 @@ type Translate = (key: string) => string;
 export const getSquadTypeLabel = (type: SquadType, t: Translate): string => {
   switch (type) {
     case SquadType.FIRST_TEAM:
-      return t("dashboard.clubTeams.form.options.firstTeam");
+      return t("dashboard.clubTeams.form.options.squadType.firstTeam");
     case SquadType.B_TEAM:
-      return t("dashboard.clubTeams.form.options.bTeam");
+      return t("dashboard.clubTeams.form.options.squadType.bTeam");
     case SquadType.RESERVE:
-      return t("dashboard.clubTeams.form.options.reserve");
+      return t("dashboard.clubTeams.form.options.squadType.reserve");
     case SquadType.ACADEMY:
-      return t("dashboard.clubTeams.form.options.academy");
+      return t("dashboard.clubTeams.form.options.squadType.academy");
   }
 };

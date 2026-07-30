@@ -2,18 +2,37 @@
 
 import EntityLoading from "@/components/feedback/loading/EntityLoading";
 import ErrorState from "@/components/feedback/ErrorState";
-import NationalTeamDetailPageLayout from "@/components/layout/detail-page/NationalTeamDetailPageLayout";
 import { useNationalityDetail } from "@/hooks/dashboard/nationalities";
 import { NationalityLookupResponse } from "@/types/nationality";
+import { NationalTeamTable } from "@/components/shared/tables";
+import { useNationalTeams } from "@/hooks/national-teams";
+import NationalityDetailPageLayout from "@/components/layout/detail-page/NationalityDetailPageLayout";
+import SectionHeader from "@/components/players/sections/SectionHeader";
+import { useTranslations } from "next-intl";
+import { useParams } from "next/navigation";
+import { useRouter } from "@/navigation";
+import { ROUTES } from "@/constants/routes";
 
 interface Props {
   nationalityLookup: NationalityLookupResponse;
 }
 
 const NationalityDetailPage = ({ nationalityLookup }: Props) => {
+  const { nationSlug } = useParams() as {
+    nationSlug: string;
+  };
+
+  const router = useRouter();
+
+  const tNationalTeamTable = useTranslations("dashboard.nationalTeams.table");
+
   const { nationality, isLoading, error, refetch } = useNationalityDetail(
     nationalityLookup.id,
   );
+
+  const { nationalTeams } = useNationalTeams({
+    nationId: nationalityLookup.id,
+  });
 
   // Initial request is still loading and no cached nationality data is available yet.
   if (!nationality && isLoading) {
@@ -30,13 +49,31 @@ const NationalityDetailPage = ({ nationalityLookup }: Props) => {
     return <ErrorState onRetry={() => void refetch()} />;
   }
 
-  const { imageUrl, name } = nationality;
+  const handleAddNationalTeam = () => {
+    router.push(
+      `${ROUTES.DASHBOARD.CONTENT.NATIONALITIES.BASE}/${nationSlug}/teams/create`,
+    );
+  };
+
+  const content = (
+    <>
+      <section>
+        <SectionHeader
+          title={tNationalTeamTable("title")}
+          onAdd={handleAddNationalTeam}
+        />
+        <NationalTeamTable nationalTeams={nationalTeams} showActions />
+      </section>
+    </>
+  );
+
+  const { name } = nationality;
 
   return (
-    <NationalTeamDetailPageLayout
+    <NationalityDetailPageLayout
       title={name}
-      imageUrl={imageUrl}
-      nationalTeam={nationality}
+      nationality={nationality}
+      content={content}
     />
   );
 };

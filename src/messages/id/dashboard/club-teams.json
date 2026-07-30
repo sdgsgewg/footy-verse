@@ -20,9 +20,13 @@
     }
   },
 
-  "columns": {
-    "name": "Nama",
-    "squadType": "Tipe Skuad",
-    "ageGroup": "Grup Usia"
+  "table": {
+    "title": "Tim Klub",
+
+    "columns": {
+      "name": "Nama",
+      "squadType": "Tipe Skuad",
+      "ageGroup": "Grup Usia"
+    }
   }
 }

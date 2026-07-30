@@ -7,7 +7,7 @@ import { NationalityLookupResponse } from "@/types/nationality";
 import { useNationalityDetail } from "@/hooks/dashboard/nationalities";
 import { useNationalTeams } from "@/hooks/national-teams";
 import { useNationalTeamSubmit } from "@/hooks/dashboard/national-teams";
-import NationalTeamTable from "@/components/shared/tables/NationalTeamTable";
+import NationalTeamTable from "@/components/nationalities/table/NationalTeamTable";
 import NationalTeamForm from "@/components/forms/national-teams/NationalTeamForm";
 import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
 
