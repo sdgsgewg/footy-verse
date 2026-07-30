@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Link } from "@/navigation";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { createClient } from "@/utils/supabase/client";
 import {
   Mail,
@@ -16,11 +16,15 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
+import { ROUTES } from "@/constants/routes";
 
 export default function RegisterPage() {
   const t = useTranslations("auth");
+  const locale = useLocale();
   const searchParams = useSearchParams();
-  const next = searchParams.get("next") ?? "/manage/clubs";
+
+  const next =
+    searchParams.get("next") ?? `/${locale}/${ROUTES.DASHBOARD.BASE}`;
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

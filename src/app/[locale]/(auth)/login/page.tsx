@@ -8,12 +8,15 @@ import { createClient } from "@/utils/supabase/client";
 import { Mail, Lock, Eye, EyeOff, AlertCircle, LogIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
+import { ROUTES } from "@/constants/routes";
 
 export default function LoginPage() {
   const t = useTranslations("auth");
   const router = useRouter();
   const searchParams = useSearchParams();
-  const next = searchParams.get("next") ?? "/manage/clubs";
+
+  const next = searchParams.get("next") ?? `/${ROUTES.DASHBOARD.BASE}`;
+
   const callbackError = searchParams.get("error");
 
   const [email, setEmail] = useState("");

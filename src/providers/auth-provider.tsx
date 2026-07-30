@@ -50,8 +50,11 @@ export function AuthProvider({
   const signOut = async () => {
     try {
       await supabase.auth.signOut();
-    } finally {
+
+      router.replace("/");
       router.refresh();
+    } catch (error) {
+      console.error("Failed to sign out:", error);
     }
   };
 
