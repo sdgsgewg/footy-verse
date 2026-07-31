@@ -1,4 +1,4 @@
-import { ClubTeamDetailResponse } from "../club-team";
+import { ClubTeamResponse } from "../club-team";
 import {
   PlayerCareerDetailResponse,
   PlayerCareerEditResponse,
@@ -48,7 +48,7 @@ export interface PlayerClubCareerEditResponse {
 export interface PlayerClubCareerDetailResponse {
   id: string;
 
-  clubTeam: ClubTeamDetailResponse;
+  clubTeam: ClubTeamResponse;
   career: PlayerCareerDetailResponse;
   contracts: PlayerContractDetailResponse[];
   shirtNumbers: PlayerShirtNumberDetailResponse[];

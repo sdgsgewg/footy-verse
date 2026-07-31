@@ -27,10 +27,14 @@ export interface ClubTeamEditResponse {
 
 export interface ClubTeamDetailResponse {
   id: string;
+  name: string;
   squadType: string;
   ageGroup: string | null;
 
   club: ClubResponse;
+
+  squadSize: string;
+  totalMarketValue: string;
 }
 
 // Helper for other entity

@@ -29,6 +29,7 @@ import {
 } from "@/types/player";
 import { createPaginatedResponse } from "../pagination";
 import { DbPlayerNationalTeamCareerRow } from "@/types/player-national-team-career";
+import { DbPlayerClubCareerRow } from "@/types/player-club-career";
 
 async function getSupabase() {
   return createClient();
@@ -146,6 +147,30 @@ function getPlayersBaseQuery(options?: { isNationFiltered?: boolean }) {
   `;
 }
 
+async function getPlayerIdsByClubTeam(clubTeamId: string): Promise<string[]> {
+  const supabase = await getSupabase();
+
+  const { data, error } = await supabase
+    .from("player_club_careers")
+    .select(
+      `
+      player_career:player_careers!player_club_careers_player_career_id_fkey (
+        player_id
+      )
+    `,
+    )
+    .eq("club_team_id", clubTeamId)
+    .overrideTypes<DbPlayerClubCareerRow[]>();
+
+  if (error) {
+    throw error;
+  }
+
+  return (data ?? [])
+    .map((item) => item.player_career?.player_id)
+    .filter((playerId): playerId is string => Boolean(playerId));
+}
+
 async function getPlayerIdsByNationalTeam(
   nationalTeamId: string,
 ): Promise<string[]> {
@@ -250,7 +275,17 @@ export async function getGroupedPlayersRepo(
 ): Promise<GroupedPlayerListItem[]> {
   const supabase = await getSupabase();
 
+  // Get player ids from selected club or national team
+
   let playerIds: string[] | undefined;
+
+  if (params.clubTeamId) {
+    playerIds = await getPlayerIdsByClubTeam(params.clubTeamId);
+
+    if (playerIds.length === 0) {
+      return [];
+    }
+  }
 
   if (params.nationalTeamId) {
     playerIds = await getPlayerIdsByNationalTeam(params.nationalTeamId);
@@ -260,11 +295,15 @@ export async function getGroupedPlayersRepo(
     }
   }
 
+  // Base Query
+
   let query = supabase.from(getPlayerTable()).select(
     getPlayersBaseQuery({
       isNationFiltered: !!params.nationId,
     }),
   );
+
+  // Filter
 
   if (playerIds) {
     query = query.in("id", playerIds);
@@ -288,6 +327,7 @@ export async function getGroupedPlayersRepo(
   }
 
   // Sort
+
   query = query.order(params.sortBy, {
     ascending: params.sortOrder === "asc",
   });

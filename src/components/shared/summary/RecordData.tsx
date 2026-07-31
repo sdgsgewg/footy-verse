@@ -3,7 +3,7 @@ import Image from "next/image";
 interface Props {
   label: string;
   content: {
-    text: string;
+    text: string | null;
     imageUrl?: string;
   };
 }
@@ -19,14 +19,14 @@ const RecordData = ({ label, content }: Props) => {
         {content.imageUrl && (
           <Image
             src={content.imageUrl}
-            alt={content.text}
+            alt={content.text ?? "-"}
             width={20}
             height={14}
             className="rounded-sm border"
           />
         )}
 
-        <span className="font-semibold">{content.text}</span>
+        <span className="font-semibold">{content.text ?? "-"}</span>
       </div>
     </div>
   );

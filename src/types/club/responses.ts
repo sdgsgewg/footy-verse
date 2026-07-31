@@ -45,3 +45,11 @@ export interface ClubResponse {
   imageUrl: string;
   name: string;
 }
+
+export interface ClubWithNationalityResponse {
+  id: string;
+  imageUrl: string;
+  name: string;
+
+  nation: NationalityResponse;
+}

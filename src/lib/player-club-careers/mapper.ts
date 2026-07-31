@@ -24,7 +24,7 @@ import {
   mapPlayerShirtNumberDetailResponse,
   mapPlayerShirtNumberEditResponse,
 } from "../player-shirt-numbers/mapper";
-import { mapClubTeamDetailResponse } from "../club-teams/mapper";
+import { mapClubTeamResponse } from "../club-teams/mapper";
 
 /**
  *
@@ -90,6 +90,11 @@ export function mapPlayerClubCareerEditResponse(
   };
 }
 
+/**
+ *
+ * @param playerClubCareer
+ * @returns PlayerClubCareerDetailResponse
+ */
 export function mapPlayerClubCareerDetailResponse(
   playerClubCareer: DbPlayerClubCareerDetailRow,
 ): PlayerClubCareerDetailResponse {
@@ -104,7 +109,7 @@ export function mapPlayerClubCareerDetailResponse(
 
   const { player_shirt_numbers } = player_career;
 
-  const clubTeam = mapClubTeamDetailResponse(club_team);
+  const clubTeam = mapClubTeamResponse(club_team);
 
   const career = mapPlayerCareerDetailResponse(player_career);
 

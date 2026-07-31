@@ -30,9 +30,7 @@ const getClubTeamTable = () => {
   return ENTITY_CONFIG["clubTeam"]["table"];
 };
 
-function getClubTeamsBaseQuery(options?: { isClubFiltered?: boolean }) {
-  const clubJoin = options?.isClubFiltered ? "!inner" : "";
-
+function getClubTeamsBaseQuery() {
   return `
     id,
     club_id,
@@ -92,6 +90,15 @@ function getClubTeamDetailBaseQuery() {
       id,
       name,
       image
+    ),
+
+    player_club_careers (
+      player_career:player_careers (
+        player:players (
+          id,
+          market_value
+        )
+      )
     )
   `;
 }

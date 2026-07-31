@@ -1,5 +1,5 @@
 import { SquadType } from "@/enums/SquadType";
-import { ClubTeamSummary, DbClubTeamListRow } from "@/types/club-team";
+import { DbClubTeamListRow, DbClubTeamRow } from "@/types/club-team";
 
 /**
  *
@@ -7,7 +7,7 @@ import { ClubTeamSummary, DbClubTeamListRow } from "@/types/club-team";
  * @returns string
  */
 export function formatClubName(
-  clubTeam: DbClubTeamListRow | ClubTeamSummary,
+  clubTeam: DbClubTeamListRow | DbClubTeamRow,
 ): string {
   const { squad_type, age_group, club } = clubTeam;
 

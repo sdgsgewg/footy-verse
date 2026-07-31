@@ -4,10 +4,15 @@ import {
   ClubDetailResponse,
   ClubEditResponse,
   ClubListItem,
+  ClubResponse,
+  ClubWithNationalityResponse,
   DbClubDetailRow,
   DbClubListRow,
+  DbClubRow,
+  DbClubWithNationalityRow,
 } from "@/types/club";
 import { getModifiedNation } from "./formatter";
+import { mapNationalityResponse } from "../nationalities/mapper";
 
 export function mapClubListItem(club: DbClubListRow): ClubListItem {
   const { id, image, name, slug, nation } = club;
@@ -43,5 +48,31 @@ export function mapClubDetailResponse(
     name,
     slug,
     nation: getModifiedNation(nation),
+  };
+}
+
+// Helper
+
+export function mapClubResponse(club: DbClubRow): ClubResponse {
+  const { id, image, name } = club;
+
+  return {
+    id,
+    imageUrl: getImageUrl("club", STORAGE_BUCKETS.CLUBS, image),
+    name,
+  };
+}
+
+export function mapClubWithNationalityResponse(
+  club: DbClubWithNationalityRow,
+): ClubWithNationalityResponse {
+  const { id, image, name, nationality } = club;
+
+  return {
+    id,
+    imageUrl: getImageUrl("club", STORAGE_BUCKETS.CLUBS, image),
+    name,
+
+    nation: mapNationalityResponse(nationality),
   };
 }
