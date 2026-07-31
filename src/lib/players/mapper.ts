@@ -51,7 +51,7 @@ export function mapPlayerListItem(player: DbPlayerListRow): PlayerListItem {
     shirtNumber,
     dob: formatDateOfBirth(player.dob),
     mainPosition,
-    currentNationality: currentNationality ?? null,
+    currentNationality,
     currentClubTeam: currentClub ?? null,
     marketValue,
   };
@@ -168,7 +168,7 @@ export function mapPlayerDetailResponse(
       name: player.name,
       dob,
       pob: player.pob,
-      currentNationality: currentNationality ?? null,
+      currentNationality,
       height,
       mainPosition,
       marketValue,

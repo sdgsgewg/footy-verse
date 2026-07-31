@@ -29,7 +29,7 @@ export interface PlayerListItem {
 
   currentClubTeam: ClubTeamResponse | null;
 
-  currentNationality: NationalityResponse | null;
+  currentNationality: NationalityResponse;
 
   marketValue: string;
 }
@@ -72,7 +72,7 @@ export interface PlayerSummaryResponse {
 
   dob: string;
   pob: string;
-  currentNationality: NationalityResponse | null;
+  currentNationality: NationalityResponse;
   height: string;
   mainPosition: PositionResponse;
 

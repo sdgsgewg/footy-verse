@@ -313,13 +313,13 @@ export function getNationalities(
  */
 export function getCurrentNationality(
   playerNationalities: PlayerNationalityQuery[],
-): NationalityResponse | null {
+): NationalityResponse {
   const playerNationality = playerNationalities.find(
     (n) => n.display_order === 1,
   );
 
   if (!playerNationality) {
-    return null;
+    throw new Error("Player must have a main nationality.");
   }
 
   const { nationality } = playerNationality;
