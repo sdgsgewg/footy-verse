@@ -18,12 +18,14 @@ import {
   mapNationalityDetailResponse,
   mapNationalityEditResponse,
   mapNationalityListItem,
+  mapNationalityOption,
 } from "../nationalities/mapper";
 import { NationalTeamCreateInput } from "@/types/national-team";
 import { TeamCategory } from "@/enums/TeamCategory";
 import { AgeGroup } from "@/enums/AgeGroup";
 import { createPaginatedResponse } from "../pagination";
 import { slugify } from "@/utils/string";
+import { SelectOption } from "@/types/select";
 
 async function getSupabase() {
   return createClient();
@@ -101,6 +103,35 @@ export async function getNationalitiesRepo(
     page: params.page,
     limit: params.limit,
   });
+}
+
+/**
+ *
+ * @returns
+ */
+export async function getNationalityOptionsRepo(): Promise<SelectOption[]> {
+  const supabase = await getSupabase();
+
+  const { data, error } = await supabase
+    .from(getNationalityTable())
+    .select(
+      `
+      id,
+      name,
+      image
+    `,
+    )
+    .order("name", {
+      ascending: true,
+    });
+
+  if (error) {
+    throw error;
+  }
+
+  if (!data || data.length === 0) return [];
+
+  return data.map(mapNationalityOption);
 }
 
 /**

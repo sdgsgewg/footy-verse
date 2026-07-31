@@ -8,6 +8,8 @@ export const nationalityKeys = {
   list: (params?: NationalityQuery) =>
     [...nationalityKeys.lists(), params] as const,
 
+  options: () => [...nationalityKeys.all, "options"] as const,
+
   details: () => [...nationalityKeys.all, "detail"] as const,
 
   detail: (id: string) => [...nationalityKeys.details(), id] as const,

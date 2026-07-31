@@ -44,13 +44,16 @@ export default function PlayersManagementPage() {
   const { handleCreate, handleView, handleEdit, handleDelete } =
     usePlayerActions();
 
-  const columns = createPlayerColumns({
-    player: tColumn("player"),
-    dob: tColumn("dob"),
-    club: tColumn("club"),
-    nationality: tColumn("nationality"),
-    marketValue: tColumn("marketValue"),
-  });
+  const columns = createPlayerColumns(
+    {
+      player: tColumn("player"),
+      dob: tColumn("dob"),
+      club: tColumn("club"),
+      nationality: tColumn("nationality"),
+      marketValue: tColumn("marketValue"),
+    },
+    ["shirtNumber", "player", "dob", "club", "nationality", "marketValue"],
+  );
 
   const handleSort = createSortHandler({
     sortBy: filters.sortBy,

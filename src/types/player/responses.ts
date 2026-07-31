@@ -72,7 +72,7 @@ export interface PlayerSummaryResponse {
 
   dob: string;
   pob: string;
-  currentNationality: NationalityResponse;
+  currentNationality: NationalityResponse | null;
   height: string;
   mainPosition: PositionResponse;
 

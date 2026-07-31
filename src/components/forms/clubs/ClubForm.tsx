@@ -6,9 +6,8 @@ import FormHeader from "../base/FormHeader";
 import FormWrapper from "../base/FormWrapper";
 import { ClubEditResponse } from "@/types/club";
 import FormContentWrapper from "../base/FormContentWrapper";
-import { getNationalityOptions } from "@/lib/nationalities/options";
 import { ComboboxField, ImageField, TextField } from "../fields";
-import { useNationalities } from "@/hooks/nationalities";
+import { useNationalityOptions } from "@/hooks/nationalities";
 
 interface Props {
   mode: "create" | "edit";
@@ -26,11 +25,11 @@ const ClubForm = ({ mode, club, loading = false, onSubmit }: Props) => {
 
   const { form, setForm, canSubmit, buildPayload } = useClubForm(club);
 
-  const { nationalities } = useNationalities();
+  const { nationalities } = useNationalityOptions();
 
   const isCreate = mode === "create";
 
-  const nationalityOptions = getNationalityOptions(nationalities);
+  const nationalityOptions = nationalities;
 
   const handleSubmit = () => {
     onSubmit(buildPayload());

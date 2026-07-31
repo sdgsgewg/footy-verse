@@ -5,6 +5,7 @@ import {
   getNationalityDetailRepo,
   getNationalityEditRepo,
   getNationalityLookupRepo,
+  getNationalityOptionsRepo,
   updateNationalityRepo,
 } from "@/lib/repositories/nationalities.repo";
 import {
@@ -18,6 +19,10 @@ export async function getNationalitiesService(query: unknown) {
   const parsed = nationalitiesQuerySchema.parse(query);
 
   return getNationalitiesRepo(parsed);
+}
+
+export async function getNationalityOptionsService() {
+  return getNationalityOptionsRepo();
 }
 
 export async function getNationalityEditService(id: string) {

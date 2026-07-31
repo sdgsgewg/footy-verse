@@ -6,14 +6,19 @@ import FormWrapper from "../base/FormWrapper";
 import { PlayerEditResponse } from "@/types/player";
 import { usePositions } from "@/hooks/dashboard/positions";
 import FormContentWrapper from "../base/FormContentWrapper";
-import { DateField, ImageField, NumberField, SelectField, TextField } from "../fields";
+import {
+  DateField,
+  ImageField,
+  NumberField,
+  SelectField,
+  TextField,
+} from "../fields";
 import { useTranslations } from "next-intl";
 import { getPreferredFootOptions } from "@/lib/players/options";
 import { PreferredFoot } from "@/enums/PreferredFoot";
 import { getPositionOptions } from "@/lib/positions/options";
-import { getNationalityOptions } from "@/lib/nationalities/options";
 import OrderedSelectField from "../fields/OrderedSelectField";
-import { useNationalities } from "@/hooks/nationalities";
+import { useNationalityOptions } from "@/hooks/nationalities";
 
 interface Props {
   mode: "create" | "edit";
@@ -33,14 +38,14 @@ const PlayerForm = ({ mode, player, loading = false, onSubmit }: Props) => {
   const { form, setForm, canSubmit, buildPayload } = usePlayerForm(player);
 
   const { positions } = usePositions();
-  const { nationalities } = useNationalities();
+  const { nationalities } = useNationalityOptions();
 
   const isCreate = mode === "create";
 
   const preferredFootOptions = getPreferredFootOptions(tPrefFoot);
 
   const positionOptions = getPositionOptions(positions);
-  const nationalityOptions = getNationalityOptions(nationalities);
+  const nationalityOptions = nationalities;
 
   const handleSubmit = () => {
     onSubmit(buildPayload());

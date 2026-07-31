@@ -10,6 +10,7 @@ import {
   NationalityQuery,
 } from "@/types/nationality";
 import { ApiResponse } from "@/types/api";
+import { SelectOption } from "@/types/select";
 
 const baseRoute = `/nationalities`;
 const baseRouteWithApi = `/api/nationalities`;
@@ -27,6 +28,14 @@ export const fetchNationalities = async (
     {
       params,
     },
+  );
+
+  return data.data;
+};
+
+export const fetchNationalityOptions = async (): Promise<SelectOption[]> => {
+  const { data } = await apiClient.get<ApiResponse<SelectOption[]>>(
+    `${baseRoute}/options`,
   );
 
   return data.data;
