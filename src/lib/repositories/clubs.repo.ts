@@ -203,7 +203,7 @@ async function insertClubTeam(clubId: string) {
 
   const clubTeamInsert: ClubTeamCreateInput = {
     squad_type: SquadType.FIRST_TEAM,
-    age_group: null,
+    age_group: "",
     club_id: clubId,
   };
 

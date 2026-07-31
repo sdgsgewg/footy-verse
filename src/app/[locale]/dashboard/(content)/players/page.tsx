@@ -52,7 +52,7 @@ export default function PlayersManagementPage() {
       nationality: tColumn("nationality"),
       marketValue: tColumn("marketValue"),
     },
-    ["shirtNumber", "player", "dob", "club", "nationality", "marketValue"],
+    ["player", "dob", "club", "nationality", "marketValue"],
   );
 
   const handleSort = createSortHandler({

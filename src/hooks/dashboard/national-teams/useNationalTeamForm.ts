@@ -10,8 +10,8 @@ import { useMemo, useState } from "react";
 
 const emptyNationalTeamForm: UpsertNationalTeamInput = {
   id: "",
-  team_category: TeamCategory.MEN,
-  age_group: AgeGroup.SENIOR,
+  team_category: "",
+  age_group: "",
 };
 
 function mapNationalTeam(

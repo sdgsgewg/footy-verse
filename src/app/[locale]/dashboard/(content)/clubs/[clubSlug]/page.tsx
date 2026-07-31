@@ -1,4 +1,5 @@
 import ClubDetailPage from "@/components/dashboard/clubs/ClubDetailPage";
+import { ROUTES } from "@/constants/routes";
 import { getClubLookupService } from "@/lib/services/clubs.service";
 import { notFound } from "next/navigation";
 
@@ -15,5 +16,10 @@ export default async function Page({
     return notFound();
   }
 
-  return <ClubDetailPage clubLookup={clubLookup} />;
+  return (
+    <ClubDetailPage
+      clubLookup={clubLookup}
+      backHref={ROUTES.DASHBOARD.CONTENT.CLUBS.BASE}
+    />
+  );
 }

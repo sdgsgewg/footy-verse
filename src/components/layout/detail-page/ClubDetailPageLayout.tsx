@@ -7,12 +7,20 @@ interface Props {
   title: string;
   club: ClubDetailResponse;
   content: React.ReactNode;
+  backHref?: string;
 }
 
-const ClubDetailPageLayout = ({ title, club, content }: Props) => {
+const ClubDetailPageLayout = ({ title, club, content, backHref }: Props) => {
   const summary = <ClubSummary summary={club} />;
 
-  return <DetailPageLayout title={title} summary={summary} content={content} />;
+  return (
+    <DetailPageLayout
+      title={title}
+      summary={summary}
+      content={content}
+      backHref={backHref}
+    />
+  );
 };
 
 export default ClubDetailPageLayout;

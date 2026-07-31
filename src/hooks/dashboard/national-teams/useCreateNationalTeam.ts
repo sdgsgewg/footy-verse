@@ -14,7 +14,7 @@ export function useCreateNationalTeam(nation: NationalityLookupResponse) {
 
     invalidateQueries: [{ queryKey: nationalTeamKeys.lists() }],
 
-    redirectTo: `${ROUTES.DASHBOARD.CONTENT.NATIONALITIES}/${nation.slug}`,
+    redirectTo: `${ROUTES.DASHBOARD.CONTENT.NATIONALITIES.BASE}/${nation.slug}`,
 
     entityKey: "nationalTeam",
 

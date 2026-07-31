@@ -189,7 +189,7 @@ export async function createNationalTeamRepo(
 
   const { data: insertedNationalTeam, error } = await supabase
     .from(getNationalTeamTable())
-    .insert({ ...nationalTeam, club_id: nationId })
+    .insert({ ...nationalTeam, nation_id: nationId })
     .select(`*`)
     .single();
 
@@ -223,7 +223,7 @@ export async function updateNationalTeamRepo(
     .from(getNationalTeamTable())
     .update({
       ...nationalTeam,
-      club_id: nationId,
+      nation_id: nationId,
       updated_at: new Date().toISOString(),
     })
     .eq("id", teamId);

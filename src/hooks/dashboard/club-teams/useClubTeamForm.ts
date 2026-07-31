@@ -7,8 +7,8 @@ import { useMemo, useState } from "react";
 
 const emptyClubTeamForm: UpsertClubTeamInput = {
   id: "",
-  squad_type: SquadType.FIRST_TEAM,
-  age_group: AgeGroup.SENIOR,
+  squad_type: "",
+  age_group: "",
 };
 
 function mapClubTeam(clubTeam: ClubTeamEditResponse): UpsertClubTeamInput {

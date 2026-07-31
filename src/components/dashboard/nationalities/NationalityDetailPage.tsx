@@ -15,9 +15,10 @@ import { NationalTeamTable } from "@/components/nationalities/table";
 
 interface Props {
   nationalityLookup: NationalityLookupResponse;
+  backHref?: string;
 }
 
-const NationalityDetailPage = ({ nationalityLookup }: Props) => {
+const NationalityDetailPage = ({ nationalityLookup, backHref }: Props) => {
   const { nationSlug } = useParams() as {
     nationSlug: string;
   };
@@ -74,6 +75,7 @@ const NationalityDetailPage = ({ nationalityLookup }: Props) => {
       title={name}
       nationality={nationality}
       content={content}
+      backHref={backHref}
     />
   );
 };

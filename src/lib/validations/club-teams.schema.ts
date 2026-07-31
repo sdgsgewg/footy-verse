@@ -3,8 +3,8 @@ import { idSchema } from "./primitives.schema";
 import { ageGroupSchema, squadTypeSchema } from "./enums.schema";
 
 export const clubTeamMutationSchema = z.object({
-  squad_type: squadTypeSchema,
-  age_group: ageGroupSchema.nullable().optional(),
+  squad_type: z.union([squadTypeSchema, z.literal("")]),
+  age_group: z.union([ageGroupSchema, z.literal("")]),
   club_id: idSchema.optional(),
 });
 

@@ -33,7 +33,10 @@ const NationalTeamForm = ({
   onSubmit,
 }: Props) => {
   const t = useTranslations("");
-  const tNationalTeams = useTranslations("dashboard.nationalTeams");
+  const tLabels = useTranslations("dashboard.nationalTeams.form.labels");
+  const tPlaceholders = useTranslations(
+    "dashboard.nationalTeams.form.placeholders",
+  );
 
   const { form, setForm, canSubmit, buildPayload } =
     useNationalTeamForm(nationalTeam);
@@ -59,9 +62,9 @@ const NationalTeamForm = ({
       <FormContentWrapper className="space-y-5">
         {/* Squad Type */}
         <SelectField
-          label={tNationalTeams("form.labels.squadType")}
-          name="squad_type"
-          placeholder={tNationalTeams("form.placeholders.squadType")}
+          label={tLabels("teamCategory")}
+          name="team_category"
+          placeholder={tPlaceholders("teamCategory")}
           options={teamCategoryOptions}
           value={form.team_category || ""}
           onChange={(value) =>
@@ -72,9 +75,9 @@ const NationalTeamForm = ({
 
         {/* Age Group */}
         <SelectField
-          label={tNationalTeams("form.labels.ageGroup")}
+          label={tLabels("ageGroup")}
           name="age_griup"
-          placeholder={tNationalTeams("form.placeholders.ageGroup")}
+          placeholder={tPlaceholders("ageGroup")}
           options={ageGroupOptions}
           value={form.age_group || ""}
           onChange={(value) =>

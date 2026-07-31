@@ -3,8 +3,8 @@ import { idSchema } from "./primitives.schema";
 import { ageGroupSchema, teamCategorySchema } from "./enums.schema";
 
 export const nationalTeamMutationSchema = z.object({
-  team_category: teamCategorySchema,
-  age_group: ageGroupSchema,
+  team_category: z.union([teamCategorySchema, z.literal("")]),
+  age_group: z.union([ageGroupSchema, z.literal("")]),
   nation_id: idSchema.optional(),
 });
 

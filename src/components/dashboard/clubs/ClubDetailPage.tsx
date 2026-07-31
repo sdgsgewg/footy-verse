@@ -15,9 +15,10 @@ import { ROUTES } from "@/constants/routes";
 
 interface Props {
   clubLookup: ClubLookupResponse;
+  backHref?: string;
 }
 
-const ClubDetailPage = ({ clubLookup }: Props) => {
+const ClubDetailPage = ({ clubLookup, backHref }: Props) => {
   const { clubSlug } = useParams() as {
     clubSlug: string;
   };
@@ -68,7 +69,14 @@ const ClubDetailPage = ({ clubLookup }: Props) => {
 
   const { name } = club;
 
-  return <ClubDetailPageLayout title={name} club={club} content={content} />;
+  return (
+    <ClubDetailPageLayout
+      title={name}
+      club={club}
+      content={content}
+      backHref={backHref}
+    />
+  );
 };
 
 export default ClubDetailPage;
