@@ -58,12 +58,16 @@
     }
   },
 
-  "columns": {
-    "name": "Nama",
-    "position": "Posisi",
-    "club": "Klub",
-    "nationality": "Kebangsaan",
-    "marketValue": "Nilai Pasar"
+  "table": {
+    "title": "Player List",
+
+    "columns": {
+      "player": "Pemain",
+      "dob": "Tanggal Lahir/Umur",
+      "club": "Klub",
+      "nationality": "Kebangsaan",
+      "marketValue": "Nilai Pasar"
+    }
   },
 
   "actions": {

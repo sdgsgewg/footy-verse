@@ -1,6 +1,5 @@
 import {
   NationalTeamCreateInput,
-  NationalTeamQuery,
   NationalTeamUpdateInput,
 } from "@/types/national-team";
 import { idSchema } from "../validations/primitives.schema";
@@ -37,8 +36,8 @@ export async function getNationalTeamDetailService(id: string) {
   return getNationalTeamDetailRepo(parsedId);
 }
 
-export async function getNationalTeamLookupService(slug: string) {
-  const parsedId = idSchema.parse(slug);
+export async function getNationalTeamLookupService(id: string) {
+  const parsedId = idSchema.parse(id);
 
   return getNationalTeamLookupRepo(parsedId);
 }

@@ -88,7 +88,22 @@ function getNationalTeamDetailBaseQuery() {
     nation:nationalities!national_teams_nation_id_fkey(
       id,
       name,
-      image
+      image,
+
+      confederation:confederations (
+        id,
+        name,
+        image
+      )
+    ),
+
+    player_national_team_careers (
+      player_career:player_careers (
+        player:players (
+          id,
+          market_value
+        )
+      )
     )
   `;
 }
@@ -105,10 +120,9 @@ export async function getNationalTeamEditRepo(
 
   const { data, error } = await supabase
     .from(getNationalTeamTable())
-    .select(getNationalTeamDetailBaseQuery())
+    .select("*")
     .eq("id", id)
-    .maybeSingle()
-    .overrideTypes<DbNationalTeamDetailRow>();
+    .maybeSingle();
 
   if (error) throw error;
   if (!data) return null;

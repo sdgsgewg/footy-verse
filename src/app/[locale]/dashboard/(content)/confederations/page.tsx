@@ -8,7 +8,6 @@ import { DataColumn } from "@/types/table";
 import { createSortHandler } from "@/lib/utils/crud";
 import { useCrudFilterSync } from "@/hooks/crud";
 import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
-import { ImageLabel } from "@/components/shared/ImageLabel";
 import useConfederationFilter from "@/hooks/dashboard/confederations/useConfederationFilter";
 import {
   useConfederationActions,
@@ -16,6 +15,10 @@ import {
 } from "@/hooks/dashboard/confederations";
 import { ConfederationListItem } from "@/types/confederation";
 import { formatLocaleDate } from "@/lib/utils/date";
+import {
+  ConfederationImageLabel,
+  RegionImageLabel,
+} from "@/components/shared/tables/cells";
 
 export default function Page() {
   const tCommon = useTranslations("common");
@@ -44,7 +47,7 @@ export default function Page() {
       className: "min-w-[300px]",
 
       render: (confederation) => (
-        <ImageLabel
+        <ConfederationImageLabel
           imageUrl={confederation.imageUrl}
           label={confederation.name}
         />
@@ -70,7 +73,10 @@ export default function Page() {
       label: tColumn("region"),
 
       render: (confederation) => (
-        <ImageLabel imageUrl={confederation.region.imageUrl} label={confederation.region.name} />
+        <RegionImageLabel
+          imageUrl={confederation.region.imageUrl}
+          label={confederation.region.name}
+        />
       ),
 
       className: "min-w-[200px]",

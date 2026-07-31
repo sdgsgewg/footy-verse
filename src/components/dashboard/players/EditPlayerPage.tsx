@@ -7,12 +7,17 @@ import ErrorState from "@/components/feedback/ErrorState";
 import PlayerForm from "@/components/forms/players/PlayerForm";
 import FormPageLayout from "@/components/layout/dashboard/FormPageLayout";
 import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
+import { useRouter } from "@/navigation";
+import { ROUTES } from "@/constants/routes";
 
 interface Props {
   playerLookup: PlayerLookupResponse;
+  redirectTo?: string;
 }
 
-export default function EditPlayerPage({ playerLookup }: Props) {
+export default function EditPlayerPage({ playerLookup, redirectTo }: Props) {
+  const router = useRouter();
+
   const { getTitle } = useCrudPageTitle();
 
   const { player, isLoading, error, refetch } = usePlayerEdit(playerLookup.id);
@@ -47,6 +52,11 @@ export default function EditPlayerPage({ playerLookup }: Props) {
             submit({
               id: player.id,
               payload,
+              onSuccess: () => {
+                router.push(
+                  redirectTo ?? ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE,
+                );
+              },
             })
           }
         />

@@ -58,12 +58,16 @@
     }
   },
 
-  "columns": {
-    "name": "Name",
-    "position": "Position",
-    "club": "Club",
-    "nationality": "Nationality",
-    "marketValue": "Market Value"
+  "table": {
+    "title": "Player List",
+
+    "columns": {
+      "player": "Player",
+      "dob": "Date of Birth/Age",
+      "club": "Club",
+      "nationality": "Nationality",
+      "marketValue": "Market Value"
+    }
   },
 
   "actions": {

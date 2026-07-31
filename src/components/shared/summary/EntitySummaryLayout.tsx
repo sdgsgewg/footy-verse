@@ -31,22 +31,27 @@ const EntitySummaryLayout = ({
         {/* Left */}
         <div
           className={[
-            "flex flex-col items-start justify-between gap-6",
+            "flex flex-col items-start gap-6",
             className?.left,
           ]
             .filter(Boolean)
             .join(" ")}
         >
-          {title}
+          <div className="space-y-4">
+            {title}
 
-          {image}
+            {image}
+          </div>
 
           {information}
         </div>
 
         {/* Right */}
         <div
-          className={["flex flex-col gap-8 md:items-end", className?.right]
+          className={[
+            "flex flex-col sm:flex-row md:flex-col gap-8 md:items-end",
+            className?.right,
+          ]
             .filter(Boolean)
             .join(" ")}
         >

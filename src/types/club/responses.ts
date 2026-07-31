@@ -1,7 +1,7 @@
-// DTO API Response
-
 import { PaginatedResponse } from "../api";
 import { NationalityResponse } from "../nationality";
+
+// DTO API Response
 
 // Club List
 

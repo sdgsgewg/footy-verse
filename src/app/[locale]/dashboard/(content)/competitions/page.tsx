@@ -1,7 +1,8 @@
 "use client";
 
 import ConnectionErrorAlert from "@/components/feedback/ConnectionErrorAlert";
-import { ImageLabel } from "@/components/shared/ImageLabel";
+import { CompetitionImageLabel } from "@/components/shared/tables/cells";
+import { ImageLabel } from "@/components/shared/tables/cells/ImageLabel";
 import { CrudListPage } from "@/components/templates/crud";
 import { IMAGES } from "@/constants/images";
 import { Gender } from "@/enums/Gender";
@@ -61,7 +62,10 @@ export default function PlayersManagementPage() {
       className: "min-w-[16rem]",
 
       render: (competition) => (
-        <ImageLabel imageUrl={competition.imageUrl} label={competition.name} />
+        <CompetitionImageLabel
+          imageUrl={competition.imageUrl}
+          label={competition.name}
+        />
       ),
 
       sortable: true,
@@ -104,7 +108,17 @@ export default function PlayersManagementPage() {
         <>
           {competition.location ? (
             <ImageLabel
-              imageUrl={competition.location.imageUrl ?? IMAGES.COMMON.DEFAULT}
+              image={{
+                src: competition.location.imageUrl ?? IMAGES.COMMON.DEFAULT,
+                alt: competition.location.name,
+
+                aspectRatio: "none",
+
+                className: {
+                  container: "w-8 h-8",
+                  image: "object-contain",
+                },
+              }}
               label={competition.location.name}
             />
           ) : (

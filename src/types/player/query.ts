@@ -9,11 +9,16 @@ import { PlayerCareerQuery } from "../player-career/query";
 
 export type DbPlayerListRow = Pick<
   Player,
-  "id" | "image" | "name" | "slug" | "market_value"
+  "id" | "image" | "name" | "slug" | "dob" | "market_value"
 > & {
   player_positions: DbPlayerPositionRow[];
   player_nationalities: PlayerNationalityQuery[];
   player_careers: PlayerCareerQuery[];
+};
+
+export type DbPlayerListQueryRow = DbPlayerListRow & {
+  club_team_filter?: unknown[];
+  national_team_filter?: unknown[];
 };
 
 // Player Detail
@@ -23,3 +28,9 @@ export type DbPlayerDetailRow = Player & {
   player_nationalities: PlayerNationalityQuery[];
   player_careers: PlayerCareerQuery[];
 };
+
+// Helper
+
+// National Team
+
+export type DbPlayerRow = Pick<Player, "id" | "market_value">;

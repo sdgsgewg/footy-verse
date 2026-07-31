@@ -1,13 +1,22 @@
 import EditPlayerPage from "@/components/dashboard/players/EditPlayerPage";
+import { ROUTES } from "@/constants/routes";
 import { getPlayerLookupService } from "@/lib/services/players.service";
 import { notFound } from "next/navigation";
 
-export default async function Page({
-  params,
-}: {
-  params: Promise<{ playerSlug: string }>;
-}) {
+interface Props {
+  params: Promise<{
+    playerSlug: string;
+  }>;
+
+  searchParams: Promise<{
+    backHref?: string;
+  }>;
+}
+
+export default async function Page({ params, searchParams }: Props) {
   const { playerSlug } = await params;
+
+  const { backHref } = await searchParams;
 
   const playerLookup = await getPlayerLookupService(playerSlug);
 
@@ -15,5 +24,10 @@ export default async function Page({
     return notFound();
   }
 
-  return <EditPlayerPage playerLookup={playerLookup} />;
+  return (
+    <EditPlayerPage
+      playerLookup={playerLookup}
+      redirectTo={backHref ?? ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}
+    />
+  );
 }

@@ -7,7 +7,7 @@ import { usePlayerClubCareerActions } from "@/hooks/dashboard/player-club-career
 import { PlayerClubCareerListItem } from "@/types/player-club-career";
 import { DataColumn } from "@/types/table";
 import { DataTable } from "../../shared/tables/DataTable";
-import { ImageLabel } from "@/components/shared/ImageLabel";
+import { ClubImageLabel } from "@/components/shared/tables/cells";
 
 interface Props {
   playerClubCareers: PlayerClubCareerListItem[];
@@ -36,7 +36,7 @@ const PlayerClubCareerHistoryTable = ({
       className: "min-w-[320px]",
 
       render: (team) => (
-        <ImageLabel imageUrl={team.imageUrl} label={team.name} />
+        <ClubImageLabel imageUrl={team.imageUrl} label={team.name} />
       ),
     },
 

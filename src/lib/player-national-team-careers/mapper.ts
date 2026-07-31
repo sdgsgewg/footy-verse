@@ -16,7 +16,7 @@ import {
   mapPlayerShirtNumberDetailResponse,
   mapPlayerShirtNumberEditResponse,
 } from "../player-shirt-numbers/mapper";
-import { mapNationalTeamDetailResponse } from "../national-teams/mapper";
+import { mapNationalTeamResponse } from "../national-teams/mapper";
 
 /**
  *
@@ -79,7 +79,7 @@ export function mapPlayerNationalTeamCareerDetailResponse(
 
   const { player_shirt_numbers } = player_career;
 
-  const nationalTeam = mapNationalTeamDetailResponse(national_team);
+  const nationalTeam = mapNationalTeamResponse(national_team);
 
   const career = mapPlayerCareerDetailResponse(player_career);
 

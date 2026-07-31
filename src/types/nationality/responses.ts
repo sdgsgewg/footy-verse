@@ -38,6 +38,8 @@ export interface NationalityDetailResponse {
   imageUrl: string;
   name: string;
   slug: string;
+
+  confederation: ConfederationResponse | null;
 }
 
 // Helper for other entity
@@ -46,4 +48,12 @@ export interface NationalityResponse {
   id: string;
   imageUrl: string;
   name: string;
+}
+
+export interface NationalityWithConfederationResponse {
+  id: string;
+  imageUrl: string;
+  name: string;
+
+  confederation: ConfederationResponse | null;
 }

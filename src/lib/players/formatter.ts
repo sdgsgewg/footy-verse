@@ -27,13 +27,13 @@ function calculateAge(dob: string): number {
 
 /**
  *
- * @param player
+ * @param dob
  * @returns string
  */
-export function formatDateOfBirth(player: DbPlayerDetailRow): string {
-  const age = calculateAge(player.dob);
+export function formatDateOfBirth(dob: string): string {
+  const age = calculateAge(dob);
 
-  return `${formatDate(player.dob)} (${age})`;
+  return `${formatDate(dob)} (${age})`;
 }
 
 /**

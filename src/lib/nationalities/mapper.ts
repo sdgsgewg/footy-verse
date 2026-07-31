@@ -2,14 +2,17 @@ import {
   DbNationalityDetailRow,
   DbNationalityListRow,
   DbNationalityRow,
+  DbNationalityWithConfederationRow,
   NationalityDetailResponse,
   NationalityEditResponse,
   NationalityListItem,
   NationalityResponse,
+  NationalityWithConfederationResponse,
 } from "@/types/nationality";
 import { getImageUrl } from "../images/image-url";
 import { STORAGE_BUCKETS } from "../storage";
 import { LocationResponse } from "@/types/competition";
+import { mapConfederationResponse } from "../confederations/mapper";
 
 export function mapNationalityListItem(
   nationality: DbNationalityListRow,
@@ -24,15 +27,7 @@ export function mapNationalityListItem(
     fifaCode: fifa_code,
 
     confederation: confederation
-      ? {
-          id: confederation.id,
-          name: confederation.name,
-          imageUrl: getImageUrl(
-            "confederation",
-            STORAGE_BUCKETS.CONFEDERATIONS,
-            confederation.image,
-          ),
-        }
+      ? mapConfederationResponse(confederation)
       : null,
   };
 }
@@ -54,13 +49,16 @@ export function mapNationalityEditResponse(
 export function mapNationalityDetailResponse(
   nationality: DbNationalityDetailRow,
 ): NationalityDetailResponse {
-  const { id, image, name, slug } = nationality;
+  const { id, image, name, slug, confederation } = nationality;
 
   return {
     id,
     imageUrl: getImageUrl("nationality", STORAGE_BUCKETS.NATIONALITIES, image),
     name,
     slug,
+    confederation: confederation
+      ? mapConfederationResponse(confederation)
+      : null,
   };
 }
 
@@ -75,6 +73,22 @@ export function mapNationalityResponse(
     id,
     imageUrl: getImageUrl("nationality", STORAGE_BUCKETS.NATIONALITIES, image),
     name,
+  };
+}
+
+export function mapNationalityWithConfederationResponse(
+  nationality: DbNationalityWithConfederationRow,
+): NationalityWithConfederationResponse {
+  const { id, name, image, confederation } = nationality;
+
+  return {
+    id,
+    imageUrl: getImageUrl("nationality", STORAGE_BUCKETS.NATIONALITIES, image),
+    name,
+
+    confederation: confederation
+      ? mapConfederationResponse(confederation)
+      : null,
   };
 }
 

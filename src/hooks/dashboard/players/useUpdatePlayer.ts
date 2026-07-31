@@ -1,5 +1,4 @@
 import { updatePlayer } from "@/lib/api/player";
-import { ROUTES } from "@/constants/routes";
 import { useCrudMutation } from "../useCrudMutation";
 import { playerKeys } from "@/lib/react-query/keys/playerKeys";
 
@@ -14,11 +13,10 @@ export function useUpdatePlayer() {
 
     invalidateQueries: [
       { queryKey: playerKeys.lists() },
+      { queryKey: playerKeys.groupedLists() },
       { queryKey: playerKeys.details() },
       { queryKey: playerKeys.edits() },
     ],
-
-    redirectTo: ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE,
 
     entityKey: "player",
 

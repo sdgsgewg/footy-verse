@@ -15,6 +15,7 @@
     "title": "Tim Nasional",
 
     "columns": {
+      "name": "Nama",
       "teamCategory": "Kategori",
       "ageGroup": "Grup Usia"
     }

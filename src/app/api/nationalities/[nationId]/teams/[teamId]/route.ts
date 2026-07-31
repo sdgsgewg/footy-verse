@@ -5,7 +5,11 @@ import {
 } from "@/lib/api/response";
 import { NotFoundError } from "@/lib/errors/http-error";
 import { authorizeManageContent } from "@/lib/auth/api-authorization";
-import { deleteNationalTeamService, getNationalTeamDetailService, updateNationalTeamService } from "@/lib/services/national-teams.service";
+import {
+  deleteNationalTeamService,
+  getNationalTeamDetailService,
+  updateNationalTeamService,
+} from "@/lib/services/national-teams.service";
 
 type NationalTeamRouteContext = {
   params: Promise<{ nationId: string; teamId: string }>;
@@ -25,6 +29,7 @@ export async function GET(
 
     return successResponse(data);
   } catch (error) {
+    console.error("Error: ", error);
     return errorResponse(error);
   }
 }

@@ -1,7 +1,4 @@
-import {
-  NationalTeamDetailResponse,
-  NationalTeamResponse,
-} from "../national-team";
+import { NationalTeamResponse } from "../national-team";
 import {
   PlayerCareerDetailResponse,
   PlayerCareerEditResponse,
@@ -42,7 +39,7 @@ export interface PlayerNationalTeamCareerEditResponse {
 export interface PlayerNationalTeamCareerDetailResponse {
   id: string;
 
-  nationalTeam: NationalTeamDetailResponse;
+  nationalTeam: NationalTeamResponse;
   career: PlayerCareerDetailResponse;
   shirtNumbers: PlayerShirtNumberDetailResponse[];
 }

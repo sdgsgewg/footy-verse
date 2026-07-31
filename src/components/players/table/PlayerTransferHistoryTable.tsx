@@ -6,8 +6,8 @@ import { DataColumn } from "@/types/table";
 import { PlayerTransferListItem } from "@/types/player-transfer";
 import { getTransferTypeLabel } from "@/lib/transfers/labels";
 import { TransferType } from "@/enums/TransferType";
-import { ImageLabel } from "@/components/shared/ImageLabel";
 import { DataTable } from "@/components/shared/tables/DataTable";
+import { ClubImageLabel } from "@/components/shared/tables/cells";
 
 interface Props {
   playerTransfers: PlayerTransferListItem[];
@@ -39,7 +39,7 @@ const PlayerTransferHistoryTable = ({ playerTransfers }: Props) => {
       label: tColumn("left"),
 
       render: (transfer) => (
-        <ImageLabel
+        <ClubImageLabel
           imageUrl={transfer.fromClubTeam.imageUrl}
           label={transfer.fromClubTeam.name}
         />
@@ -51,7 +51,7 @@ const PlayerTransferHistoryTable = ({ playerTransfers }: Props) => {
       label: tColumn("join"),
 
       render: (transfer) => (
-        <ImageLabel
+        <ClubImageLabel
           imageUrl={transfer.toClubTeam.imageUrl}
           label={transfer.toClubTeam.name}
         />

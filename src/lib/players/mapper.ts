@@ -29,6 +29,11 @@ import {
 import { formatDate } from "../utils/date";
 import { formatEuroValue } from "../formatters/currency";
 
+/**
+ *
+ * @param player
+ * @returns PlayerListItem
+ */
 export function mapPlayerListItem(player: DbPlayerListRow): PlayerListItem {
   const shirtNumber = getCurrentShirtNumber(player);
 
@@ -44,6 +49,7 @@ export function mapPlayerListItem(player: DbPlayerListRow): PlayerListItem {
     ...player,
     imageUrl: getImageUrl("player", STORAGE_BUCKETS.PLAYERS, player.image),
     shirtNumber,
+    dob: formatDateOfBirth(player.dob),
     mainPosition,
     currentNationality,
     currentClubTeam: currentClub ?? null,
@@ -120,7 +126,7 @@ export function mapPlayerDetailResponse(
 ): PlayerDetailResponse {
   const shirtNumber = getCurrentShirtNumber(player);
 
-  const dob = formatDateOfBirth(player);
+  const dob = formatDateOfBirth(player.dob);
   const height = formatPlayerHeight(player.height);
   const weight = formatPlayerWeight(player.weight);
   const marketValue = formatEuroValue(player.market_value);

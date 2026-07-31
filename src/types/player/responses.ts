@@ -17,16 +17,19 @@ export interface ShirtNumberResponse {
 
 export interface PlayerListItem {
   id: string;
-  imageUrl: string;
-  name: string;
-  slug: string;
 
   shirtNumber: ShirtNumberResponse;
 
+  imageUrl: string;
+  name: string;
+  slug: string;
   mainPosition: PositionResponse;
-  currentNationality: NationalityResponse | null;
+
+  dob: string;
 
   currentClubTeam: ClubTeamResponse | null;
+
+  currentNationality: NationalityResponse | null;
 
   marketValue: string;
 }

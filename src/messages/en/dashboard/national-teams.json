@@ -15,6 +15,7 @@
     "title": "National Teams",
 
     "columns": {
+      "name": "Name",
       "teamCategory": "Team Category",
       "ageGroup": "Age Group"
     }

@@ -1,4 +1,8 @@
-import { NationalitySummary } from "../nationality";
+import {
+  DbNationalityWithConfederationRow,
+  NationalitySummary,
+} from "../nationality";
+import { DbPlayerNationalTeamCareerWithPlayerCareerRow } from "../player-national-team-career";
 import { NationalTeam } from "./database";
 
 // Supabase Query Result
@@ -15,5 +19,15 @@ export type DbNationalTeamListRow = Pick<
 // National Team Detail
 
 export type DbNationalTeamDetailRow = NationalTeam & {
+  nation: DbNationalityWithConfederationRow;
+  player_national_team_careers: DbPlayerNationalTeamCareerWithPlayerCareerRow[];
+};
+
+// Helpers
+
+export type DbNationalTeamRow = Pick<
+  NationalTeam,
+  "id" | "team_category" | "age_group"
+> & {
   nation: NationalitySummary;
 };

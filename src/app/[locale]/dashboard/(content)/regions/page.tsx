@@ -11,9 +11,9 @@ import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
 import useRegionFilter from "@/hooks/dashboard/regions/useRegionFilter";
 import { useRegionActions, useRegions } from "@/hooks/dashboard/regions";
 import { RegionListItem } from "@/types/region";
-import { ImageLabel } from "@/components/shared/ImageLabel";
 import { getRegionTypeLabel } from "@/lib/regions/labels";
 import { RegionType } from "@/enums/RegionType";
+import { RegionImageLabel } from "@/components/shared/tables/cells";
 
 export default function Page() {
   const tCommon = useTranslations("common");
@@ -42,7 +42,7 @@ export default function Page() {
       className: "min-w-[300px]",
 
       render: (region) => (
-        <ImageLabel imageUrl={region.imageUrl} label={region.name} />
+        <RegionImageLabel imageUrl={region.imageUrl} label={region.name} />
       ),
 
       sortable: true,
@@ -64,7 +64,7 @@ export default function Page() {
       render: (region) => (
         <>
           {region.parentRegion || region.parentRegion !== null ? (
-            <ImageLabel
+            <RegionImageLabel
               imageUrl={region.parentRegion.imageUrl}
               label={region.parentRegion.name}
             />

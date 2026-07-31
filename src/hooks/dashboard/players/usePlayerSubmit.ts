@@ -4,6 +4,8 @@ import { useUpdatePlayer } from "./useUpdatePlayer";
 type SubmitOptions = {
   id?: string;
   payload: FormData;
+
+  onSuccess?: () => void;
 };
 
 export function usePlayerSubmit() {
@@ -14,16 +16,21 @@ export function usePlayerSubmit() {
   const isCreating = createMutation.isPending;
   const isUpdating = updateMutation.isPending;
 
-  const submit = ({ id, payload }: SubmitOptions) => {
+  const submit = ({ id, payload, onSuccess }: SubmitOptions) => {
     if (id) {
-      updateMutation.mutate({
-        id,
-        data: payload,
-      });
+      updateMutation.mutate(
+        {
+          id,
+          data: payload,
+        },
+        {
+          onSuccess,
+        },
+      );
       return;
     }
 
-    createMutation.mutate(payload);
+    createMutation.mutate(payload, { onSuccess });
   };
 
   return {

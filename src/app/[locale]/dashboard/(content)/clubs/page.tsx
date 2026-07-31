@@ -12,7 +12,10 @@ import useClubFilter from "@/hooks/clubs/useClubFilter";
 import { createSortHandler } from "@/lib/utils/crud";
 import { useCrudFilterSync } from "@/hooks/crud";
 import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
-import { ImageLabel } from "@/components/shared/ImageLabel";
+import {
+  ClubImageLabel,
+  NationalityImageLabel,
+} from "@/components/shared/tables/cells";
 
 export default function ClubsManagementPage() {
   const tCommon = useTranslations("common");
@@ -53,7 +56,7 @@ export default function ClubsManagementPage() {
       className: "min-w-[300px]",
 
       render: (club) => (
-        <ImageLabel imageUrl={club.imageUrl} label={club.name} />
+        <ClubImageLabel imageUrl={club.imageUrl} label={club.name} />
       ),
 
       sortable: true,
@@ -66,7 +69,7 @@ export default function ClubsManagementPage() {
 
       render: (club) =>
         club.nation ? (
-          <ImageLabel
+          <NationalityImageLabel
             imageUrl={club.nation.imageUrl}
             label={club.nation.name}
           />

@@ -5,11 +5,13 @@ import {
   NationalTeamEditResponse,
   NationalTeamListItem,
   NationalTeamResponse,
-  NationalTeamSummary,
+  DbNationalTeamRow,
 } from "@/types/national-team";
 import { getImageUrl } from "../images/image-url";
 import { STORAGE_BUCKETS } from "../storage";
 import { formatNationalTeamName } from "./formatter";
+import { formatEuroValue } from "../formatters/currency";
+import { mapNationalityWithConfederationResponse } from "../nationalities/mapper";
 
 export function mapNationalTeamListItem(
   nationalTeam: DbNationalTeamListRow,
@@ -43,29 +45,38 @@ export function mapNationalTeamEditResponse(
 }
 
 export function mapNationalTeamDetailResponse(
-  nationalTeam: DbNationalTeamDetailRow | NationalTeamSummary,
+  nationalTeam: DbNationalTeamDetailRow,
 ): NationalTeamDetailResponse {
-  const { id, team_category, age_group, nation } = nationalTeam;
+  const { id, team_category, age_group, nation, player_national_team_careers } =
+    nationalTeam;
+
+  const squadSize = player_national_team_careers.length;
+
+  const marketValues = player_national_team_careers.map(
+    (pntc) => pntc.player_career.player.market_value,
+  );
+
+  const totalMarketValue = marketValues.reduce((acc, curr) => {
+    return acc + curr;
+  }, 0);
 
   return {
     id,
+    name: formatNationalTeamName(nationalTeam),
     teamCategory: team_category,
     ageGroup: age_group,
 
-    nation: {
-      id: nation.id,
-      imageUrl: getImageUrl(
-        "nationality",
-        STORAGE_BUCKETS.NATIONALITIES,
-        nation.image,
-      ),
-      name: formatNationalTeamName(nationalTeam),
-    },
+    nation: mapNationalityWithConfederationResponse(nation),
+
+    squadSize: String(squadSize),
+    totalMarketValue: formatEuroValue(totalMarketValue),
   };
 }
 
-export function mapNationalTeam(
-  nationalTeam: NationalTeamSummary,
+// Helpers
+
+export function mapNationalTeamResponse(
+  nationalTeam: DbNationalTeamRow,
 ): NationalTeamResponse {
   const { id, team_category, age_group, nation } = nationalTeam;
 

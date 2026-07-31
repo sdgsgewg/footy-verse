@@ -5,20 +5,28 @@ import { useLightbox } from "@/context/LightboxContext";
 import Image from "next/image";
 import { useState } from "react";
 
+export type AspectRatio = "square" | "video" | "portrait" | "none";
+
 interface Props {
   src: string;
   alt: string;
+
   gallery?: string[];
   index?: number;
-  aspectRatio?: "square" | "video" | "portrait" | "none";
+
+  aspectRatio?: AspectRatio;
+
   className?: {
     container?: string;
     image?: string;
     overlay?: string;
   };
+
   hoverOverlay?: boolean;
   priority?: boolean;
+
   sizes?: string;
+
   clickable?: boolean;
   children?: React.ReactNode;
 }
@@ -32,7 +40,7 @@ export default function ImageWrapper({
   className,
   hoverOverlay,
   priority,
-  sizes = "100vw",
+  sizes,
   clickable,
   children,
 }: Props) {
@@ -77,7 +85,7 @@ export default function ImageWrapper({
         priority={priority}
         className={`${
           isLoading ? "opacity-0" : "opacity-100"
-        } ${className?.image || "w-full h-auto"}  transition duration-500`}
+        } transition-opacity duration-500 ${className?.image ?? ""}`}
         onLoad={() => setIsLoading(false)}
       />
 

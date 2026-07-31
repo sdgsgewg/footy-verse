@@ -1,31 +1,33 @@
 import { SelectField } from "@/components/forms/fields";
-import { useNationalTeams } from "@/hooks/national-teams";
-import useGroupedPlayerFilter from "@/hooks/players/useGroupedPlayerFilter";
+
 import { getNationalTeamOptions } from "@/lib/national-teams/options";
-import { NationalityLookupResponse } from "@/types/nationality";
+
+import type { GroupedPlayerFilter } from "@/types/player";
+import { NationalTeamListItem } from "@/types/national-team";
 
 interface Props {
-  nationalityLookup: NationalityLookupResponse;
+  nationalTeams: NationalTeamListItem[];
+
+  filters: GroupedPlayerFilter;
+
+  setFilter: <K extends keyof GroupedPlayerFilter>(
+    key: K,
+    value: GroupedPlayerFilter[K],
+  ) => void;
 }
 
-const NationalityFilter = ({ nationalityLookup }: Props) => {
-  const { filters, setFilters } = useGroupedPlayerFilter();
-
-  const { nationalTeams } = useNationalTeams({
-    nationId: nationalityLookup.id,
-  });
-
+const NationalityFilter = ({ nationalTeams, filters, setFilter }: Props) => {
   const nationalTeamOptions = getNationalTeamOptions(nationalTeams);
 
   return (
     <div>
       <SelectField
-        label={`National Teams`}
+        label="National Teams"
         name="national_teams"
-        placeholder={`Select National Team`}
+        placeholder="Select National Team"
         options={nationalTeamOptions}
-        value={filters.nationalTeamId || ""}
-        onChange={(value) => setFilters({ ...filters, nationalTeamId: value })}
+        value={filters.nationalTeamId ?? ""}
+        onChange={(value) => setFilter("nationalTeamId", value || undefined)}
       />
     </div>
   );

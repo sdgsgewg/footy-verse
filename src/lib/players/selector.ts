@@ -10,14 +10,13 @@ import { DbPlayerPositionRow } from "@/types/player-position";
 import { PositionResponse } from "@/types/position";
 import { PlayerNationalityQuery } from "@/types/player-nationality";
 import { NationalityResponse } from "@/types/nationality";
-import { getImageUrl } from "../images/image-url";
-import { STORAGE_BUCKETS } from "../storage";
-import { mapNationalTeam } from "../national-teams/mapper";
+import { mapNationalTeamResponse } from "../national-teams/mapper";
 import { NationalTeamResponse } from "@/types/national-team";
 import { PlayerClubCareerQuery } from "@/types/player-club-career";
 import { PlayerNationalTeamCareerQuery } from "@/types/player-national-team-career";
 import { PlayerContractSummary } from "@/types/player-contract";
 import { mapPositionResponse } from "../positions/mapper";
+import { mapNationalityResponse } from "../nationalities/mapper";
 
 export function getCurrentCareer(
   careers: PlayerCareerQuery[],
@@ -243,7 +242,9 @@ export function getCurrentNationalTeam(
   const current = nationalTeamCareers.find((career) => career.left_at === null);
 
   if (current && current.player_national_team_career)
-    return mapNationalTeam(current.player_national_team_career.national_team);
+    return mapNationalTeamResponse(
+      current.player_national_team_career.national_team,
+    );
 
   // 4. If no active career, find the latest one
   const latest = nationalTeamCareers.toSorted(
@@ -252,7 +253,9 @@ export function getCurrentNationalTeam(
 
   if (!latest || !latest.player_national_team_career) return undefined;
 
-  return mapNationalTeam(latest.player_national_team_career.national_team);
+  return mapNationalTeamResponse(
+    latest.player_national_team_career.national_team,
+  );
 }
 
 /**
@@ -298,15 +301,8 @@ export function getNationalities(
 ): NationalityResponse[] {
   return playerNationalities.map((pn) => {
     const { nationality } = pn;
-    return {
-      id: nationality.id,
-      imageUrl: getImageUrl(
-        "nationality",
-        STORAGE_BUCKETS.NATIONALITIES,
-        nationality.image,
-      ),
-      name: nationality.name,
-    };
+
+    return mapNationalityResponse(nationality);
   });
 }
 
@@ -326,15 +322,9 @@ export function getCurrentNationality(
     throw new Error("Player must have a main nationality.");
   }
 
-  const { id, image, name } = playerNationality.nationality;
+  const { nationality } = playerNationality;
 
-  const data: NationalityResponse = {
-    id,
-    imageUrl: getImageUrl("nationality", STORAGE_BUCKETS.NATIONALITIES, image),
-    name,
-  };
-
-  return data;
+  return mapNationalityResponse(nationality);
 }
 
 /**

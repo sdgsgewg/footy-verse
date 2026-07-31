@@ -1,7 +1,7 @@
 "use client";
 
+import { createPlayerColumns } from "@/components/dashboard/players/columns/player-columns";
 import ConnectionErrorAlert from "@/components/feedback/ConnectionErrorAlert";
-import { ImageLabel } from "@/components/shared/ImageLabel";
 import { CrudListPage } from "@/components/templates/crud";
 import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
 import { useCrudFilterSync } from "@/hooks/crud";
@@ -10,13 +10,11 @@ import { usePlayerActions } from "@/hooks/dashboard/players/usePlayerActions";
 import usePlayerFilter from "@/hooks/players/usePlayerFilter";
 import { isLikelyConnectionError } from "@/lib/utils/connection-error";
 import { createSortHandler } from "@/lib/utils/crud";
-import { PlayerListItem } from "@/types/player";
-import { DataColumn } from "@/types/table";
 import { useTranslations } from "next-intl";
 
 export default function PlayersManagementPage() {
   const tCommon = useTranslations("common");
-  const tColumn = useTranslations("dashboard.players.columns");
+  const tColumn = useTranslations("dashboard.players.table.columns");
 
   const { getTitle } = useCrudPageTitle();
 
@@ -46,70 +44,13 @@ export default function PlayersManagementPage() {
   const { handleCreate, handleView, handleEdit, handleDelete } =
     usePlayerActions();
 
-  const columns: DataColumn<PlayerListItem>[] = [
-    {
-      key: "name",
-      label: tColumn("name"),
-      className: "min-w-[16rem]",
-
-      render: (player) => (
-        <ImageLabel imageUrl={player.imageUrl} label={player.name} />
-      ),
-
-      sortable: true,
-    },
-
-    {
-      key: "mainPosition",
-      label: tColumn("position"),
-      className: "min-w-[10rem]",
-      render: (player) => player.mainPosition.name,
-    },
-
-    {
-      key: "currentClubTeam",
-      label: tColumn("club"),
-      className: "min-w-[12rem]",
-
-      render: (player) => (
-        <>
-          {player.currentClubTeam ? (
-            <ImageLabel
-              imageUrl={player.currentClubTeam.imageUrl}
-              label={player.currentClubTeam.name}
-            />
-          ) : (
-            <span>{`-`}</span>
-          )}
-        </>
-      ),
-    },
-
-    {
-      key: "currentNationality",
-      label: tColumn("nationality"),
-      className: "min-w-[14rem]",
-
-      render: (player) => (
-        <>
-          {player.currentNationality ? (
-            <ImageLabel
-              imageUrl={player.currentNationality.imageUrl}
-              label={player.currentNationality.name}
-            />
-          ) : (
-            <span>{`-`}</span>
-          )}
-        </>
-      ),
-    },
-
-    {
-      key: "marketValue",
-      label: tColumn("marketValue"),
-      render: (player) => player.marketValue,
-    },
-  ];
+  const columns = createPlayerColumns({
+    player: tColumn("player"),
+    dob: tColumn("dob"),
+    club: tColumn("club"),
+    nationality: tColumn("nationality"),
+    marketValue: tColumn("marketValue"),
+  });
 
   const handleSort = createSortHandler({
     sortBy: filters.sortBy,

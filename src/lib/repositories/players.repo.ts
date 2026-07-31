@@ -28,6 +28,7 @@ import {
   PlayerUpdateInput,
 } from "@/types/player";
 import { createPaginatedResponse } from "../pagination";
+import { DbPlayerNationalTeamCareerRow } from "@/types/player-national-team-career";
 
 async function getSupabase() {
   return createClient();
@@ -49,22 +50,15 @@ const getPlayerNationalityTable = () => {
   return ENTITY_CONFIG["playerNationality"]["table"];
 };
 
-function getPlayersBaseQuery(options?: {
-  isClubTeamFiltered?: boolean;
-  isNationalTeamFiltered?: boolean;
-  isNationFiltered?: boolean;
-}) {
-  const clubTeamJoin = options?.isClubTeamFiltered ? "!inner" : "";
-  const nationalTeamJoin = options?.isNationalTeamFiltered ? "!inner" : "";
+function getPlayersBaseQuery(options?: { isNationFiltered?: boolean }) {
   const nationJoin = options?.isNationFiltered ? "!inner" : "";
-
-  const teamJoin = clubTeamJoin || nationalTeamJoin;
 
   return `
     id,
     image,
     name,
     slug,
+    dob,
     market_value,
 
     player_positions (
@@ -95,7 +89,7 @@ function getPlayersBaseQuery(options?: {
       )
     ),
 
-    player_careers${teamJoin} (
+    player_careers (
       id,
       joined_at,
       left_at,
@@ -108,15 +102,15 @@ function getPlayersBaseQuery(options?: {
         end_date
       ),
 
-      player_club_career:player_club_careers${clubTeamJoin} (
+      player_club_career:player_club_careers (
         id,
         club_team_id,
-  
+
         club_team:club_teams!player_club_careers_club_team_id_fkey (
           id,
           squad_type,
           age_group,
-  
+
           club:clubs!club_teams_club_id_fkey (
             id,
             name,
@@ -131,16 +125,16 @@ function getPlayersBaseQuery(options?: {
           contract_end
         )
       ),
-  
-      player_national_team_career:player_national_team_careers${nationalTeamJoin} (
+
+      player_national_team_career:player_national_team_careers (
         id,
         national_team_id,
-  
+
         national_team:national_teams!player_national_team_careers_national_team_id_fkey (
           id,
           team_category,
           age_group,
-  
+
           nationality:nationalities!national_teams_nation_id_fkey (
             id,
             name,
@@ -150,6 +144,32 @@ function getPlayersBaseQuery(options?: {
       )
     )
   `;
+}
+
+async function getPlayerIdsByNationalTeam(
+  nationalTeamId: string,
+): Promise<string[]> {
+  const supabase = await getSupabase();
+
+  const { data, error } = await supabase
+    .from("player_national_team_careers")
+    .select(
+      `
+      player_career:player_careers!player_national_team_careers_player_career_id_fkey (
+        player_id
+      )
+    `,
+    )
+    .eq("national_team_id", nationalTeamId)
+    .overrideTypes<DbPlayerNationalTeamCareerRow[]>();
+
+  if (error) {
+    throw error;
+  }
+
+  return (data ?? [])
+    .map((item) => item.player_career?.player_id)
+    .filter((playerId): playerId is string => Boolean(playerId));
 }
 
 /**
@@ -164,7 +184,6 @@ export async function getPlayersRepo(
 
   let query = supabase.from(getPlayerTable()).select(
     getPlayersBaseQuery({
-      isClubTeamFiltered: !!params.clubTeamId,
       isNationFiltered: !!params.nationId,
     }),
     {
@@ -177,18 +196,21 @@ export async function getPlayersRepo(
     query = query.ilike("name", `%${params.search}%`);
   }
 
+  if (params.positionId) {
+    query = query
+      .eq("player_positions.position_id", params.positionId)
+      .eq("player_positions.display_order", 1);
+  }
+
   if (params.nationId) {
     query = query.eq("player_nationalities.nation_id", params.nationId);
   }
 
   if (params.clubTeamId) {
-    query = query.eq("player_club_careers.club_team_id", params.clubTeamId);
-  }
-
-  if (params.positionId) {
-    query = query
-      .eq("player_positions.position_id", params.positionId)
-      .eq("player_positions.display_order", 1);
+    query = query.eq(
+      "club_team_filter.player_club_career.club_team_id",
+      params.clubTeamId,
+    );
   }
 
   // Sort
@@ -228,55 +250,57 @@ export async function getGroupedPlayersRepo(
 ): Promise<GroupedPlayerListItem[]> {
   const supabase = await getSupabase();
 
+  let playerIds: string[] | undefined;
+
+  if (params.nationalTeamId) {
+    playerIds = await getPlayerIdsByNationalTeam(params.nationalTeamId);
+
+    if (playerIds.length === 0) {
+      return [];
+    }
+  }
+
   let query = supabase.from(getPlayerTable()).select(
     getPlayersBaseQuery({
-      isClubTeamFiltered: !!params.clubTeamId,
-      isNationalTeamFiltered: !!params.nationalTeamId,
       isNationFiltered: !!params.nationId,
     }),
   );
 
-  // Filter
+  if (playerIds) {
+    query = query.in("id", playerIds);
+  }
+
+  // Search
   if (params.search) {
     query = query.ilike("name", `%${params.search}%`);
   }
 
-  if (params.nationId) {
-    query = query.eq("player_nationalities.nation_id", params.nationId);
-  }
-
-  if (params.clubTeamId) {
-    query = query.eq(
-      "player_careers.player_club_careers.club_team_id",
-      params.clubTeamId,
-    );
-  }
-
-  if (params.nationalTeamId) {
-    query = query.eq(
-      "player_careers.player_national_team_careers.national_team_id",
-      params.nationalTeamId,
-    );
-  }
-
+  // Position
   if (params.positionId) {
     query = query
       .eq("player_positions.position_id", params.positionId)
       .eq("player_positions.display_order", 1);
   }
 
-  // Sort
+  // Nation
+  if (params.nationId) {
+    query = query.eq("player_nationalities.nation_id", params.nationId);
+  }
 
+  // Sort
   query = query.order(params.sortBy, {
     ascending: params.sortOrder === "asc",
   });
 
-  // Execute
-
   const { data, error } = await query.overrideTypes<DbPlayerListRow[]>();
 
-  if (error) throw error;
-  if (!data || data.length === 0) return [];
+  if (error) {
+    throw error;
+  }
+
+  if (!data?.length) {
+    return [];
+  }
 
   return mapGroupedPlayers(data);
 }
@@ -287,10 +311,18 @@ function getPlayerDetailBaseQuery() {
 
     player_positions (
       display_order,
+      position_id,
 
       position:positions!player_positions_position_id_fkey (
         id,
-        name
+        name,
+        display_order,
+
+        category:position_categories (
+          id,
+          name,
+          display_order
+        )
       )
     ),
 

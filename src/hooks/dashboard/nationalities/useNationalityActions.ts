@@ -16,7 +16,7 @@ export function useNationalityActions() {
   };
 
   const handleView = (nation: NationalityListItem) => {
-    router.push(`${ROUTES.DASHBOARD.CONTENT.NATIONALITIES}/${nation.slug}`);
+    router.push(`${ROUTES.DASHBOARD.CONTENT.NATIONALITIES.BASE}/${nation.slug}`);
   };
 
   const handleEdit = (nation: NationalityListItem) => {

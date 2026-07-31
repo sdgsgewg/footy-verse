@@ -14,19 +14,19 @@ export function useNationalTeamActions(nationSlug: string) {
 
   const handleCreate = () => {
     router.push(
-      `${ROUTES.DASHBOARD.CONTENT.NATIONALITIES}/${nationSlug}/teams/create`,
+      `${ROUTES.DASHBOARD.CONTENT.NATIONALITIES.BASE}/${nationSlug}/teams/create`,
     );
   };
 
   const handleView = (teamId: string) => {
     router.push(
-      `${ROUTES.DASHBOARD.CONTENT.NATIONALITIES}/${nationSlug}/teams/${teamId}`,
+      `${ROUTES.DASHBOARD.CONTENT.NATIONALITIES.BASE}/${nationSlug}/teams/${teamId}`,
     );
   };
 
   const handleEdit = (teamId: string) => {
     router.push(
-      `${ROUTES.DASHBOARD.CONTENT.CLUBS}/${nationSlug}/teams/${teamId}/edit`,
+      `${ROUTES.DASHBOARD.CONTENT.NATIONALITIES.BASE}/${nationSlug}/teams/${teamId}/edit`,
     );
   };
 

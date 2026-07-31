@@ -1,4 +1,4 @@
-import { NationalityResponse } from "../nationality";
+import { NationalityWithConfederationResponse } from "../nationality";
 
 // API Response DTO
 
@@ -27,10 +27,14 @@ export interface NationalTeamEditResponse {
 
 export interface NationalTeamDetailResponse {
   id: string;
+  name: string;
   teamCategory: string;
   ageGroup: string;
 
-  nation: NationalityResponse;
+  nation: NationalityWithConfederationResponse;
+
+  squadSize: string;
+  totalMarketValue: string;
 }
 
 // Helper for other entity

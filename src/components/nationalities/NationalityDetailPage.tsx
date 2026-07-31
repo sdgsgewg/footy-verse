@@ -1,19 +1,24 @@
 "use client";
 
+import { useEffect } from "react";
+
 import EntityLoading from "@/components/feedback/loading/EntityLoading";
 import ErrorState from "@/components/feedback/ErrorState";
+
 import PlayerList from "../players/PlayerList";
-import { ROUTES } from "@/constants/routes";
-import { TeamType } from "@/enums/TeamType";
-import { useGroupedPlayers } from "@/hooks/players";
-import { useEffect } from "react";
-import { NationalityLookupResponse } from "@/types/nationality";
-import { useNationalityDetail } from "@/hooks/dashboard/nationalities";
-import { useNationalTeams } from "@/hooks/national-teams";
-import { AgeGroup } from "@/enums/AgeGroup";
-import useGroupedPlayerFilter from "@/hooks/players/useGroupedPlayerFilter";
 import NationalityDetailPageLayout from "../layout/detail-page/NationalityDetailPageLayout";
 import NationalityFilter from "./filter/NationalityFilter";
+
+import { ROUTES } from "@/constants/routes";
+import { TeamType } from "@/enums/TeamType";
+import { AgeGroup } from "@/enums/AgeGroup";
+
+import { useGroupedPlayers } from "@/hooks/players";
+import useGroupedPlayerFilter from "@/hooks/players/useGroupedPlayerFilter";
+import { useNationalityDetail } from "@/hooks/dashboard/nationalities";
+import { useNationalTeams } from "@/hooks/national-teams";
+
+import type { NationalityLookupResponse } from "@/types/nationality";
 
 interface Props {
   nationalityLookup: NationalityLookupResponse;
@@ -24,6 +29,7 @@ const NationalityDetailPage = ({ nationalityLookup }: Props) => {
     nationalityLookup.id,
   );
 
+  // Dipanggil hanya sekali
   const { filters, setFilter } = useGroupedPlayerFilter();
 
   const { nationalTeams } = useNationalTeams({
@@ -34,17 +40,19 @@ const NationalityDetailPage = ({ nationalityLookup }: Props) => {
     nationalTeamId: filters.nationalTeamId,
   });
 
-  // Set senior team as default
-
+  // Set senior team sebagai default
   useEffect(() => {
     const seniorTeam = nationalTeams.find(
-      (nt) => nt.ageGroup === AgeGroup.SENIOR,
+      (team) => team.ageGroup === AgeGroup.SENIOR,
     );
 
     if (!seniorTeam) return;
 
+    // Jangan overwrite pilihan user
+    if (filters.nationalTeamId) return;
+
     setFilter("nationalTeamId", seniorTeam.id);
-  }, [nationalTeams]);
+  }, [nationalTeams, filters.nationalTeamId, setFilter]);
 
   if (!nationality && isLoading) {
     return <EntityLoading entity="nationality" />;
@@ -60,10 +68,13 @@ const NationalityDetailPage = ({ nationalityLookup }: Props) => {
 
   const { name, slug } = nationality;
 
-  // Player List in grid style
   const content = (
     <>
-      <NationalityFilter nationalityLookup={nationalityLookup} />
+      <NationalityFilter
+        nationalTeams={nationalTeams}
+        filters={filters}
+        setFilter={setFilter}
+      />
 
       <PlayerList
         teamType={TeamType.NATIONAL_TEAM}

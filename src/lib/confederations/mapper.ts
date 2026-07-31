@@ -2,6 +2,7 @@ import {
   ConfederationDetailResponse,
   ConfederationEditResponse,
   ConfederationListItem,
+  ConfederationResponse,
   DbConfederationDetailRow,
   DbConfederationListRow,
   DbConfederationRow,
@@ -90,6 +91,8 @@ export function mapConfederationDetailResponse(
 
 // Helpers
 
+// For Competition
+
 export function mapConfederationToLocationResponse(
   confederation: DbConfederationRow,
 ): LocationResponse {
@@ -97,6 +100,24 @@ export function mapConfederationToLocationResponse(
 
   return {
     type: "confederation" as const,
+    id,
+    imageUrl: getImageUrl(
+      "confederation",
+      STORAGE_BUCKETS.CONFEDERATIONS,
+      image,
+    ),
+    name,
+  };
+}
+
+// For Nationality
+
+export function mapConfederationResponse(
+  confederation: DbConfederationRow,
+): ConfederationResponse {
+  const { id, name, image } = confederation;
+
+  return {
     id,
     imageUrl: getImageUrl(
       "confederation",

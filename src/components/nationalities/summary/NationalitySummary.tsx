@@ -2,23 +2,24 @@ import ImageWrapper from "@/components/shared/ImageWrapper";
 import EntitySummaryLayout from "@/components/shared/summary/EntitySummaryLayout";
 import MarketValueCard from "@/components/shared/summary/MarketValueCard";
 import RecordData from "@/components/shared/summary/RecordData";
-import { IMAGES } from "@/constants/images";
 import { NationalityDetailResponse } from "@/types/nationality";
+import ConfederationCard from "./ConfederationCard";
 
 interface Props {
   summary: NationalityDetailResponse;
 }
 
 const NationalitySummary = ({ summary }: Props) => {
-  const { name, imageUrl } = summary;
+  const { name, imageUrl, confederation } = summary;
 
   return (
     <EntitySummaryLayout
       title={<h1 className="text-4xl font-bold">{name}</h1>}
       image={
         <ImageWrapper
-          src={imageUrl ?? IMAGES.COMMON.DEFAULT}
+          src={imageUrl}
           alt={name}
+          priority
           clickable
           hoverOverlay
           aspectRatio="video"
@@ -38,7 +39,9 @@ const NationalitySummary = ({ summary }: Props) => {
           />
         </div>
       }
-      side={<></>}
+      side={
+        confederation && <ConfederationCard confederation={confederation} />
+      }
       footer={<MarketValueCard value="€1.34bn" subtitle="Total market value" />}
     />
   );

@@ -1,6 +1,7 @@
 import { createClient } from "@/utils/supabase/server";
 import { STORAGE_BUCKETS } from "../storage";
 import {
+  DbNationalityDetailRow,
   DbNationalityListRow,
   NationalityCreateInput,
   NationalityDetailResponse,
@@ -124,6 +125,18 @@ export async function getNationalityEditRepo(
   return mapNationalityEditResponse(data);
 }
 
+function getNationalityDetailQuery() {
+  return `
+    *,
+
+    confederation:confederations (
+      id,
+      name,
+      image
+    )
+  `;
+}
+
 /**
  *
  * @param id
@@ -136,9 +149,10 @@ export async function getNationalityDetailRepo(
 
   const { data, error } = await supabase
     .from(getNationalityTable())
-    .select("*")
+    .select(getNationalityDetailQuery())
     .eq("id", id)
-    .maybeSingle();
+    .maybeSingle()
+    .overrideTypes<DbNationalityDetailRow>();
 
   if (error) throw error;
   if (!data) return null;

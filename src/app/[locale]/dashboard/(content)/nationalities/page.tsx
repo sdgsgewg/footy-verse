@@ -12,7 +12,10 @@ import { useNationalities } from "@/hooks/nationalities";
 import { useNationalityActions } from "@/hooks/dashboard/nationalities";
 import { NationalityListItem } from "@/types/nationality";
 import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
-import { ImageLabel } from "@/components/shared/ImageLabel";
+import {
+  ConfederationImageLabel,
+  NationalityImageLabel,
+} from "@/components/shared/tables/cells";
 
 export default function NationalitiesManagementPage() {
   const tCommon = useTranslations("common");
@@ -53,7 +56,7 @@ export default function NationalitiesManagementPage() {
       className: "min-w-[240px]",
 
       render: (nation) => (
-        <ImageLabel imageUrl={nation.imageUrl} label={nation.name} />
+        <NationalityImageLabel imageUrl={nation.imageUrl} label={nation.name} />
       ),
 
       sortable: true,
@@ -69,7 +72,7 @@ export default function NationalitiesManagementPage() {
       render: (nation) => (
         <>
           {nation.confederation ? (
-            <ImageLabel
+            <ConfederationImageLabel
               imageUrl={nation.confederation.imageUrl}
               label={nation.confederation.name}
             />

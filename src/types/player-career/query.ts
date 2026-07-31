@@ -1,6 +1,7 @@
 import { PlayerClubCareerQuery } from "../player-club-career";
 import { PlayerNationalTeamCareerQuery } from "../player-national-team-career";
 import { PlayerShirtNumberSummary } from "../player-shirt-number";
+import { DbPlayerRow } from "../player/query";
 import { PlayerCareer } from "./database";
 
 // Player Career Detail
@@ -23,4 +24,10 @@ export type PlayerCareerWithShirtNumbersQuery = Pick<
   "id" | "player_id" | "joined_at" | "left_at" | "career_type"
 > & {
   player_shirt_numbers: PlayerShirtNumberSummary[];
+};
+
+// National Team
+
+export type DbPlayerCareerWithPlayerRow = {
+  player: DbPlayerRow;
 };

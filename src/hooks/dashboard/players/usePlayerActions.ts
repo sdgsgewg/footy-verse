@@ -1,10 +1,16 @@
-import { useTranslations } from "next-intl";
-import { useDeletePlayer } from "./useDeletePlayer";
 import { ROUTES } from "@/constants/routes";
+import { useDeletePlayer } from "./useDeletePlayer";
 import { PlayerDetailResponse, PlayerListItem } from "@/types/player";
 import { useRouter } from "@/navigation";
+import { useTranslations } from "next-intl";
 
-export function usePlayerActions() {
+type PlayerActionItem = PlayerListItem | PlayerDetailResponse;
+
+interface UsePlayerActionsOptions {
+  returnTo?: string;
+}
+
+export function usePlayerActions({ returnTo }: UsePlayerActionsOptions = {}) {
   const tPlayers = useTranslations("dashboard.players");
 
   const router = useRouter();
@@ -12,19 +18,43 @@ export function usePlayerActions() {
   const deleteMutation = useDeletePlayer();
 
   const handleCreate = () => {
-    router.push(`${ROUTES.DASHBOARD.CONTENT.PLAYERS.CREATE}`);
+    router.push(ROUTES.DASHBOARD.CONTENT.PLAYERS.CREATE);
   };
 
-  const handleView = (player: PlayerListItem | PlayerDetailResponse) => {
-    router.push(`${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${player.slug}`);
+  const handleView = (player: PlayerActionItem) => {
+    const playerHref = `${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${player.slug}`;
+
+    if (!returnTo) {
+      router.push(playerHref);
+      return;
+    }
+
+    const params = new URLSearchParams({
+      returnTo,
+    });
+
+    router.push(`${playerHref}?${params.toString()}`);
   };
 
-  const handleEdit = (player: PlayerListItem | PlayerDetailResponse) => {
-    router.push(`${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${player.slug}/edit`);
+  const handleEdit = (player: PlayerActionItem) => {
+    const playerHref = `${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${player.slug}/edit`;
+
+    if (!returnTo) {
+      router.push(playerHref);
+      return;
+    }
+
+    const params = new URLSearchParams({
+      returnTo,
+    });
+
+    router.push(`${playerHref}?${params.toString()}`);
   };
 
-  const handleDelete = (player: PlayerListItem | PlayerDetailResponse) => {
-    if (!confirm(`${tPlayers("form.confirm.delete")}`)) return;
+  const handleDelete = (player: PlayerActionItem) => {
+    if (!confirm(tPlayers("form.confirm.delete"))) {
+      return;
+    }
 
     deleteMutation.mutate({
       id: player.id,

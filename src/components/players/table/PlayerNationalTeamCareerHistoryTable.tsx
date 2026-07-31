@@ -7,7 +7,7 @@ import { PlayerNationalTeamCareerListItem } from "@/types/player-national-team-c
 import { DataColumn } from "@/types/table";
 import { usePlayerNationalTeamCareerActions } from "@/hooks/dashboard/player-national-teams/usePlayerNationalTeamCareerActions";
 import { DataTable } from "@/components/shared/tables/DataTable";
-import { ImageLabel } from "@/components/shared/ImageLabel";
+import { NationalityImageLabel } from "@/components/shared/tables/cells";
 
 interface Props {
   playerNationalTeamCareers: PlayerNationalTeamCareerListItem[];
@@ -38,7 +38,7 @@ const PlayerNationalTeamCareerHistoryTable = ({
       className: "min-w-[320px]",
 
       render: (team) => (
-        <ImageLabel imageUrl={team.imageUrl} label={team.name} />
+        <NationalityImageLabel imageUrl={team.imageUrl} label={team.name} />
       ),
     },
 
