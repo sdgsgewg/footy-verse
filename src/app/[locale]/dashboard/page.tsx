@@ -15,13 +15,15 @@ import {
 } from "@/components/dashboard/home";
 
 export default function DashboardHomePage() {
-  const { players, loading: isPlayersLoading } = usePlayers();
+  const { total: totalPlayers, loading: isPlayersLoading } = usePlayers();
 
-  const { clubs, loading: isClubsLoading } = useClubs();
+  const { total: totalClubs, loading: isClubsLoading } = useClubs();
 
-  const { nationalities, loading: isNationalitiesLoading } = useNationalities();
+  const { total: totalNationalities, loading: isNationalitiesLoading } =
+    useNationalities();
 
-  const { competitions, loading: isCompetitionsLoading } = useCompetitions();
+  const { total: totalCompetitions, loading: isCompetitionsLoading } =
+    useCompetitions();
 
   const isStatsLoading =
     isPlayersLoading ||
@@ -32,28 +34,28 @@ export default function DashboardHomePage() {
   const stats = [
     {
       title: "Total Players",
-      value: players.length,
+      value: totalPlayers,
       description: "Players in the database",
       icon: Users,
       isLoading: isPlayersLoading,
     },
     {
       title: "Total Clubs",
-      value: clubs.length,
+      value: totalClubs,
       description: "Registered clubs",
       icon: Shield,
       isLoading: isClubsLoading,
     },
     {
       title: "Nationalities",
-      value: nationalities.length,
+      value: totalNationalities,
       description: "Available nationalities",
       icon: Flag,
       isLoading: isNationalitiesLoading,
     },
     {
       title: "Competitions",
-      value: competitions.length,
+      value: totalCompetitions,
       description: "Available competitions",
       icon: Trophy,
       isLoading: isCompetitionsLoading,
@@ -61,7 +63,7 @@ export default function DashboardHomePage() {
   ];
 
   const totalRecords =
-    players.length + clubs.length + nationalities.length + competitions.length;
+    totalPlayers + totalClubs + totalNationalities + totalCompetitions;
 
   return (
     <div className="space-y-8">
