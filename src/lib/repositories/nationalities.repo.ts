@@ -77,6 +77,10 @@ export async function getNationalitiesRepo(
     query = query.ilike("name", `%${params.search}%`);
   }
 
+  if (params.confederationId) {
+    query = query.eq("confederation_id", params.confederationId);
+  }
+
   // Sort
 
   query = query.order(params.sortBy, {

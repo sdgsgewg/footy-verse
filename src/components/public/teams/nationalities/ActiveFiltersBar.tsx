@@ -1,8 +1,10 @@
 "use client";
 
+import { useConfederations } from "@/hooks/dashboard/confederations";
 import { NationalityFilter } from "@/types/nationality";
 import { X } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { useMemo } from "react";
 
 interface Props {
   filters: NationalityFilter;
@@ -22,15 +24,36 @@ export default function ActiveFiltersBar({
 }: Props) {
   const tCommonActions = useTranslations("common.actions");
 
+  const { confederations } = useConfederations();
+
+  const confederationMap = useMemo(() => {
+    return new Map(
+      confederations.map((confederation) => [
+        confederation.id,
+        confederation.name,
+      ]),
+    );
+  }, [confederations]);
+
   const chips: {
     label: string;
     onRemove: () => void;
   }[] = [];
 
+  // Search
   if (filters.search) {
     chips.push({
       label: `Search: ${filters.search}`,
       onRemove: () => setFilter("search", ""),
+    });
+  }
+  // Confederation
+  if (filters.confederationId) {
+    chips.push({
+      label:
+        confederationMap.get(filters.confederationId) ??
+        filters.confederationId,
+      onRemove: () => setFilter("confederationId", undefined),
     });
   }
 

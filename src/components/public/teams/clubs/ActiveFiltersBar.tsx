@@ -4,7 +4,7 @@ import { X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useMemo } from "react";
 import { ClubFilter } from "@/types/club";
-import { useNationalities } from "@/hooks/nationalities";
+import { useNationalityOptions } from "@/hooks/nationalities";
 
 interface Props {
   filters: ClubFilter;
@@ -21,10 +21,10 @@ export default function ActiveFiltersBar({
 }: Props) {
   const tCommonActions = useTranslations("common.actions");
 
-  const { nationalities } = useNationalities();
+  const { nationalities } = useNationalityOptions();
 
   const nationMap = useMemo(() => {
-    return new Map(nationalities.map((nation) => [nation.id, nation.name]));
+    return new Map(nationalities.map((nation) => [nation.value, nation.label]));
   }, [nationalities]);
 
   const chips: {
@@ -32,7 +32,7 @@ export default function ActiveFiltersBar({
     onRemove: () => void;
   }[] = [];
 
-  // 🔍 Search
+  // Search
   if (filters.search) {
     chips.push({
       label: `Search: ${filters.search}`,

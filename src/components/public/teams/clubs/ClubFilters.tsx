@@ -4,9 +4,8 @@ import React from "react";
 import { motion } from "framer-motion";
 import { Input } from "@/components/ui/input";
 import ComboboxField from "@/components/forms/fields/ComboboxField";
-import { getNationalityOptions } from "@/lib/nationalities/options";
 import { ClubFilter } from "@/types/club";
-import { useNationalities } from "@/hooks/nationalities";
+import { useNationalityOptions } from "@/hooks/nationalities";
 
 interface ClubFiltersProps {
   filters: ClubFilter;
@@ -19,9 +18,8 @@ const ClubFilters = ({ filters, setFilter, isSearching }: ClubFiltersProps) => {
   const tCommon = useTranslations("common");
   const tEntities = useTranslations("entities");
 
-  const { nationalities } = useNationalities();
-
-  const nationalityOptions = getNationalityOptions(nationalities);
+  const { nationalities } = useNationalityOptions();
+  const nationalityOptions = nationalities;
 
   return (
     <div className="flex flex-col gap-4 mb-4">
@@ -64,14 +62,6 @@ const ClubFilters = ({ filters, setFilter, isSearching }: ClubFiltersProps) => {
           value={filters.nationId ?? null}
           onChange={(value) => setFilter("nationId", value ?? undefined)}
         />
-
-        {/* Sort Dropdown */}
-        {/* <SelectField
-          name="sort"
-          options={clubTypeOptions}
-          value={filters.sort || ""}
-          onChange={(value) => setFilter({ ...filters, sort: value })}
-        /> */}
       </div>
     </div>
   );

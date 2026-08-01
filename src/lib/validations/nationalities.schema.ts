@@ -24,5 +24,7 @@ export const nationalitySchema = nationalityMutationSchema.extend({
 export const nationalitiesSchema = z.array(nationalitySchema);
 
 export const nationalitiesQuerySchema = listQuerySchema.extend({
+  confederationId: idSchema.optional(),
+
   sortBy: nationalitySortBySchema.default("name"),
 });

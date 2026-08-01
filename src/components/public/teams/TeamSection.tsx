@@ -3,7 +3,10 @@ import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import { TeamItem } from "@/types/team";
-import { TeamCard, TeamCardSkeleton, TeamCardWrapper } from "./cards";
+import EmptyState from "@/components/feedback/EmptyState";
+import TeamCardWrapper from "./cards/TeamCardWrapper";
+import TeamCardSkeleton from "./cards/TeamCardSkeleton";
+import TeamCard from "./cards/TeamCard";
 
 interface Props {
   title: string;
@@ -55,23 +58,12 @@ export default function TeamSection({
             <TeamCardSkeleton key={index} />
           ))}
         </TeamCardWrapper>
-      ) : teams.length === 0 ? (
-        /* Empty */
-        <div className="rounded-2xl border border-dashed py-14 px-6">
-          <div className="mx-auto flex max-w-sm flex-col items-center text-center">
-            <div className="mb-5 rounded-full bg-primary/10 p-4">
-              {empty?.icon ?? <Database className="h-8 w-8 text-primary" />}
-            </div>
-
-            <h3 className="text-lg font-semibold">
-              {empty?.title ?? t("empty.title")}
-            </h3>
-
-            <p className="mt-2 text-sm text-muted-foreground">
-              {empty?.description ?? t("empty.description")}
-            </p>
-          </div>
-        </div>
+      ) : teams.length === 0 && empty ? (
+        <EmptyState
+          icon={Database}
+          title={empty.title ?? t("empty.title")}
+          description={empty.description ?? t("empty.description")}
+        />
       ) : (
         <>
           {/* Grid */}

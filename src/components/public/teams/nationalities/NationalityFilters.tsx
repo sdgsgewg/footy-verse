@@ -3,6 +3,9 @@ import { useTranslations } from "next-intl";
 import { motion } from "framer-motion";
 import { Input } from "@/components/ui/input";
 import { NationalityFilter } from "@/types/nationality";
+import { useConfederations } from "@/hooks/dashboard/confederations";
+import { getConfederationOptions } from "@/lib/confederations/options";
+import { ComboboxField } from "@/components/forms/fields";
 
 interface NationalityFiltersProps {
   filters: NationalityFilter;
@@ -18,7 +21,12 @@ const NationalityFilters = ({
   setFilter,
   isSearching,
 }: NationalityFiltersProps) => {
+  const tNation = useTranslations("dashboard.nationalities");
   const tCommon = useTranslations("common");
+  const tEntities = useTranslations("entities");
+
+  const { confederations } = useConfederations();
+  const confederationOptions = getConfederationOptions(confederations);
 
   return (
     <div className="flex flex-col gap-4 mb-4">
@@ -43,6 +51,24 @@ const NationalityFilters = ({
             <Loader2 className="w-4 h-4 animate-spin" />{" "}
           </motion.div>
         )}
+      </div>
+
+      {/* Filter */}
+      <div className="flex flex-wrap items-center gap-2">
+        {/* Confederation Dropdown */}
+        <ComboboxField
+          name={`confederation`}
+          options={confederationOptions}
+          placeholder={tNation("form.placeholders.confederation")}
+          searchPlaceholder={tCommon("combobox.searchEntity", {
+            entity: tEntities("nationality").toLowerCase(),
+          })}
+          emptyMessage={tCommon("combobox.noEntityFound", {
+            entity: tEntities("nationality").toLowerCase(),
+          })}
+          value={filters.confederationId ?? null}
+          onChange={(value) => setFilter("confederationId", value ?? undefined)}
+        />
       </div>
     </div>
   );

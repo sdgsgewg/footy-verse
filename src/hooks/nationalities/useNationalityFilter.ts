@@ -5,6 +5,8 @@ import { useCrudPagination } from "../crud";
 const DEFAULT_FILTER: NationalityFilter = {
   search: "",
 
+  confederationId: undefined,
+
   page: 1,
   limit: 20,
 

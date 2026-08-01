@@ -4,27 +4,35 @@ import ActiveFiltersBar from "@/components/public/teams/nationalities/ActiveFilt
 import NationalityFilters from "@/components/public/teams/nationalities/NationalityFilters";
 import TeamSection from "@/components/public/teams/TeamSection";
 import PageHeader from "@/components/shared/PageHeader";
+import CrudPagination from "@/components/templates/crud/CrudPagination";
 import PublicPageWrapper from "@/components/wrappers/PublicPageWrapper";
 import { ROUTES } from "@/constants/routes";
+import { useCrudFilterSync } from "@/hooks/crud";
 import { useNationalities } from "@/hooks/nationalities";
 import useNationalityFilter from "@/hooks/nationalities/useNationalityFilter";
-import { useDebounce } from "@/hooks/useDebounce";
 import { TeamItem } from "@/types/team";
 import { useTranslations } from "next-intl";
-import { useEffect } from "react";
 
 export default function TeamsPage() {
   const t = useTranslations("public.teams");
 
-  const { filters, setFilter, syncUrl, clearFilters } = useNationalityFilter();
+  const {
+    filters,
+    debouncedFilters,
+    setFilter,
+    goToPage,
+    syncUrl,
+    clearFilters,
+  } = useNationalityFilter();
 
-  const debouncedSearch = useDebounce(filters.search, 500);
+  const isSearching = filters.search !== debouncedFilters.search;
 
-  const isSearching = filters.search !== debouncedSearch;
-
-  const { nationalities, loading } = useNationalities({
-    search: debouncedSearch || undefined,
-  });
+  const { nationalities, limit, totalPages, total, loading } = useNationalities(
+    {
+      ...debouncedFilters,
+      search: debouncedFilters.search || undefined,
+    },
+  );
 
   const modifiedNationalityList: TeamItem[] = nationalities.map((nation) => ({
     id: nation.id,
@@ -35,19 +43,14 @@ export default function TeamsPage() {
   }));
 
   // Sync URL on filter
-  useEffect(() => {
-    syncUrl({
-      ...filters,
-      search: debouncedSearch,
-    });
-  }, [debouncedSearch, filters]);
+  useCrudFilterSync(debouncedFilters, syncUrl);
 
   return (
     <PublicPageWrapper>
       <PageHeader title={t("title")} description={t("subtitle")} />
 
       {/* Search and Filter */}
-      <div className="flex flex-col gap-4 mb-12">
+      <div className="flex flex-col gap-4">
         <NationalityFilters
           filters={filters}
           setFilter={setFilter}
@@ -71,6 +74,15 @@ export default function TeamsPage() {
           description: t("nationalTeams.empty.description"),
         }}
         showAllData
+      />
+
+      <CrudPagination
+        page={filters.page}
+        limit={limit}
+        totalPages={totalPages}
+        totalItems={total}
+        loading={loading}
+        onPageChange={goToPage}
       />
     </PublicPageWrapper>
   );

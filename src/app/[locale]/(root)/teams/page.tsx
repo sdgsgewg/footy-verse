@@ -1,6 +1,5 @@
 "use client";
 
-import TeamSearch from "@/components/public/teams/TeamSearch";
 import TeamSection from "@/components/public/teams/TeamSection";
 import PageHeader from "@/components/shared/PageHeader";
 import PublicPageWrapper from "@/components/wrappers/PublicPageWrapper";
@@ -10,7 +9,6 @@ import { useNationalities } from "@/hooks/nationalities";
 import { useRouter } from "@/navigation";
 import { TeamItem } from "@/types/team";
 import { useTranslations } from "next-intl";
-import { useState } from "react";
 
 export default function TeamsPage() {
   const t = useTranslations("public.teams");
@@ -19,8 +17,6 @@ export default function TeamsPage() {
 
   const { clubs, loading: isClubLoading } = useClubs();
   const { nationalities, loading: isNationalTeamLoading } = useNationalities();
-
-  const [keyword, setKeyword] = useState("");
 
   const modifiedClubList: TeamItem[] = clubs.map((club) => ({
     id: club.id,
@@ -41,12 +37,6 @@ export default function TeamsPage() {
   return (
     <PublicPageWrapper>
       <PageHeader title={t("title")} description={t("subtitle")} />
-
-      {/* <TeamSearch
-        value={keyword}
-        onChange={setKeyword}
-        placeholder="Search teams..."
-      /> */}
 
       <div className="space-y-14">
         <TeamSection
