@@ -1,3 +1,5 @@
+"use client";
+
 import EntityLoading from "@/components/feedback/loading/EntityLoading";
 import ErrorState from "@/components/feedback/ErrorState";
 import TableFormLayout from "@/components/layout/dashboard/TableFormLayout";
@@ -69,6 +71,7 @@ const EditNationalTeamPage = ({ nationLookup, nationalTeamLookup }: Props) => {
           loading={isSubmitting}
           onSubmit={(payload) =>
             submit({
+              teamId: nationalTeam.id,
               payload,
             })
           }

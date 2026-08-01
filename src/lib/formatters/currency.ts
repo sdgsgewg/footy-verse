@@ -14,6 +14,10 @@ export function formatEuroValue(
 
   if (value == 0) return `€${value}`;
 
+  if (value >= 1_000_000_000) {
+    return `€${(value / 1_000_000_000).toFixed(decimals)}bn`;
+  }
+
   if (value >= 1_000_000) {
     return `€${(value / 1_000_000).toFixed(decimals)}m`;
   }

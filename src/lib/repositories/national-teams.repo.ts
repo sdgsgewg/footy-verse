@@ -217,7 +217,7 @@ export async function updateNationalTeamRepo(
 ): Promise<NationalTeamDetailResponse> {
   const supabase = await getSupabase();
 
-  await requireEntity(getNationalTeamEditRepo, teamId, getNationalTeamLabel());
+  await requireEntity(getNationalTeamDetailRepo, teamId, getNationalTeamLabel());
 
   const { error } = await supabase
     .from(getNationalTeamTable())
@@ -245,7 +245,7 @@ export async function updateNationalTeamRepo(
 export async function deleteNationalTeamRepo(teamId: string): Promise<void> {
   const supabase = await getSupabase();
 
-  await requireEntity(getNationalTeamEditRepo, teamId, getNationalTeamLabel());
+  await requireEntity(getNationalTeamDetailRepo, teamId, getNationalTeamLabel());
 
   const { error } = await supabase
     .from(getNationalTeamTable())

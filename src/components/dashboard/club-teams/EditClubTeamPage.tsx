@@ -69,6 +69,7 @@ const EditClubTeamPage = ({ clubLookup, clubTeamLookup }: Props) => {
           loading={isSubmitting}
           onSubmit={(payload) =>
             submit({
+              teamId: clubTeam.id,
               payload,
             })
           }
