@@ -43,7 +43,7 @@ export async function PUT(
       await getPlayerNationalTeamCareerDetailService(careerId);
 
     if (!currentPlayerNationalTeamCareer) {
-      return errorResponse(new NotFoundError("Player national team not found"));
+      return errorResponse(new NotFoundError("Player national team career not found"));
     }
 
     const body = await request.json();

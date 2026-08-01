@@ -79,8 +79,8 @@ export async function getPlayerNationalTeamCareersRepo(
     .select(getPlayerNationalTeamCareersBaseQuery())
     .eq("player_career.player_id", playerId)
     .order("joined_at", {
-      referencedTable: "player_careers",
-      ascending: true,
+      referencedTable: "player_career",
+      ascending: false,
     });
 
   const { data, error } =
@@ -101,7 +101,7 @@ function getPlayerNationalTeamCareerDetailBaseQuery() {
       team_category,
       age_group,
 
-      nationality:nationalities (
+      nation:nationalities (
         id,
         name,
         image

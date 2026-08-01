@@ -89,8 +89,8 @@ export async function getPlayerClubCareersRepo(
     .select(getPlayerClubCareersBaseQuery())
     .eq("player_career.player_id", playerId)
     .order("joined_at", {
-      referencedTable: "player_careers",
-      ascending: true,
+      referencedTable: "player_career",
+      ascending: false,
     });
 
   const { data, error } =
