@@ -12,6 +12,7 @@ import { STORAGE_BUCKETS } from "../storage";
 import { formatNationalTeamName } from "./formatter";
 import { formatEuroValue } from "../formatters/currency";
 import { mapNationalityWithConfederationResponse } from "../nationalities/mapper";
+import { CompetitionSeasonWinnerResponse } from "@/types/competition-season";
 
 export function mapNationalTeamListItem(
   nationalTeam: DbNationalTeamListRow,
@@ -90,5 +91,26 @@ export function mapNationalTeamResponse(
     name: formatNationalTeamName(nationalTeam),
     teamCategory: team_category,
     ageGroup: age_group,
+  };
+}
+
+/**
+ *
+ * @param nationalTeam
+ * @returns
+ */
+export function mapNationalTeamToWinnerResponse(
+  nationalTeam: DbNationalTeamRow,
+): CompetitionSeasonWinnerResponse {
+  const { id, nation } = nationalTeam;
+
+  return {
+    id,
+    imageUrl: getImageUrl(
+      "nationality",
+      STORAGE_BUCKETS.NATIONALITIES,
+      nation.image,
+    ),
+    name: formatNationalTeamName(nationalTeam),
   };
 }

@@ -177,6 +177,13 @@ export const ENTITY_CONFIG = {
     storageBucket: STORAGE_BUCKETS.COMPETITIONS,
     imageFolder: "competitions",
   },
+
+  competitionSeason: {
+    table: "competition_seasons",
+    label: "Competition Season",
+    supportsImage: false,
+    supportsSlug: true,
+  },
 } as const satisfies Record<string, EntityConfig>;
 
 export type Entity = keyof typeof ENTITY_CONFIG;

@@ -1,5 +1,6 @@
 import { AgeGroup } from "@/enums/AgeGroup";
 import { CareerType } from "@/enums/CareerType";
+import { CompetitionSeasonStatus } from "@/enums/CompetitionSeasonStatus";
 import { CompetitionSquadPlayerStatus } from "@/enums/CompetitionSquadPlayerStatus";
 import { Gender } from "@/enums/Gender";
 import { ParticipantType } from "@/enums/ParticipantType";
@@ -133,6 +134,17 @@ export const participantTypeSchema = z.enum([
 export const genderSchema = z.enum([Gender.MEN, Gender.WOMEN]);
 
 export const competitionSortBySchema = z.enum(["name", "created_at"]);
+
+// Competition Season
+
+export const competitionSeasonStatusSchema = z.enum([
+  CompetitionSeasonStatus.UPCOMING,
+  CompetitionSeasonStatus.ONGOING,
+  CompetitionSeasonStatus.COMPLETED,
+  CompetitionSeasonStatus.CANCELLED,
+]);
+
+export const competitionSeasonSortBySchema = z.enum(["name", "created_at"]);
 
 // Competition Squad Player
 

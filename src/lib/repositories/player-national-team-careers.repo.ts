@@ -44,6 +44,7 @@ function getPlayerNationalTeamCareersBaseQuery() {
     id,
 
     national_team:national_teams (
+      id,
       team_category,
       age_group,
 

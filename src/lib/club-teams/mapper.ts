@@ -12,6 +12,7 @@ import { STORAGE_BUCKETS } from "../storage";
 import { formatClubName } from "./formatter";
 import { mapClubResponse } from "../clubs/mapper";
 import { formatEuroValue } from "../formatters/currency";
+import { CompetitionSeasonWinnerResponse } from "@/types/competition-season";
 
 export function mapClubTeamListItem(
   clubTeam: DbClubTeamListRow,
@@ -79,5 +80,22 @@ export function mapClubTeamResponse(clubTeam: DbClubTeamRow): ClubTeamResponse {
     name: formatClubName(clubTeam),
     squadType: squad_type,
     ageGroup: age_group,
+  };
+}
+
+/**
+ *
+ * @param clubTeam
+ * @returns
+ */
+export function mapClubTeamToWinnerResponse(
+  clubTeam: DbClubTeamRow,
+): CompetitionSeasonWinnerResponse {
+  const { id, club } = clubTeam;
+
+  return {
+    id,
+    imageUrl: getImageUrl("club", STORAGE_BUCKETS.CLUBS, club.image),
+    name: formatClubName(clubTeam),
   };
 }
