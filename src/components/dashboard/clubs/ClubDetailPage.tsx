@@ -12,6 +12,7 @@ import { useTranslations } from "next-intl";
 import { useRouter } from "@/navigation";
 import { useParams } from "next/navigation";
 import { ROUTES } from "@/constants/routes";
+import ClubSummary from "@/components/clubs/summary/ClubSummary";
 
 interface Props {
   clubLookup: ClubLookupResponse;
@@ -54,6 +55,8 @@ const ClubDetailPage = ({ clubLookup, backHref }: Props) => {
     );
   };
 
+  const summary = <ClubSummary summary={club} />;
+
   const content = (
     <>
       <section>
@@ -72,7 +75,7 @@ const ClubDetailPage = ({ clubLookup, backHref }: Props) => {
   return (
     <ClubDetailPageLayout
       title={name}
-      club={club}
+      summary={summary}
       content={content}
       backHref={backHref}
     />

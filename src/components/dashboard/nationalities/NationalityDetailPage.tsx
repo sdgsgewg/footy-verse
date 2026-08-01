@@ -12,6 +12,7 @@ import { useParams } from "next/navigation";
 import { useRouter } from "@/navigation";
 import { ROUTES } from "@/constants/routes";
 import { NationalTeamTable } from "@/components/nationalities/table";
+import NationalitySummary from "@/components/nationalities/summary/NationalitySummary";
 
 interface Props {
   nationalityLookup: NationalityLookupResponse;
@@ -56,6 +57,8 @@ const NationalityDetailPage = ({ nationalityLookup, backHref }: Props) => {
     );
   };
 
+  const summary = <NationalitySummary summary={nationality} />;
+
   const content = (
     <>
       <section>
@@ -73,7 +76,7 @@ const NationalityDetailPage = ({ nationalityLookup, backHref }: Props) => {
   return (
     <NationalityDetailPageLayout
       title={name}
-      nationality={nationality}
+      summary={summary}
       content={content}
       backHref={backHref}
     />

@@ -5,74 +5,114 @@ import ErrorState from "@/components/feedback/ErrorState";
 import ClubDetailPageLayout from "@/components/layout/detail-page/ClubDetailPageLayout";
 import { useClubDetail } from "@/hooks/dashboard/clubs";
 import { ClubLookupResponse } from "@/types/club";
-import PlayerList from "../players/PlayerList";
 import { ROUTES } from "@/constants/routes";
 import { useClubTeams } from "@/hooks/club-teams";
-import usePlayerFilter from "@/hooks/players/usePlayerFilter";
 import { TeamType } from "@/enums/TeamType";
 import { useGroupedPlayers } from "@/hooks/players";
 import { useEffect } from "react";
 import { SquadType } from "@/enums/SquadType";
 import ClubFilter from "./filter/ClubFilter";
+import { useClubTeamDetail } from "@/hooks/dashboard/club-teams";
+import ClubTeamSummary from "../dashboard/club-teams/summary/ClubTeamSummary";
+import useGroupedPlayerFilter from "@/hooks/players/useGroupedPlayerFilter";
+import ClubTeamSummarySkeleton from "../dashboard/club-teams/summary/ClubTeamSummarySkeleton";
+import PlayerListSection from "../players/PlayerListSection";
 
 interface Props {
   clubLookup: ClubLookupResponse;
 }
 
 const ClubDetailPage = ({ clubLookup }: Props) => {
-  const { club, isLoading, error, refetch } = useClubDetail(clubLookup.id);
+  const {
+    club,
+    isLoading: isClubLoading,
+    error: clubError,
+    refetch: refetchClub,
+  } = useClubDetail(clubLookup.id);
 
-  const { filters, setFilter } = usePlayerFilter();
+  const { filters, setFilter } = useGroupedPlayerFilter();
 
-  const { clubTeams } = useClubTeams({
+  const { clubTeams, loading: isClubTeamsLoading } = useClubTeams({
     clubId: clubLookup.id,
   });
 
-  const { groupedPlayers } = useGroupedPlayers({
-    clubTeamId: filters.clubTeamId,
+  const seniorTeam = clubTeams.find(
+    (team) => team.squadType === SquadType.FIRST_TEAM,
+  );
+
+  const selectedClubTeamId =
+    filters.clubTeamId ?? seniorTeam?.id ?? clubTeams[0]?.id;
+
+  const { clubTeam, isLoading: isClubTeamLoading } = useClubTeamDetail({
+    clubId: clubLookup.id,
+    teamId: selectedClubTeamId,
+  });
+
+  const {
+    groupedPlayers,
+    isLoading: isPlayersLoading,
+    error: playersError,
+    refetch: refetchPlayers,
+  } = useGroupedPlayers({
+    clubTeamId: selectedClubTeamId,
   });
 
   useEffect(() => {
-    const seniorTeam = clubTeams.find(
-      (ct) => ct.squadType === SquadType.FIRST_TEAM,
-    );
+    if (filters.clubTeamId) return;
 
     if (!seniorTeam) return;
 
     setFilter("clubTeamId", seniorTeam.id);
-  }, [clubTeams]);
+  }, [filters.clubTeamId, seniorTeam, setFilter]);
 
   // Initial request is still loading and no cached club data is available yet.
-  if (!club && isLoading) {
+  if (!club && isClubLoading) {
     return <EntityLoading entity="club" />;
   }
 
   // Initial request failed before any club data could be loaded.
-  if (!club && error) {
-    return <ErrorState onRetry={() => void refetch()} />;
+  if (!club && clubError) {
+    return <ErrorState onRetry={() => void refetchClub()} />;
   }
 
   // Fallback: no club data is available even though loading has finished.
   if (!club) {
-    return <ErrorState onRetry={() => void refetch()} />;
+    return <ErrorState onRetry={() => void refetchClub()} />;
   }
 
   const { name, slug } = club;
 
+  const isTeamLoading = isClubTeamsLoading || isClubTeamLoading;
+
+  const summary = isTeamLoading ? (
+    <ClubTeamSummarySkeleton />
+  ) : clubTeam ? (
+    <ClubTeamSummary summary={clubTeam} />
+  ) : null;
+
   // Player List in grid style
   const content = (
     <>
-      <ClubFilter clubLookup={clubLookup} />
+      <ClubFilter
+        clubTeams={clubTeams}
+        filters={filters}
+        setFilter={setFilter}
+      />
 
-      <PlayerList
+      <PlayerListSection
         teamType={TeamType.CLUB}
         groupedPlayers={groupedPlayers}
+        isLoading={isPlayersLoading}
+        error={playersError}
+        onRetry={() => void refetchPlayers()}
         baseRoute={`${ROUTES.TEAMS.CLUBS}/${slug}`}
       />
     </>
   );
 
-  return <ClubDetailPageLayout title={name} club={club} content={content} />;
+  return (
+    <ClubDetailPageLayout title={name} summary={summary} content={content} />
+  );
 };
 
 export default ClubDetailPage;

@@ -5,9 +5,9 @@ import { useEffect } from "react";
 import EntityLoading from "@/components/feedback/loading/EntityLoading";
 import ErrorState from "@/components/feedback/ErrorState";
 
-import PlayerList from "../players/PlayerList";
 import NationalityDetailPageLayout from "../layout/detail-page/NationalityDetailPageLayout";
 import NationalityFilter from "./filter/NationalityFilter";
+import NationalTeamSummary from "../dashboard/national-teams/summary/NationalTeamSummary";
 
 import { ROUTES } from "@/constants/routes";
 import { TeamType } from "@/enums/TeamType";
@@ -17,56 +17,81 @@ import { useGroupedPlayers } from "@/hooks/players";
 import useGroupedPlayerFilter from "@/hooks/players/useGroupedPlayerFilter";
 import { useNationalityDetail } from "@/hooks/dashboard/nationalities";
 import { useNationalTeams } from "@/hooks/national-teams";
+import { useNationalTeamDetail } from "@/hooks/dashboard/national-teams";
 
 import type { NationalityLookupResponse } from "@/types/nationality";
+import NationalTeamSummarySkeleton from "../dashboard/national-teams/summary/NationalTeamSummarySkeleton";
+import PlayerListSection from "../players/PlayerListSection";
 
 interface Props {
   nationalityLookup: NationalityLookupResponse;
 }
 
 const NationalityDetailPage = ({ nationalityLookup }: Props) => {
-  const { nationality, isLoading, error, refetch } = useNationalityDetail(
-    nationalityLookup.id,
-  );
+  const {
+    nationality,
+    isLoading: isNationalityLoading,
+    error: nationalityError,
+    refetch: refetchNationality,
+  } = useNationalityDetail(nationalityLookup.id);
 
-  // Dipanggil hanya sekali
   const { filters, setFilter } = useGroupedPlayerFilter();
 
-  const { nationalTeams } = useNationalTeams({
+  const { nationalTeams, loading: isNationalTeamsLoading } = useNationalTeams({
     nationId: nationalityLookup.id,
   });
 
-  const { groupedPlayers } = useGroupedPlayers({
-    nationalTeamId: filters.nationalTeamId,
+  const seniorTeam = nationalTeams.find(
+    (team) => team.ageGroup === AgeGroup.SENIOR,
+  );
+
+  const selectedNationalTeamId =
+    filters.nationalTeamId ?? seniorTeam?.id ?? nationalTeams[0]?.id;
+
+  const { nationalTeam, isLoading: isNationalTeamLoading } =
+    useNationalTeamDetail({
+      nationId: nationalityLookup.id,
+      teamId: selectedNationalTeamId,
+    });
+
+  const {
+    groupedPlayers,
+    isLoading: isPlayersLoading,
+    error: playersError,
+    refetch: refetchPlayers,
+  } = useGroupedPlayers({
+    nationalTeamId: selectedNationalTeamId,
   });
 
-  // Set senior team sebagai default
   useEffect(() => {
-    const seniorTeam = nationalTeams.find(
-      (team) => team.ageGroup === AgeGroup.SENIOR,
-    );
+    if (filters.nationalTeamId) return;
 
     if (!seniorTeam) return;
 
-    // Jangan overwrite pilihan user
-    if (filters.nationalTeamId) return;
-
     setFilter("nationalTeamId", seniorTeam.id);
-  }, [nationalTeams, filters.nationalTeamId, setFilter]);
+  }, [filters.nationalTeamId, seniorTeam, setFilter]);
 
-  if (!nationality && isLoading) {
+  if (!nationality && isNationalityLoading) {
     return <EntityLoading entity="nationality" />;
   }
 
-  if (!nationality && error) {
-    return <ErrorState onRetry={() => void refetch()} />;
+  if (!nationality && nationalityError) {
+    return <ErrorState onRetry={() => void refetchNationality()} />;
   }
 
   if (!nationality) {
-    return <ErrorState onRetry={() => void refetch()} />;
+    return <ErrorState onRetry={() => void refetchNationality()} />;
   }
 
   const { name, slug } = nationality;
+
+  const isTeamLoading = isNationalTeamsLoading || isNationalTeamLoading;
+
+  const summary = isTeamLoading ? (
+    <NationalTeamSummarySkeleton />
+  ) : nationalTeam ? (
+    <NationalTeamSummary summary={nationalTeam} />
+  ) : null;
 
   const content = (
     <>
@@ -76,9 +101,12 @@ const NationalityDetailPage = ({ nationalityLookup }: Props) => {
         setFilter={setFilter}
       />
 
-      <PlayerList
+      <PlayerListSection
         teamType={TeamType.NATIONAL_TEAM}
         groupedPlayers={groupedPlayers}
+        isLoading={isPlayersLoading}
+        error={playersError}
+        onRetry={() => void refetchPlayers()}
         baseRoute={`${ROUTES.TEAMS.NATIONALITIES}/${slug}`}
       />
     </>
@@ -87,7 +115,7 @@ const NationalityDetailPage = ({ nationalityLookup }: Props) => {
   return (
     <NationalityDetailPageLayout
       title={name}
-      nationality={nationality}
+      summary={summary}
       content={content}
     />
   );

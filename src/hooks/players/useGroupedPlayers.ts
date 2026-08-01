@@ -23,9 +23,9 @@ export function useGroupedPlayers(
 
   return {
     groupedPlayers: data,
-    loading: isLoading,
-    retrying: isRefetching,
-    loadError: error ?? null,
-    retryLoad: refetch,
+    isLoading,
+    isRefetching,
+    error,
+    refetch,
   };
 }

@@ -35,7 +35,7 @@ export default function PlayerCard({ teamType, player, onNavigate }: Props) {
   return (
     <Card
       onClick={() => onNavigate(player)}
-      className="group flex h-80 flex-col pt-0 pb-0 gap-0 cursor-pointer overflow-hidden transition-all hover:-translate-y-1 hover:shadow-lg"
+      className="group flex h-90 flex-col py-0 gap-0 cursor-pointer overflow-hidden transition-all hover:-translate-y-1 hover:shadow-lg"
     >
       <ImageWrapper
         src={imageUrl}
@@ -43,14 +43,14 @@ export default function PlayerCard({ teamType, player, onNavigate }: Props) {
         aspectRatio="none"
         hoverOverlay
         className={{
-          container: "h-48 rounded-none",
+          container: "h-52 shrink-0 rounded-none",
           image:
             "object-cover transition-transform duration-500 group-hover:scale-105",
           overlay: "bg-black/0 group-hover:bg-black/10",
         }}
       />
 
-      <CardContent className="flex flex-col space-y-4 p-4">
+      <CardContent className="min-h-0 flex-1 flex flex-col space-y-4 p-4">
         <div className="flex items-start justify-between">
           <div>
             <p
@@ -75,27 +75,29 @@ export default function PlayerCard({ teamType, player, onNavigate }: Props) {
           )}
         </div>
 
-        <p className="text-sm font-medium text-muted-foreground">
-          {mainPosition?.name}
-        </p>
+        <div className="flex flex-col gap-2">
+          <p className="text-sm font-medium text-muted-foreground">
+            {mainPosition.name}
+          </p>
 
-        {playerOrigin && (
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <Image
-              src={playerOrigin.imageUrl}
-              alt={playerOrigin.name}
-              width={20}
-              height={20}
-              className={
-                isClubPlayer
-                  ? "h-4 w-6 object-cover rounded-sm"
-                  : "h-5 w-5 object-contain"
-              }
-            />
+          {playerOrigin && (
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <Image
+                src={playerOrigin.imageUrl}
+                alt={playerOrigin.name}
+                width={20}
+                height={20}
+                className={
+                  isClubPlayer
+                    ? "h-4 w-6 object-cover rounded-sm"
+                    : "h-5 w-5 object-contain"
+                }
+              />
 
-            <span>{playerOrigin.name}</span>
-          </div>
-        )}
+              <span>{playerOrigin.name}</span>
+            </div>
+          )}
+        </div>
       </CardContent>
     </Card>
   );

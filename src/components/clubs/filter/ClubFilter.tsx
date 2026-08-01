@@ -1,21 +1,20 @@
 import { SelectField } from "@/components/forms/fields";
-import { useClubTeams } from "@/hooks/club-teams";
-import useGroupedPlayerFilter from "@/hooks/players/useGroupedPlayerFilter";
 import { getClubTeamOptions } from "@/lib/club-teams/options";
-import { ClubLookupResponse } from "@/types/club";
-import React from "react";
+import { ClubTeamListItem } from "@/types/club-team";
+import { GroupedPlayerFilter } from "@/types/player";
 
 interface Props {
-  clubLookup: ClubLookupResponse;
+  clubTeams: ClubTeamListItem[];
+
+  filters: GroupedPlayerFilter;
+
+  setFilter: <K extends keyof GroupedPlayerFilter>(
+    key: K,
+    value: GroupedPlayerFilter[K],
+  ) => void;
 }
 
-const ClubFilter = ({ clubLookup }: Props) => {
-  const { filters, setFilter, setFilters } = useGroupedPlayerFilter();
-
-  const { clubTeams } = useClubTeams({
-    clubId: clubLookup.id,
-  });
-
+const ClubFilter = ({ clubTeams, filters, setFilter }: Props) => {
   const clubTeamOptions = getClubTeamOptions(clubTeams);
 
   return (
@@ -26,7 +25,7 @@ const ClubFilter = ({ clubLookup }: Props) => {
         placeholder={`Select Club Team`}
         options={clubTeamOptions}
         value={filters.clubTeamId || ""}
-        onChange={(value) => setFilters({ ...filters, clubTeamId: value })}
+        onChange={(value) => setFilter("clubTeamId", value || undefined)}
       />
     </div>
   );

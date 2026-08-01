@@ -1,18 +1,14 @@
 import React from "react";
 import DetailPageLayout from "./DetailPageLayout";
-import { ClubDetailResponse } from "@/types/club";
-import ClubSummary from "@/components/clubs/summary/ClubSummary";
 
 interface Props {
   title: string;
-  club: ClubDetailResponse;
+  summary: React.ReactNode;
   content: React.ReactNode;
   backHref?: string;
 }
 
-const ClubDetailPageLayout = ({ title, club, content, backHref }: Props) => {
-  const summary = <ClubSummary summary={club} />;
-
+const ClubDetailPageLayout = ({ title, summary, content, backHref }: Props) => {
   return (
     <DetailPageLayout
       title={title}
