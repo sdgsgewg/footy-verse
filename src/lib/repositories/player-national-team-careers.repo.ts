@@ -45,7 +45,7 @@ function getPlayerNationalTeamCareersBaseQuery() {
 
     national_team:national_teams (
       id,
-      gernder,
+      gender,
       age_group,
       team_type,
 
