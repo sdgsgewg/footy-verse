@@ -1,0 +1,40 @@
+{
+  "form": {
+    "labels": {
+      "name": "Nama",
+      "seasonLabel": "Label Musim",
+      "startDate": "Tanggal Mulai",
+      "endDate": "Tanggal Berakhir",
+      "status": "Status",
+      "winnerClubTeam": "Tim Klub Pemenang",
+      "winnerNationalTeam": "Tim Nasional Pemenang"
+    },
+
+    "placeholders": {
+      "name": "Input Nama",
+      "seasonLabel": "Input Label Musim",
+      "startDate": "Pilih Tanggal Mulai",
+      "endDate": "Pilih Tanggal Berakhir",
+      "status": "Pilih Status",
+      "winnerClubTeam": "Pilih Tim Klub Pemenang",
+      "winnerNationalTeam": "Pilih Tim Nasional Pemenang"
+    },
+
+    "options": {
+      "status": {
+        "upcoming": "Akan Datang",
+        "ongoing": "Sedang Berlangsung",
+        "completed": "Selesai",
+        "cancelled": "Dibatalkan"
+      }
+    }
+  },
+
+  "table": {
+    "title": "Musim Kompetisi",
+
+    "columns": {
+      "name": "Nama"
+    }
+  }
+}

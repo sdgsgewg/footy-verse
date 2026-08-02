@@ -18,13 +18,13 @@ import { tryDeleteImage, uploadImage } from "@/lib/services/storage.service";
 import { STORAGE_BUCKETS } from "@/lib/storage";
 
 type CompetitionRouteContext = {
-  params: Promise<{ id: string }>;
+  params: Promise<{ competitionId: string }>;
 };
 
 export async function GET(_request: Request, context: CompetitionRouteContext) {
   try {
-    const { id } = await context.params;
-    const data = await getCompetitionDetailService(id);
+    const { competitionId } = await context.params;
+    const data = await getCompetitionDetailService(competitionId);
 
     if (!data) {
       return errorResponse(new NotFoundError("Competition not found"));
@@ -40,9 +40,9 @@ export async function PUT(request: Request, context: CompetitionRouteContext) {
   try {
     await authorizeManageContent();
 
-    const { id } = await context.params;
+    const { competitionId } = await context.params;
 
-    const currentCompetition = await getCompetitionEditService(id);
+    const currentCompetition = await getCompetitionEditService(competitionId);
 
     if (!currentCompetition) {
       return errorResponse(new NotFoundError("Competition not found"));
@@ -50,7 +50,7 @@ export async function PUT(request: Request, context: CompetitionRouteContext) {
 
     if (!isFormDataRequest(request)) {
       const body = await request.json();
-      const data = await updateCompetitionService(id, body);
+      const data = await updateCompetitionService(competitionId, body);
 
       return successResponse(data);
     }
@@ -70,7 +70,7 @@ export async function PUT(request: Request, context: CompetitionRouteContext) {
     body.image = image;
 
     try {
-      const data = await updateCompetitionService(id, body);
+      const data = await updateCompetitionService(competitionId, body);
 
       return successResponse(data);
     } catch (error) {
@@ -92,15 +92,15 @@ export async function DELETE(
   try {
     await authorizeManageContent();
 
-    const { id } = await context.params;
+    const { competitionId } = await context.params;
 
-    const Competition = await getCompetitionEditService(id);
+    const Competition = await getCompetitionEditService(competitionId);
 
     if (!Competition) {
       return errorResponse(new NotFoundError("Competition not found"));
     }
 
-    await deleteCompetitionService(id);
+    await deleteCompetitionService(competitionId);
 
     return noContentResponse();
   } catch (error: unknown) {
