@@ -7,9 +7,13 @@ import { ParticipantType } from "@/enums/ParticipantType";
 import { PreferredFoot } from "@/enums/PreferredFoot";
 import { RegionType } from "@/enums/RegionType";
 import { SquadType } from "@/enums/SquadType";
-import { TeamCategory } from "@/enums/TeamCategory";
+import { NationalTeamType } from "@/enums/NationalTeamType";
 import { TransferType } from "@/enums/TransferType";
 import z from "zod";
+
+// Shared
+
+export const genderSchema = z.enum([Gender.MEN, Gender.WOMEN]);
 
 // Club
 
@@ -30,9 +34,9 @@ export const nationalitySortBySchema = z.enum(["name", "created_at"]);
 
 // Both Club and National Team
 
-export const teamCategorySchema = z.enum([
-  TeamCategory.MEN,
-  TeamCategory.WOMEN,
+export const nationalTeamTypeSchema = z.enum([
+  NationalTeamType.STANDARD,
+  NationalTeamType.OLYMPIC,
 ]);
 
 export const ageGroupSchema = z.enum([
@@ -130,8 +134,6 @@ export const participantTypeSchema = z.enum([
   ParticipantType.CLUB,
   ParticipantType.NATIONAL_TEAM,
 ]);
-
-export const genderSchema = z.enum([Gender.MEN, Gender.WOMEN]);
 
 export const competitionSortBySchema = z.enum(["name", "created_at"]);
 

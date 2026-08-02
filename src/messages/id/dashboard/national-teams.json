@@ -1,13 +1,22 @@
 {
   "form": {
     "labels": {
-      "teamCategory": "Kategori",
-      "ageGroup": "Grup Usia"
+      "gender": "Jenis Kelamin",
+      "ageGroup": "Grup Usia",
+      "teamType": "Tipe"
     },
 
     "placeholders": {
-      "teamCategory": "Select Kategori",
-      "ageGroup": "Select Grup Usia"
+      "gender": "Pilih Jenis Kelamin",
+      "ageGroup": "Pilih Grup Usia",
+      "teamType": "Pilih Tipe"
+    },
+
+    "options": {
+      "nationalTeamType": {
+        "standard": "Standar",
+        "olympic": "Olimpiade"
+      }
     }
   },
 
@@ -16,8 +25,9 @@
 
     "columns": {
       "name": "Nama",
-      "teamCategory": "Kategori",
-      "ageGroup": "Grup Usia"
+      "gender": "Jenis Kelamin",
+      "ageGroup": "Grup Usia",
+      "teamType": "Tipe Tim"
     }
   }
 }

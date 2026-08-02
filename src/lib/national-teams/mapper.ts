@@ -17,7 +17,7 @@ import { CompetitionSeasonWinnerResponse } from "@/types/competition-season";
 export function mapNationalTeamListItem(
   nationalTeam: DbNationalTeamListRow,
 ): NationalTeamListItem {
-  const { id, team_category, age_group, nation } = nationalTeam;
+  const { id, gender, age_group, team_type, nation } = nationalTeam;
 
   return {
     id,
@@ -27,20 +27,22 @@ export function mapNationalTeamListItem(
       nation.image,
     ),
     name: formatNationalTeamName(nationalTeam),
-    teamCategory: team_category,
+    gender: gender,
     ageGroup: age_group,
+    teamType: team_type,
   };
 }
 
 export function mapNationalTeamEditResponse(
   nationalTeam: DbNationalTeamDetailRow,
 ): NationalTeamEditResponse {
-  const { id, team_category, age_group, nation_id } = nationalTeam;
+  const { id, gender, age_group, team_type, nation_id } = nationalTeam;
 
   return {
     id,
-    teamCategory: team_category,
+    gender,
     ageGroup: age_group,
+    teamType: team_type,
     nationId: nation_id,
   };
 }
@@ -48,8 +50,14 @@ export function mapNationalTeamEditResponse(
 export function mapNationalTeamDetailResponse(
   nationalTeam: DbNationalTeamDetailRow,
 ): NationalTeamDetailResponse {
-  const { id, team_category, age_group, nation, player_national_team_careers } =
-    nationalTeam;
+  const {
+    id,
+    gender,
+    age_group,
+    team_type,
+    nation,
+    player_national_team_careers,
+  } = nationalTeam;
 
   const squadSize = player_national_team_careers.length;
 
@@ -64,8 +72,9 @@ export function mapNationalTeamDetailResponse(
   return {
     id,
     name: formatNationalTeamName(nationalTeam),
-    teamCategory: team_category,
+    gender,
     ageGroup: age_group,
+    teamType: team_type,
 
     nation: mapNationalityWithConfederationResponse(nation),
 
@@ -79,7 +88,7 @@ export function mapNationalTeamDetailResponse(
 export function mapNationalTeamResponse(
   nationalTeam: DbNationalTeamRow,
 ): NationalTeamResponse {
-  const { id, team_category, age_group, nation } = nationalTeam;
+  const { id, gender, age_group, team_type, nation } = nationalTeam;
 
   return {
     id,
@@ -89,8 +98,9 @@ export function mapNationalTeamResponse(
       nation.image,
     ),
     name: formatNationalTeamName(nationalTeam),
-    teamCategory: team_category,
+    gender,
     ageGroup: age_group,
+    teamType: team_type,
   };
 }
 

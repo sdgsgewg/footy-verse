@@ -1,13 +1,22 @@
 {
   "form": {
     "labels": {
-      "teamCategory": "Team Category",
-      "ageGroup": "Age Group"
+      "gender": "Gender",
+      "ageGroup": "Age Group",
+      "teamType": "Team Type"
     },
 
     "placeholders": {
-      "teamCategory": "Select Team Category",
-      "ageGroup": "Select Age Group"
+      "gender": "Select Gender",
+      "ageGroup": "Select Age Group",
+      "teamType": "Select Team Type"
+    },
+
+    "options": {
+      "nationalTeamType": {
+        "standard": "Standard",
+        "olympic": "Olympic"
+      }
     }
   },
 
@@ -16,8 +25,9 @@
 
     "columns": {
       "name": "Name",
-      "teamCategory": "Team Category",
-      "ageGroup": "Age Group"
+      "gender": "Gender",
+      "ageGroup": "Age Group",
+      "teamType": "Team Type"
     }
   }
 }

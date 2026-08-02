@@ -1,10 +1,15 @@
 import { z } from "zod";
 import { idSchema } from "./primitives.schema";
-import { ageGroupSchema, teamCategorySchema } from "./enums.schema";
+import {
+  ageGroupSchema,
+  genderSchema,
+  nationalTeamTypeSchema,
+} from "./enums.schema";
 
 export const nationalTeamMutationSchema = z.object({
-  team_category: z.union([teamCategorySchema, z.literal("")]),
+  gender: z.union([genderSchema, z.literal("")]),
   age_group: z.union([ageGroupSchema, z.literal("")]),
+  team_type: z.union([nationalTeamTypeSchema, z.literal("")]),
   nation_id: idSchema.optional(),
 });
 
@@ -21,9 +26,11 @@ export const nationalTeamSchema = nationalTeamMutationSchema.extend({
 export const nationalTeamsSchema = z.array(nationalTeamSchema);
 
 export const nationalTeamsQuerySchema = z.object({
-  teamCategory: teamCategorySchema.optional(),
+  gender: genderSchema.optional(),
 
   ageGroup: ageGroupSchema.optional(),
+
+  teamType: nationalTeamTypeSchema.optional(),
 
   nationId: idSchema.optional(),
 });

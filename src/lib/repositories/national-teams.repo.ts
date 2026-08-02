@@ -33,8 +33,9 @@ const getNationalTeamTable = () => {
 function getNationalTeamsBaseQuery() {
   return `
     id,
-    team_category,
+    gender,
     age_group,
+    team_type,
     created_at,
 
     nation:nationalities!national_teams_nation_id_fkey(
@@ -62,12 +63,16 @@ export async function getNationalTeamsRepo(
     .order("created_at");
 
   // Filter
-  if (params.teamCategory) {
-    query = query.eq("team_category", params.teamCategory);
+  if (params.gender) {
+    query = query.eq("gender", params.gender);
   }
 
   if (params.ageGroup) {
     query = query.eq("age_group", params.ageGroup);
+  }
+
+  if (params.teamType) {
+    query = query.eq(".team_type", params.teamType);
   }
 
   if (params.nationId) {
@@ -217,7 +222,11 @@ export async function updateNationalTeamRepo(
 ): Promise<NationalTeamDetailResponse> {
   const supabase = await getSupabase();
 
-  await requireEntity(getNationalTeamDetailRepo, teamId, getNationalTeamLabel());
+  await requireEntity(
+    getNationalTeamDetailRepo,
+    teamId,
+    getNationalTeamLabel(),
+  );
 
   const { error } = await supabase
     .from(getNationalTeamTable())
@@ -245,7 +254,11 @@ export async function updateNationalTeamRepo(
 export async function deleteNationalTeamRepo(teamId: string): Promise<void> {
   const supabase = await getSupabase();
 
-  await requireEntity(getNationalTeamDetailRepo, teamId, getNationalTeamLabel());
+  await requireEntity(
+    getNationalTeamDetailRepo,
+    teamId,
+    getNationalTeamLabel(),
+  );
 
   const { error } = await supabase
     .from(getNationalTeamTable())

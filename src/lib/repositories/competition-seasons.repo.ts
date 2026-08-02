@@ -57,8 +57,9 @@ function getCompetitionSeasonsBaseQuery() {
 
     winner_national_team:national_teams (
       id,
-      team_category,
+      gender,
       age_group,
+      team_type,
 
       nation:nationalities (
         id,
@@ -128,8 +129,9 @@ function getCompetitionSeasonDetailBaseQuery() {
 
     winner_national_team:national_teams (
       id,
-      team_category,
+      gender,
       age_group,
+      team_type,
 
       nation:nationalities (
         id,

@@ -1,4 +1,5 @@
 import { AgeGroup } from "@/enums/AgeGroup";
+import { NationalTeamType } from "@/enums/NationalTeamType";
 import {
   DbNationalTeamListRow,
   DbNationalTeamRow,
@@ -7,7 +8,10 @@ import {
 export function formatNationalTeamName(
   nationalTeam: DbNationalTeamListRow | DbNationalTeamRow,
 ): string {
-  const { age_group, nation } = nationalTeam;
+  const { age_group, team_type, nation } = nationalTeam;
+
+  if (team_type === NationalTeamType.OLYMPIC)
+    return `${nation.name} Olympic Team`;
 
   switch (age_group) {
     case AgeGroup.SENIOR:

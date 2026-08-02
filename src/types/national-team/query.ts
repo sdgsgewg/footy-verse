@@ -11,7 +11,7 @@ import { NationalTeam } from "./database";
 
 export type DbNationalTeamListRow = Pick<
   NationalTeam,
-  "id" | "team_category" | "age_group"
+  "id" | "gender" | "age_group" | "team_type"
 > & {
   nation: NationalitySummary;
 };
@@ -27,7 +27,7 @@ export type DbNationalTeamDetailRow = NationalTeam & {
 
 export type DbNationalTeamRow = Pick<
   NationalTeam,
-  "id" | "team_category" | "age_group"
+  "id" | "gender" | "age_group" | "team_type"
 > & {
   nation: NationalitySummary;
 };

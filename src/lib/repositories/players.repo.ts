@@ -133,8 +133,9 @@ function getPlayersBaseQuery(options?: { isNationFiltered?: boolean }) {
 
         national_team:national_teams!player_national_team_careers_national_team_id_fkey (
           id,
-          team_category,
+          gender,
           age_group,
+          team_type,
 
           nationality:nationalities!national_teams_nation_id_fkey (
             id,
@@ -418,8 +419,9 @@ function getPlayerDetailBaseQuery() {
   
         national_team:national_teams!player_national_team_careers_national_team_id_fkey (
           id,
-          team_category,
+          gender,
           age_group,
+          team_type,
   
           nationality:nationalities!national_teams_nation_id_fkey (
             id,

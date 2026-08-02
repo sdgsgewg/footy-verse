@@ -8,8 +8,9 @@ export interface NationalTeamListItem {
   id: string;
   imageUrl: string;
   name: string;
-  teamCategory: string;
+  gender: string;
   ageGroup: string;
+  teamType: string;
 }
 
 // National Team Detail
@@ -18,8 +19,9 @@ export interface NationalTeamListItem {
 
 export interface NationalTeamEditResponse {
   id: string;
-  teamCategory: string;
+  gender: string;
   ageGroup: string;
+  teamType: string;
   nationId: string;
 }
 
@@ -28,8 +30,9 @@ export interface NationalTeamEditResponse {
 export interface NationalTeamDetailResponse {
   id: string;
   name: string;
-  teamCategory: string;
+  gender: string;
   ageGroup: string;
+  teamType: string;
 
   nation: NationalityWithConfederationResponse;
 
@@ -43,6 +46,7 @@ export interface NationalTeamResponse {
   id: string;
   imageUrl: string;
   name: string;
-  teamCategory: string;
+  gender: string | null;
   ageGroup: string | null;
+  teamType: string;
 }

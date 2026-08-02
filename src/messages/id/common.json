@@ -38,11 +38,6 @@
   },
 
   "options": {
-    "teamCategory": {
-      "men": "Pria",
-      "women": "Wanita"
-    },
-
     "ageGroup": {
       "senior": "Senior",
       "u23": "U23",

@@ -38,11 +38,6 @@
   },
 
   "options": {
-    "teamCategory": {
-      "men": "Men",
-      "women": "Women"
-    },
-
     "ageGroup": {
       "senior": "Senior",
       "u23": "U23",

@@ -21,11 +21,12 @@ import {
   mapNationalityOption,
 } from "../nationalities/mapper";
 import { NationalTeamCreateInput } from "@/types/national-team";
-import { TeamCategory } from "@/enums/TeamCategory";
 import { AgeGroup } from "@/enums/AgeGroup";
 import { createPaginatedResponse } from "../pagination";
 import { slugify } from "@/utils/string";
 import { SelectOption } from "@/types/select";
+import { Gender } from "@/enums/Gender";
+import { NationalTeamType } from "@/enums/NationalTeamType";
 
 async function getSupabase() {
   return createClient();
@@ -221,8 +222,9 @@ async function insertNationalTeam(nationId: string) {
   const supabase = await getSupabase();
 
   const nationalTeamInsert: NationalTeamCreateInput = {
-    team_category: TeamCategory.MEN,
+    gender: Gender.MEN,
     age_group: AgeGroup.SENIOR,
+    team_type: NationalTeamType.STANDARD,
     nation_id: nationId,
   };
 

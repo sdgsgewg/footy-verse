@@ -18,8 +18,9 @@ type NationalTeamRouteContext = {
 export async function GET(request: Request) {
   try {
     const query = getCrudQuery<NationalTeamQuery>(request, [
-      "teamCategory",
+      "gender",
       "ageGroup",
+      "teamType",
       "nationId",
     ]);
 

@@ -4,8 +4,10 @@ import EntitySummaryLayout from "@/components/shared/summary/EntitySummaryLayout
 import MarketValueCard from "@/components/shared/summary/MarketValueCard";
 import RecordData from "@/components/shared/summary/RecordData";
 import { AgeGroup } from "@/enums/AgeGroup";
-import { TeamCategory } from "@/enums/TeamCategory";
-import { getAgeGroupLabel, getTeamCategoryLabel } from "@/lib/constants/labels";
+import { Gender } from "@/enums/Gender";
+import { NationalTeamType } from "@/enums/NationalTeamType";
+import { getAgeGroupLabel, getGenderLabel } from "@/lib/constants/labels";
+import { getNationalTeamTypeLabel } from "@/lib/national-teams/labels";
 import { NationalTeamDetailResponse } from "@/types/national-team";
 import { useTranslations } from "next-intl";
 
@@ -16,8 +18,15 @@ interface Props {
 const NationalTeamSummary = ({ summary }: Props) => {
   const t = useTranslations();
 
-  const { name, teamCategory, ageGroup, nation, squadSize, totalMarketValue } =
-    summary;
+  const {
+    name,
+    gender,
+    ageGroup,
+    teamType,
+    nation,
+    squadSize,
+    totalMarketValue,
+  } = summary;
 
   const { confederation } = nation;
 
@@ -40,9 +49,9 @@ const NationalTeamSummary = ({ summary }: Props) => {
       information={
         <div className="grid grid-cols-3 sm:grid-cols-2 xl:grid-cols-3 gap-x-10 gap-y-6">
           <RecordData
-            label="Category"
+            label="Gender"
             content={{
-              text: getTeamCategoryLabel(teamCategory as TeamCategory, t),
+              text: getGenderLabel(gender as Gender, t),
             }}
           />
 
@@ -50,6 +59,13 @@ const NationalTeamSummary = ({ summary }: Props) => {
             label="Age Group"
             content={{
               text: getAgeGroupLabel(ageGroup as AgeGroup, t),
+            }}
+          />
+
+          <RecordData
+            label="Team Type"
+            content={{
+              text: getNationalTeamTypeLabel(teamType as NationalTeamType, t),
             }}
           />
 

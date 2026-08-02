@@ -1,7 +1,8 @@
 "use client";
 
 import { AgeGroup } from "@/enums/AgeGroup";
-import { TeamCategory } from "@/enums/TeamCategory";
+import { Gender } from "@/enums/Gender";
+import { NationalTeamType } from "@/enums/NationalTeamType";
 import {
   NationalTeamEditResponse,
   UpsertNationalTeamInput,
@@ -10,19 +11,21 @@ import { useMemo, useState } from "react";
 
 const emptyNationalTeamForm: UpsertNationalTeamInput = {
   id: "",
-  team_category: "",
+  gender: "",
   age_group: "",
+  team_type: "",
 };
 
 function mapNationalTeam(
   nationalTeam: NationalTeamEditResponse,
 ): UpsertNationalTeamInput {
-  const { id, teamCategory, ageGroup } = nationalTeam;
+  const { id, gender, ageGroup, teamType } = nationalTeam;
 
   return {
     id,
-    team_category: teamCategory as TeamCategory,
+    gender: gender as Gender,
     age_group: ageGroup as AgeGroup,
+    team_type: teamType as NationalTeamType,
   };
 }
 
@@ -41,21 +44,25 @@ export function useNationalTeamForm(nationalTeam?: NationalTeamEditResponse) {
 
   const canSubmit = useMemo(() => {
     const isFilled =
-      form.team_category.trim().length > 0 && form.age_group.trim().length > 0;
+      form.gender.trim().length > 0 &&
+      form.age_group.trim().length > 0 &&
+      form.team_type.trim().length > 0;
 
     if (!isFilled) {
       return false;
     }
 
     return (
-      form.team_category !== initialForm.team_category ||
-      form.age_group !== initialForm.age_group
+      form.gender !== initialForm.gender ||
+      form.age_group !== initialForm.age_group ||
+      form.team_type !== initialForm.team_type
     );
   }, [form, initialForm]);
 
   const buildPayload = () => ({
-    team_category: form.team_category,
+    gender: form.gender,
     age_group: form.age_group,
+    team_type: form.team_type,
   });
 
   const resetForm = () => {

@@ -6,16 +6,15 @@ import FormHeader from "../base/FormHeader";
 import FormContentWrapper from "../base/FormContentWrapper";
 import { SelectField } from "../fields";
 import { AgeGroup } from "@/enums/AgeGroup";
-import {
-  getAgeGroupOptions,
-  getTeamCategoryOptions,
-} from "@/lib/constants/options";
+import { getAgeGroupOptions, getGenderOptions } from "@/lib/constants/options";
 import {
   NationalTeamEditResponse,
   UpsertNationalTeamInput,
 } from "@/types/national-team";
 import { useNationalTeamForm } from "@/hooks/dashboard/national-teams";
-import { TeamCategory } from "@/enums/TeamCategory";
+import { getNationalTeamTypeOptions } from "@/lib/national-teams/options";
+import { NationalTeamType } from "@/enums/NationalTeamType";
+import { Gender } from "@/enums/Gender";
 
 interface Props {
   mode: "create" | "edit";
@@ -41,8 +40,9 @@ const NationalTeamForm = ({
   const { form, setForm, canSubmit, buildPayload } =
     useNationalTeamForm(nationalTeam);
 
-  const teamCategoryOptions = getTeamCategoryOptions(t);
+  const genderOptions = getGenderOptions(t);
   const ageGroupOptions = getAgeGroupOptions(t);
+  const teamTypeOptions = getNationalTeamTypeOptions(t);
 
   const isCreate = mode === "create";
 
@@ -60,28 +60,39 @@ const NationalTeamForm = ({
       />
 
       <FormContentWrapper className="space-y-5">
-        {/* Squad Type */}
+        {/* Gender */}
         <SelectField
-          label={tLabels("teamCategory")}
-          name="team_category"
-          placeholder={tPlaceholders("teamCategory")}
-          options={teamCategoryOptions}
-          value={form.team_category || ""}
-          onChange={(value) =>
-            setForm({ ...form, team_category: value as TeamCategory })
-          }
+          label={tLabels("gender")}
+          name="gender"
+          placeholder={tPlaceholders("gender")}
+          options={genderOptions}
+          value={form.gender || ""}
+          onChange={(value) => setForm({ ...form, gender: value as Gender })}
           required
         />
 
         {/* Age Group */}
         <SelectField
           label={tLabels("ageGroup")}
-          name="age_griup"
+          name="age_group"
           placeholder={tPlaceholders("ageGroup")}
           options={ageGroupOptions}
           value={form.age_group || ""}
           onChange={(value) =>
             setForm({ ...form, age_group: value as AgeGroup })
+          }
+          required
+        />
+
+        {/* Team type */}
+        <SelectField
+          label={tLabels("teamType")}
+          name="team_type"
+          placeholder={tPlaceholders("teamType")}
+          options={teamTypeOptions}
+          value={form.team_type || ""}
+          onChange={(value) =>
+            setForm({ ...form, team_type: value as NationalTeamType })
           }
           required
         />
