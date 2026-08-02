@@ -23,6 +23,7 @@ const PlayerSummary = ({ summary }: Props) => {
     mainPosition,
     marketValue,
     currentClubTeam,
+    currentNationalTeam,
     joinedAt,
     contractEnd,
   } = summary;
@@ -92,13 +93,15 @@ const PlayerSummary = ({ summary }: Props) => {
             }}
           />
 
-          <RecordData
-            label="National Player"
-            content={{
-              text: currentNationality.name,
-              imageUrl: currentNationality.imageUrl,
-            }}
-          />
+          {currentNationalTeam && (
+            <RecordData
+              label="National Player"
+              content={{
+                text: currentNationalTeam.name,
+                imageUrl: currentNationalTeam.imageUrl,
+              }}
+            />
+          )}
         </div>
       }
       side={

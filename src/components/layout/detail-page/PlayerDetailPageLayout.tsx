@@ -1,12 +1,12 @@
 import DetailPageLayout from "./DetailPageLayout";
 import { PlayerDetailResponse } from "@/types/player";
-import PlayerProfile from "@/components/players/sections/PlayerProfile";
 import PlayerHistory from "@/components/players/sections/PlayerHistory";
 import PlayerSummary from "@/components/players/summary/PlayerSummary";
 import SectionHeader from "@/components/players/sections/SectionHeader";
 import { usePlayerTransfers } from "@/hooks/dashboard/player-transfers/usePlayerTransfers";
 import { useTranslations } from "next-intl";
 import { PlayerTransferHistoryTable } from "@/components/players/table";
+import PlayerData from "@/components/players/sections/PlayerData";
 
 interface Props {
   title: string;
@@ -27,11 +27,13 @@ const PlayerDetailPageLayout = ({ title, player, backHref }: Props) => {
 
   const content = (
     <>
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <PlayerProfile player={player} />
-        <PlayerHistory player={player} />
-      </div>
+      {/* Profile + Position */}
+      <PlayerData player={player} />
 
+      {/* Player Club and National Team Career */}
+      <PlayerHistory player={player} />
+
+      {/* Player Transfer History */}
       <section>
         <SectionHeader title={tTransferTable("title")} />
         <PlayerTransferHistoryTable playerTransfers={playerTransfers} />

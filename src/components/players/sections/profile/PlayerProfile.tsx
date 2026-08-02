@@ -1,10 +1,8 @@
 import React from "react";
 import { PlayerDetailResponse } from "@/types/player";
-import SectionHeader from "./SectionHeader";
-import RecordData from "../profile/RecordData";
-import PlayerPositionRecordData from "../profile/PlayerPositionRecordData";
-import PlayerNationalitiesRecordData from "../profile/PlayerNationalitiesRecordData";
-import PlayerCurrentClubRecordData from "../profile/PlayerCurrentClubRecordData";
+import RecordData from "./RecordData";
+import PlayerNationalitiesRecordData from "./PlayerNationalitiesRecordData";
+import PlayerCurrentClubRecordData from "./PlayerCurrentClubRecordData";
 
 interface Props {
   player: PlayerDetailResponse;
@@ -19,23 +17,13 @@ const PlayerProfile = ({ player }: Props) => {
     weight,
     preferredFoot,
     marketValue,
-    mainPosition,
-    otherPositions,
     nationalities,
     currentClubTeam,
   } = player.profile;
 
   return (
-    <div className="">
-      <SectionHeader title="Player Profile" />
-
+    <div className="h-full">
       <RecordData label="Name" value={name} />
-
-      {/* Position */}
-      <PlayerPositionRecordData
-        mainPosition={mainPosition}
-        otherPositions={otherPositions}
-      />
 
       <RecordData label="Date of Birth" value={dob} />
       <RecordData label="Place of Birth" value={pob} />

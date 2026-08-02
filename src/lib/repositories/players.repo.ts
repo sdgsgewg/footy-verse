@@ -137,7 +137,7 @@ function getPlayersBaseQuery(options?: { isNationFiltered?: boolean }) {
           age_group,
           team_type,
 
-          nationality:nationalities!national_teams_nation_id_fkey (
+          nation:nationalities!national_teams_nation_id_fkey (
             id,
             name,
             image
@@ -423,7 +423,7 @@ function getPlayerDetailBaseQuery() {
           age_group,
           team_type,
   
-          nationality:nationalities!national_teams_nation_id_fkey (
+          nation:nationalities!national_teams_nation_id_fkey (
             id,
             name,
             image

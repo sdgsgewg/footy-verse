@@ -13,6 +13,7 @@ import {
   getCurrentClubTeam,
   getCurrentContract,
   getCurrentNationality,
+  getCurrentNationalTeam,
   getCurrentShirtNumber,
   getMainPosition,
   getNationalities,
@@ -156,6 +157,8 @@ export function mapPlayerDetailResponse(
 
   const currentClubTeam = getCurrentClubTeam(player);
 
+  const currentNationalTeam = getCurrentNationalTeam(player);
+
   return {
     id: player.id,
     image: player.image,
@@ -173,6 +176,7 @@ export function mapPlayerDetailResponse(
       mainPosition,
       marketValue,
       currentClubTeam: currentClubTeam ?? null,
+      currentNationalTeam: currentNationalTeam ?? null,
       joinedAt,
       contractEnd,
     },

@@ -1,5 +1,6 @@
 import { PaginatedResponse } from "../api";
 import { ClubTeamResponse } from "../club-team";
+import { NationalTeamResponse } from "../national-team";
 import { NationalityResponse } from "../nationality";
 import { PlayerNationalityResponse } from "../player-nationality";
 import { PlayerPositionResponse } from "../player-position";
@@ -79,6 +80,7 @@ export interface PlayerSummaryResponse {
   marketValue: string;
 
   currentClubTeam: ClubTeamResponse | null;
+  currentNationalTeam: NationalTeamResponse | null;
   joinedAt: string | null;
   contractEnd: string | null;
 }
