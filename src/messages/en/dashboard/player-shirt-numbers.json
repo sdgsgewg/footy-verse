@@ -1,0 +1,13 @@
+{
+  "table": {
+    "title": "Shirt Number History",
+
+    "columns": {
+      "clubTeam": "Club",
+      "nationalTeam": "National Team",
+      "shirtNumber": "Shirt Number",
+      "startDate": "Start",
+      "endDate": "End"
+    }
+  }
+}

@@ -1,5 +1,6 @@
 import { PositionResponse } from "@/types/position";
 import FootballPitch from "./FootballPitch";
+import SubsectionHeader from "../SubsectionHeader";
 
 interface Props {
   mainPosition: PositionResponse;
@@ -8,12 +9,8 @@ interface Props {
 
 const PlayerPositionPitch = ({ mainPosition, otherPositions }: Props) => {
   return (
-    <section className="flex h-full min-w-0 flex-col border-l">
-      <div className="flex items-center bg-secondary px-4 py-1 uppercase mb-1">
-        <p className="text-start text-primary-foreground text-lg font-semibold">
-          {`Positions`}
-        </p>
-      </div>
+    <section className="flex flex-col min-w-0 border-l">
+      <SubsectionHeader title="Positions" />
 
       <div className="flex flex-1 flex-row gap-4 py-4 px-6">
         <div className="flex flex-col justify-center gap-6 text-sm">

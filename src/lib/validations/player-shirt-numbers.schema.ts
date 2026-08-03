@@ -1,6 +1,7 @@
 import { nullableDate } from "@/lib/validations/helpers";
 import { z } from "zod";
 import { idSchema } from "./primitives.schema";
+import { playerShirtNumberSortBySchema, sortOrderSchema } from "./enums.schema";
 
 export const playerShirtNumberMutationSchema = z.object({
   player_career_id: idSchema.optional(),
@@ -20,3 +21,10 @@ export const playerShirtNumberSchema = playerShirtNumberMutationSchema.extend({
 });
 
 export const playerShirtNumbersSchema = z.array(playerShirtNumberSchema);
+
+export const playerShirtNumbersQuerySchema = z.object({
+  startDate: z.string().trim().optional(),
+  endDate: z.string().trim().optional(),
+  sortBy: playerShirtNumberSortBySchema.default("start_date"),
+  sortOrder: sortOrderSchema.default("desc"),
+});

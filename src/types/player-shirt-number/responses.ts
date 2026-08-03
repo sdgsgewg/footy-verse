@@ -1,9 +1,21 @@
+import { ClubTeamResponse } from "../club-team";
+import { NationalTeamResponse } from "../national-team";
+
 // API Response DTO
 
 // Player Shirt Number List
 
-export interface PlayerShirtNumberListItem {
+export interface PlayerClubTeamShirtNumberListItem {
   id: string;
+  clubTeam: ClubTeamResponse;
+  shirtNumber: number;
+  startDate: string;
+  endDate: string | null;
+}
+
+export interface PlayerNationalTeamShirtNumberListItem {
+  id: string;
+  nationalTeam: NationalTeamResponse;
   shirtNumber: number;
   startDate: string;
   endDate: string | null;
@@ -27,4 +39,3 @@ export interface PlayerShirtNumberDetailResponse {
   startDate: string;
   endDate: string | null;
 }
-

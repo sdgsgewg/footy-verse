@@ -1,0 +1,13 @@
+{
+  "table": {
+    "title": "Riwayat Nomor Baju",
+
+    "columns": {
+      "clubTeam": "Klub",
+      "nationalTeam": "Tim Nasional",
+      "shirtNumber": "Nomor Baju",
+      "startDate": "Awal",
+      "endDate": "Akhir"
+    }
+  }
+}

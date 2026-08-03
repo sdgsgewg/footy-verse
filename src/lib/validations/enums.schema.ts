@@ -79,6 +79,10 @@ export const careerTypeSchema = z.enum([
   CareerType.NATIONAL_TEAM,
 ]);
 
+// Player Shirt Number
+
+export const playerShirtNumberSortBySchema = z.enum(["start_date", "end_date"]);
+
 // Player Club Career
 
 export const transferTypeSchema = z.enum([
