@@ -34,5 +34,5 @@ export const playerTransfersQuerySchema = z.object({
   transferFee: z.number().optional(),
   transferType: transferTypeSchema.optional(),
   sortBy: playerTransferSortBySchema.default("transfer_date"),
-  sortOrde: sortOrderSchema.default("desc"),
+  sortOrder: sortOrderSchema.default("desc"),
 });
