@@ -50,7 +50,7 @@ const PlayerSummary = ({ summary }: Props) => {
           hoverOverlay
           aspectRatio="video"
           className={{
-            container: "w-full max-w-72 rounded-lg border",
+            container: "w-full min-w-72 max-w-72 rounded-lg border",
             image: "object-cover",
           }}
         />
