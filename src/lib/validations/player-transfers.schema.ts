@@ -1,7 +1,10 @@
 import { z } from "zod";
 import { idSchema } from "./primitives.schema";
-import { playerTransferSortBySchema, transferTypeSchema } from "./enums.schema";
-import { sortingQuerySchema } from "./query.schema";
+import {
+  playerTransferSortBySchema,
+  sortOrderSchema,
+  transferTypeSchema,
+} from "./enums.schema";
 
 export const playerTransferMutationSchema = z.object({
   player_club_career_id: idSchema.optional(),
@@ -26,9 +29,10 @@ export const playerTransferSchema = playerTransferMutationSchema.extend({
 
 export const playerTransfersSchema = z.array(playerTransferSchema);
 
-export const playerTransfersQuerySchema = sortingQuerySchema.extend({
+export const playerTransfersQuerySchema = z.object({
   transferDate: z.string().trim().optional(),
   transferFee: z.number().optional(),
   transferType: transferTypeSchema.optional(),
   sortBy: playerTransferSortBySchema.default("transfer_date"),
+  sortOrde: sortOrderSchema.default("desc"),
 });
