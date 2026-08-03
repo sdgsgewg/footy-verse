@@ -3,14 +3,14 @@ import { PlayerShirtNumberQuery } from "@/types/player-shirt-number";
 export const playerShirtNumberKeys = {
   all: ["player-shirt-numbers"] as const,
 
-  clubTeamLists: () => [...playerShirtNumberKeys.all, "clubTeamList"] as const,
+  clubTeams: () => [...playerShirtNumberKeys.all, "club-teams"] as const,
 
-  clubTeamList: (playerId: string, params?: PlayerShirtNumberQuery) =>
-    [...playerShirtNumberKeys.clubTeamLists(), playerId, params] as const,
+  clubTeam: (playerId: string, params?: PlayerShirtNumberQuery) =>
+    [...playerShirtNumberKeys.clubTeams(), playerId, params] as const,
 
-  nationalTeamLists: () =>
-    [...playerShirtNumberKeys.all, "nationalTeamList"] as const,
+  nationalTeams: () =>
+    [...playerShirtNumberKeys.all, "national-teams"] as const,
 
-  nationalTeamList: (playerId: string, params?: PlayerShirtNumberQuery) =>
-    [...playerShirtNumberKeys.nationalTeamLists(), playerId, params] as const,
+  nationalTeam: (playerId: string, params?: PlayerShirtNumberQuery) =>
+    [...playerShirtNumberKeys.nationalTeams(), playerId, params] as const,
 };

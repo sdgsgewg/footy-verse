@@ -2,7 +2,6 @@ import DetailPageLayout from "./DetailPageLayout";
 import { PlayerDetailResponse } from "@/types/player";
 import PlayerHistory from "@/components/players/sections/PlayerHistory";
 import PlayerSummary from "@/components/players/summary/PlayerSummary";
-import { usePlayerTransfers } from "@/hooks/dashboard/player-transfers/usePlayerTransfers";
 import PlayerData from "@/components/players/sections/PlayerData";
 import PlayerTransfer from "@/components/players/sections/PlayerTransfer";
 import PlayerShirtNumber from "@/components/players/sections/PlayerShirtNumber";
@@ -18,10 +17,6 @@ const PlayerDetailPageLayout = ({ title, player, backHref }: Props) => {
 
   const summary = <PlayerSummary summary={playerSummaryData} />;
 
-  const { playerTransfers } = usePlayerTransfers({
-    playerId: player.id,
-  });
-
   const content = (
     <>
       {/* Profile + Position */}
@@ -31,7 +26,7 @@ const PlayerDetailPageLayout = ({ title, player, backHref }: Props) => {
       <PlayerHistory player={player} />
 
       {/* Player Transfer History */}
-      <PlayerTransfer playerTransfers={playerTransfers} />
+      <PlayerTransfer player={player} />
 
       {/* Player Shirt Number History */}
       <PlayerShirtNumber player={player} />

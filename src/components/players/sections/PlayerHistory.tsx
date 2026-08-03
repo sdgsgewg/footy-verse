@@ -31,8 +31,13 @@ const PlayerHistory = ({ player }: Props) => {
     "dashboard.playerNationalTeamCareers.table",
   );
 
-  const { playerClubCareers } = usePlayerClubCareers({ playerId: player.id });
-  const { playerNationalTeamCareers } = usePlayerNationalTeamCareers({
+  const { playerClubCareers, loading: isPlayerClubCareersLoading } =
+    usePlayerClubCareers({ playerId: player.id });
+
+  const {
+    playerNationalTeamCareers,
+    loading: isPlayerNationalTeamCareersLoading,
+  } = usePlayerNationalTeamCareers({
     playerId: player.id,
   });
 
@@ -59,6 +64,7 @@ const PlayerHistory = ({ player }: Props) => {
 
           <PlayerClubCareerHistoryTable
             playerClubCareers={playerClubCareers}
+            loading={isPlayerClubCareersLoading}
             showActions
           />
         </section>
@@ -76,6 +82,7 @@ const PlayerHistory = ({ player }: Props) => {
 
         <PlayerNationalTeamCareerHistoryTable
           playerNationalTeamCareers={playerNationalTeamCareers}
+          loading={isPlayerNationalTeamCareersLoading}
           showActions
         />
       </section>

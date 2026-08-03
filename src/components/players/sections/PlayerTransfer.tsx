@@ -1,19 +1,27 @@
 import { useTranslations } from "next-intl";
 import SectionHeader from "./SectionHeader";
 import { PlayerTransferHistoryTable } from "../table";
-import { PlayerTransferListItem } from "@/types/player-transfer";
+import { PlayerDetailResponse } from "@/types/player";
+import { usePlayerTransfers } from "@/hooks/dashboard/player-transfers";
 
 interface Props {
-  playerTransfers: PlayerTransferListItem[];
+  player: PlayerDetailResponse;
 }
 
-const PlayerTransfer = ({ playerTransfers }: Props) => {
+const PlayerTransfer = ({ player }: Props) => {
   const tTransferTable = useTranslations("dashboard.playerTransfers.table");
+
+  const { playerTransfers, loading } = usePlayerTransfers({
+    playerId: player.id,
+  });
 
   return (
     <section>
       <SectionHeader title={tTransferTable("title")} />
-      <PlayerTransferHistoryTable playerTransfers={playerTransfers} />
+      <PlayerTransferHistoryTable
+        playerTransfers={playerTransfers}
+        loading={loading}
+      />
     </section>
   );
 };

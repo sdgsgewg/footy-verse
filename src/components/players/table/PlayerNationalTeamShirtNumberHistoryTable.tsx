@@ -9,10 +9,12 @@ import { PlayerNationalTeamShirtNumberListItem } from "@/types/player-shirt-numb
 
 interface Props {
   playerNationalTeamShirtNumbers: PlayerNationalTeamShirtNumberListItem[];
+  loading?: boolean;
 }
 
 const PlayerNationalTeamShirtNumberHistoryTable = ({
   playerNationalTeamShirtNumbers,
+  loading,
 }: Props) => {
   const tColumn = useTranslations("dashboard.playerShirtNumbers.table.columns");
 
@@ -51,7 +53,13 @@ const PlayerNationalTeamShirtNumberHistoryTable = ({
     },
   ];
 
-  return <DataTable data={playerNationalTeamShirtNumbers} columns={columns} />;
+  return (
+    <DataTable
+      data={playerNationalTeamShirtNumbers}
+      columns={columns}
+      loading={loading}
+    />
+  );
 };
 
 export default PlayerNationalTeamShirtNumberHistoryTable;

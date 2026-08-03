@@ -18,11 +18,17 @@ const PlayerShirtNumber = ({ player }: Props) => {
     "dashboard.playerShirtNumbers.table",
   );
 
-  const { playerClubTeamShirtNumbers } = usePlayerClubTeamShirtNumbers({
+  const {
+    playerClubTeamShirtNumbers,
+    loading: isPlayerClubTeamShirtNumbersLoading,
+  } = usePlayerClubTeamShirtNumbers({
     playerId: player.id,
   });
 
-  const { playerNationalTeamShirtNumbers } = usePlayerNationalTeamShirtNumbers({
+  const {
+    playerNationalTeamShirtNumbers,
+    loading: isPlayerNationalTeamShirtNumbersLoading,
+  } = usePlayerNationalTeamShirtNumbers({
     playerId: player.id,
   });
 
@@ -36,6 +42,7 @@ const PlayerShirtNumber = ({ player }: Props) => {
 
           <PlayerClubTeamShirtNumberHistoryTable
             playerClubTeamShirtNumbers={playerClubTeamShirtNumbers}
+            loading={isPlayerClubTeamShirtNumbersLoading}
           />
         </section>
 
@@ -44,6 +51,7 @@ const PlayerShirtNumber = ({ player }: Props) => {
 
           <PlayerNationalTeamShirtNumberHistoryTable
             playerNationalTeamShirtNumbers={playerNationalTeamShirtNumbers}
+            loading={isPlayerNationalTeamShirtNumbersLoading}
           />
         </section>
       </div>

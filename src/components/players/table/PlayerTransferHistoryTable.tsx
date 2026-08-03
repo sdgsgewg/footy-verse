@@ -11,9 +11,10 @@ import { ClubImageLabel } from "@/components/shared/tables/cells";
 
 interface Props {
   playerTransfers: PlayerTransferListItem[];
+  loading?: boolean;
 }
 
-const PlayerTransferHistoryTable = ({ playerTransfers }: Props) => {
+const PlayerTransferHistoryTable = ({ playerTransfers, loading }: Props) => {
   const tColumn = useTranslations("dashboard.playerTransfers.table.columns");
   const tTransferType = useTranslations(
     "dashboard.playerClubCareers.form.options.transferType",
@@ -75,7 +76,9 @@ const PlayerTransferHistoryTable = ({ playerTransfers }: Props) => {
     },
   ];
 
-  return <DataTable data={playerTransfers} columns={columns} />;
+  return (
+    <DataTable data={playerTransfers} columns={columns} loading={loading} />
+  );
 };
 
 export default PlayerTransferHistoryTable;

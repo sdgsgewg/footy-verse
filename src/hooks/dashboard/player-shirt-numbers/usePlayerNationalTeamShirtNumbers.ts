@@ -16,7 +16,7 @@ export function usePlayerNationalTeamShirtNumbers({
   enabled = true,
 }: UsePlayerNationalTeamShirtNumbersOptions) {
   const query = useQuery({
-    queryKey: playerShirtNumberKeys.nationalTeamList(playerId ?? "", params),
+    queryKey: playerShirtNumberKeys.nationalTeam(playerId ?? "", params),
     queryFn: () => fetchPlayerNationalTeamShirtNumbers(playerId!, params),
     enabled: enabled && !!playerId,
     ...queryConfig,

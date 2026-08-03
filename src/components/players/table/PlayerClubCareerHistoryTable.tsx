@@ -11,11 +11,13 @@ import { ClubImageLabel } from "@/components/shared/tables/cells";
 
 interface Props {
   playerClubCareers: PlayerClubCareerListItem[];
+  loading?: boolean;
   showActions?: boolean;
 }
 
 const PlayerClubCareerHistoryTable = ({
   playerClubCareers,
+  loading,
   showActions = false,
 }: Props) => {
   const { playerSlug } = useParams() as {
@@ -60,6 +62,7 @@ const PlayerClubCareerHistoryTable = ({
     <DataTable
       data={playerClubCareers}
       columns={columns}
+      loading={loading}
       showActions
       onView={
         showActions

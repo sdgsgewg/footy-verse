@@ -5,6 +5,7 @@ import { playerClubCareerKeys } from "@/lib/react-query/keys/playerClubCareerKey
 import { PlayerLookupResponse } from "@/types/player";
 import { playerKeys } from "@/lib/react-query/keys/playerKeys";
 import { playerTransferKeys } from "@/lib/react-query/keys/playerTransferKeys";
+import { playerShirtNumberKeys } from "@/lib/react-query/keys/playerShirtNumberKeys";
 
 interface CreatePlayerClubCareerPayload {
   data: unknown;
@@ -16,9 +17,14 @@ export function useCreatePlayerClubCareer(player: PlayerLookupResponse) {
 
     invalidateQueries: [
       { queryKey: playerClubCareerKeys.lists() },
+
       { queryKey: playerKeys.lists() },
       { queryKey: playerKeys.details() },
+
       { queryKey: playerTransferKeys.lists() },
+
+      { queryKey: playerShirtNumberKeys.clubTeams() },
+      { queryKey: playerShirtNumberKeys.nationalTeams() },
     ],
 
     redirectTo: `${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${player.slug}`,
