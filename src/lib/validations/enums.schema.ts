@@ -43,9 +43,12 @@ export const ageGroupSchema = z.enum([
   AgeGroup.SENIOR,
   AgeGroup.U23,
   AgeGroup.U21,
+  AgeGroup.U20,
   AgeGroup.U19,
   AgeGroup.U18,
   AgeGroup.U17,
+  AgeGroup.U16,
+  AgeGroup.YOUTH,
 ]);
 
 // Position Related

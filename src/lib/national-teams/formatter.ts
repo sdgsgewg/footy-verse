@@ -20,11 +20,17 @@ export function formatNationalTeamName(
       return `${nation.name} ${age_group}`;
     case AgeGroup.U21:
       return `${nation.name} ${age_group}`;
+    case AgeGroup.U20:
+      return `${nation.name} ${age_group}`;
     case AgeGroup.U19:
       return `${nation.name} ${age_group}`;
     case AgeGroup.U18:
       return `${nation.name} ${age_group}`;
     case AgeGroup.U17:
+      return `${nation.name} ${age_group}`;
+    case AgeGroup.U16:
+      return `${nation.name} ${age_group}`;
+    case AgeGroup.YOUTH:
       return `${nation.name} ${age_group}`;
     default:
       return nation.name;

@@ -32,11 +32,17 @@ export const getAgeGroupLabel = (type: AgeGroup, t: Translate): string => {
       return t("common.options.ageGroup.u23");
     case AgeGroup.U21:
       return t("common.options.ageGroup.u21");
+    case AgeGroup.U20:
+      return t("common.options.ageGroup.u20");
     case AgeGroup.U19:
       return t("common.options.ageGroup.u19");
     case AgeGroup.U18:
       return t("common.options.ageGroup.u18");
     case AgeGroup.U17:
       return t("common.options.ageGroup.u17");
+    case AgeGroup.U16:
+      return t("common.options.ageGroup.u16");
+    case AgeGroup.YOUTH:
+      return t("common.options.ageGroup.youth");
   }
 };

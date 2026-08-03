@@ -10,10 +10,10 @@ export enum TransferType {
 
 export const TransferTypeLabels: Record<TransferType, string> = {
   [TransferType.TRANSFER]: "Transfer",
-  [TransferType.LOAN]: "Transfer",
-  [TransferType.LOAN_RETURN]: "Transfer",
-  [TransferType.FREE]: "Transfer",
-  [TransferType.RELEASED]: "Transfer",
-  [TransferType.YOUTH_PROMOTION]: "Transfer",
-  [TransferType.RETIRED]: "Transfer",
+  [TransferType.LOAN]: "Loan",
+  [TransferType.LOAN_RETURN]: "Loan Return",
+  [TransferType.FREE]: "Free",
+  [TransferType.RELEASED]: "Released",
+  [TransferType.YOUTH_PROMOTION]: "Youth Promotion",
+  [TransferType.RETIRED]: "Retired",
 };
