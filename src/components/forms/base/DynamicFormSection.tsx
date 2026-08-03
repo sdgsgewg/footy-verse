@@ -64,18 +64,19 @@ export default function DynamicFormSection<T>({
   };
 
   useEffect(() => {
-  if (items.length < minItems) {
-    onChange(
-      Array.from({ length: minItems }, (_, i) =>
-        items[i] ?? createItem(),
-      ),
-    );
-  }
-}, [items, minItems]);
+    if (items.length < minItems) {
+      onChange(
+        Array.from({ length: minItems }, (_, i) => items[i] ?? createItem()),
+      );
+    }
+  }, [items, minItems]);
+
+  const modifiedTitle =
+    minItems > 0 ? `${title} (min ${minItems})` : `${title} (optional)`;
 
   return (
     <FormSection
-      title={title}
+      title={modifiedTitle}
       action={
         <Button type="button" onClick={addItem}>
           <Plus className="mr-2 h-4 w-4" />

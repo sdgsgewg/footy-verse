@@ -31,7 +31,7 @@ const PlayerShirtNumberSection = ({ form, setForm }: Props) => {
       title={tForm("title")}
       noData={tForm("noData")}
       items={form.shirt_numbers ?? []}
-      minItems={1}
+      minItems={0}
       createItem={() => ({
         shirt_number: 1,
         start_date: "",
@@ -52,7 +52,6 @@ const PlayerShirtNumberSection = ({ form, setForm }: Props) => {
             placeholder={tPlaceholders("shirtNumber") || ""}
             value={item.shirt_number}
             onChange={(v) => updateItem(index, "shirt_number", v ?? 1)}
-            required
           />
 
           {/* Start Date */}
@@ -62,7 +61,6 @@ const PlayerShirtNumberSection = ({ form, setForm }: Props) => {
             placeholder={tPlaceholders("startDate") || ""}
             value={item.start_date}
             onChange={(v) => updateItem(index, "start_date", v)}
-            required
           />
 
           {/* End Date */}

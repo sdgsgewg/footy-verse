@@ -97,17 +97,21 @@ export function usePlayerClubCareerForm(
 
   const isCareerValid = form.career.joined_at.trim().length > 0;
 
-  const areContractsValid = form.contracts.every((item) => {
-    return (
-      item.contract_start.trim().length > 0 &&
-      item.contract_end.trim().length > 0 &&
-      item.salary > 0
-    );
-  });
+  const areContractsValid =
+    form.contracts &&
+    form.contracts.every((item) => {
+      return (
+        item.contract_start.trim().length > 0 &&
+        item.contract_end.trim().length > 0 &&
+        item.salary > 0
+      );
+    });
 
-  const areShirtNumbersValid = form.shirt_numbers.every((item) => {
-    return item.shirt_number > 0 && item.start_date.trim().length > 0;
-  });
+  const areShirtNumbersValid =
+    form.shirt_numbers &&
+    form.shirt_numbers.every((item) => {
+      return item.shirt_number > 0 && item.start_date.trim().length > 0;
+    });
 
   const isTransferValid =
     form.transfer.season_id.trim().length > 0 &&
@@ -166,14 +170,18 @@ export function usePlayerClubCareerForm(
         left_at: career.left_at ?? null,
       },
 
-      contracts: contracts.map((item) => ({
-        ...item,
-      })),
+      contracts: contracts
+        ? contracts.map((item) => ({
+            ...item,
+          }))
+        : [],
 
-      shirt_numbers: shirt_numbers.map((item) => ({
-        ...item,
-        end_date: item.end_date || null,
-      })),
+      shirt_numbers: shirt_numbers
+        ? shirt_numbers.map((item) => ({
+            ...item,
+            end_date: item.end_date || null,
+          }))
+        : [],
 
       transfer,
     };

@@ -15,3 +15,10 @@ export type DbPlayerShirtNumberDetailRow = Pick<
   PlayerShirtNumber,
   "id" | "shirt_number" | "start_date" | "end_date"
 >;
+
+// Helper
+
+export type DbPlayerShirtNumberRow = Pick<
+  PlayerShirtNumber,
+  "id" | "shirt_number" | "start_date" | "end_date"
+>;

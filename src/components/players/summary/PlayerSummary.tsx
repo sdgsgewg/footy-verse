@@ -33,8 +33,8 @@ const PlayerSummary = ({ summary }: Props) => {
       title={
         <div className="space-y-1">
           <h1 className="text-4xl font-bold">
-            {shirtNumber.club && (
-              <span className="mr-2 text-primary">#{shirtNumber.club}</span>
+            {shirtNumber.clubTeam && (
+              <span className="mr-2 text-primary">#{shirtNumber.clubTeam}</span>
             )}
             {name}
           </h1>

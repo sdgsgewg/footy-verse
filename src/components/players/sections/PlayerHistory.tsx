@@ -50,21 +50,19 @@ const PlayerHistory = ({ player }: Props) => {
 
   return (
     <div className="space-y-8">
-      <section>
-        {isDashboard ? (
+      {isDashboard && (
+        <section>
           <SectionHeader
             title={tClubCareerTable("title")}
             onAdd={handleAddClubCareer}
           />
-        ) : (
-          <SectionHeader title={tClubCareerTable("title")} />
-        )}
 
-        <PlayerClubCareerHistoryTable
-          playerClubCareers={playerClubCareers}
-          showActions
-        />
-      </section>
+          <PlayerClubCareerHistoryTable
+            playerClubCareers={playerClubCareers}
+            showActions
+          />
+        </section>
+      )}
 
       <section>
         {isDashboard ? (

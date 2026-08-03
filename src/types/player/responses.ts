@@ -10,7 +10,7 @@ import { PositionCategoryResponse } from "../position-category";
 // DTO API Response
 
 export interface ShirtNumberResponse {
-  club: number | null;
+  clubTeam: number | null;
   nationalTeam: number | null;
 }
 

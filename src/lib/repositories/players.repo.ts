@@ -124,6 +124,11 @@ function getPlayersBaseQuery(options?: { isNationFiltered?: boolean }) {
           salary,
           contract_start,
           contract_end
+        ),
+
+        player_transfer:player_transfers!transfers_player_club_career_id_fkey (
+          id,
+          transfer_type
         )
       ),
 
@@ -410,6 +415,11 @@ function getPlayerDetailBaseQuery() {
         player_contracts:player_contracts!player_contracts_player_club_career_id_fkey (
           contract_start,
           contract_end
+        ),
+
+        player_transfer:player_transfers!transfers_player_club_career_id_fkey (
+          id,
+          transfer_type
         )
       ),
   

@@ -8,13 +8,12 @@ import {
 } from "@/types/player";
 
 import {
-  getCurrentCareer,
-  getCurrentClubCareer,
   getCurrentClubTeam,
   getCurrentContract,
   getCurrentNationality,
   getCurrentNationalTeam,
   getCurrentShirtNumber,
+  getJoinedAtDate,
   getMainPosition,
   getNationalities,
   getOtherPositions,
@@ -125,7 +124,11 @@ export function mapPlayerEditResponse(
 export function mapPlayerDetailResponse(
   player: DbPlayerDetailRow,
 ): PlayerDetailResponse {
+  // Main Highlight
+
   const shirtNumber = getCurrentShirtNumber(player);
+
+  // Player Summary or Profile Data
 
   const dob = formatDateOfBirth(player.dob);
   const height = formatPlayerHeight(player.height);
@@ -139,25 +142,19 @@ export function mapPlayerDetailResponse(
 
   const currentNationality = getCurrentNationality(player.player_nationalities);
 
-  const currentClubCareer = getCurrentClubCareer(player);
+  const currentNationalTeam = getCurrentNationalTeam(player);
 
-  const currentContract = getCurrentContract(
-    currentClubCareer ? currentClubCareer.player_contracts : [],
-  );
+  // Current Club Team Information
 
-  const currentCareer = currentClubCareer
-    ? getCurrentCareer(player.player_careers, currentClubCareer)
-    : null;
+  const joinedAt = getJoinedAtDate(player);
 
-  const joinedAt = currentCareer ? formatDate(currentCareer.joined_at) : null;
+  const currentContract = getCurrentContract(player);
 
   const contractEnd = currentContract
     ? formatDate(currentContract.contract_end)
     : null;
 
   const currentClubTeam = getCurrentClubTeam(player);
-
-  const currentNationalTeam = getCurrentNationalTeam(player);
 
   return {
     id: player.id,
@@ -177,7 +174,7 @@ export function mapPlayerDetailResponse(
       marketValue,
       currentClubTeam: currentClubTeam ?? null,
       currentNationalTeam: currentNationalTeam ?? null,
-      joinedAt,
+      joinedAt: joinedAt ? formatDate(joinedAt) : null,
       contractEnd,
     },
 
@@ -193,7 +190,7 @@ export function mapPlayerDetailResponse(
       otherPositions,
       nationalities,
       currentClubTeam: currentClubTeam ?? null,
-      joinedAt,
+      joinedAt: joinedAt ? formatDate(joinedAt) : null,
       contractEnd,
     },
   };

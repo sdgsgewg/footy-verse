@@ -27,7 +27,7 @@ export default function PlayerCard({ teamType, player, onNavigate }: Props) {
   const isClubPlayer = teamType === TeamType.CLUB;
 
   const modifiedShirtNumber = isClubPlayer
-    ? shirtNumber.club
+    ? shirtNumber.clubTeam
     : shirtNumber.nationalTeam;
 
   const playerOrigin = isClubPlayer ? currentNationality : currentClubTeam;

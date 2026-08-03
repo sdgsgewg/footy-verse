@@ -1,7 +1,7 @@
 import { DbClubTeamRow } from "../club-team";
 import {
   DbPlayerCareerWithPlayerRow,
-  PlayerCareerWithShirtNumbersQuery,
+  DbPlayerCareerWithShirtNumbersRow,
 } from "../player-career";
 import { PlayerContractSummary } from "../player-contract";
 import { DbPlayerTransferRow } from "../player-transfer";
@@ -13,14 +13,14 @@ import { PlayerClubCareer } from "./database";
 
 export type DbPlayerClubCareerListRow = Pick<PlayerClubCareer, "id"> & {
   club_team: DbClubTeamRow;
-  player_career: PlayerCareerWithShirtNumbersQuery;
+  player_career: DbPlayerCareerWithShirtNumbersRow;
 };
 
 // Player Club Career Detail
 
 export type DbPlayerClubCareerDetailRow = PlayerClubCareer & {
   club_team: DbClubTeamRow;
-  player_career: PlayerCareerWithShirtNumbersQuery;
+  player_career: DbPlayerCareerWithShirtNumbersRow;
   player_contracts: PlayerContractSummary[];
   player_transfer: DbPlayerTransferRow;
 };
@@ -28,14 +28,6 @@ export type DbPlayerClubCareerDetailRow = PlayerClubCareer & {
 // Helper for other entity
 
 // Player
-
-export type PlayerClubCareerQuery = Pick<
-  PlayerClubCareer,
-  "id" | "club_team_id"
-> & {
-  club_team: DbClubTeamRow;
-  player_contracts: PlayerContractSummary[];
-};
 
 export type DbPlayerClubCareerRow = {
   player_career: {

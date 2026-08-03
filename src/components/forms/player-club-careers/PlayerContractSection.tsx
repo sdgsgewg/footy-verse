@@ -28,7 +28,7 @@ const PlayerContractSection = ({ form, setForm }: Props) => {
       title={tForm("title")}
       noData={tForm("noData")}
       items={form.contracts ?? []}
-      minItems={1}
+      minItems={0}
       createItem={() => ({
         contract_start: "",
         contract_end: "",
@@ -49,7 +49,6 @@ const PlayerContractSection = ({ form, setForm }: Props) => {
             placeholder={tPlaceholders("contractStart") || ""}
             value={item.contract_start}
             onChange={(v) => updateItem(index, "contract_start", v)}
-            required
           />
 
           {/* Contract End */}
@@ -59,7 +58,6 @@ const PlayerContractSection = ({ form, setForm }: Props) => {
             placeholder={tPlaceholders("contractEnd") || ""}
             value={item.contract_end ?? ""}
             onChange={(v) => updateItem(index, "contract_end", v)}
-            required
           />
 
           {/* Salary */}
@@ -69,7 +67,6 @@ const PlayerContractSection = ({ form, setForm }: Props) => {
             placeholder={tPlaceholders("salary") || ""}
             value={item.salary}
             onChange={(v) => updateItem(index, "salary", v ?? 1)}
-            required
           />
         </>
       )}

@@ -1,6 +1,5 @@
 import ImageWrapper from "@/components/shared/ImageWrapper";
 import EntitySummaryLayout from "@/components/shared/summary/EntitySummaryLayout";
-import MarketValueCard from "@/components/shared/summary/MarketValueCard";
 import RecordData from "@/components/shared/summary/RecordData";
 import { IMAGES } from "@/constants/images";
 import { ClubDetailResponse } from "@/types/club";
@@ -39,17 +38,10 @@ const ClubSummary = ({ summary }: Props) => {
               }}
             />
           )}
-
-          <RecordData
-            label="Squad Size"
-            content={{
-              text: "27",
-            }}
-          />
         </div>
       }
       side={<></>}
-      footer={<MarketValueCard value="€1.34bn" subtitle="Total market value" />}
+      footer={<></>}
     />
   );
 };

@@ -1,7 +1,7 @@
 import { DbNationalTeamRow } from "../national-team";
 import {
   DbPlayerCareerWithPlayerRow,
-  PlayerCareerWithShirtNumbersQuery,
+  DbPlayerCareerWithShirtNumbersRow,
 } from "../player-career";
 import { PlayerNationalTeamCareer } from "./database";
 
@@ -14,26 +14,17 @@ export type DbPlayerNationalTeamCareerListRow = Pick<
   "id"
 > & {
   national_team: DbNationalTeamRow;
-  player_career: PlayerCareerWithShirtNumbersQuery;
+  player_career: DbPlayerCareerWithShirtNumbersRow;
 };
 
 // Player Career Detail
 
 export type DbPlayerNationalTeamCareerDetailRow = PlayerNationalTeamCareer & {
   national_team: DbNationalTeamRow;
-  player_career: PlayerCareerWithShirtNumbersQuery;
+  player_career: DbPlayerCareerWithShirtNumbersRow;
 };
 
 // Helper for other entity
-
-// Player
-
-export type PlayerNationalTeamCareerQuery = Pick<
-  PlayerNationalTeamCareer,
-  "id" | "national_team_id"
-> & {
-  national_team: DbNationalTeamRow;
-};
 
 export type DbPlayerNationalTeamCareerRow = {
   player_career: {

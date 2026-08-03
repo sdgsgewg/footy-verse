@@ -1,39 +1,32 @@
+import { TransferType } from "@/enums/TransferType";
 import { ClubTeamResponse } from "@/types/club-team";
 import {
+  DbPlayerCareerRow,
+  DbPlayerClubCareerRow,
   DbPlayerDetailRow,
   DbPlayerListRow,
+  DbPlayerNationalTeamCareerRow,
   ShirtNumberResponse,
 } from "@/types/player";
-import { PlayerCareerQuery } from "@/types/player-career";
 import { mapClubTeamResponse } from "../club-teams/mapper";
+import { NationalTeamResponse } from "@/types/national-team";
+import { mapNationalTeamResponse } from "../national-teams/mapper";
 import { DbPlayerPositionRow } from "@/types/player-position";
 import { PositionResponse } from "@/types/position";
-import { PlayerNationalityQuery } from "@/types/player-nationality";
-import { NationalityResponse } from "@/types/nationality";
-import { mapNationalTeamResponse } from "../national-teams/mapper";
-import { NationalTeamResponse } from "@/types/national-team";
-import { PlayerClubCareerQuery } from "@/types/player-club-career";
-import { PlayerNationalTeamCareerQuery } from "@/types/player-national-team-career";
-import { PlayerContractSummary } from "@/types/player-contract";
 import { mapPositionResponse } from "../positions/mapper";
+import { DbPlayerNationalityRow } from "@/types/player-nationality";
+import { NationalityResponse } from "@/types/nationality";
 import { mapNationalityResponse } from "../nationalities/mapper";
+import { PlayerContractSummary } from "@/types/player-contract";
 
-export function getCurrentCareer(
-  careers: PlayerCareerQuery[],
-  currentClubCareer: PlayerClubCareerQuery,
-) {
-  const current = careers.find(
-    (c) => c.player_club_career?.id === currentClubCareer.id,
-  );
-
-  if (!current) return undefined;
-
-  return current;
-}
-
-export function getCurrentClubCareer(
+/**
+ *
+ * @param player
+ * @returns DbPlayerCareerRow | undefined
+ */
+export function getCurrentClubTeamRecentPlayerCareer(
   player: DbPlayerListRow | DbPlayerDetailRow,
-): PlayerClubCareerQuery | undefined {
+): DbPlayerCareerRow | undefined {
   // 1. If no player careers then return undefined
   if (player.player_careers.length === 0) return undefined;
 
@@ -47,23 +40,131 @@ export function getCurrentClubCareer(
   }
 
   // 3. Find the active club career
-  const current = clubCareers.find((career) => career.left_at === null);
+  const currentPlayerCareer = clubCareers.find(
+    (career) => career.left_at === null,
+  );
 
-  if (current && current.player_club_career) return current.player_club_career;
+  if (!currentPlayerCareer || !currentPlayerCareer.player_club_career)
+    return undefined;
 
-  // 4. If no active career, find the latest one
-  const latest = clubCareers.toSorted(
-    (a, b) => new Date(b.left_at!).getTime() - new Date(a.left_at!).getTime(),
-  )[0];
+  const initialPlayerCareer = player.player_careers.find(
+    (c) =>
+      c.player_club_career?.club_team_id ===
+        currentPlayerCareer.player_club_career?.club_team_id &&
+      c.player_club_career?.player_transfer.transfer_type !=
+        TransferType.LOAN_RETURN,
+  );
 
-  if (!latest || !latest.player_club_career) return undefined;
+  if (!initialPlayerCareer) return undefined;
 
-  return latest.player_club_career;
+  // 4. Check if the most recent transfer is a loan return
+  const recentPlayerCareer =
+    currentPlayerCareer.player_club_career.player_transfer.transfer_type ===
+    TransferType.LOAN_RETURN
+      ? initialPlayerCareer
+      : currentPlayerCareer;
+
+  return recentPlayerCareer;
 }
 
+/**
+ *
+ * @param player
+ * @returns string | undefined
+ */
+export function getJoinedAtDate(
+  player: DbPlayerListRow | DbPlayerDetailRow,
+): string | undefined {
+  const recentPlayerCareer = getCurrentClubTeamRecentPlayerCareer(player);
+
+  if (!recentPlayerCareer) return undefined;
+
+  return recentPlayerCareer.joined_at;
+}
+
+/**
+ *
+ * @param player
+ * @returns PlayerContractSummary | undefined
+ */
+export function getCurrentContract(
+  player: DbPlayerListRow | DbPlayerDetailRow,
+): PlayerContractSummary | undefined {
+  const recentPlayerCareer = getCurrentClubTeamRecentPlayerCareer(player);
+
+  if (!recentPlayerCareer) return undefined;
+
+  const clubTeamContracts =
+    recentPlayerCareer.player_club_career?.player_contracts;
+
+  if (!clubTeamContracts || clubTeamContracts.length === 0) {
+    return undefined;
+  }
+
+  const currentClubTeamContract = clubTeamContracts.toSorted(
+    (a, b) =>
+      new Date(b.contract_end ?? b.contract_start).getTime() -
+      new Date(a.contract_end ?? a.contract_start).getTime(),
+  )[0];
+
+  return currentClubTeamContract;
+}
+
+/**
+ *
+ * @param player
+ * @returns
+ */
+export function getCurrentClubTeamCareer(
+  player: DbPlayerListRow | DbPlayerDetailRow,
+): DbPlayerClubCareerRow | undefined {
+  const recentPlayerCareer = getCurrentClubTeamRecentPlayerCareer(player);
+
+  if (!recentPlayerCareer || !recentPlayerCareer.player_club_career)
+    return undefined;
+
+  return recentPlayerCareer.player_club_career;
+}
+
+/**
+ *
+ * @param careers
+ * @param currentClubTeamCareer
+ * @returns
+ */
+export function getCurrentClubTeamShirtNumber(
+  careers: DbPlayerCareerRow[],
+  currentClubTeamCareer: DbPlayerClubCareerRow,
+): number | undefined {
+  const currentCareer = careers.find(
+    (c) => c.player_club_career?.id === currentClubTeamCareer.id,
+  );
+
+  if (!currentCareer) return undefined;
+
+  const current = currentCareer.player_shirt_numbers.find(
+    (psn) => psn.end_date === null,
+  );
+
+  if (current) {
+    return current.shirt_number;
+  }
+
+  return [...currentCareer.player_shirt_numbers].sort(
+    (a, b) =>
+      new Date(b.end_date ?? b.start_date).getTime() -
+      new Date(a.end_date ?? a.start_date).getTime(),
+  )[0].shirt_number;
+}
+
+/**
+ *
+ * @param player
+ * @returns
+ */
 export function getCurrentNationalTeamCareer(
   player: DbPlayerListRow | DbPlayerDetailRow,
-): PlayerNationalTeamCareerQuery | undefined {
+): DbPlayerNationalTeamCareerRow | undefined {
   // 1. If no player careers then return undefined
   if (player.player_careers.length === 0) return undefined;
 
@@ -94,42 +195,12 @@ export function getCurrentNationalTeamCareer(
 
 /**
  *
- * @param currentClubCareer
- * @returns number
- */
-function getCurrentClubShirtNumber(
-  careers: PlayerCareerQuery[],
-  currentClubCareer: PlayerClubCareerQuery,
-): number | undefined {
-  const currentCareer = careers.find(
-    (c) => c.player_club_career?.id === currentClubCareer.id,
-  );
-
-  if (!currentCareer) return undefined;
-
-  const current = currentCareer.player_shirt_numbers.find(
-    (psn) => psn.end_date === null,
-  );
-
-  if (current) {
-    return current.shirt_number;
-  }
-
-  return [...currentCareer.player_shirt_numbers].sort(
-    (a, b) =>
-      new Date(b.end_date ?? b.start_date).getTime() -
-      new Date(a.end_date ?? a.start_date).getTime(),
-  )[0].shirt_number;
-}
-
-/**
- *
  * @param currentNationalTeamCareer
  * @returns number
  */
 function getCurrentNationalTeamShirtNumber(
-  careers: PlayerCareerQuery[],
-  currentNationalTeamCareer: PlayerNationalTeamCareerQuery,
+  careers: DbPlayerCareerRow[],
+  currentNationalTeamCareer: DbPlayerNationalTeamCareerRow,
 ): number | undefined {
   const currentCareer = careers.find(
     (c) => c.player_national_team_career?.id === currentNationalTeamCareer.id,
@@ -160,22 +231,29 @@ function getCurrentNationalTeamShirtNumber(
 export function getCurrentShirtNumber(
   player: DbPlayerListRow | DbPlayerDetailRow,
 ): ShirtNumberResponse {
-  const currentClubCareer = getCurrentClubCareer(player);
+  // Club Team
+
+  const currentClubTeamCareer = getCurrentClubTeamCareer(player);
+
+  const currentClubTeamShirtNumber = currentClubTeamCareer
+    ? getCurrentClubTeamShirtNumber(
+        player.player_careers,
+        currentClubTeamCareer,
+      )
+    : null;
+
+  // National Team
 
   const currentNationalTeamCareer = getCurrentNationalTeamCareer(player);
 
   const careers = player.player_careers;
-
-  const currentClubShirtNumber = currentClubCareer
-    ? getCurrentClubShirtNumber(careers, currentClubCareer)
-    : null;
 
   const currentNationalTeamShirtNumber = currentNationalTeamCareer
     ? getCurrentNationalTeamShirtNumber(careers, currentNationalTeamCareer)
     : null;
 
   const data: ShirtNumberResponse = {
-    club: currentClubShirtNumber ?? null,
+    clubTeam: currentClubTeamShirtNumber ?? null,
     nationalTeam: currentNationalTeamShirtNumber ?? null,
   };
 
@@ -297,7 +375,7 @@ export function getOtherPositions(
  * @returns NationalityResponse[]
  */
 export function getNationalities(
-  playerNationalities: PlayerNationalityQuery[],
+  playerNationalities: DbPlayerNationalityRow[],
 ): NationalityResponse[] {
   return playerNationalities.map((pn) => {
     const { nationality } = pn;
@@ -312,7 +390,7 @@ export function getNationalities(
  * @returns NationalityResponse
  */
 export function getCurrentNationality(
-  playerNationalities: PlayerNationalityQuery[],
+  playerNationalities: DbPlayerNationalityRow[],
 ): NationalityResponse {
   const playerNationality = playerNationalities.find(
     (n) => n.display_order === 1,
@@ -325,21 +403,4 @@ export function getCurrentNationality(
   const { nationality } = playerNationality;
 
   return mapNationalityResponse(nationality);
-}
-
-/**
- *
- * @param playerContracts
- * @returns PlayerContractSummary | null
- */
-export function getCurrentContract(
-  playerContracts: PlayerContractSummary[],
-): PlayerContractSummary | null {
-  if (!playerContracts || playerContracts.length === 0) return null;
-
-  return playerContracts.sort(
-    (a, b) =>
-      new Date(b.contract_end ?? b.contract_start).getTime() -
-      new Date(a.contract_end ?? a.contract_start).getTime(),
-  )[0];
 }

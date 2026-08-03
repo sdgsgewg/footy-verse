@@ -9,8 +9,8 @@ export const playerClubCareerMutationSchema = z.object({
   club_team_id: idSchema,
   player_career_id: z.string().nullable().optional(),
   career: playerCareerMutationSchema,
-  contracts: playerContractMutationSchema.array(),
-  shirt_numbers: playerShirtNumberMutationSchema.array(),
+  contracts: playerContractMutationSchema.array().optional(),
+  shirt_numbers: playerShirtNumberMutationSchema.array().optional(),
   transfer: playerTransferMutationSchema,
 });
 

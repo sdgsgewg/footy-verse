@@ -35,7 +35,7 @@ export function createPlayerColumns(
 
       render: (player) => (
         <div className="bg-accent rounded-full px-2.5 py-2 text-center">
-          <span>{player.shirtNumber.club ?? "-"}</span>
+          <span>{player.shirtNumber.clubTeam ?? "-"}</span>
         </div>
       ),
     },
