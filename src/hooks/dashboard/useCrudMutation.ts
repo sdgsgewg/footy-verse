@@ -46,7 +46,6 @@ export function useCrudMutation<TVariables>({
   const locale = useLocale();
 
   const t = useTranslations();
-  const tCommon = useTranslations("common");
 
   return useMutation({
     mutationFn,

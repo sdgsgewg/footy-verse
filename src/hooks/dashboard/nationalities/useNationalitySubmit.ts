@@ -4,6 +4,8 @@ import { useUpdateNationality } from "./useUpdateNationality";
 type SubmitOptions = {
   id?: string;
   payload: FormData;
+
+  onSuccess?: () => void;
 };
 
 export function useNationalitySubmit() {
@@ -14,16 +16,19 @@ export function useNationalitySubmit() {
   const isCreating = createMutation.isPending;
   const isUpdating = updateMutation.isPending;
 
-  const submit = ({ id, payload }: SubmitOptions) => {
+  const submit = ({ id, payload, onSuccess }: SubmitOptions) => {
     if (id) {
-      updateMutation.mutate({
-        id,
-        data: payload,
-      });
+      updateMutation.mutate(
+        {
+          id,
+          data: payload,
+        },
+        { onSuccess },
+      );
       return;
     }
 
-    createMutation.mutate(payload);
+    createMutation.mutate(payload, { onSuccess });
   };
 
   return {

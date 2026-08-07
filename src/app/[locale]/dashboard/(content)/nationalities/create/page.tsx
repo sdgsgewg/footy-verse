@@ -2,10 +2,14 @@
 
 import NationalityForm from "@/components/forms/nationalities/NationalityForm";
 import FormPageLayout from "@/components/layout/dashboard/FormPageLayout";
+import { ROUTES } from "@/constants/routes";
 import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
 import { useNationalitySubmit } from "@/hooks/dashboard/nationalities";
+import { useRouter } from "@/navigation";
 
 export default function CreateNationalityPage() {
+  const router = useRouter();
+
   const { getTitle } = useCrudPageTitle();
 
   const { submit, isSubmitting } = useNationalitySubmit();
@@ -21,6 +25,9 @@ export default function CreateNationalityPage() {
           onSubmit={(payload) =>
             submit({
               payload,
+              onSuccess: () => {
+                router.push(ROUTES.DASHBOARD.CONTENT.NATIONALITIES.BASE);
+              },
             })
           }
         />

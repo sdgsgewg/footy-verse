@@ -1,12 +1,11 @@
 import { updateNationality } from "@/lib/api/nationality";
 import { useCrudMutation } from "../useCrudMutation";
 import { nationalityKeys } from "@/lib/react-query/keys/nationalityKeys";
-import { ROUTES } from "@/constants/routes";
 import { nationalTeamKeys } from "@/lib/react-query/keys/nationalTeamKeys";
 
 interface UpdateNationalityPayload {
   id: string;
-  data: unknown;
+  data: FormData;
 }
 
 export function useUpdateNationality() {
@@ -20,8 +19,6 @@ export function useUpdateNationality() {
 
       { queryKey: nationalTeamKeys.lists() },
     ],
-
-    redirectTo: ROUTES.DASHBOARD.CONTENT.NATIONALITIES.BASE,
 
     entityKey: "nationality",
 

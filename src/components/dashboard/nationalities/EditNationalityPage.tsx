@@ -10,12 +10,16 @@ import {
 } from "@/hooks/dashboard/nationalities";
 import NationalityForm from "@/components/forms/nationalities/NationalityForm";
 import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
+import { useRouter } from "@/navigation";
+import { ROUTES } from "@/constants/routes";
 
 interface Props {
   nationalityLookup: NationalityLookupResponse;
 }
 
 const EditNationalityPage = ({ nationalityLookup }: Props) => {
+  const router = useRouter();
+
   const { getTitle } = useCrudPageTitle();
 
   const { nationality, isLoading, error, refetch } = useNationalityEdit(
@@ -52,6 +56,9 @@ const EditNationalityPage = ({ nationalityLookup }: Props) => {
             submit({
               id: nationality.id,
               payload,
+              onSuccess: () => {
+                router.push(ROUTES.DASHBOARD.CONTENT.NATIONALITIES.BASE);
+              },
             })
           }
         />

@@ -1,9 +1,5 @@
 import { apiClient } from "./client";
 import {
-  createNationalitySchema,
-  updateNationalitySchema,
-} from "../validations/nationalities.schema";
-import {
   NationalityDetailResponse,
   NationalityEditResponse,
   NationalityListResponse,
@@ -13,7 +9,6 @@ import { ApiResponse } from "@/types/api";
 import { SelectOption } from "@/types/select";
 
 const baseRoute = `/nationalities`;
-const baseRouteWithApi = `/api/nationalities`;
 
 /**
  *
@@ -72,45 +67,11 @@ export const fetchNationalityDetail = async (
 };
 
 export const createNationality = async (payload: unknown) => {
-  if (payload instanceof FormData) {
-    const response = await fetch(`${baseRouteWithApi}`, {
-      method: "POST",
-      body: payload,
-    });
-
-    if (!response.ok) {
-      const data = await response.json().catch(() => null);
-
-      throw new Error(data?.error ?? "Failed to create nationality");
-    }
-
-    return;
-  }
-
-  const parsed = createNationalitySchema.parse(payload); // validation
-
-  await apiClient.post(`${baseRoute}`, parsed);
+  await apiClient.post(`${baseRoute}`, payload);
 };
 
-export const updateNationality = async (id: string, payload: unknown) => {
-  if (payload instanceof FormData) {
-    const response = await fetch(`${baseRouteWithApi}/${id}`, {
-      method: "PUT",
-      body: payload,
-    });
-
-    if (!response.ok) {
-      const data = await response.json().catch(() => null);
-
-      throw new Error(data?.error ?? "Failed to update nationality");
-    }
-
-    return;
-  }
-
-  const parsed = updateNationalitySchema.parse(payload); // validation
-
-  await apiClient.put(`${baseRoute}/${id}`, parsed);
+export const updateNationality = async (id: string, payload: FormData) => {
+  await apiClient.put(`${baseRoute}/${id}`, payload);
 };
 
 export const deleteNationality = async (id: string) => {
