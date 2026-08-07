@@ -7,12 +7,16 @@ import { useClubEdit, useClubSubmit } from "@/hooks/dashboard/clubs";
 import { ClubLookupResponse } from "@/types/club";
 import FormPageLayout from "@/components/layout/dashboard/FormPageLayout";
 import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
+import { useRouter } from "@/navigation";
+import { ROUTES } from "@/constants/routes";
 
 interface Props {
   clubLookup: ClubLookupResponse;
 }
 
 const EditClubPage = ({ clubLookup }: Props) => {
+  const router = useRouter();
+
   const { getTitle } = useCrudPageTitle();
 
   const { club, isLoading, error, refetch } = useClubEdit(clubLookup.id);
@@ -47,6 +51,9 @@ const EditClubPage = ({ clubLookup }: Props) => {
             submit({
               id: club.id,
               payload,
+              onSuccess: () => {
+                router.push(ROUTES.DASHBOARD.CONTENT.CLUBS.BASE);
+              },
             })
           }
         />

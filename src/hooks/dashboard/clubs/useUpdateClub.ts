@@ -1,12 +1,11 @@
 import { updateClub } from "@/lib/api/club";
 import { useCrudMutation } from "../useCrudMutation";
-import { ROUTES } from "@/constants/routes";
 import { clubKeys } from "@/lib/react-query/keys/clubKeys";
 import { clubTeamKeys } from "@/lib/react-query/keys/clubTeamKeys";
 
 interface UpdateClubPayload {
   id: string;
-  data: unknown;
+  data: FormData;
 }
 
 export function useUpdateClub() {
@@ -20,8 +19,6 @@ export function useUpdateClub() {
 
       { queryKey: clubTeamKeys.lists() },
     ],
-
-    redirectTo: ROUTES.DASHBOARD.CONTENT.CLUBS.BASE,
 
     entityKey: "club",
 

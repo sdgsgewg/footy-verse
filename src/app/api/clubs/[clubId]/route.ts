@@ -6,7 +6,6 @@ import {
 } from "@/lib/services/clubs.service";
 import { tryDeleteImage, uploadImage } from "@/lib/services/storage.service";
 import { STORAGE_BUCKETS } from "@/lib/storage";
-import { isFormDataRequest } from "@/lib/api/request";
 import {
   errorResponse,
   noContentResponse,
@@ -45,13 +44,6 @@ export async function PUT(request: Request, context: ClubRouteContext) {
 
     if (!currentClub) {
       return errorResponse(new NotFoundError("Club not found"));
-    }
-
-    if (!isFormDataRequest(request)) {
-      const body = await request.json();
-      const data = await updateClubService(clubId, body);
-
-      return successResponse(data);
     }
 
     const formData = await request.formData();

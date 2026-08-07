@@ -4,6 +4,8 @@ import { useUpdateClub } from "./useUpdateClub";
 type SubmitOptions = {
   id?: string;
   payload: FormData;
+
+  onSuccess?: () => void;
 };
 
 export function useClubSubmit() {
@@ -14,16 +16,19 @@ export function useClubSubmit() {
   const isCreating = createMutation.isPending;
   const isUpdating = updateMutation.isPending;
 
-  const submit = ({ id, payload }: SubmitOptions) => {
+  const submit = ({ id, payload, onSuccess }: SubmitOptions) => {
     if (id) {
-      updateMutation.mutate({
-        id,
-        data: payload,
-      });
+      updateMutation.mutate(
+        {
+          id,
+          data: payload,
+        },
+        { onSuccess },
+      );
       return;
     }
 
-    createMutation.mutate(payload);
+    createMutation.mutate(payload, { onSuccess });
   };
 
   return {

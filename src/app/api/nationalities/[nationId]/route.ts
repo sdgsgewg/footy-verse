@@ -47,13 +47,6 @@ export async function PUT(request: Request, context: NationalityRouteContext) {
       return errorResponse(new NotFoundError("Nationality not found"));
     }
 
-    if (!isFormDataRequest(request)) {
-      const body = await request.json();
-      const data = await updateNationalityService(nationId, body);
-
-      return successResponse(data);
-    }
-
     const formData = await request.formData();
 
     const body = getNationalityInputFromFormData(formData);

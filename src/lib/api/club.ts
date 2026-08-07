@@ -1,14 +1,9 @@
 import { apiClient } from "./client";
-import {
-  createClubSchema,
-  updateClubSchema,
-} from "../validations/clubs.schema";
 import { ClubDetailResponse, ClubEditResponse, ClubQuery } from "@/types/club";
 import { ApiResponse } from "@/types/api";
 import { ClubListResponse } from "@/types/club/responses";
 
 const baseRoute = "/clubs";
-const baseRouteWithApi = "/api/clubs";
 
 /**
  *
@@ -63,25 +58,8 @@ export const fetchClubDetail = async (
  * @param payload
  * @returns void
  */
-export const createClub = async (payload: unknown) => {
-  if (payload instanceof FormData) {
-    const response = await fetch(`${baseRouteWithApi}`, {
-      method: "POST",
-      body: payload,
-    });
-
-    if (!response.ok) {
-      const data = await response.json().catch(() => null);
-
-      throw new Error(data?.error ?? "Failed to create club");
-    }
-
-    return;
-  }
-
-  const parsed = createClubSchema.parse(payload); // validation
-
-  await apiClient.post(`${baseRoute}`, parsed);
+export const createClub = async (payload: FormData) => {
+  await apiClient.post(`${baseRoute}`, payload);
 };
 
 /**
@@ -90,25 +68,8 @@ export const createClub = async (payload: unknown) => {
  * @param payload
  * @returns void
  */
-export const updateClub = async (id: string, payload: unknown) => {
-  if (payload instanceof FormData) {
-    const response = await fetch(`${baseRouteWithApi}/${id}`, {
-      method: "PUT",
-      body: payload,
-    });
-
-    if (!response.ok) {
-      const data = await response.json().catch(() => null);
-
-      throw new Error(data?.error ?? "Failed to update club");
-    }
-
-    return;
-  }
-
-  const parsed = updateClubSchema.parse(payload); // validation
-
-  await apiClient.put(`${baseRoute}/${id}`, parsed);
+export const updateClub = async (id: string, payload: FormData) => {
+  await apiClient.put(`${baseRoute}/${id}`, payload);
 };
 
 /**
