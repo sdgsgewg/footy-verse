@@ -1,6 +1,5 @@
 import { updateConfederation } from "@/lib/api/confederation";
 import { useCrudMutation } from "../useCrudMutation";
-import { ROUTES } from "@/constants/routes";
 import { confederationKeys } from "@/lib/react-query/keys/confederationKeys";
 
 interface UpdateConfederationPayload {
@@ -17,8 +16,6 @@ export function useUpdateConfederation() {
       { queryKey: confederationKeys.details() },
       { queryKey: confederationKeys.edits() },
     ],
-
-    redirectTo: ROUTES.DASHBOARD.CONTENT.CONFEDERATIONS.BASE,
 
     entityKey: "confederation",
 

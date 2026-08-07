@@ -6,13 +6,8 @@ import {
 } from "@/types/confederation";
 import { apiClient } from "./client";
 import { ApiResponse } from "@/types/api";
-import {
-  createConfederationSchema,
-  updateConfederationSchema,
-} from "../validations/confederations.schema";
 
 const baseRoute = `/confederations`;
-const baseRouteWithApi = `/api/confederations`;
 
 /**
  *
@@ -63,45 +58,11 @@ export const fetchConfederationDetail = async (
 };
 
 export const createConfederation = async (payload: unknown) => {
-  if (payload instanceof FormData) {
-    const response = await fetch(`${baseRouteWithApi}`, {
-      method: "POST",
-      body: payload,
-    });
-
-    if (!response.ok) {
-      const data = await response.json().catch(() => null);
-
-      throw new Error(data?.error ?? "Failed to create confederation");
-    }
-
-    return;
-  }
-
-  const parsed = createConfederationSchema.parse(payload); // validation
-
-  await apiClient.post(`${baseRoute}`, parsed);
+  await apiClient.post(`${baseRoute}`, payload);
 };
 
 export const updateConfederation = async (id: string, payload: unknown) => {
-  if (payload instanceof FormData) {
-    const response = await fetch(`${baseRouteWithApi}/${id}`, {
-      method: "PUT",
-      body: payload,
-    });
-
-    if (!response.ok) {
-      const data = await response.json().catch(() => null);
-
-      throw new Error(data?.error ?? "Failed to update confederation");
-    }
-
-    return;
-  }
-
-  const parsed = updateConfederationSchema.parse(payload); // validation
-
-  await apiClient.put(`${baseRoute}/${id}`, parsed);
+  await apiClient.put(`${baseRoute}/${id}`, payload);
 };
 
 export const deleteConfederation = async (id: string) => {

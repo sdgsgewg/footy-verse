@@ -1,5 +1,4 @@
 import { getCrudQuery } from "@/lib/api/query";
-import { isFormDataRequest } from "@/lib/api/request";
 import {
   createdResponse,
   errorResponse,
@@ -31,13 +30,6 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   try {
     await authorizeManageContent();
-
-    if (!isFormDataRequest(request)) {
-      const body = await request.json();
-      const data = await createConfederationService(body);
-
-      return createdResponse(data);
-    }
 
     const formData = await request.formData();
 

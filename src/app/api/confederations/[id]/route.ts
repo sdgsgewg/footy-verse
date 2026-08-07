@@ -1,4 +1,3 @@
-import { isFormDataRequest } from "@/lib/api/request";
 import {
   errorResponse,
   noContentResponse,
@@ -52,13 +51,6 @@ export async function PUT(
 
     if (!currentConfederation) {
       return errorResponse(new NotFoundError("Confederation not found"));
-    }
-
-    if (!isFormDataRequest(request)) {
-      const body = await request.json();
-      const data = await updateConfederationService(id, body);
-
-      return successResponse(data);
     }
 
     const formData = await request.formData();

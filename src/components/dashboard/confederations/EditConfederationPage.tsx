@@ -10,12 +10,16 @@ import {
   useConfederationSubmit,
 } from "@/hooks/dashboard/confederations";
 import ConfederationForm from "@/components/forms/confederations/ConfederationForm";
+import { useRouter } from "@/navigation";
+import { ROUTES } from "@/constants/routes";
 
 interface Props {
   confederationLookup: ConfederationLookupResponse;
 }
 
 const EditConfederationPage = ({ confederationLookup }: Props) => {
+  const router = useRouter();
+
   const { getTitle } = useCrudPageTitle();
 
   const { confederation, isLoading, error, refetch } = useConfederationEdit(
@@ -49,6 +53,9 @@ const EditConfederationPage = ({ confederationLookup }: Props) => {
             submit({
               id: confederation.id,
               payload,
+              onSuccess: () => {
+                router.push(ROUTES.DASHBOARD.CONTENT.CONFEDERATIONS.BASE);
+              },
             })
           }
         />

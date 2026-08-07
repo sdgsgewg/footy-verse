@@ -4,6 +4,8 @@ import { useUpdateConfederation } from "./useUpdateConfederation";
 type SubmitOptions = {
   id?: string;
   payload: FormData;
+
+  onSuccess?: () => void;
 };
 
 export function useConfederationSubmit() {
@@ -14,16 +16,19 @@ export function useConfederationSubmit() {
   const isCreating = createMutation.isPending;
   const isUpdating = updateMutation.isPending;
 
-  const submit = ({ id, payload }: SubmitOptions) => {
+  const submit = ({ id, payload, onSuccess }: SubmitOptions) => {
     if (id) {
-      updateMutation.mutate({
-        id,
-        data: payload,
-      });
+      updateMutation.mutate(
+        {
+          id,
+          data: payload,
+        },
+        { onSuccess },
+      );
       return;
     }
 
-    createMutation.mutate(payload);
+    createMutation.mutate(payload, { onSuccess });
   };
 
   return {
