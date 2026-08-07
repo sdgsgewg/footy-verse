@@ -1,4 +1,3 @@
-import { isFormDataRequest } from "@/lib/api/request";
 import {
   errorResponse,
   noContentResponse,

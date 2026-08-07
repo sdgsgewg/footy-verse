@@ -10,12 +10,16 @@ import {
   useCompetitionSubmit,
 } from "@/hooks/dashboard/competitions";
 import CompetitionForm from "@/components/forms/competitions/CompetitionForm";
+import { useRouter } from "@/navigation";
+import { ROUTES } from "@/constants/routes";
 
 interface Props {
   competitionLookup: CompetitionLookupResponse;
 }
 
 export default function EditCompetitionPage({ competitionLookup }: Props) {
+  const router = useRouter();
+
   const { getTitle } = useCrudPageTitle();
 
   const { competition, isLoading, error, refetch } = useCompetitionEdit(
@@ -49,6 +53,9 @@ export default function EditCompetitionPage({ competitionLookup }: Props) {
             submit({
               id: competition.id,
               payload,
+              onSuccess: () => {
+                router.push(ROUTES.DASHBOARD.CONTENT.COMPETITIONS.BASE);
+              },
             })
           }
         />

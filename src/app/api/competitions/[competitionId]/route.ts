@@ -1,4 +1,3 @@
-import { isFormDataRequest } from "@/lib/api/request";
 import {
   errorResponse,
   noContentResponse,
@@ -48,13 +47,6 @@ export async function PUT(request: Request, context: CompetitionRouteContext) {
       return errorResponse(new NotFoundError("Competition not found"));
     }
 
-    if (!isFormDataRequest(request)) {
-      const body = await request.json();
-      const data = await updateCompetitionService(competitionId, body);
-
-      return successResponse(data);
-    }
-
     const formData = await request.formData();
 
     const body = getCompetitionInputFromFormData(formData);
@@ -94,9 +86,9 @@ export async function DELETE(
 
     const { competitionId } = await context.params;
 
-    const Competition = await getCompetitionEditService(competitionId);
+    const competition = await getCompetitionEditService(competitionId);
 
-    if (!Competition) {
+    if (!competition) {
       return errorResponse(new NotFoundError("Competition not found"));
     }
 

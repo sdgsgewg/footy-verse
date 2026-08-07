@@ -1,6 +1,5 @@
 import { updateCompetition } from "@/lib/api/competition";
 import { useCrudMutation } from "../useCrudMutation";
-import { ROUTES } from "@/constants/routes";
 import { competitionKeys } from "@/lib/react-query/keys/competitionKeys";
 
 interface UpdateCompetitionPayload {
@@ -17,8 +16,6 @@ export function useUpdateCompetition() {
       { queryKey: competitionKeys.details() },
       { queryKey: competitionKeys.edits() },
     ],
-
-    redirectTo: ROUTES.DASHBOARD.CONTENT.COMPETITIONS.BASE,
 
     entityKey: "competition",
 
