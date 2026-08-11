@@ -1,5 +1,3 @@
-"use client";
-
 interface PaginationFilter {
   page: number;
 }

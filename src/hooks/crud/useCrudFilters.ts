@@ -1,5 +1,3 @@
-"use client";
-
 import { useCallback, useMemo, useState } from "react";
 import { useRouter } from "@/navigation";
 import { useDebounce } from "../useDebounce";
@@ -8,13 +6,8 @@ interface CrudFilterBase {
   search: string;
 }
 
-interface UseCrudFiltersOptions<TFilter> {
-  onFilterChange?: (previous: TFilter, next: TFilter) => TFilter;
-}
-
 export function useCrudFilters<TFilter extends CrudFilterBase>(
   defaultFilter: TFilter,
-  options?: UseCrudFiltersOptions<TFilter>,
 ) {
   const router = useRouter();
 
@@ -61,14 +54,10 @@ export function useCrudFilters<TFilter extends CrudFilterBase>(
 
   function setFilter<K extends keyof TFilter>(key: K, value: TFilter[K]) {
     updateFilters((previous) => {
-      let next = {
+      const next = {
         ...previous,
         [key]: value,
       } as TFilter;
-
-      if (options?.onFilterChange) {
-        next = options.onFilterChange(previous, next);
-      }
 
       return next;
     });
@@ -76,14 +65,10 @@ export function useCrudFilters<TFilter extends CrudFilterBase>(
 
   function setFiltersPartial(values: Partial<TFilter>) {
     updateFilters((previous) => {
-      let next = {
+      const next = {
         ...previous,
         ...values,
       } as TFilter;
-
-      if (options?.onFilterChange) {
-        next = options.onFilterChange(previous, next);
-      }
 
       return next;
     });

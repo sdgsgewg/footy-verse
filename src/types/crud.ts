@@ -2,6 +2,8 @@ import { Dispatch, ReactNode, SetStateAction } from "react";
 import { SelectOption } from "./select";
 import { DataColumn, DataRow } from "./table";
 import { SortOrder } from "./sort";
+import { InvalidateQueryFilters } from "@tanstack/react-query";
+import { Entity } from "@/config/entities";
 
 type FieldType = "text" | "textarea" | "number" | "date" | "select" | "image";
 
@@ -47,13 +49,17 @@ export type CrudAction = "create" | "edit" | "update" | "delete";
 export interface CrudMutationOptions<TVariables> {
   mutationFn: (variables: TVariables) => Promise<unknown>;
 
-  queryKey: readonly unknown[];
+  invalidateQueries?: InvalidateQueryFilters[];
 
-  entityKey: string;
+  allowRedirect?: boolean;
+  redirectTo?: string;
 
-  successKey: string;
+  entityKey: Entity;
+  action: CrudAction;
 
-  redirectTo: string;
+  getPayload?: (variables: TVariables) => unknown;
+
+  onSuccess?: (data: unknown, variables: TVariables) => void;
 }
 
 // Pages
