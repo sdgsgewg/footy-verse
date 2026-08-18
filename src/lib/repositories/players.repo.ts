@@ -164,11 +164,13 @@ async function getPlayerIdsByClubTeam(clubTeamId: string): Promise<string[]> {
     .select(
       `
       player_career:player_careers!player_club_careers_player_career_id_fkey (
+        left_at,
         player_id
       )
     `,
     )
     .eq("club_team_id", clubTeamId)
+    .is("player_career.left_at", null)
     .overrideTypes<DbPlayerClubCareerRow[]>();
 
   if (error) {
@@ -195,6 +197,7 @@ async function getPlayerIdsByNationalTeam(
     `,
     )
     .eq("national_team_id", nationalTeamId)
+    .is("player_career.left_at", null)
     .overrideTypes<DbPlayerNationalTeamCareerRow[]>();
 
   if (error) {

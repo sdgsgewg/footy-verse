@@ -2,6 +2,7 @@ import { DbNationalTeamRow } from "../national-team";
 import {
   DbPlayerCareerWithPlayerRow,
   DbPlayerCareerWithShirtNumbersRow,
+  PlayerCareer,
 } from "../player-career";
 import { PlayerNationalTeamCareer } from "./database";
 
@@ -27,7 +28,7 @@ export type DbPlayerNationalTeamCareerDetailRow = PlayerNationalTeamCareer & {
 // Helper for other entity
 
 export type DbPlayerNationalTeamCareerRow = {
-  player_career: {
+  player_career: Pick<PlayerCareer, "left_at"> & {
     player_id: string;
   };
 };

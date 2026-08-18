@@ -2,6 +2,7 @@ import { DbClubTeamRow } from "../club-team";
 import {
   DbPlayerCareerWithPlayerRow,
   DbPlayerCareerWithShirtNumbersRow,
+  PlayerCareer,
 } from "../player-career";
 import { PlayerContractSummary } from "../player-contract";
 import { DbPlayerTransferRow } from "../player-transfer";
@@ -30,7 +31,7 @@ export type DbPlayerClubCareerDetailRow = PlayerClubCareer & {
 // Player
 
 export type DbPlayerClubCareerRow = {
-  player_career: {
+  player_career: Pick<PlayerCareer, "left_at"> & {
     player_id: string;
   };
 };
