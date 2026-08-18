@@ -30,6 +30,9 @@ import {
 import { createPaginatedResponse } from "../pagination";
 import { DbPlayerNationalTeamCareerRow } from "@/types/player-national-team-career";
 import { DbPlayerClubCareerRow } from "@/types/player-club-career";
+import { createEntityActivityLog } from "./activity-logs.repo";
+import { ActivityLogAction } from "@/enums/ActivityLogAction";
+import { getChangedFields } from "./helpers/get-changed-field";
 
 async function getSupabase() {
   return createClient();
@@ -593,6 +596,13 @@ export async function createPlayerRepo(
     throw new Error("Failed to retrieve created player");
   }
 
+  await createEntityActivityLog({
+    action: ActivityLogAction.CREATE,
+    entity: "player",
+    entityId: result.id,
+    name: result.name,
+  });
+
   return result;
 }
 
@@ -664,6 +674,29 @@ export async function updatePlayerRepo(
     throw new Error("Failed to retrieve updated player");
   }
 
+  const changes = getChangedFields(oldPlayer, result, [
+    "name",
+    "image",
+    "dob",
+    "pob",
+    "preferredFoot",
+    "height",
+    "weight",
+    "marketValue",
+    "positions",
+    "nationalities",
+  ] as const);
+
+  await createEntityActivityLog({
+    action: ActivityLogAction.UPDATE,
+    entity: "player",
+    entityId: result.id,
+    name: result.name,
+    metadata: {
+      changes,
+    },
+  });
+
   return result;
 }
 
@@ -696,4 +729,11 @@ export async function deletePlayerRepo(id: string): Promise<void> {
     .eq("id", id);
 
   if (deletePlayerError) throw deletePlayerError;
+
+  await createEntityActivityLog({
+    action: ActivityLogAction.DELETE,
+    entity: "player",
+    entityId: id,
+    name: player.name,
+  });
 }

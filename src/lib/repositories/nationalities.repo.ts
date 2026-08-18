@@ -27,6 +27,9 @@ import { slugify } from "@/utils/string";
 import { SelectOption } from "@/types/select";
 import { Gender } from "@/enums/Gender";
 import { NationalTeamType } from "@/enums/NationalTeamType";
+import { createEntityActivityLog } from "./activity-logs.repo";
+import { ActivityLogAction } from "@/enums/ActivityLogAction";
+import { getChangedFields } from "./helpers/get-changed-field";
 
 async function getSupabase() {
   return createClient();
@@ -263,13 +266,20 @@ export async function createNationalityRepo(
     throw new Error("Failed to retrieve created nationality");
   }
 
+  await createEntityActivityLog({
+    action: ActivityLogAction.CREATE,
+    entity: "nationality",
+    entityId: result.id,
+    name: result.name,
+  });
+
   return result;
 }
 
 export async function updateNationalityRepo(
   id: string,
   nationality: NationalityUpdateInput,
-): Promise<NationalityDetailResponse> {
+): Promise<NationalityEditResponse> {
   const supabase = await getSupabase();
 
   const oldNationality = await requireEntity(
@@ -304,10 +314,27 @@ export async function updateNationalityRepo(
 
   if (error) throw error;
 
-  const result = await getNationalityDetailRepo(id);
+  const result = await getNationalityEditRepo(id);
   if (!result) {
     throw new Error("Failed to retrieve updated nationality");
   }
+
+  const changes = getChangedFields(oldNationality, result, [
+    "name",
+    "fifaCode",
+    "confederationId",
+    "image",
+  ] as const);
+
+  await createEntityActivityLog({
+    action: ActivityLogAction.UPDATE,
+    entity: "nationality",
+    entityId: result.id,
+    name: result.name,
+    metadata: {
+      changes,
+    },
+  });
 
   return result;
 }
@@ -329,4 +356,11 @@ export async function deleteNationalityRepo(id: string): Promise<void> {
     .eq("id", id);
 
   if (error) throw error;
+
+  await createEntityActivityLog({
+    action: ActivityLogAction.DELETE,
+    entity: "nationality",
+    entityId: id,
+    name: nationality.name,
+  });
 }

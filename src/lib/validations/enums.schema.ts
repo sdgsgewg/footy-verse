@@ -10,6 +10,7 @@ import { SquadType } from "@/enums/SquadType";
 import { NationalTeamType } from "@/enums/NationalTeamType";
 import { TransferType } from "@/enums/TransferType";
 import z from "zod";
+import { ActivityLogAction } from "@/enums/ActivityLogAction";
 
 // Shared
 
@@ -162,6 +163,16 @@ export const competitionSquadPlayerStatusSchema = z.enum([
   CompetitionSquadPlayerStatus.WITHDRAWN,
   CompetitionSquadPlayerStatus.REPLACED,
 ]);
+
+// Activity Log
+
+export const activityLogActionSchema = z.enum([
+  ActivityLogAction.CREATE,
+  ActivityLogAction.UPDATE,
+  ActivityLogAction.DELETE,
+]);
+
+export const activityLogSortBySchema = z.enum(["created_at"]);
 
 // Filter, Sort, Pagination
 export const sortOrderSchema = z.enum(["asc", "desc"]);

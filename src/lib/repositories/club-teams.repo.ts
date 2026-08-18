@@ -17,6 +17,9 @@ import {
   mapClubTeamEditResponse,
   mapClubTeamListItem,
 } from "../club-teams/mapper";
+import { createEntityActivityLog } from "./activity-logs.repo";
+import { ActivityLogAction } from "@/enums/ActivityLogAction";
+import { getChangedFields } from "./helpers/get-changed-field";
 
 async function getSupabase() {
   return createClient();
@@ -196,6 +199,13 @@ export async function createClubTeamRepo(
     throw new Error("Failed to retrieve created club team");
   }
 
+  await createEntityActivityLog({
+    action: ActivityLogAction.CREATE,
+    entity: "clubTeam",
+    entityId: result.id,
+    name: result.name,
+  });
+
   return result;
 }
 
@@ -204,16 +214,20 @@ export async function createClubTeamRepo(
  * @param teamId
  * @param clubId
  * @param club
- * @returns ClubTeamDetailResponse
+ * @returns ClubTeamEditResponse
  */
 export async function updateClubTeamRepo(
   teamId: string,
   clubId: string,
   clubTeam: ClubTeamUpdateInput,
-): Promise<ClubTeamDetailResponse> {
+): Promise<ClubTeamEditResponse> {
   const supabase = await getSupabase();
 
-  await requireEntity(getClubTeamEditRepo, teamId, getClubTeamLabel());
+  const oldClubTeam = await requireEntity(
+    getClubTeamEditRepo,
+    teamId,
+    getClubTeamLabel(),
+  );
 
   const { error } = await supabase
     .from(getClubTeamTable())
@@ -226,10 +240,25 @@ export async function updateClubTeamRepo(
 
   if (error) throw error;
 
-  const result = await getClubTeamDetailRepo(teamId);
+  const result = await getClubTeamEditRepo(teamId);
   if (!result) {
     throw new Error("Failed to retrieve updated club team");
   }
+
+  const changes = getChangedFields(oldClubTeam, result, [
+    "squadType",
+    "ageGroup",
+    "clubId",
+  ] as const);
+
+  await createEntityActivityLog({
+    action: ActivityLogAction.UPDATE,
+    entity: "clubTeam",
+    entityId: result.id,
+    metadata: {
+      changes,
+    },
+  });
 
   return result;
 }
@@ -241,7 +270,11 @@ export async function updateClubTeamRepo(
 export async function deleteClubTeamRepo(teamId: string): Promise<void> {
   const supabase = await getSupabase();
 
-  await requireEntity(getClubTeamEditRepo, teamId, getClubTeamLabel());
+  const clubTeam = await requireEntity(
+    getClubTeamDetailRepo,
+    teamId,
+    getClubTeamLabel(),
+  );
 
   const { error } = await supabase
     .from(getClubTeamTable())
@@ -249,4 +282,11 @@ export async function deleteClubTeamRepo(teamId: string): Promise<void> {
     .eq("id", teamId);
 
   if (error) throw error;
+
+  await createEntityActivityLog({
+    action: ActivityLogAction.DELETE,
+    entity: "clubTeam",
+    entityId: teamId,
+    name: clubTeam.name,
+  });
 }

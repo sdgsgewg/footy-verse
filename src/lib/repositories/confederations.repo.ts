@@ -20,6 +20,9 @@ import {
   mapConfederationEditResponse,
   mapConfederationListItem,
 } from "../confederations/mapper";
+import { createEntityActivityLog } from "./activity-logs.repo";
+import { ActivityLogAction } from "@/enums/ActivityLogAction";
+import { getChangedFields } from "./helpers/get-changed-field";
 
 async function getSupabase() {
   return createClient();
@@ -191,13 +194,20 @@ export async function createConfederationRepo(
     throw new Error("Failed to retrieve created confederation");
   }
 
+  await createEntityActivityLog({
+    action: ActivityLogAction.CREATE,
+    entity: "confederation",
+    entityId: result.id,
+    name: result.name,
+  });
+
   return result;
 }
 
 export async function updateConfederationRepo(
   id: string,
   confederation: ConfederationUpdateInput,
-): Promise<ConfederationDetailResponse> {
+): Promise<ConfederationEditResponse> {
   const supabase = await getSupabase();
 
   const oldConfederation = await requireEntity(
@@ -232,11 +242,31 @@ export async function updateConfederationRepo(
 
   if (error) throw error;
 
-  const result = await getConfederationDetailRepo(id);
+  const result = await getConfederationEditRepo(id);
 
   if (!result) {
     throw new Error("Failed to retrieve updated confederation");
   }
+
+  const changes = getChangedFields(oldConfederation, result, [
+    "image",
+    "name",
+    "shortName",
+    "regionId",
+    "founded",
+    "headquarters",
+    "website",
+  ] as const);
+
+  await createEntityActivityLog({
+    action: ActivityLogAction.UPDATE,
+    entity: "confederation",
+    entityId: result.id,
+    name: result.name,
+    metadata: {
+      changes,
+    },
+  });
 
   return result;
 }
@@ -255,4 +285,11 @@ export async function deleteConfederationRepo(id: string): Promise<void> {
   const { error } = await supabase.from(getTable()).delete().eq("id", id);
 
   if (error) throw error;
+
+  await createEntityActivityLog({
+    action: ActivityLogAction.DELETE,
+    entity: "confederation",
+    entityId: id,
+    name: confederation.name,
+  });
 }

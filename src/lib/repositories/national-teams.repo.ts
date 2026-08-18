@@ -17,6 +17,9 @@ import {
   mapNationalTeamEditResponse,
   mapNationalTeamListItem,
 } from "../national-teams/mapper";
+import { createEntityActivityLog } from "./activity-logs.repo";
+import { ActivityLogAction } from "@/enums/ActivityLogAction";
+import { getChangedFields } from "./helpers/get-changed-field";
 
 async function getSupabase() {
   return createClient();
@@ -205,6 +208,13 @@ export async function createNationalTeamRepo(
     throw new Error("Failed to retrieve created national team");
   }
 
+  await createEntityActivityLog({
+    action: ActivityLogAction.CREATE,
+    entity: "nationalTeam",
+    entityId: result.id,
+    name: result.name,
+  });
+
   return result;
 }
 
@@ -213,17 +223,17 @@ export async function createNationalTeamRepo(
  * @param teamId
  * @param nationId
  * @param nationalTeam
- * @returns NationalTeamDetailResponse
+ * @returns NationalTeamEditResponse
  */
 export async function updateNationalTeamRepo(
   teamId: string,
   nationId: string,
   nationalTeam: NationalTeamUpdateInput,
-): Promise<NationalTeamDetailResponse> {
+): Promise<NationalTeamEditResponse> {
   const supabase = await getSupabase();
 
-  await requireEntity(
-    getNationalTeamDetailRepo,
+  const oldNationalTeam = await requireEntity(
+    getNationalTeamEditRepo,
     teamId,
     getNationalTeamLabel(),
   );
@@ -239,10 +249,26 @@ export async function updateNationalTeamRepo(
 
   if (error) throw error;
 
-  const result = await getNationalTeamDetailRepo(teamId);
+  const result = await getNationalTeamEditRepo(teamId);
   if (!result) {
     throw new Error("Failed to retrieve updated national team");
   }
+
+  const changes = getChangedFields(oldNationalTeam, result, [
+    "gender",
+    "ageGroup",
+    "teamType",
+    "nationId",
+  ] as const);
+
+  await createEntityActivityLog({
+    action: ActivityLogAction.UPDATE,
+    entity: "nationalTeam",
+    entityId: result.id,
+    metadata: {
+      changes,
+    },
+  });
 
   return result;
 }
@@ -254,7 +280,7 @@ export async function updateNationalTeamRepo(
 export async function deleteNationalTeamRepo(teamId: string): Promise<void> {
   const supabase = await getSupabase();
 
-  await requireEntity(
+  const nationalTeam = await requireEntity(
     getNationalTeamDetailRepo,
     teamId,
     getNationalTeamLabel(),
@@ -266,4 +292,11 @@ export async function deleteNationalTeamRepo(teamId: string): Promise<void> {
     .eq("id", teamId);
 
   if (error) throw error;
+
+  await createEntityActivityLog({
+    action: ActivityLogAction.DELETE,
+    entity: "nationalTeam",
+    entityId: teamId,
+    name: nationalTeam.name,
+  });
 }

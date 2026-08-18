@@ -19,6 +19,9 @@ import {
   mapPositionListItem,
 } from "../positions/mapper";
 import { slugify } from "@/utils/string";
+import { createEntityActivityLog } from "./activity-logs.repo";
+import { ActivityLogAction } from "@/enums/ActivityLogAction";
+import { getChangedFields } from "./helpers/get-changed-field";
 
 async function getSupabase() {
   return createClient();
@@ -194,16 +197,27 @@ export async function createPositionRepo(
     throw new Error("Failed to retrieve created position");
   }
 
+  await createEntityActivityLog({
+    action: ActivityLogAction.CREATE,
+    entity: "position",
+    entityId: result.id,
+    name: result.name,
+  });
+
   return result;
 }
 
 export async function updatePositionRepo(
   id: string,
   position: PositionUpdateInput,
-): Promise<PositionDetailResponse> {
+): Promise<PositionEditResponse> {
   const supabase = await getSupabase();
 
-  await requireEntity(getPositionDetailRepo, id, getPositionLabel());
+  const oldPosition = await requireEntity(
+    getPositionEditRepo,
+    id,
+    getPositionLabel(),
+  );
 
   const slug = slugify(position.name);
 
@@ -220,10 +234,25 @@ export async function updatePositionRepo(
 
   if (error) throw error;
 
-  const result = await getPositionDetailRepo(id);
+  const result = await getPositionEditRepo(id);
   if (!result) {
     throw new Error("Failed to retrieve updated position");
   }
+
+  const changes = getChangedFields(oldPosition, result, [
+    "name",
+    "categoryId",
+  ] as const);
+
+  await createEntityActivityLog({
+    action: ActivityLogAction.UPDATE,
+    entity: "position",
+    entityId: result.id,
+    name: result.name,
+    metadata: {
+      changes,
+    },
+  });
 
   return result;
 }
@@ -231,7 +260,11 @@ export async function updatePositionRepo(
 export async function deletePositionRepo(id: string): Promise<void> {
   const supabase = await getSupabase();
 
-  await requireEntity(getPositionDetailRepo, id, getPositionLabel());
+  const position = await requireEntity(
+    getPositionDetailRepo,
+    id,
+    getPositionLabel(),
+  );
 
   const { error } = await supabase
     .from(getPositionTable())
@@ -239,4 +272,11 @@ export async function deletePositionRepo(id: string): Promise<void> {
     .eq("id", id);
 
   if (error) throw error;
+
+  await createEntityActivityLog({
+    action: ActivityLogAction.DELETE,
+    entity: "position",
+    entityId: id,
+    name: position.name,
+  });
 }

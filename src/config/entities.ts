@@ -1,9 +1,11 @@
 import { ROUTES } from "@/constants/routes";
 import { STORAGE_BUCKETS } from "@/lib/storage";
+import z from "zod";
 
 interface EntityConfig {
   table: string;
   label: string;
+  activityType: string;
   supportsImage: boolean;
   supportsSlug: boolean;
   dashboardRoute?: string;
@@ -15,6 +17,7 @@ export const ENTITY_CONFIG = {
   club: {
     table: "clubs",
     label: "Club",
+    activityType: "CLUB",
     supportsImage: true,
     supportsSlug: true,
     dashboardRoute: ROUTES.DASHBOARD.CONTENT.CLUBS.BASE,
@@ -25,6 +28,7 @@ export const ENTITY_CONFIG = {
   clubTeam: {
     table: "club_teams",
     label: "Club Team",
+    activityType: "CLUB_TEAM",
     supportsImage: false,
     supportsSlug: false,
   },
@@ -32,6 +36,7 @@ export const ENTITY_CONFIG = {
   nationality: {
     table: "nationalities",
     label: "Nationality",
+    activityType: "NATIONALITY",
     supportsImage: true,
     supportsSlug: true,
     dashboardRoute: ROUTES.DASHBOARD.CONTENT.NATIONALITIES.BASE,
@@ -42,6 +47,7 @@ export const ENTITY_CONFIG = {
   nationalTeam: {
     table: "national_teams",
     label: "National Team",
+    activityType: "NATIONAL_TEAM",
     supportsImage: false,
     supportsSlug: false,
   },
@@ -49,6 +55,7 @@ export const ENTITY_CONFIG = {
   position: {
     table: "positions",
     label: "Position",
+    activityType: "POSITION",
     supportsImage: false,
     supportsSlug: true,
     dashboardRoute: ROUTES.DASHBOARD.CONTENT.POSITIONS.BASE,
@@ -57,6 +64,7 @@ export const ENTITY_CONFIG = {
   positionCategory: {
     table: "position_categories",
     label: "Position Category",
+    activityType: "POSITION_CATEGORY",
     supportsImage: false,
     supportsSlug: true,
     dashboardRoute: ROUTES.DASHBOARD.CONTENT.POSITIONS.CATEGORIES.BASE,
@@ -65,6 +73,7 @@ export const ENTITY_CONFIG = {
   player: {
     table: "players",
     label: "Player",
+    activityType: "PLAYER",
     supportsImage: true,
     supportsSlug: true,
     dashboardRoute: ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE,
@@ -75,6 +84,7 @@ export const ENTITY_CONFIG = {
   playerPosition: {
     table: "player_positions",
     label: "Player Position",
+    activityType: "PLAYER_POSITION",
     supportsImage: false,
     supportsSlug: false,
   },
@@ -82,6 +92,7 @@ export const ENTITY_CONFIG = {
   playerNationality: {
     table: "player_nationalities",
     label: "Player Nationality",
+    activityType: "PLAYER_NATIONALITY",
     supportsImage: false,
     supportsSlug: false,
   },
@@ -89,6 +100,7 @@ export const ENTITY_CONFIG = {
   playerCareer: {
     table: "player_careers",
     label: "Player career",
+    activityType: "PLAYER_CAREER",
     supportsImage: false,
     supportsSlug: false,
   },
@@ -96,6 +108,7 @@ export const ENTITY_CONFIG = {
   playerClubCareer: {
     table: "player_club_careers",
     label: "Player club career",
+    activityType: "PLAYER_CLUB_CAREER",
     supportsImage: false,
     supportsSlug: false,
   },
@@ -103,6 +116,7 @@ export const ENTITY_CONFIG = {
   playerNationalTeamCareer: {
     table: "player_national_team_careers",
     label: "Player national team career",
+    activityType: "PLAYER_NATIONAL_TEAM_CAREER",
     supportsImage: false,
     supportsSlug: false,
   },
@@ -110,6 +124,7 @@ export const ENTITY_CONFIG = {
   playerContract: {
     table: "player_contracts",
     label: "Player contract",
+    activityType: "PLAYER_CONTRACT",
     supportsImage: false,
     supportsSlug: false,
   },
@@ -117,6 +132,7 @@ export const ENTITY_CONFIG = {
   playerShirtNumber: {
     table: "player_shirt_numbers",
     label: "Player shirt number",
+    activityType: "PLAYER_SHIRT_NUMBER",
     supportsImage: false,
     supportsSlug: false,
   },
@@ -124,6 +140,7 @@ export const ENTITY_CONFIG = {
   playerTransfer: {
     table: "player_transfers",
     label: "Player Transfer",
+    activityType: "PLAYER_TRANSFER",
     supportsImage: false,
     supportsSlug: false,
   },
@@ -131,6 +148,7 @@ export const ENTITY_CONFIG = {
   season: {
     table: "seasons",
     label: "Season",
+    activityType: "SEASON",
     supportsImage: false,
     supportsSlug: false,
     dashboardRoute: ROUTES.DASHBOARD.CONTENT.SEASONS.BASE,
@@ -139,6 +157,7 @@ export const ENTITY_CONFIG = {
   region: {
     table: "regions",
     label: "Region",
+    activityType: "REGION",
     supportsImage: false,
     supportsSlug: true,
     dashboardRoute: ROUTES.DASHBOARD.CONTENT.REGIONS.BASE,
@@ -147,6 +166,7 @@ export const ENTITY_CONFIG = {
   confederation: {
     table: "confederations",
     label: "Confederation",
+    activityType: "CONFEDERATION",
     supportsImage: true,
     supportsSlug: true,
     dashboardRoute: ROUTES.DASHBOARD.CONTENT.CONFEDERATIONS.BASE,
@@ -155,6 +175,7 @@ export const ENTITY_CONFIG = {
   competitionCategory: {
     table: "competition_categories",
     label: "Competition Category",
+    activityType: "COMPETITION_CATEGORY",
     supportsImage: false,
     supportsSlug: true,
     dashboardRoute: ROUTES.DASHBOARD.CONTENT.COMPETITIONS.CATEGORIES,
@@ -163,6 +184,7 @@ export const ENTITY_CONFIG = {
   competitionScope: {
     table: "competition_scopes",
     label: "Competition Scope",
+    activityType: "COMPETITION_SCOPE",
     supportsImage: false,
     supportsSlug: true,
     dashboardRoute: ROUTES.DASHBOARD.CONTENT.COMPETITIONS.SCOPES,
@@ -171,6 +193,7 @@ export const ENTITY_CONFIG = {
   competition: {
     table: "competitions",
     label: "Competition",
+    activityType: "COMPETITION",
     supportsImage: true,
     supportsSlug: true,
     dashboardRoute: ROUTES.DASHBOARD.CONTENT.COMPETITIONS.BASE,
@@ -181,15 +204,34 @@ export const ENTITY_CONFIG = {
   competitionSeason: {
     table: "competition_seasons",
     label: "Competition Season",
+    activityType: "COMPETITION_SEASON",
     supportsImage: false,
     supportsSlug: true,
+  },
+
+  activityLog: {
+    table: "activity_logs",
+    label: "Activity Log",
+    activityType: "ACTIVITY_LOG",
+    supportsImage: false,
+    supportsSlug: false,
   },
 } as const satisfies Record<string, EntityConfig>;
 
 export type Entity = keyof typeof ENTITY_CONFIG;
 
 export type EntityTable = (typeof ENTITY_CONFIG)[Entity]["table"];
+
 export type EntityLabel = (typeof ENTITY_CONFIG)[Entity]["label"];
+
+export type ActivityEntityType = (typeof ENTITY_CONFIG)[Entity]["activityType"];
+
+export const activityEntityTypeSchema = z.enum(
+  Object.values(ENTITY_CONFIG).map((entity) => entity.activityType) as [
+    ActivityEntityType,
+    ...ActivityEntityType[],
+  ],
+);
 
 // HOW TO USE:
 // ENTITY_CONFIG[entity].supportsImage

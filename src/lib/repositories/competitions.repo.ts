@@ -25,6 +25,9 @@ import {
 } from "../competitions/mapper";
 import { createPaginatedResponse } from "../pagination";
 import { CompetitionLookupResponse } from "@/types/competition";
+import { createEntityActivityLog } from "./activity-logs.repo";
+import { ActivityLogAction } from "@/enums/ActivityLogAction";
+import { getChangedFields } from "./helpers/get-changed-field";
 
 async function getSupabase() {
   return createClient();
@@ -255,6 +258,13 @@ export async function createCompetitionRepo(
     throw new Error("Failed to retrieve created competition");
   }
 
+  await createEntityActivityLog({
+    action: ActivityLogAction.CREATE,
+    entity: "competition",
+    entityId: result.id,
+    name: result.name,
+  });
+
   return result;
 }
 
@@ -262,12 +272,12 @@ export async function createCompetitionRepo(
  *
  * @param id
  * @param region
- * @returns CompetitionDetailResponse
+ * @returns CompetitionEditResponse
  */
 export async function updateCompetitionRepo(
   id: string,
   competition: CompetitionUpdateInput,
-): Promise<CompetitionDetailResponse> {
+): Promise<CompetitionEditResponse> {
   const supabase = await getSupabase();
 
   const oldCompetition = await requireEntity(
@@ -302,11 +312,37 @@ export async function updateCompetitionRepo(
 
   if (error) throw error;
 
-  const result = await getCompetitionDetailRepo(id);
+  const result = await getCompetitionEditRepo(id);
 
   if (!result) {
     throw new Error("Failed to retrieve updated competition");
   }
+
+  const changes = getChangedFields(oldCompetition, result, [
+    "image",
+    "name",
+    "shortName",
+    "description",
+    "foundedYear",
+    "gender",
+    "ageGroup",
+    "participantType",
+    "competitionCategoryId",
+    "competitionScopeId",
+    "confederationId",
+    "nationalityId",
+    "regionId",
+  ] as const);
+
+  await createEntityActivityLog({
+    action: ActivityLogAction.UPDATE,
+    entity: "competition",
+    entityId: result.id,
+    name: result.name,
+    metadata: {
+      changes,
+    },
+  });
 
   return result;
 }
@@ -325,4 +361,11 @@ export async function deleteCompetitionRepo(id: string): Promise<void> {
   const { error } = await supabase.from(getTable()).delete().eq("id", id);
 
   if (error) throw error;
+
+  await createEntityActivityLog({
+    action: ActivityLogAction.DELETE,
+    entity: "competition",
+    entityId: id,
+    name: competition.name,
+  });
 }

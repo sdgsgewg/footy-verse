@@ -19,6 +19,9 @@ import {
   mapRegionEditResponse,
   mapRegionListItem,
 } from "../regions/mapper";
+import { createEntityActivityLog } from "./activity-logs.repo";
+import { ActivityLogAction } from "@/enums/ActivityLogAction";
+import { getChangedFields } from "./helpers/get-changed-field";
 
 async function getSupabase() {
   return createClient();
@@ -173,13 +176,20 @@ export async function createRegionRepo(
     throw new Error("Failed to retrieve created region");
   }
 
+  await createEntityActivityLog({
+    action: ActivityLogAction.CREATE,
+    entity: "region",
+    entityId: result.id,
+    name: result.name,
+  });
+
   return result;
 }
 
 export async function updateRegionRepo(
   id: string,
   region: RegionUpdateInput,
-): Promise<RegionDetailResponse> {
+): Promise<RegionEditResponse> {
   const supabase = await getSupabase();
 
   const oldRegion = await requireEntity(getRegionEditRepo, id, getLabel());
@@ -210,11 +220,28 @@ export async function updateRegionRepo(
 
   if (error) throw error;
 
-  const result = await getRegionDetailRepo(id);
+  const result = await getRegionEditRepo(id);
 
   if (!result) {
     throw new Error("Failed to retrieve updated region");
   }
+
+  const changes = getChangedFields(oldRegion, result, [
+    "name",
+    "image",
+    "regionType",
+    "parentRegionId",
+  ] as const);
+
+  await createEntityActivityLog({
+    action: ActivityLogAction.UPDATE,
+    entity: "region",
+    entityId: result.id,
+    name: result.name,
+    metadata: {
+      changes,
+    },
+  });
 
   return result;
 }
@@ -229,4 +256,11 @@ export async function deleteRegionRepo(id: string): Promise<void> {
   const { error } = await supabase.from(getTable()).delete().eq("id", id);
 
   if (error) throw error;
+
+  await createEntityActivityLog({
+    action: ActivityLogAction.DELETE,
+    entity: "region",
+    entityId: id,
+    name: region.name,
+  });
 }

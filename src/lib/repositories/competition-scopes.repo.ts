@@ -18,6 +18,9 @@ import {
   mapCompetitionScopeEditResponse,
   mapCompetitionScopeListItem,
 } from "../competition-scopes/mapper";
+import { createEntityActivityLog } from "./activity-logs.repo";
+import { ActivityLogAction } from "@/enums/ActivityLogAction";
+import { getChangedFields } from "./helpers/get-changed-field";
 
 async function getSupabase() {
   return createClient();
@@ -161,8 +164,15 @@ export async function createCompetitionScopeRepo(
     insertedCompetitionScope.id,
   );
   if (!result) {
-    throw new Error("Failed to retrieve created competition category");
+    throw new Error("Failed to retrieve created competition scope");
   }
+
+  await createEntityActivityLog({
+    action: ActivityLogAction.CREATE,
+    entity: "competitionScope",
+    entityId: result.id,
+    name: result.name,
+  });
 
   return result;
 }
@@ -173,7 +183,11 @@ export async function updateCompetitionScopeRepo(
 ): Promise<CompetitionScopeDetailResponse> {
   const supabase = await getSupabase();
 
-  await requireEntity(getCompetitionScopeDetailRepo, id, getLabel());
+  const oldCompetitionScope = await requireEntity(
+    getCompetitionScopeDetailRepo,
+    id,
+    getLabel(),
+  );
 
   const slug = slugify(competitionScope.name);
 
@@ -192,8 +206,23 @@ export async function updateCompetitionScopeRepo(
 
   const result = await getCompetitionScopeDetailRepo(id);
   if (!result) {
-    throw new Error("Failed to retrieve updated competition category");
+    throw new Error("Failed to retrieve updated competition scope");
   }
+
+  const changes = getChangedFields(oldCompetitionScope, result, [
+    "name",
+    "description",
+  ] as const);
+
+  await createEntityActivityLog({
+    action: ActivityLogAction.UPDATE,
+    entity: "competitionScope",
+    entityId: result.id,
+    name: result.name,
+    metadata: {
+      changes,
+    },
+  });
 
   return result;
 }
@@ -201,9 +230,20 @@ export async function updateCompetitionScopeRepo(
 export async function deleteCompetitionScopeRepo(id: string): Promise<void> {
   const supabase = await getSupabase();
 
-  await requireEntity(getCompetitionScopeDetailRepo, id, getLabel());
+  const competitionScope = await requireEntity(
+    getCompetitionScopeDetailRepo,
+    id,
+    getLabel(),
+  );
 
   const { error } = await supabase.from(getTable()).delete().eq("id", id);
 
   if (error) throw error;
+
+  await createEntityActivityLog({
+    action: ActivityLogAction.DELETE,
+    entity: "competitionScope",
+    entityId: id,
+    name: competitionScope.name,
+  });
 }

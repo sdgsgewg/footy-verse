@@ -16,6 +16,9 @@ import {
   mapPositionCategoryEditResponse,
   mapPositionCategoryListItem,
 } from "../position-categories/mapper";
+import { createEntityActivityLog } from "./activity-logs.repo";
+import { ActivityLogAction } from "@/enums/ActivityLogAction";
+import { getChangedFields } from "./helpers/get-changed-field";
 
 async function getSupabase() {
   return createClient();
@@ -162,6 +165,13 @@ export async function createPositionCategoryRepo(
     throw new Error("Failed to retrieve created position category");
   }
 
+  await createEntityActivityLog({
+    action: ActivityLogAction.CREATE,
+    entity: "positionCategory",
+    entityId: result.id,
+    name: result.name,
+  });
+
   return result;
 }
 
@@ -171,7 +181,11 @@ export async function updatePositionCategoryRepo(
 ): Promise<PositionCategoryDetailResponse> {
   const supabase = await getSupabase();
 
-  await requireEntity(getPositionCategoryDetailRepo, id, getLabel());
+  const oldPositionCategory = await requireEntity(
+    getPositionCategoryDetailRepo,
+    id,
+    getLabel(),
+  );
 
   const slug = await ensureUniqueSlug({
     table: getTable(),
@@ -196,15 +210,40 @@ export async function updatePositionCategoryRepo(
     throw new Error("Failed to retrieve updated positionCategory");
   }
 
+  const changes = getChangedFields(oldPositionCategory, result, [
+    "name",
+  ] as const);
+
+  await createEntityActivityLog({
+    action: ActivityLogAction.UPDATE,
+    entity: "positionCategory",
+    entityId: result.id,
+    name: result.name,
+    metadata: {
+      changes,
+    },
+  });
+
   return result;
 }
 
 export async function deletePositionCategoryRepo(id: string): Promise<void> {
   const supabase = await getSupabase();
 
-  await requireEntity(getPositionCategoryDetailRepo, id, getLabel());
+  const positionCategory = await requireEntity(
+    getPositionCategoryDetailRepo,
+    id,
+    getLabel(),
+  );
 
   const { error } = await supabase.from(getTable()).delete().eq("id", id);
 
   if (error) throw error;
+
+  await createEntityActivityLog({
+    action: ActivityLogAction.DELETE,
+    entity: "positionCategory",
+    entityId: id,
+    name: positionCategory.name,
+  });
 }

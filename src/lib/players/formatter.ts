@@ -1,4 +1,3 @@
-import { DbPlayerDetailRow } from "@/types/player";
 import { formatDate } from "../utils/date";
 
 /**

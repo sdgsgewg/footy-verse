@@ -17,6 +17,9 @@ import {
   mapCompetitionCategoryListItem,
 } from "../competition-categories/mapper";
 import { slugify } from "@/utils/string";
+import { createEntityActivityLog } from "./activity-logs.repo";
+import { ActivityLogAction } from "@/enums/ActivityLogAction";
+import { getChangedFields } from "./helpers/get-changed-field";
 
 async function getSupabase() {
   return createClient();
@@ -163,6 +166,13 @@ export async function createCompetitionCategoryRepo(
     throw new Error("Failed to retrieve created competition category");
   }
 
+  await createEntityActivityLog({
+    action: ActivityLogAction.CREATE,
+    entity: "competitionCategory",
+    entityId: result.id,
+    name: result.name,
+  });
+
   return result;
 }
 
@@ -172,7 +182,11 @@ export async function updateCompetitionCategoryRepo(
 ): Promise<CompetitionCategoryDetailResponse> {
   const supabase = await getSupabase();
 
-  await requireEntity(getCompetitionCategoryDetailRepo, id, getLabel());
+  const oldCompetitionCategory = await requireEntity(
+    getCompetitionCategoryDetailRepo,
+    id,
+    getLabel(),
+  );
 
   const slug = slugify(competitionCategory.name);
 
@@ -194,15 +208,41 @@ export async function updateCompetitionCategoryRepo(
     throw new Error("Failed to retrieve updated competition category");
   }
 
+  const changes = getChangedFields(oldCompetitionCategory, result, [
+    "name",
+    "description",
+  ] as const);
+
+  await createEntityActivityLog({
+    action: ActivityLogAction.UPDATE,
+    entity: "competitionCategory",
+    entityId: result.id,
+    name: result.name,
+    metadata: {
+      changes,
+    },
+  });
+
   return result;
 }
 
 export async function deleteCompetitionCategoryRepo(id: string): Promise<void> {
   const supabase = await getSupabase();
 
-  await requireEntity(getCompetitionCategoryDetailRepo, id, getLabel());
+  const competitionCategory = await requireEntity(
+    getCompetitionCategoryDetailRepo,
+    id,
+    getLabel(),
+  );
 
   const { error } = await supabase.from(getTable()).delete().eq("id", id);
 
   if (error) throw error;
+
+  await createEntityActivityLog({
+    action: ActivityLogAction.DELETE,
+    entity: "competitionCategory",
+    entityId: id,
+    name: competitionCategory.name,
+  });
 }

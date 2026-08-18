@@ -24,6 +24,9 @@ import { SquadType } from "@/enums/SquadType";
 import { ClubListResponse } from "@/types/club/responses";
 import { createPaginatedResponse } from "../pagination";
 import { slugify } from "@/utils/string";
+import { createEntityActivityLog } from "./activity-logs.repo";
+import { ActivityLogAction } from "@/enums/ActivityLogAction";
+import { getChangedFields } from "./helpers/get-changed-field";
 
 async function getSupabase() {
   return createClient();
@@ -245,6 +248,13 @@ export async function createClubRepo(
     throw new Error("Failed to retrieve created club");
   }
 
+  await createEntityActivityLog({
+    action: ActivityLogAction.CREATE,
+    entity: "club",
+    entityId: result.id,
+    name: result.name,
+  });
+
   return result;
 }
 
@@ -252,12 +262,12 @@ export async function createClubRepo(
  *
  * @param id
  * @param club
- * @returns ClubDetailResponse
+ * @returns ClubEditResponse
  */
 export async function updateClubRepo(
   id: string,
   club: ClubUpdateInput,
-): Promise<ClubDetailResponse> {
+): Promise<ClubEditResponse> {
   const supabase = await getSupabase();
 
   const oldClub = await requireEntity(getClubEditRepo, id, getClubLabel());
@@ -287,10 +297,26 @@ export async function updateClubRepo(
 
   if (error) throw error;
 
-  const result = await getClubDetailRepo(id);
+  const result = await getClubEditRepo(id);
   if (!result) {
     throw new Error("Failed to retrieve updated club");
   }
+
+  const changes = getChangedFields(oldClub, result, [
+    "name",
+    "image",
+    "nationId",
+  ] as const);
+
+  await createEntityActivityLog({
+    action: ActivityLogAction.UPDATE,
+    entity: "club",
+    entityId: result.id,
+    name: result.name,
+    metadata: {
+      changes,
+    },
+  });
 
   return result;
 }
@@ -309,4 +335,11 @@ export async function deleteClubRepo(id: string): Promise<void> {
   const { error } = await supabase.from(getClubTable()).delete().eq("id", id);
 
   if (error) throw error;
+
+  await createEntityActivityLog({
+    action: ActivityLogAction.DELETE,
+    entity: "club",
+    entityId: id,
+    name: club.name,
+  });
 }

@@ -1,7 +1,7 @@
 import { GroupedPlayerListItem, PlayerListItem } from "@/types/player";
 import { useRouter } from "@/navigation";
 import { TeamType } from "@/enums/TeamType";
-import PlayerCard from "./cards/PlayerCard";
+import { PlayerCard, PlayerCardWrapper } from "./cards";
 
 interface Props {
   teamType: TeamType;
@@ -32,7 +32,7 @@ export default function PlayerList({
               {gp.category.name}
             </h2>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+            <PlayerCardWrapper>
               {gp.players.map((player) => (
                 <PlayerCard
                   key={player.id}
@@ -41,7 +41,7 @@ export default function PlayerList({
                   onNavigate={handleViewPlayer}
                 />
               ))}
-            </div>
+            </PlayerCardWrapper>
           </div>
         ))}
       </div>

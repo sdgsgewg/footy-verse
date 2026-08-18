@@ -10,6 +10,9 @@ import {
 import { ENTITY_CONFIG } from "@/config/entities";
 import { requireEntity } from "./helpers/require-entity";
 import { ensureUniqueSlug } from "./helpers/slug";
+import { createEntityActivityLog } from "./activity-logs.repo";
+import { ActivityLogAction } from "@/enums/ActivityLogAction";
+import { getChangedFields } from "./helpers/get-changed-field";
 
 async function getSupabase() {
   return createClient();
@@ -94,6 +97,13 @@ export async function createSeasonRepo(
 
   if (error) throw error;
 
+  await createEntityActivityLog({
+    action: ActivityLogAction.CREATE,
+    entity: "nationality",
+    entityId: data.id,
+    name: data.name,
+  });
+
   return data;
 }
 
@@ -103,7 +113,7 @@ export async function updateSeasonRepo(
 ): Promise<SeasonDetailResponse> {
   const supabase = await getSupabase();
 
-  await requireEntity(getSeasonByIdRepo, id, getLabel());
+  const oldSeason = await requireEntity(getSeasonByIdRepo, id, getLabel());
 
   await ensureUniqueRecord({
     table: getTable(),
@@ -123,15 +133,39 @@ export async function updateSeasonRepo(
 
   if (error) throw error;
 
+  const result = await getSeasonByIdRepo(id);
+  if (!result) {
+    throw new Error("Failed to retrieve updated season");
+  }
+
+  const changes = getChangedFields(oldSeason, result, ["name"] as const);
+
+  await createEntityActivityLog({
+    action: ActivityLogAction.UPDATE,
+    entity: "season",
+    entityId: result.id,
+    name: result.name,
+    metadata: {
+      changes,
+    },
+  });
+
   return data;
 }
 
 export async function deleteSeasonRepo(id: string): Promise<void> {
   const supabase = await getSupabase();
 
-  await requireEntity(getSeasonByIdRepo, id, getLabel());
+  const season = await requireEntity(getSeasonByIdRepo, id, getLabel());
 
   const { error } = await supabase.from(getTable()).delete().eq("id", id);
 
   if (error) throw error;
+
+  await createEntityActivityLog({
+    action: ActivityLogAction.DELETE,
+    entity: "season",
+    entityId: id,
+    name: season.name,
+  });
 }
