@@ -26,7 +26,7 @@ export default function Page() {
     search: debouncedFilters.search || undefined,
   });
 
-  const { handleCreate, handleView, handleEdit, handleDelete } =
+  const { handleCreate, handleReorder, handleView, handleEdit, handleDelete } =
     usePositionActions();
 
   const columns: DataColumn<PositionListItem>[] = [
@@ -66,6 +66,7 @@ export default function Page() {
       }
       actions={{
         onCreate: handleCreate,
+        onReorder: handleReorder,
         onView: handleView,
         onEdit: handleEdit,
         onDelete: handleDelete,

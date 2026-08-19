@@ -34,7 +34,7 @@ export function useCrudMutation<TVariables>({
         queryClient.invalidateQueries(filters);
       });
 
-      if (["playerCareer", "playerNationalTeam"].includes(entityKey)) {
+      if (["playerClubCareer", "playerNationalTeamCareer"].includes(entityKey)) {
         alert(
           `${t(`common.crud.success.${action}`, {
             entity: t(`entities.${entityKey}`),

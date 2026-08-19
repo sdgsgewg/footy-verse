@@ -6,3 +6,5 @@ export { default as SelectField } from "./SelectField";
 export { default as TextField } from "./TextField";
 export { default as TextAreaField } from "./TextAreaField";
 export { default as ImageField } from "./ImageField";
+export { default as OrderedSelectField } from "./OrderedSelectField";
+export { default as OrderedField } from "./OrderedField";

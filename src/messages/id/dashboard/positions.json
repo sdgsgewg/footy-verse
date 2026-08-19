@@ -4,12 +4,18 @@
   "form": {
     "labels": {
       "name": "Nama Posisi",
-      "category": "Kategori Posisi"
+      "category": "Kategori Posisi",
+      "positions": "Posisi"
     },
 
     "placeholders": {
       "name": "Input nama",
       "category": "Pilih Kategori"
+    },
+
+    "instructions": {
+      "selectCategoryFirst": "Pilih Kategori Posisi Terlebih Dahulu",
+      "reorderPositions": "Seret dan letakkan posisi sesuai urutan yang diinginkan"
     }
   },
 

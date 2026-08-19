@@ -6,7 +6,7 @@ import { Position } from "./database";
 
 // Position List
 
-export type PositionListItem = Pick<Position, "id" | "name" | "slug"> & {
+export type PositionListItem = Pick<Position, "id" | "name" | "slug" | "display_order"> & {
   categoryName: string;
 };
 

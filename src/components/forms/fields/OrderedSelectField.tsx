@@ -47,12 +47,9 @@ import { cn } from "@/lib/utils";
 import { useTranslations } from "next-intl";
 
 import SortableOrderedItem from "./SortableOrderedItem";
-import {
-  OrderedEntity,
-  OrderedItem,
-  OrderedSelectFieldProps,
-} from "@/types/ordered-select";
-import { normalizeOrderedValues } from "@/utils/ordered-select";
+import { OrderedEntity, OrderedItem } from "@/types/ordered";
+import { OrderedSelectFieldProps } from "@/types/ordered-select";
+import { normalizeOrderedValues } from "@/utils/ordered";
 import Image from "next/image";
 
 const OrderedSelectField = <T extends OrderedEntity>({
@@ -243,13 +240,9 @@ const OrderedSelectField = <T extends OrderedEntity>({
                 {selectedItems.map((item) => (
                   <SortableOrderedItem
                     key={item.id}
-                    position={{
-                      id: item.id,
-                      imageUrl: item.imageUrl,
-                      name: item.label,
-                      display_order: item.display_order,
-                    }}
+                    item={item}
                     disabled={disabled}
+                    showPrimary
                     onRemove={remove}
                   />
                 ))}

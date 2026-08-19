@@ -1,15 +1,5 @@
+import { OrderedEntity } from "./ordered";
 import { SelectOption } from "./select";
-
-export interface OrderedEntity {
-  display_order: number;
-}
-
-export interface OrderedItem {
-  id: string;
-  imageUrl?: string | null;
-  label: string;
-  display_order: number;
-}
 
 export interface OrderedSelectFieldProps<T extends OrderedEntity> {
   label: string;

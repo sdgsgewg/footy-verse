@@ -17,12 +17,13 @@ import { mapPositionCategoryResponse } from "../position-categories/mapper";
 export function mapPositionListItem(
   position: DbPositionListRow,
 ): PositionListItem {
-  const { id, name, slug, category } = position;
+  const { id, name, slug, display_order, category } = position;
 
   return {
     id,
     name,
     slug,
+    display_order,
     categoryName: category.name,
   };
 }

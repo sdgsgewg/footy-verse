@@ -1,6 +1,6 @@
 "use client";
 
-import { Search, Filter, PlusCircle } from "lucide-react";
+import { Search, Filter, PlusCircle, ListOrdered } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
@@ -16,6 +16,7 @@ interface CrudToolbarProps {
   onFilter?: () => void;
 
   onCreate?: () => void;
+  onReorder?: () => void;
 }
 
 export default function CrudToolbar({
@@ -29,6 +30,7 @@ export default function CrudToolbar({
   onFilter,
 
   onCreate,
+  onReorder,
 }: CrudToolbarProps) {
   const tCommon = useTranslations("common");
   const tActions = useTranslations("common.actions");
@@ -65,6 +67,14 @@ export default function CrudToolbar({
           <PlusCircle className="size-4" />
 
           {tActions("add")}
+        </Button>
+      )}
+
+      {onReorder && (
+        <Button onClick={onReorder} disabled={loading}>
+          <ListOrdered className="size-4" />
+
+          {tActions("reorder")}
         </Button>
       )}
     </div>

@@ -5,12 +5,14 @@ import {
   getPositionEditRepo,
   getPositionLookupRepo,
   getPositionsRepo,
+  reorderPositionsRepo,
   updatePositionRepo,
 } from "@/lib/repositories/positions.repo";
 import {
   positionsQuerySchema,
   createPositionSchema,
   updatePositionSchema,
+  reorderPositionsSchema,
 } from "@/lib/validations/positions.schema";
 import { idSchema, slugSchema } from "../validations/primitives.schema";
 
@@ -49,6 +51,12 @@ export async function updatePositionService(id: string, input: unknown) {
   const parsed = updatePositionSchema.parse(input);
 
   return updatePositionRepo(parsedId, parsed);
+}
+
+export async function reorderPositionsService(input: unknown) {
+  const parsed = reorderPositionsSchema.parse(input);
+
+  return reorderPositionsRepo(parsed);
 }
 
 export async function deletePositionService(id: string) {

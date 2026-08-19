@@ -8,6 +8,7 @@ import {
   PositionListItem,
   PositionLookupResponse,
   PositionUpdateInput,
+  ReorderPositionsInput,
 } from "@/types/position";
 import { createClient } from "@/utils/supabase/server";
 import { ensureUniqueSlug } from "./helpers/slug";
@@ -73,6 +74,10 @@ export async function getPositionsRepo(
 
   if (params.search) {
     query = query.ilike("name", `%${params.search}%`);
+  }
+
+  if (params.categoryId) {
+    query = query.eq("position_category_id", params.categoryId);
   }
 
   // Sort
@@ -205,7 +210,7 @@ export async function createPositionRepo(
   if (error) throw error;
 
   const result = await getPositionDetailRepo(insertedPosition.id);
-  
+
   if (!result) {
     throw new Error("Failed to retrieve created position");
   }
@@ -268,6 +273,21 @@ export async function updatePositionRepo(
   });
 
   return result;
+}
+
+export async function reorderPositionsRepo(
+  input: ReorderPositionsInput,
+): Promise<void> {
+  const supabase = await getSupabase();
+
+  const { position_category_id, position_ids } = input;
+
+  const { error } = await supabase.rpc("reorder_positions", {
+    p_position_category_id: position_category_id,
+    p_position_ids: position_ids,
+  });
+
+  if (error) throw error;
 }
 
 export async function deletePositionRepo(id: string): Promise<void> {

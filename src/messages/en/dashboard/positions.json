@@ -4,11 +4,18 @@
   "form": {
     "labels": {
       "name": "Position Name",
-      "category": "Position Category"
+      "category": "Position Category",
+      "positions": "Positions"
     },
+
     "placeholders": {
       "name": "Input name",
       "category": "Select Category"
+    },
+
+    "instructions": {
+      "selectCategoryFirst": "Select Position Category First",
+      "reorderPositions": "Drag and drop positions in the desired order"
     }
   },
 

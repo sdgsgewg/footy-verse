@@ -12,6 +12,11 @@ export const createPositionSchema = positionMutationSchema;
 
 export const updatePositionSchema = positionMutationSchema;
 
+export const reorderPositionsSchema = z.object({
+  position_category_id: idSchema,
+  position_ids: z.array(idSchema).min(1),
+});
+
 export const positionSchema = positionMutationSchema.extend({
   id: idSchema,
   slug: slugSchema,

@@ -12,7 +12,7 @@ export const CrudListPage = <TData extends DataRow>({
   columns,
   headerContent,
 
-  actions: { onCreate, onView, onEdit, onDelete },
+  actions: { onCreate, onReorder, onView, onEdit, onDelete },
 
   toolbar: { searchValue, searchPlaceholder, onSearchChange, onFilter } = {},
 
@@ -33,6 +33,7 @@ export const CrudListPage = <TData extends DataRow>({
         onSearchChange={onSearchChange}
         onFilter={onFilter}
         onCreate={onCreate}
+        onReorder={onReorder}
       />
 
       <DataTable

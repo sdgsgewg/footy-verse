@@ -71,6 +71,10 @@ export const updatePosition = async (id: string, payload: unknown) => {
   await apiClient.put(`${baseRoute}/${id}`, parsed);
 };
 
+export const reorderPositions = async (payload: unknown) => {
+  await apiClient.put(`${baseRoute}/reorder`, payload);
+};
+
 export const deletePosition = async (id: string) => {
   await apiClient.delete(`${baseRoute}/${id}`);
 };

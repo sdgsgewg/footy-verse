@@ -5,7 +5,7 @@ import { useDeletePosition } from "./useDeletePosition";
 import { PositionListItem } from "@/types/position";
 
 export function usePositionActions() {
-  const t = useTranslations("common");
+  const t = useTranslations("");
 
   const router = useRouter();
 
@@ -13,6 +13,10 @@ export function usePositionActions() {
 
   const handleCreate = () => {
     router.push(`${ROUTES.DASHBOARD.CONTENT.POSITIONS.CREATE}`);
+  };
+
+  const handleReorder = () => {
+    router.push(`${ROUTES.DASHBOARD.CONTENT.POSITIONS.BASE}/reorder`);
   };
 
   const handleView = (position: PositionListItem) => {
@@ -26,7 +30,14 @@ export function usePositionActions() {
   };
 
   const handleDelete = (position: PositionListItem) => {
-    if (!confirm(`${t("crud.confirm.delete")}`)) return;
+    if (
+      !confirm(
+        `${t("common.crud.confirm.delete", {
+          entity: t("entities.position").toLowerCase(),
+        })}`,
+      )
+    )
+      return;
 
     deleteMutation.mutate({
       id: position.id,
@@ -36,6 +47,7 @@ export function usePositionActions() {
 
   return {
     handleCreate,
+    handleReorder,
     handleView,
     handleEdit,
     handleDelete,

@@ -10,6 +10,7 @@ import {
   DateField,
   ImageField,
   NumberField,
+  OrderedSelectField,
   SelectField,
   TextField,
 } from "../fields";
@@ -17,7 +18,6 @@ import { useTranslations } from "next-intl";
 import { getPreferredFootOptions } from "@/lib/players/options";
 import { PreferredFoot } from "@/enums/PreferredFoot";
 import { getPositionOptions } from "@/lib/positions/options";
-import OrderedSelectField from "../fields/OrderedSelectField";
 import { useNationalityOptions } from "@/hooks/nationalities";
 
 interface Props {

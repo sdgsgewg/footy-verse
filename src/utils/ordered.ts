@@ -1,4 +1,4 @@
-import { OrderedEntity } from "@/types/ordered-select";
+import { OrderedEntity } from "@/types/ordered";
 
 export function normalizeOrderedValues<T extends OrderedEntity>(
   values: T[],

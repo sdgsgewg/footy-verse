@@ -44,7 +44,7 @@ export interface CrudPageFormProps<TForm extends CrudForm> {
 
 // Mutation
 
-export type CrudAction = "create" | "edit" | "update" | "delete";
+export type CrudAction = "create" | "edit" | "update" | "reorder" | "delete";
 
 export interface CrudMutationOptions<TVariables> {
   mutationFn: (variables: TVariables) => Promise<unknown>;
@@ -84,6 +84,7 @@ export interface CrudFormProps<T extends CrudForm> {
 
 export interface CrudActions<T extends DataRow> {
   onCreate?: () => void;
+  onReorder?: () => void;
 
   onView?: (item: T) => void;
   onEdit: (item: T) => void;

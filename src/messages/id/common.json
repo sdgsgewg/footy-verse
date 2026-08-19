@@ -11,19 +11,25 @@
     "edit": {
       "title": "Edit {entity} {entityName}",
       "subtitle": "Edit {entity}"
+    },
+    "reorder": {
+      "title": "Urutkan {entity}",
+      "subtitle": "Urutkan {entity}"
     }
   },
 
   "crud": {
     "success": {
-      "create": "Berhasil menambahkan {entity}.",
-      "update": "Berhasil memperbarui {entity}.",
-      "delete": "Berhasil menghapus {entity}."
+      "create": "Berhasil menambahkan {entity}",
+      "update": "Berhasil memperbarui {entity}",
+      "reorder": "Berhasil mengurutkan {entity}",
+      "delete": "Berhasil menghapus {entity}"
     },
 
     "error": {
       "create": "Gagal menambahkan {entity}.",
       "update": "Gagal memperbarui {entity}.",
+      "reorder": "Gagal mengurutkan {entity}.",
       "delete": "Gagal menghapus {entity}.",
       "duplicate": "{entity} dengan nama ini sudah ada."
     },
@@ -59,6 +65,7 @@
   "actions": {
     "add": "Tambah",
     "create": "Buat",
+    "reorder": "Urutkan",
     "view": "Lihat",
     "update": "Perbarui",
     "edit": "Edit",

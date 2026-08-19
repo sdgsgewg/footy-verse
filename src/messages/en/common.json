@@ -11,6 +11,10 @@
     "edit": {
       "title": "Edit {entity} {entityName}",
       "subtitle": "Edit {entity}"
+    },
+    "reorder": {
+      "title": "Reorder {entity}",
+      "subtitle": "Reorder {entity}"
     }
   },
 
@@ -18,12 +22,14 @@
     "success": {
       "create": "Successfully created {entity}",
       "update": "Successfully updated {entity}",
+      "reorder": "Successfully reordered {entity}",
       "delete": "Successfully deleted {entity}"
     },
 
     "error": {
       "create": "Failed to add {entity}.",
       "update": "Failed to update {entity}.",
+      "reorder": "Failed to reorder {entity}.",
       "delete": "Failed to delete {entity}.",
       "duplicate": "A {entity} with this name already exists."
     },
@@ -59,6 +65,7 @@
   "actions": {
     "add": "Add",
     "create": "Create",
+    "reorder": "Reorder",
     "view": "View",
     "update": "Update",
     "edit": "Edit",
