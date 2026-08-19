@@ -3,7 +3,7 @@
 
   "form": {
     "labels": {
-      "name": "Nama Kategori Posisi"
+      "name": "Nama"
     },
     "placeholders": {
       "name": "Masukkan nama"

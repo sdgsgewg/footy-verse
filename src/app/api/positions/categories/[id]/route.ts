@@ -76,6 +76,7 @@ export async function DELETE(
 
     return noContentResponse();
   } catch (error: unknown) {
+    console.error(error);
     return errorResponse(error);
   }
 }

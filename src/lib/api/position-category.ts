@@ -69,9 +69,9 @@ export const createPositionCategory = async (payload: unknown) => {
 
 export const updatePositionCategory = async (id: string, payload: unknown) => {
   const parsed = updatePositionCategorySchema.parse(payload); // validation
-  await apiClient.put(`${baseRoute}}/${id}`, parsed);
+  await apiClient.put(`${baseRoute}/${id}`, parsed);
 };
 
 export const deletePositionCategory = async (id: string) => {
-  await apiClient.delete(`${baseRoute}}/${id}`);
+  await apiClient.delete(`${baseRoute}/${id}`);
 };

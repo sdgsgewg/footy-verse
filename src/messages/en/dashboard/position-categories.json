@@ -3,7 +3,7 @@
 
   "form": {
     "labels": {
-      "name": "Position Category Name"
+      "name": "Name"
     },
     "placeholders": {
       "name": "Input name"

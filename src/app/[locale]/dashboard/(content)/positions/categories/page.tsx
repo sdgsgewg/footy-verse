@@ -3,19 +3,20 @@
 import ConnectionErrorAlert from "@/components/feedback/ConnectionErrorAlert";
 import { isLikelyConnectionError } from "@/lib/utils/connection-error";
 import { useTranslations } from "next-intl";
-import { CrudListPage } from "@/components/templates/crud";
+import { CrudFormTablePage } from "@/components/templates/crud";
 import { DataColumn } from "@/types/table";
 import { createSortHandler } from "@/lib/utils/crud";
 import { useCrudFilterSync } from "@/hooks/crud";
 import usePositionCategoryFilter from "@/hooks/position-categories/usePositionCategoryFilter";
 import {
   usePositionCategories,
-  usePositionCategoryActions,
+  usePositionCategoryData,
 } from "@/hooks/dashboard/position-categories";
 import { PositionCategoryListItem } from "@/types/position-category";
 import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
 
 export default function Page() {
+  const t = useTranslations("dashboard.positionCategories");
   const tCommon = useTranslations("common");
   const tColumn = useTranslations("dashboard.positionCategories.columns");
 
@@ -30,8 +31,18 @@ export default function Page() {
       search: debouncedFilters.search || undefined,
     });
 
-  const { handleCreate, handleView, handleEdit, handleDelete } =
-    usePositionCategoryActions();
+  const {
+    isEditing,
+    buttonText,
+    isSubmitting,
+    form,
+    setForm,
+    canSubmit,
+    handleSubmit,
+    handleEdit,
+    handleDelete,
+    resetForm,
+  } = usePositionCategoryData();
 
   const columns: DataColumn<PositionCategoryListItem>[] = [
     {
@@ -52,7 +63,7 @@ export default function Page() {
   useCrudFilterSync(debouncedFilters, syncUrl);
 
   return (
-    <CrudListPage
+    <CrudFormTablePage
       title={getTitle("list", "positionCategory")}
       loading={loading}
       data={positionCategories}
@@ -62,9 +73,26 @@ export default function Page() {
           <ConnectionErrorAlert retrying={retrying} onRetry={retryLoad} />
         ) : undefined
       }
+      form={{
+        formFields: [
+          {
+            name: "name",
+            label: t("form.labels.name"),
+            placeholder: t("form.placeholders.name"),
+            type: "text",
+            required: true,
+          },
+        ],
+        form: form,
+        setForm: setForm,
+        canSubmit: canSubmit,
+        onSubmit: handleSubmit,
+        isEditing: isEditing,
+        isSubmitting: isSubmitting,
+        buttonText: buttonText,
+        resetForm: resetForm,
+      }}
       actions={{
-        onCreate: handleCreate,
-        onView: handleView,
         onEdit: handleEdit,
         onDelete: handleDelete,
       }}

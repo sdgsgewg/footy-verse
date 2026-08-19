@@ -150,9 +150,21 @@ export async function createPositionCategoryRepo(
     name: positionCategory.name,
   });
 
+  const { data: lastPositionCategory, error: lastPositionCategoryError } =
+    await supabase
+      .from(getTable())
+      .select("display_order")
+      .order("display_order", { ascending: false })
+      .limit(1)
+      .single();
+
+  if (lastPositionCategoryError) throw lastPositionCategoryError;
+
+  const displayOrder = lastPositionCategory.display_order + 1;
+
   const { data: insertedPositionCategory, error } = await supabase
     .from(getTable())
-    .insert({ ...positionCategory, slug })
+    .insert({ ...positionCategory, slug, display_order: displayOrder })
     .select("*")
     .single();
 
