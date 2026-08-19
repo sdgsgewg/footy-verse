@@ -9,10 +9,10 @@ import PlayerShirtNumber from "@/components/players/sections/PlayerShirtNumber";
 interface Props {
   title: string;
   player: PlayerDetailResponse;
-  backHref?: string;
+  returnTo?: string;
 }
 
-const PlayerDetailPageLayout = ({ title, player, backHref }: Props) => {
+const PlayerDetailPageLayout = ({ title, player, returnTo }: Props) => {
   const { summary: playerSummaryData } = player;
 
   const summary = <PlayerSummary summary={playerSummaryData} />;
@@ -38,7 +38,7 @@ const PlayerDetailPageLayout = ({ title, player, backHref }: Props) => {
       title={title}
       summary={summary}
       content={content}
-      backHref={backHref}
+      returnTo={returnTo}
     />
   );
 };

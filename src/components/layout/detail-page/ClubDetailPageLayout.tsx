@@ -5,16 +5,16 @@ interface Props {
   title: string;
   summary: React.ReactNode;
   content: React.ReactNode;
-  backHref?: string;
+  returnTo?: string;
 }
 
-const ClubDetailPageLayout = ({ title, summary, content, backHref }: Props) => {
+const ClubDetailPageLayout = ({ title, summary, content, returnTo }: Props) => {
   return (
     <DetailPageLayout
       title={title}
       summary={summary}
       content={content}
-      backHref={backHref}
+      returnTo={returnTo}
     />
   );
 };

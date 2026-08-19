@@ -19,7 +19,7 @@ export default async function Page({
   return (
     <ClubDetailPage
       clubLookup={clubLookup}
-      backHref={ROUTES.DASHBOARD.CONTENT.CLUBS.BASE}
+      returnTo={ROUTES.DASHBOARD.CONTENT.CLUBS.BASE}
     />
   );
 }

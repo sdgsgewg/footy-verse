@@ -9,14 +9,14 @@ interface Props {
   }>;
 
   searchParams: Promise<{
-    backHref?: string;
+    returnTo?: string;
   }>;
 }
 
 export default async function Page({ params, searchParams }: Props) {
   const { playerSlug } = await params;
 
-  const { backHref } = await searchParams;
+  const { returnTo } = await searchParams;
 
   const playerLookup = await getPlayerLookupService(playerSlug);
 
@@ -27,7 +27,7 @@ export default async function Page({ params, searchParams }: Props) {
   return (
     <EditPlayerPage
       playerLookup={playerLookup}
-      redirectTo={backHref ?? ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}
+      redirectTo={returnTo ?? ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}
     />
   );
 }

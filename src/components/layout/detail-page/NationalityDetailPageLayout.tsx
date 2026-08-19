@@ -5,21 +5,21 @@ interface Props {
   title: string;
   summary: React.ReactNode;
   content: React.ReactNode;
-  backHref?: string;
+  returnTo?: string;
 }
 
 const NationalityDetailPageLayout = ({
   title,
   summary,
   content,
-  backHref,
+  returnTo,
 }: Props) => {
   return (
     <DetailPageLayout
       title={title}
       summary={summary}
       content={content}
-      backHref={backHref}
+      returnTo={returnTo}
     />
   );
 };

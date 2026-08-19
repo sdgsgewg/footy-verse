@@ -16,10 +16,10 @@ import NationalitySummary from "@/components/nationalities/summary/NationalitySu
 
 interface Props {
   nationalityLookup: NationalityLookupResponse;
-  backHref?: string;
+  returnTo?: string;
 }
 
-const NationalityDetailPage = ({ nationalityLookup, backHref }: Props) => {
+const NationalityDetailPage = ({ nationalityLookup, returnTo }: Props) => {
   const { nationSlug } = useParams() as {
     nationSlug: string;
   };
@@ -78,7 +78,7 @@ const NationalityDetailPage = ({ nationalityLookup, backHref }: Props) => {
       title={name}
       summary={summary}
       content={content}
-      backHref={backHref}
+      returnTo={returnTo}
     />
   );
 };

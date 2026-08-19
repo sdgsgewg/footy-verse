@@ -7,7 +7,7 @@ interface Props {
   title: string;
   summary: React.ReactNode;
   content: React.ReactNode;
-  backHref?: string;
+  returnTo?: string;
   onBack?: () => void;
 }
 
@@ -15,7 +15,7 @@ const DetailPageLayout = ({
   title,
   summary,
   content,
-  backHref,
+  returnTo,
   onBack,
 }: Props) => {
   const router = useRouter();
@@ -27,8 +27,8 @@ const DetailPageLayout = ({
       return;
     }
 
-    if (backHref) {
-      router.push(backHref);
+    if (returnTo) {
+      router.push(returnTo);
       return;
     }
 

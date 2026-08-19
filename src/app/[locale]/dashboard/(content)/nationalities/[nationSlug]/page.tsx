@@ -19,7 +19,7 @@ export default async function Page({
   return (
     <NationalityDetailPage
       nationalityLookup={nationalityLookup}
-      backHref={ROUTES.DASHBOARD.CONTENT.NATIONALITIES.BASE}
+      returnTo={ROUTES.DASHBOARD.CONTENT.NATIONALITIES.BASE}
     />
   );
 }

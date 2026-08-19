@@ -19,7 +19,7 @@ export default async function Page({
   return (
     <CompetitionDetailPage
       competitionLookup={competitionLookup}
-      backHref={ROUTES.DASHBOARD.CONTENT.COMPETITIONS.BASE}
+      returnTo={ROUTES.DASHBOARD.CONTENT.COMPETITIONS.BASE}
     />
   );
 }

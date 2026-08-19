@@ -16,10 +16,10 @@ import ClubSummary from "@/components/clubs/summary/ClubSummary";
 
 interface Props {
   clubLookup: ClubLookupResponse;
-  backHref?: string;
+  returnTo?: string;
 }
 
-const ClubDetailPage = ({ clubLookup, backHref }: Props) => {
+const ClubDetailPage = ({ clubLookup, returnTo }: Props) => {
   const { clubSlug } = useParams() as {
     clubSlug: string;
   };
@@ -77,7 +77,7 @@ const ClubDetailPage = ({ clubLookup, backHref }: Props) => {
       title={name}
       summary={summary}
       content={content}
-      backHref={backHref}
+      returnTo={returnTo}
     />
   );
 };

@@ -5,13 +5,13 @@ import { CompetitionDetailResponse } from "@/types/competition";
 interface Props {
   title: string;
   competition: CompetitionDetailResponse;
-  backHref?: string;
+  returnTo?: string;
 }
 
 const CompetitionDetailPageLayout = ({
   title,
   competition,
-  backHref,
+  returnTo,
 }: Props) => {
   const summary = <CompetitionSummary competition={competition} />;
 
@@ -22,7 +22,7 @@ const CompetitionDetailPageLayout = ({
       title={title}
       summary={summary}
       content={content}
-      backHref={backHref}
+      returnTo={returnTo}
     />
   );
 };

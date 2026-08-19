@@ -8,12 +8,12 @@ import CompetitionDetailPageLayout from "../layout/detail-page/CompetitionDetail
 
 interface Props {
   competitionLookup: CompetitionLookupResponse;
-  backHref?: string;
+  returnTo?: string;
 }
 
 export default function CompetitionDetailPage({
   competitionLookup,
-  backHref,
+  returnTo,
 }: Props) {
   const { competition, isLoading, error, refetch } = useCompetitionDetail(
     competitionLookup.id,
@@ -37,7 +37,7 @@ export default function CompetitionDetailPage({
     <CompetitionDetailPageLayout
       title={name}
       competition={competition}
-      backHref={backHref}
+      returnTo={returnTo}
     />
   );
 }

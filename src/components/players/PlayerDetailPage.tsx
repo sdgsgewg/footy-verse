@@ -8,10 +8,10 @@ import ErrorState from "../feedback/ErrorState";
 
 interface Props {
   playerLookup: PlayerLookupResponse;
-  backHref?: string;
+  returnTo?: string;
 }
 
-export default function PlayerDetailPage({ playerLookup, backHref }: Props) {
+export default function PlayerDetailPage({ playerLookup, returnTo }: Props) {
   const { player, isLoading, error, refetch } = usePlayerDetail(
     playerLookup.id,
   );
@@ -34,6 +34,6 @@ export default function PlayerDetailPage({ playerLookup, backHref }: Props) {
   const { name } = player;
 
   return (
-    <PlayerDetailPageLayout title={name} player={player} backHref={backHref} />
+    <PlayerDetailPageLayout title={name} player={player} returnTo={returnTo} />
   );
 }
