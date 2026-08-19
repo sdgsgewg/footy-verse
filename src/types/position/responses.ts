@@ -1,8 +1,8 @@
-// API Response DTO
-
 import { PaginatedResponse } from "../api";
 import { PositionCategoryResponse } from "../position-category";
 import { Position } from "./database";
+
+// API Response DTO
 
 // Position List
 
@@ -30,6 +30,6 @@ export type PositionDetailResponse = Pick<Position, "id" | "name"> & {
 
 export type PositionResponse = Pick<Position, "id" | "name"> & {
   displayOrder: number;
-  
+
   category: PositionCategoryResponse;
 };

@@ -184,15 +184,28 @@ export async function createPositionRepo(
     name: position.name,
   });
 
+  const { data: lastPosition, error: lastPositionError } = await supabase
+    .from(getPositionTable())
+    .select("display_order")
+    .eq("position_category_id", position.position_category_id)
+    .order("display_order", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+
+  if (lastPositionError) throw lastPositionError;
+
+  const displayOrder = (lastPosition?.display_order ?? 0) + 1;
+
   const { data: insertedPosition, error } = await supabase
     .from(getPositionTable())
-    .insert({ ...position, slug })
+    .insert({ ...position, slug, display_order: displayOrder })
     .select("*")
     .single();
 
   if (error) throw error;
 
   const result = await getPositionDetailRepo(insertedPosition.id);
+  
   if (!result) {
     throw new Error("Failed to retrieve created position");
   }
