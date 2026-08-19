@@ -18,7 +18,7 @@ const ClubFilter = ({ clubTeams, filters, setFilter }: Props) => {
   const clubTeamOptions = getClubTeamOptions(clubTeams);
 
   return (
-    <div>
+    <div className="flex">
       <SelectField
         label={`Club Teams`}
         name="club_teams"

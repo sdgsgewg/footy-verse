@@ -20,7 +20,7 @@ const NationalityFilter = ({ nationalTeams, filters, setFilter }: Props) => {
   const nationalTeamOptions = getNationalTeamOptions(nationalTeams);
 
   return (
-    <div>
+    <div className="flex">
       <SelectField
         label="National Teams"
         name="national_teams"
