@@ -60,6 +60,7 @@ const CreatePlayerNationalTeamCareerForm = ({
           title={tForm("title")}
           noData={tForm("noData")}
           items={form ?? []}
+          minItems={1}
           createItem={() => ({
             national_team_id: "",
 

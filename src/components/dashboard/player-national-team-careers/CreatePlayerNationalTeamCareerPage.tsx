@@ -12,6 +12,8 @@ import CreatePlayerNationalTeamCareerForm from "@/components/forms/player-nation
 import TableFormLayout from "@/components/layout/dashboard/TableFormLayout";
 import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
 import { PlayerNationalTeamCareerHistoryTable } from "@/components/players/table";
+import { useRouter } from "@/navigation";
+import { ROUTES } from "@/constants/routes";
 
 interface Props {
   playerLookup: PlayerLookupResponse;
@@ -20,6 +22,8 @@ interface Props {
 export default function CreatePlayerNationalTeamCareerPage({
   playerLookup,
 }: Props) {
+  const router = useRouter();
+
   const { getTitle } = useCrudPageTitle();
 
   const { player, isLoading, error, refetch } = usePlayerDetail(
@@ -48,6 +52,10 @@ export default function CreatePlayerNationalTeamCareerPage({
     return <ErrorState onRetry={() => void refetch()} />;
   }
 
+  const handleNavigateBack = () => {
+    router.push(`${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${player.slug}`);
+  };
+
   return (
     <TableFormLayout
       title={getTitle("create", "playerNationalTeamCareer", `${player.name}`)}
@@ -68,6 +76,7 @@ export default function CreatePlayerNationalTeamCareerPage({
           }
         />
       }
+      onBack={handleNavigateBack}
     />
   );
 }

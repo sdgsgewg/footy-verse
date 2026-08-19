@@ -30,7 +30,7 @@ const PlayerNationalTeamCareerHistoryTable = ({
 
   const locale = useLocale();
 
-  const { handleView, handleEdit, handleDelete } =
+  const { handleEdit, handleDelete } =
     usePlayerNationalTeamCareerActions(playerSlug);
 
   const columns: DataColumn<PlayerNationalTeamCareerListItem>[] = [
@@ -66,11 +66,6 @@ const PlayerNationalTeamCareerHistoryTable = ({
       columns={columns}
       loading={loading}
       showActions
-      onView={
-        showActions
-          ? (pnt: PlayerNationalTeamCareerListItem) => handleView(pnt.id)
-          : undefined
-      }
       onEdit={
         showActions
           ? (pnt: PlayerNationalTeamCareerListItem) => handleEdit(pnt.id)

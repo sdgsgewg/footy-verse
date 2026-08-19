@@ -10,12 +10,16 @@ import TableFormLayout from "@/components/layout/dashboard/TableFormLayout";
 import { usePlayerClubCareers } from "@/hooks/dashboard/player-club-careers";
 import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
 import { PlayerClubCareerHistoryTable } from "@/components/players/table";
+import { useRouter } from "@/navigation";
+import { ROUTES } from "@/constants/routes";
 
 interface Props {
   playerLookup: PlayerLookupResponse;
 }
 
 export default function CreatePlayerClubCareerPage({ playerLookup }: Props) {
+  const router = useRouter();
+
   const { getTitle } = useCrudPageTitle();
 
   const { player, isLoading, error, refetch } = usePlayerDetail(
@@ -43,12 +47,18 @@ export default function CreatePlayerClubCareerPage({ playerLookup }: Props) {
     return <ErrorState onRetry={() => void refetch()} />;
   }
 
+  const handleNavigateBack = () => {
+    router.push(`${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${player.slug}`);
+  };
+
   return (
     <TableFormLayout
       title={getTitle("create", "playerClubCareer", `${player.name}`)}
       columns={1}
       tableTitle="Career History"
-      table={<PlayerClubCareerHistoryTable playerClubCareers={playerClubCareers} />}
+      table={
+        <PlayerClubCareerHistoryTable playerClubCareers={playerClubCareers} />
+      }
       form={
         <PlayerClubCareerForm
           mode="create"
@@ -60,6 +70,7 @@ export default function CreatePlayerClubCareerPage({ playerLookup }: Props) {
           }
         />
       }
+      onBack={handleNavigateBack}
     />
   );
 }

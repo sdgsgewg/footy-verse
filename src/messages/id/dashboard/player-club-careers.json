@@ -79,18 +79,18 @@
         "transferType": "Pilih Tipe Transfer",
         "transferFee": "Masukkan Biaya Transfer",
         "transferDate": "Pilih Tanggal Transfer"
-      },
+      }
+    },
 
-      "options": {
-        "transferType": {
-          "transfer": "Transfer",
-          "loan": "Pinjaman",
-          "loanReturn": "Kembali dari Pinjaman",
-          "free": "Gratis",
-          "released": "Dilepas",
-          "youthPromotion": "Promosi dari Tim Muda",
-          "retired": "Pensiun"
-        }
+    "options": {
+      "transferType": {
+        "transfer": "Transfer",
+        "loan": "Pinjaman",
+        "loanReturn": "Kembali dari Pinjaman",
+        "free": "Gratis",
+        "released": "Dilepas",
+        "youthPromotion": "Promosi dari Tim Muda",
+        "retired": "Pensiun"
       }
     }
   },

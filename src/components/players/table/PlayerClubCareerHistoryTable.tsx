@@ -28,7 +28,7 @@ const PlayerClubCareerHistoryTable = ({
 
   const locale = useLocale();
 
-  const { handleView, handleEdit, handleDelete } =
+  const { handleEdit, handleDelete } =
     usePlayerClubCareerActions(playerSlug);
 
   const columns: DataColumn<PlayerClubCareerListItem>[] = [
@@ -64,11 +64,6 @@ const PlayerClubCareerHistoryTable = ({
       columns={columns}
       loading={loading}
       showActions
-      onView={
-        showActions
-          ? (pc: PlayerClubCareerListItem) => handleView(pc.id)
-          : undefined
-      }
       onEdit={
         showActions
           ? (pc: PlayerClubCareerListItem) => handleEdit(pc.id)

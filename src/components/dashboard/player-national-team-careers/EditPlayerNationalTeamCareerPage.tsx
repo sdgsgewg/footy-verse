@@ -14,6 +14,8 @@ import TableFormLayout from "@/components/layout/dashboard/TableFormLayout";
 import { PlayerNationalTeamCareerLookupResponse } from "@/types/player-national-team-career";
 import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
 import { PlayerNationalTeamCareerHistoryTable } from "@/components/players/table";
+import { useRouter } from "@/navigation";
+import { ROUTES } from "@/constants/routes";
 
 interface Props {
   playerLookup: PlayerLookupResponse;
@@ -24,6 +26,8 @@ export default function EditPlayerNationalTeamCareerPage({
   playerLookup,
   playerNationalTeamLookup,
 }: Props) {
+  const router = useRouter();
+
   const { getTitle } = useCrudPageTitle();
 
   const { player } = usePlayerDetail(playerLookup.id);
@@ -66,6 +70,10 @@ export default function EditPlayerNationalTeamCareerPage({
     return <ErrorState onRetry={() => void refetch()} />;
   }
 
+  const handleNavigateBack = () => {
+    router.push(`${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${player.slug}`);
+  };
+
   return (
     <TableFormLayout
       title={getTitle("edit", "playerNationalTeamCareer", `${player.name}`)}
@@ -88,6 +96,7 @@ export default function EditPlayerNationalTeamCareerPage({
           }
         />
       }
+      onBack={handleNavigateBack}
     />
   );
 }
