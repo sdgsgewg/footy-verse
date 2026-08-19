@@ -61,8 +61,8 @@ function mapCompetition(
 
     image,
     imageUrl: getImageUrl(
-      "confederation",
-      STORAGE_BUCKETS.CONFEDERATIONS,
+      "competition",
+      STORAGE_BUCKETS.COMPETITIONS,
       image,
     ),
     imageFile: null,
