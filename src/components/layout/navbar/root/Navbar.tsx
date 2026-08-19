@@ -21,7 +21,7 @@ const Navbar = () => {
   const closeMobileMenu = () => setMobileMenuOpen(false);
 
   return (
-    <header>
+    <>
       <nav className="border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60 sticky top-0 z-50">
         <div className="flex h-16 items-center px-4 lg:container lg:mx-auto justify-between">
           <div className="flex items-center">
@@ -68,7 +68,7 @@ const Navbar = () => {
         pathname={pathname}
         onClose={closeMobileMenu}
       />
-    </header>
+    </>
   );
 };
 
