@@ -10,12 +10,16 @@ import { useNationalTeamSubmit } from "@/hooks/dashboard/national-teams";
 import NationalTeamTable from "@/components/nationalities/table/NationalTeamTable";
 import NationalTeamForm from "@/components/forms/national-teams/NationalTeamForm";
 import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
+import { useRouter } from "@/navigation";
+import { ROUTES } from "@/constants/routes";
 
 interface Props {
   nationLookup: NationalityLookupResponse;
 }
 
 export default function CreateNationalTeamPage({ nationLookup }: Props) {
+  const router = useRouter();
+
   const { getTitle } = useCrudPageTitle();
 
   const { nationality, isLoading, error, refetch } = useNationalityDetail(
@@ -40,6 +44,12 @@ export default function CreateNationalTeamPage({ nationLookup }: Props) {
     return <ErrorState onRetry={() => void refetch()} />;
   }
 
+  const handleNavigateBack = () => {
+    router.push(
+      `${ROUTES.DASHBOARD.CONTENT.NATIONALITIES.BASE}/${nationality.slug}`,
+    );
+  };
+
   return (
     <TableFormLayout
       title={getTitle("create", "nationalTeam", `${nationality.name}`)}
@@ -57,6 +67,7 @@ export default function CreateNationalTeamPage({ nationLookup }: Props) {
           }
         />
       }
+      onBack={handleNavigateBack}
     />
   );
 }

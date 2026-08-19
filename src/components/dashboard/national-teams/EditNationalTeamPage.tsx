@@ -14,6 +14,8 @@ import { useNationalTeams } from "@/hooks/national-teams";
 import NationalTeamTable from "@/components/nationalities/table/NationalTeamTable";
 import NationalTeamForm from "@/components/forms/national-teams/NationalTeamForm";
 import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
+import { useRouter } from "@/navigation";
+import { ROUTES } from "@/constants/routes";
 
 interface Props {
   nationLookup: NationalityLookupResponse;
@@ -21,6 +23,8 @@ interface Props {
 }
 
 const EditNationalTeamPage = ({ nationLookup, nationalTeamLookup }: Props) => {
+  const router = useRouter();
+
   const { getTitle } = useCrudPageTitle();
 
   const { nationality } = useNationalityDetail(nationLookup.id);
@@ -58,6 +62,12 @@ const EditNationalTeamPage = ({ nationLookup, nationalTeamLookup }: Props) => {
     return <ErrorState onRetry={() => void refetch()} />;
   }
 
+  const handleNavigateBack = () => {
+    router.push(
+      `${ROUTES.DASHBOARD.CONTENT.NATIONALITIES.BASE}/${nationality.slug}`,
+    );
+  };
+
   return (
     <TableFormLayout
       title={getTitle("edit", "nationalTeam", `${nationality.name}`)}
@@ -77,6 +87,7 @@ const EditNationalTeamPage = ({ nationLookup, nationalTeamLookup }: Props) => {
           }
         />
       }
+      onBack={handleNavigateBack}
     />
   );
 };

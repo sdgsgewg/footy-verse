@@ -1,3 +1,5 @@
+"use client";
+
 import EntityLoading from "@/components/feedback/loading/EntityLoading";
 import ErrorState from "@/components/feedback/ErrorState";
 import { useClubDetail } from "@/hooks/dashboard/clubs";
@@ -12,6 +14,8 @@ import TableFormLayout from "@/components/layout/dashboard/TableFormLayout";
 import ClubTeamForm from "@/components/forms/club-teams/ClubTeamForm";
 import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
 import { ClubTeamTable } from "@/components/clubs/table";
+import { useRouter } from "@/navigation";
+import { ROUTES } from "@/constants/routes";
 
 interface Props {
   clubLookup: ClubLookupResponse;
@@ -19,6 +23,8 @@ interface Props {
 }
 
 const EditClubTeamPage = ({ clubLookup, clubTeamLookup }: Props) => {
+  const router = useRouter();
+
   const { getTitle } = useCrudPageTitle();
 
   const { club } = useClubDetail(clubLookup.id);
@@ -56,6 +62,10 @@ const EditClubTeamPage = ({ clubLookup, clubTeamLookup }: Props) => {
     return <ErrorState onRetry={() => void refetch()} />;
   }
 
+  const handleNavigateBack = () => {
+    router.push(`${ROUTES.DASHBOARD.CONTENT.CLUBS.BASE}/${club.slug}`);
+  };
+
   return (
     <TableFormLayout
       title={getTitle("edit", "clubTeam", `${club.name}`)}
@@ -75,6 +85,7 @@ const EditClubTeamPage = ({ clubLookup, clubTeamLookup }: Props) => {
           }
         />
       }
+      onBack={handleNavigateBack}
     />
   );
 };

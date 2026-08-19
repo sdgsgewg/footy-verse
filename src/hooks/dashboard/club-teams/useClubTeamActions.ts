@@ -26,7 +26,7 @@ export function useClubTeamActions(clubSlug: string) {
 
   const handleEdit = (teamId: string) => {
     router.push(
-      `${ROUTES.DASHBOARD.CONTENT.CLUBS}/${clubSlug}/teams/${teamId}/edit`,
+      `${ROUTES.DASHBOARD.CONTENT.CLUBS.BASE}/${clubSlug}/teams/${teamId}/edit`,
     );
   };
 

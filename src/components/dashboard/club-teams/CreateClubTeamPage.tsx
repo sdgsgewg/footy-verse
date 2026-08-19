@@ -10,12 +10,16 @@ import TableFormLayout from "@/components/layout/dashboard/TableFormLayout";
 import ClubTeamForm from "@/components/forms/club-teams/ClubTeamForm";
 import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
 import { ClubTeamTable } from "@/components/clubs/table";
+import { useRouter } from "@/navigation";
+import { ROUTES } from "@/constants/routes";
 
 interface Props {
   clubLookup: ClubLookupResponse;
 }
 
 export default function CreateClubTeamPage({ clubLookup }: Props) {
+  const router = useRouter();
+
   const { getTitle } = useCrudPageTitle();
 
   const { club, isLoading, error, refetch } = useClubDetail(clubLookup.id);
@@ -38,6 +42,10 @@ export default function CreateClubTeamPage({ clubLookup }: Props) {
     return <ErrorState onRetry={() => void refetch()} />;
   }
 
+  const handleNavigateBack = () => {
+    router.push(`${ROUTES.DASHBOARD.CONTENT.CLUBS.BASE}/${club.slug}`);
+  };
+
   return (
     <TableFormLayout
       title={getTitle("create", "clubTeam", `${club.name}`)}
@@ -55,6 +63,7 @@ export default function CreateClubTeamPage({ clubLookup }: Props) {
           }
         />
       }
+      onBack={handleNavigateBack}
     />
   );
 }
