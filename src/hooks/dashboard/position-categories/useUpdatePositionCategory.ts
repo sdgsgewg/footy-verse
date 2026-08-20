@@ -5,6 +5,7 @@ import { positionCategoryKeys } from "@/lib/react-query/keys/positionCategoryKey
 interface UpdatePositionCategoryPayload {
   id: string;
   data: unknown;
+  
 }
 
 export function useUpdatePositionCategory(onSuccess?: () => void) {
@@ -16,8 +17,6 @@ export function useUpdatePositionCategory(onSuccess?: () => void) {
       { queryKey: positionCategoryKeys.details() },
       { queryKey: positionCategoryKeys.edits() },
     ],
-
-    // redirectTo: ROUTES.DASHBOARD.CONTENT.POSITIONS.CATEGORIES.BASE,
 
     entityKey: "positionCategory",
 

@@ -5,6 +5,7 @@ import { CrudFormTablePage } from "@/components/templates/crud";
 import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
 import { useCrudFilterSync } from "@/hooks/crud";
 import {
+  useCompetitionScopeActions,
   useCompetitionScopeData,
   useCompetitionScopes,
 } from "@/hooks/dashboard/competition-scopes";
@@ -39,9 +40,10 @@ export default function Page() {
     canSubmit,
     handleSubmit,
     handleEdit,
-    handleDelete,
     resetForm,
   } = useCompetitionScopeData();
+
+  const { handleDelete } = useCompetitionScopeActions();
 
   const columns: DataColumn<CompetitionScopeListItem>[] = [
     {

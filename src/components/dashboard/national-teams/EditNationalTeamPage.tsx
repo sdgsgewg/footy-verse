@@ -18,25 +18,30 @@ import { useRouter } from "@/navigation";
 import { ROUTES } from "@/constants/routes";
 
 interface Props {
-  nationLookup: NationalityLookupResponse;
+  nationalityLookup: NationalityLookupResponse;
   nationalTeamLookup: NationalTeamLookupResponse;
 }
 
-const EditNationalTeamPage = ({ nationLookup, nationalTeamLookup }: Props) => {
+const EditNationalTeamPage = ({
+  nationalityLookup,
+  nationalTeamLookup,
+}: Props) => {
   const router = useRouter();
 
   const { getTitle } = useCrudPageTitle();
 
-  const { nationality } = useNationalityDetail(nationLookup.id);
+  const { nationality } = useNationalityDetail(nationalityLookup.id);
 
   const { nationalTeam, isLoading, error, refetch } = useNationalTeamEdit({
-    nationId: nationLookup.id,
+    nationId: nationalityLookup.id,
     teamId: nationalTeamLookup.id,
   });
 
-  const { nationalTeams } = useNationalTeams({ nationId: nationLookup.id });
+  const { nationalTeams } = useNationalTeams({
+    nationId: nationalityLookup.id,
+  });
 
-  const { submit, isSubmitting } = useNationalTeamSubmit(nationLookup);
+  const { submit, isSubmitting } = useNationalTeamSubmit(nationalityLookup);
 
   if (!nationality && isLoading) {
     return <EntityLoading entity="nationality" />;
@@ -73,7 +78,12 @@ const EditNationalTeamPage = ({ nationLookup, nationalTeamLookup }: Props) => {
       title={getTitle("edit", "nationalTeam", `${nationality.name}`)}
       columns={2}
       tableTitle="National Teams"
-      table={<NationalTeamTable nationalTeams={nationalTeams} />}
+      table={
+        <NationalTeamTable
+          nationalityLookup={nationalityLookup}
+          nationalTeams={nationalTeams}
+        />
+      }
       form={
         <NationalTeamForm
           mode="edit"

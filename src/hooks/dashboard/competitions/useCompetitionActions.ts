@@ -3,9 +3,10 @@ import { useRouter } from "@/navigation";
 import { useTranslations } from "next-intl";
 import { useDeleteCompetition } from "./useDeleteCompetition";
 import { CompetitionListItem } from "@/types/competition";
+import { useDeleteAction } from "@/hooks/crud/useDeleteAction";
 
 export function useCompetitionActions() {
-  const t = useTranslations("common");
+  const tEntities = useTranslations("entities");
 
   const router = useRouter();
 
@@ -27,14 +28,14 @@ export function useCompetitionActions() {
     );
   };
 
-  const handleDelete = (competition: CompetitionListItem) => {
-    if (!confirm(`${t("crud.confirm.delete")}`)) return;
-
-    deleteMutation.mutate({
+  const handleDelete = useDeleteAction({
+    deleteMutation,
+    entity: tEntities("competition"),
+    getVariables: (competition: CompetitionListItem) => ({
       id: competition.id,
       data: competition,
-    });
-  };
+    }),
+  });
 
   return {
     handleCreate,

@@ -10,17 +10,17 @@ export default async function Page({
 }) {
   const { nationSlug, teamId } = await params;
 
-  const nationLookup = await getNationalityLookupService(nationSlug);
+  const nationalityLookup = await getNationalityLookupService(nationSlug);
 
   const nationalTeamLookup = await getNationalTeamLookupService(teamId);
 
-  if (!nationLookup || !nationalTeamLookup) {
+  if (!nationalityLookup || !nationalTeamLookup) {
     return notFound();
   }
 
   return (
     <EditNationalTeamPage
-      nationLookup={nationLookup}
+      nationalityLookup={nationalityLookup}
       nationalTeamLookup={nationalTeamLookup}
     />
   );

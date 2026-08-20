@@ -1,7 +1,6 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { useParams } from "next/navigation";
 import { getAgeGroupLabel, getGenderLabel } from "@/lib/constants/labels";
 import { AgeGroup } from "@/enums/AgeGroup";
 import { NationalTeamListItem } from "@/types/national-team";
@@ -12,22 +11,24 @@ import { Gender } from "@/enums/Gender";
 import { getNationalTeamTypeLabel } from "@/lib/national-teams/labels";
 import { NationalTeamType } from "@/enums/NationalTeamType";
 import { NationalityImageLabel } from "@/components/shared/tables/cells";
+import { NationalityLookupResponse } from "@/types/nationality";
 
 interface Props {
+  nationalityLookup: NationalityLookupResponse;
   nationalTeams: NationalTeamListItem[];
   showActions?: boolean;
 }
 
-const NationalTeamTable = ({ nationalTeams, showActions = false }: Props) => {
-  const { nationSlug } = useParams() as {
-    nationSlug: string;
-  };
-
+const NationalTeamTable = ({
+  nationalityLookup,
+  nationalTeams,
+  showActions = false,
+}: Props) => {
   const t = useTranslations("");
   const tColumn = useTranslations("dashboard.nationalTeams.table.columns");
 
   const { handleView, handleEdit, handleDelete } =
-    useNationalTeamActions(nationSlug);
+    useNationalTeamActions(nationalityLookup);
 
   const columns: DataColumn<NationalTeamListItem>[] = [
     {

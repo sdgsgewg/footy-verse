@@ -7,9 +7,9 @@ interface DeleteNationalTeamPayload {
   data: unknown;
 }
 
-export function useDeleteNationalTeam(clubId: string) {
+export function useDeleteNationalTeam(nationId: string) {
   return useCrudMutation<DeleteNationalTeamPayload>({
-    mutationFn: ({ teamId }) => deleteNationalTeam(clubId, teamId),
+    mutationFn: ({ teamId }) => deleteNationalTeam(nationId, teamId),
 
     invalidateQueries: [{ queryKey: nationalTeamKeys.lists() }],
 

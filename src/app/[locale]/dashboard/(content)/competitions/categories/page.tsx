@@ -6,6 +6,7 @@ import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
 import { useCrudFilterSync } from "@/hooks/crud";
 import {
   useCompetitionCategories,
+  useCompetitionCategoryActions,
   useCompetitionCategoryData,
 } from "@/hooks/dashboard/competition-categories";
 import useCompetitionCategoryFilter from "@/hooks/dashboard/competition-categories/useCompetitionCategoryFilter";
@@ -39,9 +40,10 @@ export default function Page() {
     canSubmit,
     handleSubmit,
     handleEdit,
-    handleDelete,
     resetForm,
   } = useCompetitionCategoryData();
+
+  const { handleDelete } = useCompetitionCategoryActions();
 
   const columns: DataColumn<CompetitionCategoryListItem>[] = [
     {

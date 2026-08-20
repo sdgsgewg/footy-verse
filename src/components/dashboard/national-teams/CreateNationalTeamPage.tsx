@@ -14,23 +14,23 @@ import { useRouter } from "@/navigation";
 import { ROUTES } from "@/constants/routes";
 
 interface Props {
-  nationLookup: NationalityLookupResponse;
+  nationalityLookup: NationalityLookupResponse;
 }
 
-export default function CreateNationalTeamPage({ nationLookup }: Props) {
+export default function CreateNationalTeamPage({ nationalityLookup }: Props) {
   const router = useRouter();
 
   const { getTitle } = useCrudPageTitle();
 
   const { nationality, isLoading, error, refetch } = useNationalityDetail(
-    nationLookup.id,
+    nationalityLookup.id,
   );
 
   const { nationalTeams } = useNationalTeams({
-    nationId: nationLookup.id,
+    nationId: nationalityLookup.id,
   });
 
-  const { submit, isSubmitting } = useNationalTeamSubmit(nationLookup);
+  const { submit, isSubmitting } = useNationalTeamSubmit(nationalityLookup);
 
   if (!nationality && isLoading) {
     return <EntityLoading entity="nationality" />;
@@ -55,7 +55,12 @@ export default function CreateNationalTeamPage({ nationLookup }: Props) {
       title={getTitle("create", "nationalTeam", `${nationality.name}`)}
       columns={2}
       tableTitle="National Teams"
-      table={<NationalTeamTable nationalTeams={nationalTeams} />}
+      table={
+        <NationalTeamTable
+          nationalityLookup={nationalityLookup}
+          nationalTeams={nationalTeams}
+        />
+      }
       form={
         <NationalTeamForm
           mode="create"

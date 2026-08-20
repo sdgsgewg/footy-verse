@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import { useTranslations } from "next-intl";
-import { useParams } from "next/navigation";
 import { useClubTeamActions } from "@/hooks/dashboard/club-teams";
 import { ClubTeamListItem } from "@/types/club-team";
 import { getSquadTypeLabel } from "@/lib/clubs/labels";
@@ -11,21 +10,24 @@ import { getAgeGroupLabel } from "@/lib/constants/labels";
 import { AgeGroup } from "@/enums/AgeGroup";
 import { DataColumn } from "@/types/table";
 import { DataTable } from "@/components/shared/tables/DataTable";
+import { ClubLookupResponse } from "@/types/club";
 
 interface Props {
+  clubLookup: ClubLookupResponse;
   clubTeams: ClubTeamListItem[];
   showActions?: boolean;
 }
 
-const ClubTeamTable = ({ clubTeams, showActions = false }: Props) => {
-  const { clubSlug } = useParams() as {
-    clubSlug: string;
-  };
-
+const ClubTeamTable = ({
+  clubLookup,
+  clubTeams,
+  showActions = false,
+}: Props) => {
   const t = useTranslations("");
   const tColumn = useTranslations("dashboard.clubTeams.table.columns");
 
-  const { handleView, handleEdit, handleDelete } = useClubTeamActions(clubSlug);
+  const { handleView, handleEdit, handleDelete } =
+    useClubTeamActions(clubLookup);
 
   const columns: DataColumn<ClubTeamListItem>[] = [
     {

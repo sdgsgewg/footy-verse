@@ -9,11 +9,11 @@ export default async function Page({
 }) {
   const { nationSlug } = await params;
 
-  const nationLookup = await getNationalityLookupService(nationSlug);
+  const nationalityLookup = await getNationalityLookupService(nationSlug);
 
-  if (!nationLookup) {
+  if (!nationalityLookup) {
     return notFound();
   }
 
-  return <CreateNationalTeamPage nationLookup={nationLookup} />;
+  return <CreateNationalTeamPage nationalityLookup={nationalityLookup} />;
 }

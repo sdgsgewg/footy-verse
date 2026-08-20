@@ -6,7 +6,6 @@ import {
 } from "@/types/competition-scope";
 import { useCreateCompetitionScope } from "./useCreateCompetitionScope";
 import { useUpdateCompetitionScope } from "./useUpdateCompetitionScope";
-import { useDeleteCompetitionScope } from "./useDeleteCompetitionScope";
 
 interface UseCompetitionScopeDataReturn {
   isEditing: boolean;
@@ -17,12 +16,10 @@ interface UseCompetitionScopeDataReturn {
   canSubmit: boolean;
   handleSubmit: () => Promise<void>;
   handleEdit: (item: CompetitionScopeListItem) => void;
-  handleDelete: (item: CompetitionScopeListItem) => Promise<void>;
   resetForm: () => void;
 }
 
 export const useCompetitionScopeData = (): UseCompetitionScopeDataReturn => {
-  const t = useTranslations("");
   const tCommonActions = useTranslations("common.actions");
   const tCommonStates = useTranslations("common.states");
 
@@ -60,8 +57,6 @@ export const useCompetitionScopeData = (): UseCompetitionScopeDataReturn => {
     resetForm();
   });
 
-  const deleteMutation = useDeleteCompetitionScope();
-
   const isSubmitting = createMutation.isPending || updateMutation.isPending;
 
   const buttonText = isSubmitting
@@ -82,22 +77,6 @@ export const useCompetitionScopeData = (): UseCompetitionScopeDataReturn => {
     setForm(mapped);
     setInitialForm(mapped);
     setIsEditing(true);
-  };
-
-  const handleDelete = async (item: CompetitionScopeListItem) => {
-    if (
-      !confirm(
-        `${t(`common.crud.confirm.delete`, {
-          entity: t(`entities.competitionScope`),
-        })}`,
-      )
-    )
-      return;
-
-    deleteMutation.mutate({
-      id: item.id,
-      data: item,
-    });
   };
 
   const canSubmit = useMemo(() => {
@@ -139,7 +118,6 @@ export const useCompetitionScopeData = (): UseCompetitionScopeDataReturn => {
     setForm,
     handleSubmit,
     handleEdit,
-    handleDelete,
     resetForm,
   };
 };

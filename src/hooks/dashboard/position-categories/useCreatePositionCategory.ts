@@ -8,8 +8,6 @@ export function useCreatePositionCategory(onSuccess?: () => void) {
 
     invalidateQueries: [{ queryKey: positionCategoryKeys.lists() }],
 
-    // redirectTo: ROUTES.DASHBOARD.CONTENT.POSITIONS.CATEGORIES.BASE,
-
     entityKey: "positionCategory",
 
     action: "create",

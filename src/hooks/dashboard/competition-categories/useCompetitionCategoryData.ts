@@ -6,7 +6,6 @@ import {
 } from "@/types/competition-category";
 import { useCreateCompetitionCategory } from "./useCreateCompetitionCategory";
 import { useUpdateCompetitionCategory } from "./useUpdateCompetitionCategory";
-import { useDeleteCompetitionCategory } from "./useDeleteCompetitionCategory";
 
 interface UseCompetitionCategoryDataReturn {
   isEditing: boolean;
@@ -17,13 +16,11 @@ interface UseCompetitionCategoryDataReturn {
   canSubmit: boolean;
   handleSubmit: () => Promise<void>;
   handleEdit: (item: CompetitionCategoryListItem) => void;
-  handleDelete: (item: CompetitionCategoryListItem) => Promise<void>;
   resetForm: () => void;
 }
 
 export const useCompetitionCategoryData =
   (): UseCompetitionCategoryDataReturn => {
-    const t = useTranslations("");
     const tCommonActions = useTranslations("common.actions");
     const tCommonStates = useTranslations("common.states");
 
@@ -60,8 +57,6 @@ export const useCompetitionCategoryData =
       resetForm();
     });
 
-    const deleteMutation = useDeleteCompetitionCategory();
-
     const isSubmitting = createMutation.isPending || updateMutation.isPending;
 
     const buttonText = isSubmitting
@@ -82,22 +77,6 @@ export const useCompetitionCategoryData =
       setForm(mapped);
       setInitialForm(mapped);
       setIsEditing(true);
-    };
-
-    const handleDelete = async (item: CompetitionCategoryListItem) => {
-      if (
-        !confirm(
-          `${t(`common.crud.confirm.delete`, {
-            entity: t(`entities.competitionCategory`),
-          })}`,
-        )
-      )
-        return;
-
-      deleteMutation.mutate({
-        id: item.id,
-        data: item,
-      });
     };
 
     const canSubmit = useMemo(() => {
@@ -139,7 +118,6 @@ export const useCompetitionCategoryData =
       setForm,
       handleSubmit,
       handleEdit,
-      handleDelete,
       resetForm,
     };
   };

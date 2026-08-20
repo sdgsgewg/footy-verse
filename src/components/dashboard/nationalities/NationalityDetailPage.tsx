@@ -66,7 +66,11 @@ const NationalityDetailPage = ({ nationalityLookup, returnTo }: Props) => {
           title={tNationalTeamTable("title")}
           onAdd={handleAddNationalTeam}
         />
-        <NationalTeamTable nationalTeams={nationalTeams} showActions />
+        <NationalTeamTable
+          nationalityLookup={nationalityLookup}
+          nationalTeams={nationalTeams}
+          showActions
+        />
       </section>
     </>
   );

@@ -65,7 +65,11 @@ const ClubDetailPage = ({ clubLookup, returnTo }: Props) => {
           onAdd={handleAddClubTeam}
         />
 
-        <ClubTeamTable clubTeams={clubTeams} showActions />
+        <ClubTeamTable
+          clubLookup={clubLookup}
+          clubTeams={clubTeams}
+          showActions
+        />
       </section>
     </>
   );

@@ -10,7 +10,9 @@ import { useCrudFilterSync } from "@/hooks/crud";
 import usePositionCategoryFilter from "@/hooks/position-categories/usePositionCategoryFilter";
 import {
   usePositionCategories,
-  usePositionCategoryData,
+  usePositionCategoryActions,
+  usePositionCategoryForm,
+  usePositionCategorySubmit,
 } from "@/hooks/dashboard/position-categories";
 import { PositionCategoryListItem } from "@/types/position-category";
 import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
@@ -32,17 +34,18 @@ export default function Page() {
     });
 
   const {
-    isEditing,
-    buttonText,
-    isSubmitting,
     form,
     setForm,
+    isEditing,
     canSubmit,
-    handleSubmit,
     handleEdit,
-    handleDelete,
+    buildPayload,
     resetForm,
-  } = usePositionCategoryData();
+  } = usePositionCategoryForm();
+
+  const { handleDelete } = usePositionCategoryActions();
+
+  const { isSubmitting, getButtonText, submit } = usePositionCategorySubmit();
 
   const columns: DataColumn<PositionCategoryListItem>[] = [
     {
@@ -83,14 +86,20 @@ export default function Page() {
             required: true,
           },
         ],
-        form: form,
-        setForm: setForm,
-        canSubmit: canSubmit,
-        onSubmit: handleSubmit,
-        isEditing: isEditing,
-        isSubmitting: isSubmitting,
-        buttonText: buttonText,
-        resetForm: resetForm,
+        form,
+        setForm,
+        canSubmit,
+        onSubmit: () => {
+          submit({
+            id: isEditing ? form.id : undefined,
+            payload: buildPayload(),
+            onSuccess: resetForm,
+          });
+        },
+        isEditing,
+        isSubmitting,
+        buttonText: getButtonText(isEditing),
+        resetForm,
       }}
       actions={{
         onEdit: handleEdit,

@@ -3,9 +3,10 @@ import { useRouter } from "@/navigation";
 import { useTranslations } from "next-intl";
 import { useDeleteRegion } from "./useDeleteRegion";
 import { RegionListItem } from "@/types/region";
+import { useDeleteAction } from "@/hooks/crud/useDeleteAction";
 
 export function useRegionActions() {
-  const t = useTranslations("common");
+  const tEntities = useTranslations("entities");
 
   const router = useRouter();
 
@@ -23,14 +24,14 @@ export function useRegionActions() {
     router.push(`${ROUTES.DASHBOARD.CONTENT.REGIONS.BASE}/${region.slug}/edit`);
   };
 
-  const handleDelete = (region: RegionListItem) => {
-    if (!confirm(`${t("crud.confirm.delete")}`)) return;
-
-    deleteMutation.mutate({
+  const handleDelete = useDeleteAction({
+    deleteMutation,
+    entity: tEntities("region"),
+    getVariables: (region: RegionListItem) => ({
       id: region.id,
       data: region,
-    });
-  };
+    }),
+  });
 
   return {
     handleCreate,

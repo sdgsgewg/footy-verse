@@ -71,7 +71,7 @@ const EditClubTeamPage = ({ clubLookup, clubTeamLookup }: Props) => {
       title={getTitle("edit", "clubTeam", `${club.name}`)}
       columns={2}
       tableTitle="Club Teams"
-      table={<ClubTeamTable clubTeams={clubTeams} />}
+      table={<ClubTeamTable clubLookup={clubLookup} clubTeams={clubTeams} />}
       form={
         <ClubTeamForm
           mode="edit"

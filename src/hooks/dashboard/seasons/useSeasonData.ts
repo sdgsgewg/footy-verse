@@ -3,7 +3,6 @@ import { useTranslations } from "next-intl";
 import { SeasonListItem, UpsertSeasonInput } from "@/types/season";
 import { useCreateSeason } from "./useCreateSeason";
 import { useUpdateSeason } from "./useUpdateSeason";
-import { useDeleteSeason } from "./useDeleteSeason";
 
 interface UseSeasonDataReturn {
   isEditing: boolean;
@@ -14,12 +13,10 @@ interface UseSeasonDataReturn {
   canSubmit: boolean;
   handleSubmit: () => Promise<void>;
   handleEdit: (item: SeasonListItem) => void;
-  handleDelete: (item: SeasonListItem) => Promise<void>;
   resetForm: () => void;
 }
 
 export const useSeasonData = (): UseSeasonDataReturn => {
-  const t = useTranslations("");
   const tCommonActions = useTranslations("common.actions");
   const tCommonStates = useTranslations("common.states");
 
@@ -50,8 +47,6 @@ export const useSeasonData = (): UseSeasonDataReturn => {
     resetForm();
   });
 
-  const deleteMutation = useDeleteSeason();
-
   const isSubmitting = createMutation.isPending || updateMutation.isPending;
 
   const buttonText = isSubmitting
@@ -71,22 +66,6 @@ export const useSeasonData = (): UseSeasonDataReturn => {
     setForm(mapped);
     setInitialForm(mapped);
     setIsEditing(true);
-  };
-
-  const handleDelete = async (item: SeasonListItem) => {
-    if (
-      !confirm(
-        `${t(`common.crud.confirm.delete`, {
-          entity: t(`entities.season`),
-        })}`,
-      )
-    )
-      return;
-
-    deleteMutation.mutate({
-      id: item.id,
-      data: item,
-    });
   };
 
   const canSubmit = useMemo(() => {
@@ -127,7 +106,6 @@ export const useSeasonData = (): UseSeasonDataReturn => {
     setForm,
     handleSubmit,
     handleEdit,
-    handleDelete,
     resetForm,
   };
 };

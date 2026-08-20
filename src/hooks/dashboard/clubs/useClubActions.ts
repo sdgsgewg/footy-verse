@@ -3,9 +3,10 @@ import { useDeleteClub } from "./useDeleteClub";
 import { ROUTES } from "@/constants/routes";
 import { ClubListItem } from "@/types/club";
 import { useRouter } from "@/navigation";
+import { useDeleteAction } from "@/hooks/crud/useDeleteAction";
 
 export function useClubActions() {
-  const t = useTranslations("common");
+  const tEntities = useTranslations("entities");
 
   const router = useRouter();
 
@@ -23,14 +24,14 @@ export function useClubActions() {
     router.push(`${ROUTES.DASHBOARD.CONTENT.CLUBS.BASE}/${club.slug}/edit`);
   };
 
-  const handleDelete = (club: ClubListItem) => {
-    if (!confirm(`${t("crud.confirm.delete")}`)) return;
-
-    deleteMutation.mutate({
+  const handleDelete = useDeleteAction({
+    deleteMutation,
+    entity: tEntities("club"),
+    getVariables: (club: ClubListItem) => ({
       id: club.id,
       data: club,
-    });
-  };
+    }),
+  });
 
   return {
     handleCreate,

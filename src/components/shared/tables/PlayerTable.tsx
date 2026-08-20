@@ -5,7 +5,7 @@ import {
   PlayerColumnKey,
 } from "@/components/dashboard/players/columns/player-columns";
 import { DataTable } from "@/components/shared/tables/DataTable";
-import { usePlayerActions } from "@/hooks/dashboard/players/usePlayerActions";
+import { usePlayerActions } from "@/hooks/dashboard/players";
 import { PlayerListItem } from "@/types/player";
 import { useTranslations } from "next-intl";
 

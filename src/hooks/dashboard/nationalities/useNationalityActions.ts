@@ -3,9 +3,10 @@ import { useRouter } from "@/navigation";
 import { NationalityListItem } from "@/types/nationality";
 import { useTranslations } from "next-intl";
 import { useDeleteNationality } from "./useDeleteNationality";
+import { useDeleteAction } from "@/hooks/crud/useDeleteAction";
 
 export function useNationalityActions() {
-  const t = useTranslations("common");
+  const tEntities = useTranslations("entities");
 
   const router = useRouter();
 
@@ -16,7 +17,9 @@ export function useNationalityActions() {
   };
 
   const handleView = (nation: NationalityListItem) => {
-    router.push(`${ROUTES.DASHBOARD.CONTENT.NATIONALITIES.BASE}/${nation.slug}`);
+    router.push(
+      `${ROUTES.DASHBOARD.CONTENT.NATIONALITIES.BASE}/${nation.slug}`,
+    );
   };
 
   const handleEdit = (nation: NationalityListItem) => {
@@ -25,14 +28,14 @@ export function useNationalityActions() {
     );
   };
 
-  const handleDelete = (nation: NationalityListItem) => {
-    if (!confirm(`${t("crud.confirm.delete")}`)) return;
-
-    deleteMutation.mutate({
+  const handleDelete = useDeleteAction({
+    deleteMutation,
+    entity: tEntities("nationality"),
+    getVariables: (nation: NationalityListItem) => ({
       id: nation.id,
       data: nation,
-    });
-  };
+    }),
+  });
 
   return {
     handleCreate,

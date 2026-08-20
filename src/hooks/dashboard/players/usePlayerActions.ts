@@ -1,17 +1,16 @@
 import { ROUTES } from "@/constants/routes";
 import { useDeletePlayer } from "./useDeletePlayer";
-import { PlayerDetailResponse, PlayerListItem } from "@/types/player";
 import { useRouter } from "@/navigation";
 import { useTranslations } from "next-intl";
-
-type PlayerActionItem = PlayerListItem | PlayerDetailResponse;
+import { useDeleteAction } from "@/hooks/crud/useDeleteAction";
+import { PlayerListItem } from "@/types/player";
 
 interface UsePlayerActionsOptions {
   returnTo?: string;
 }
 
 export function usePlayerActions({ returnTo }: UsePlayerActionsOptions = {}) {
-  const tPlayers = useTranslations("dashboard.players");
+  const tEntities = useTranslations("entities");
 
   const router = useRouter();
 
@@ -21,7 +20,7 @@ export function usePlayerActions({ returnTo }: UsePlayerActionsOptions = {}) {
     router.push(ROUTES.DASHBOARD.CONTENT.PLAYERS.CREATE);
   };
 
-  const handleView = (player: PlayerActionItem) => {
+  const handleView = (player: PlayerListItem) => {
     const playerHref = `${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${player.slug}`;
 
     if (!returnTo) {
@@ -36,7 +35,7 @@ export function usePlayerActions({ returnTo }: UsePlayerActionsOptions = {}) {
     router.push(`${playerHref}?${params.toString()}`);
   };
 
-  const handleEdit = (player: PlayerActionItem) => {
+  const handleEdit = (player: PlayerListItem) => {
     const playerHref = `${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${player.slug}/edit`;
 
     if (!returnTo) {
@@ -51,16 +50,14 @@ export function usePlayerActions({ returnTo }: UsePlayerActionsOptions = {}) {
     router.push(`${playerHref}?${params.toString()}`);
   };
 
-  const handleDelete = (player: PlayerActionItem) => {
-    if (!confirm(tPlayers("form.confirm.delete"))) {
-      return;
-    }
-
-    deleteMutation.mutate({
+  const handleDelete = useDeleteAction({
+    deleteMutation,
+    entity: tEntities("player"),
+    getVariables: (player: PlayerListItem) => ({
       id: player.id,
       data: player,
-    });
-  };
+    }),
+  });
 
   return {
     handleCreate,

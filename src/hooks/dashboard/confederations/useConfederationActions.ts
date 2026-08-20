@@ -3,9 +3,10 @@ import { useRouter } from "@/navigation";
 import { useTranslations } from "next-intl";
 import { useDeleteConfederation } from "./useDeleteConfederation";
 import { ConfederationListItem } from "@/types/confederation";
+import { useDeleteAction } from "@/hooks/crud/useDeleteAction";
 
 export function useConfederationActions() {
-  const t = useTranslations("common");
+  const tEntities = useTranslations("entities");
 
   const router = useRouter();
 
@@ -27,14 +28,14 @@ export function useConfederationActions() {
     );
   };
 
-  const handleDelete = (confederation: ConfederationListItem) => {
-    if (!confirm(`${t("crud.confirm.delete")}`)) return;
-
-    deleteMutation.mutate({
+  const handleDelete = useDeleteAction({
+    deleteMutation,
+    entity: tEntities("confederation"),
+    getVariables: (confederation: ConfederationListItem) => ({
       id: confederation.id,
       data: confederation,
-    });
-  };
+    }),
+  });
 
   return {
     handleCreate,
