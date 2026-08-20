@@ -33,7 +33,7 @@ export function CrudFormTablePage<
       resetForm,
     },
 
-    actions: { onView, onEdit, onDelete },
+    actions: { onReorder, onView, onEdit, onDelete },
 
     toolbar: { searchValue, searchPlaceholder, onSearchChange, onFilter } = {},
 
@@ -69,6 +69,7 @@ export function CrudFormTablePage<
             searchPlaceholder={searchPlaceholder}
             onSearchChange={onSearchChange}
             onFilter={onFilter}
+            onReorder={onReorder}
           />
 
           <DataTable

@@ -43,7 +43,7 @@ export default function Page() {
     resetForm,
   } = usePositionCategoryForm();
 
-  const { handleDelete } = usePositionCategoryActions();
+  const { handleReorder, handleDelete } = usePositionCategoryActions();
 
   const { isSubmitting, getButtonText, submit } = usePositionCategorySubmit();
 
@@ -102,6 +102,7 @@ export default function Page() {
         resetForm,
       }}
       actions={{
+        onReorder: handleReorder,
         onEdit: handleEdit,
         onDelete: handleDelete,
       }}

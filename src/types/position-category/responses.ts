@@ -6,7 +6,7 @@ import { PositionCategory } from "./database";
 
 export type PositionCategoryListItem = Pick<
   PositionCategory,
-  "id" | "name" | "slug"
+  "id" | "name" | "slug" | "display_order"
 >;
 
 // Position Detail

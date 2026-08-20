@@ -16,12 +16,13 @@ import {
 export function mapPositionCategoryListItem(
   positionCategory: DbPositionCategoryListRow,
 ): PositionCategoryListItem {
-  const { id, name, slug } = positionCategory;
+  const { id, name, slug, display_order } = positionCategory;
 
   return {
     id,
     name,
     slug,
+    display_order,
   };
 }
 

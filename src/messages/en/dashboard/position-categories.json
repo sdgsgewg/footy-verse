@@ -3,10 +3,16 @@
 
   "form": {
     "labels": {
-      "name": "Name"
+      "name": "Name",
+      "categories": "Position Categories"
     },
+
     "placeholders": {
       "name": "Input name"
+    },
+
+    "instructions": {
+      "reorderPositionCategories": "Drag and drop position categories in the desired order"
     }
   },
 

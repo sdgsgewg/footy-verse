@@ -5,11 +5,13 @@ import {
   getPositionCategoryDetailRepo,
   getPositionCategoryEditRepo,
   getPositionCategoryLookupRepo,
+  reorderPositionCategoriesRepo,
   updatePositionCategoryRepo,
 } from "../repositories/position-categories.repo";
 import {
   createPositionCategorySchema,
   positionCategoriesQuerySchema,
+  reorderPositionCategoriesSchema,
   updatePositionCategorySchema,
 } from "../validations/position-categories.schema";
 import { idSchema, slugSchema } from "../validations/primitives.schema";
@@ -52,6 +54,12 @@ export async function updatePositionCategoryService(
   const parsed = updatePositionCategorySchema.parse(input);
 
   return updatePositionCategoryRepo(parsedId, parsed);
+}
+
+export async function reorderPositionCategoriesService(input: unknown) {
+  const parsed = reorderPositionCategoriesSchema.parse(input);
+
+  return reorderPositionCategoriesRepo(parsed);
 }
 
 export async function deletePositionCategoryService(id: string) {

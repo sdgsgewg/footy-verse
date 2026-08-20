@@ -1,9 +1,5 @@
 import { apiClient } from "./client";
 import {
-  createPositionSchema,
-  updatePositionSchema,
-} from "../validations/positions.schema";
-import {
   PositionDetailResponse,
   PositionEditResponse,
   PositionListItem,
@@ -62,13 +58,11 @@ export const fetchPositionDetail = async (
 };
 
 export const createPosition = async (payload: unknown) => {
-  const parsed = createPositionSchema.parse(payload); // validation
-  await apiClient.post(`${baseRoute}`, parsed);
+  await apiClient.post(`${baseRoute}`, payload);
 };
 
 export const updatePosition = async (id: string, payload: unknown) => {
-  const parsed = updatePositionSchema.parse(payload); // validation
-  await apiClient.put(`${baseRoute}/${id}`, parsed);
+  await apiClient.put(`${baseRoute}/${id}`, payload);
 };
 
 export const reorderPositions = async (payload: unknown) => {

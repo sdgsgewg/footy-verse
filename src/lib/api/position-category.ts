@@ -72,6 +72,10 @@ export const updatePositionCategory = async (id: string, payload: unknown) => {
   await apiClient.put(`${baseRoute}/${id}`, parsed);
 };
 
+export const reorderPositionCategories = async (payload: unknown) => {
+  await apiClient.put(`${baseRoute}/reorder`, payload);
+};
+
 export const deletePositionCategory = async (id: string) => {
   await apiClient.delete(`${baseRoute}/${id}`);
 };

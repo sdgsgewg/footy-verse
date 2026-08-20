@@ -2,6 +2,7 @@ import {
   createPositionCategorySchema,
   positionCategoriesQuerySchema,
   positionCategoryMutationSchema,
+  reorderPositionCategoriesSchema,
   updatePositionCategorySchema,
 } from "@/lib/validations/position-categories.schema";
 import z from "zod";
@@ -19,6 +20,8 @@ export type PositionCategoryCreateInput = z.infer<
 export type PositionCategoryUpdateInput = z.infer<
   typeof updatePositionCategorySchema
 >;
+
+export type ReorderPositionCategoriesInput = z.infer<typeof reorderPositionCategoriesSchema>;
 
 // Mutation
 

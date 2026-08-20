@@ -3,10 +3,16 @@
 
   "form": {
     "labels": {
-      "name": "Nama"
+      "name": "Nama",
+      "categories": "Kategori Posisi"
     },
+
     "placeholders": {
       "name": "Masukkan nama"
+    },
+
+    "instructions": {
+      "reorderPositionCategories": "Seret dan letakkan kategori posisi sesuai urutan yang diinginkan"
     }
   },
 

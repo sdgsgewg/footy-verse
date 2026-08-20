@@ -10,6 +10,7 @@ import {
   PositionCategoryListItem,
   PositionCategoryLookupResponse,
   PositionCategoryUpdateInput,
+  ReorderPositionCategoriesInput,
 } from "@/types/position-category";
 import {
   mapPositionCategoryDetailResponse,
@@ -237,6 +238,22 @@ export async function updatePositionCategoryRepo(
   });
 
   return result;
+}
+
+export async function reorderPositionCategoriesRepo(
+  input: ReorderPositionCategoriesInput,
+): Promise<void> {
+  const supabase = await getSupabase();
+
+  const { position_category_ids } = input;
+
+  // drag-and-drop operation to reorder display_order of position categories
+
+  const { error } = await supabase.rpc("reorder_position_categories", {
+    p_position_category_ids: position_category_ids,
+  });
+
+  if (error) throw error;
 }
 
 export async function deletePositionCategoryRepo(id: string): Promise<void> {
