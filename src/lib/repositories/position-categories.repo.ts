@@ -269,6 +269,10 @@ export async function deletePositionCategoryRepo(id: string): Promise<void> {
 
   if (error) throw error;
 
+  // tidy up display_order of other position categories
+
+  await supabase.rpc("normalize_position_category_display_order");
+
   await createEntityActivityLog({
     action: ActivityLogAction.DELETE,
     entity: "positionCategory",
