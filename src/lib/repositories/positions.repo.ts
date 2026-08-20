@@ -306,6 +306,10 @@ export async function deletePositionRepo(id: string): Promise<void> {
 
   if (error) throw error;
 
+  await supabase.rpc("normalize_position_display_order", {
+    p_position_category_id: position.category.id,
+  });
+
   await createEntityActivityLog({
     action: ActivityLogAction.DELETE,
     entity: "position",
