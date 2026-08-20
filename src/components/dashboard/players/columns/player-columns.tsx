@@ -30,7 +30,6 @@ export function createPlayerColumns(
     shirtNumber: {
       key: "shirtNumber",
       label: "#",
-      sortable: true,
       className: "w-[2rem]",
 
       render: (player) => (
@@ -98,6 +97,7 @@ export function createPlayerColumns(
     marketValue: {
       key: "marketValue",
       label: labels.marketValue,
+      sortable: true,
 
       render: (player) => player.marketValue,
     },

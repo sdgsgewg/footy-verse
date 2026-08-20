@@ -209,6 +209,12 @@ async function getPlayerIdsByNationalTeam(
     .filter((playerId): playerId is string => Boolean(playerId));
 }
 
+const sortColumnMap = {
+  name: "name",
+  dob: "dob",
+  marketValue: "market_value",
+} as const;
+
 /**
  *
  * @param params
@@ -252,7 +258,9 @@ export async function getPlayersRepo(
 
   // Sort
 
-  query = query.order(params.sortBy, {
+  const sortColumn = sortColumnMap[params.sortBy];
+
+  query = query.order(sortColumn, {
     ascending: params.sortOrder === "asc",
   });
 
