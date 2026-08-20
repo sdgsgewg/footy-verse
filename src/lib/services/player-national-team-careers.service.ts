@@ -21,24 +21,26 @@ export async function getPlayerNationalTeamCareersService(playerId: string) {
   return getPlayerNationalTeamCareersRepo(playerId);
 }
 
-export async function getPlayerNationalTeamCareerEditService(careerId: string) {
-  const parsedId = idSchema.parse(careerId);
+export async function getPlayerNationalTeamCareerEditService(
+  playerNationalTeamcareerId: string,
+) {
+  const parsedId = idSchema.parse(playerNationalTeamcareerId);
 
   return getPlayerNationalTeamCareerEditRepo(parsedId);
 }
 
 export async function getPlayerNationalTeamCareerDetailService(
-  careerId: string,
+  playerNationalTeamcareerId: string,
 ) {
-  const parsedId = idSchema.parse(careerId);
+  const parsedId = idSchema.parse(playerNationalTeamcareerId);
 
   return getPlayerNationalTeamCareerDetailRepo(parsedId);
 }
 
 export async function getPlayerNationalTeamCareerLookupService(
-  careerId: string,
+  playerNationalTeamcareerId: string,
 ) {
-  const parsedId = idSchema.parse(careerId);
+  const parsedId = idSchema.parse(playerNationalTeamcareerId);
 
   return getPlayerNationalTeamCareerLookupRepo(parsedId);
 }
@@ -54,19 +56,21 @@ export async function createPlayerNationalTeamCareerService(
 }
 
 export async function updatePlayerNationalTeamCareerService(
-  careerId: string,
+  playerNationalTeamcareerId: string,
   playerId: string,
   input: PlayerNationalTeamCareerUpdateInput,
 ) {
-  const parsedId = idSchema.parse(careerId);
+  const parsedId = idSchema.parse(playerNationalTeamcareerId);
   const parsedPlayerId = idSchema.parse(playerId);
   const parsed = updatePlayerNationalTeamCareerSchema.parse(input);
 
   return updatePlayerNationalTeamCareerRepo(parsedId, parsedPlayerId, parsed);
 }
 
-export async function deletePlayerNationalTeamCareerService(careerId: string) {
-  const parsedId = idSchema.parse(careerId);
+export async function deletePlayerNationalTeamCareerService(
+  playerNationalTeamcareerId: string,
+) {
+  const parsedId = idSchema.parse(playerNationalTeamcareerId);
 
   await deletePlayerNationalTeamCareerRepo(parsedId);
 }

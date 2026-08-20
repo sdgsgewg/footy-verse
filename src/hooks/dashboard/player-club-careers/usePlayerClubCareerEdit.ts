@@ -7,19 +7,19 @@ import { playerClubCareerKeys } from "@/lib/react-query/keys/playerClubCareerKey
 
 interface UsePlayerClubCareerOptions {
   playerId: string;
-  careerId: string;
+  playerClubCareerId: string;
   enabled?: boolean;
 }
 
 export function usePlayerClubCareerEdit({
   playerId,
-  careerId,
+  playerClubCareerId,
   enabled = true,
 }: UsePlayerClubCareerOptions) {
   const query = useQuery({
-    queryKey: playerClubCareerKeys.edit(playerId, careerId),
-    queryFn: () => fetchPlayerClubCareerEdit(playerId!, careerId!),
-    enabled: enabled && !!playerId && !!careerId,
+    queryKey: playerClubCareerKeys.edit(playerId, playerClubCareerId),
+    queryFn: () => fetchPlayerClubCareerEdit(playerId!, playerClubCareerId!),
+    enabled: enabled && !!playerId && !!playerClubCareerId,
     ...queryConfig,
   });
 

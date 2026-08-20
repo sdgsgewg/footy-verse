@@ -1,4 +1,3 @@
-import { ROUTES } from "@/constants/routes";
 import { useCrudMutation } from "../useCrudMutation";
 import { PlayerLookupResponse } from "@/types/player";
 import { updatePlayerNationalTeamCareer } from "@/lib/api/player-national-team-career";
@@ -8,7 +7,7 @@ import { playerTransferKeys } from "@/lib/react-query/keys/playerTransferKeys";
 import { playerShirtNumberKeys } from "@/lib/react-query/keys/playerShirtNumberKeys";
 
 interface UpdatePlayerNationalTeamCareerPayload {
-  careerId: string;
+  playerNationalTeamCareerId: string;
   data: unknown;
 }
 
@@ -16,8 +15,12 @@ export function useUpdatePlayerNationalTeamCareer(
   player: PlayerLookupResponse,
 ) {
   return useCrudMutation<UpdatePlayerNationalTeamCareerPayload>({
-    mutationFn: ({ careerId, data }) =>
-      updatePlayerNationalTeamCareer(player.id, careerId, data),
+    mutationFn: ({ playerNationalTeamCareerId, data }) =>
+      updatePlayerNationalTeamCareer(
+        player.id,
+        playerNationalTeamCareerId,
+        data,
+      ),
 
     invalidateQueries: [
       { queryKey: playerNationalTeamCareerKeys.lists() },
@@ -32,8 +35,6 @@ export function useUpdatePlayerNationalTeamCareer(
       { queryKey: playerShirtNumberKeys.clubTeams() },
       { queryKey: playerShirtNumberKeys.nationalTeams() },
     ],
-
-    redirectTo: `${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${player.slug}`,
 
     entityKey: "playerNationalTeamCareer",
 

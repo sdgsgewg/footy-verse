@@ -7,10 +7,12 @@ import { useCreatePlayerNationalTeamCareer } from "./useCreatePlayerNationalTeam
 import { useUpdatePlayerNationalTeamCareer } from "./useUpdatePlayerNationalTeamCareer";
 
 type SubmitOptions = {
-  careerId?: string;
+  playerNationalTeamCareerId?: string;
   payload:
     | PlayerNationalTeamCareerCreateInput
     | PlayerNationalTeamCareerUpdateInput;
+
+  onSuccess?: () => void;
 };
 
 export function usePlayerNationalTeamCareerSubmit(
@@ -23,16 +25,23 @@ export function usePlayerNationalTeamCareerSubmit(
   const isCreating = createMutation.isPending;
   const isUpdating = updateMutation.isPending;
 
-  const submit = ({ careerId, payload }: SubmitOptions) => {
-    if (player.id && careerId) {
-      updateMutation.mutate({
-        careerId,
-        data: payload,
-      });
+  const submit = ({
+    playerNationalTeamCareerId,
+    payload,
+    onSuccess,
+  }: SubmitOptions) => {
+    if (player.id && playerNationalTeamCareerId) {
+      updateMutation.mutate(
+        {
+          playerNationalTeamCareerId,
+          data: payload,
+        },
+        { onSuccess },
+      );
       return;
     }
 
-    createMutation.mutate({ data: payload });
+    createMutation.mutate({ data: payload }, { onSuccess });
   };
 
   return {

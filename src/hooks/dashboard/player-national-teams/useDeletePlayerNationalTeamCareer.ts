@@ -3,14 +3,14 @@ import { useCrudMutation } from "../useCrudMutation";
 import { playerNationalTeamCareerKeys } from "@/lib/react-query/keys/playerNationalTeamCareerKeys";
 
 interface DeletePlayerNationalTeamCareerPayload {
-  nationalTeamId: string;
+  playerNationalTeamCareerId: string;
   data: unknown;
 }
 
 export function useDeletePlayerNationalTeamCareer(playerId: string) {
   return useCrudMutation<DeletePlayerNationalTeamCareerPayload>({
-    mutationFn: ({ nationalTeamId }) =>
-      deletePlayerNationalTeamCareer(playerId, nationalTeamId),
+    mutationFn: ({ playerNationalTeamCareerId }) =>
+      deletePlayerNationalTeamCareer(playerId, playerNationalTeamCareerId),
 
     invalidateQueries: [{ queryKey: playerNationalTeamCareerKeys.lists() }],
 

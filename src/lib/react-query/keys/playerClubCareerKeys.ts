@@ -8,11 +8,11 @@ export const playerClubCareerKeys = {
 
   details: () => [...playerClubCareerKeys.all, "detail"] as const,
 
-  detail: (playerId: string, careerId: string) =>
-    [...playerClubCareerKeys.details(), playerId, careerId] as const,
+  detail: (playerId: string, playerClubCareerId: string) =>
+    [...playerClubCareerKeys.details(), playerId, playerClubCareerId] as const,
 
   edits: () => [...playerClubCareerKeys.all, "edit"] as const,
 
-  edit: (playerId: string, careerId: string) =>
-    [...playerClubCareerKeys.edits(), playerId, careerId] as const,
+  edit: (playerId: string, playerClubCareerId: string) =>
+    [...playerClubCareerKeys.edits(), playerId, playerClubCareerId] as const,
 };

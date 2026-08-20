@@ -8,19 +8,19 @@ export const playerNationalTeamCareerKeys = {
 
   details: () => [...playerNationalTeamCareerKeys.all, "detail"] as const,
 
-  detail: (playerId: string, nationalTeamId: string) =>
+  detail: (playerId: string, playerNationalTeamCareerId: string) =>
     [
       ...playerNationalTeamCareerKeys.details(),
       playerId,
-      nationalTeamId,
+      playerNationalTeamCareerId,
     ] as const,
 
   edits: () => [...playerNationalTeamCareerKeys.all, "edit"] as const,
 
-  edit: (playerId: string, nationalTeamId: string) =>
+  edit: (playerId: string, playerNationalTeamCareerId: string) =>
     [
       ...playerNationalTeamCareerKeys.edits(),
       playerId,
-      nationalTeamId,
+      playerNationalTeamCareerId,
     ] as const,
 };

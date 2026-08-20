@@ -82,6 +82,7 @@ const PlayerHistory = ({ player }: Props) => {
         )}
 
         <PlayerNationalTeamCareerHistoryTable
+          playerLookup={player}
           playerNationalTeamCareers={playerNationalTeamCareers}
           loading={isPlayerNationalTeamCareersLoading}
           showActions

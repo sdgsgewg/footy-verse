@@ -81,6 +81,7 @@ export default function EditPlayerNationalTeamCareerPage({
       tableTitle="National Team History"
       table={
         <PlayerNationalTeamCareerHistoryTable
+          playerLookup={playerLookup}
           playerNationalTeamCareers={playerNationalTeams}
         />
       }
@@ -90,7 +91,7 @@ export default function EditPlayerNationalTeamCareerPage({
           loading={isSubmitting}
           onSubmit={(payload) =>
             submit({
-              careerId: playerNationalTeamCareer.id,
+              playerNationalTeamCareerId: playerNationalTeamCareer.id,
               payload,
             })
           }

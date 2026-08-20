@@ -63,6 +63,7 @@ export default function CreatePlayerNationalTeamCareerPage({
       tableTitle="National Team History"
       table={
         <PlayerNationalTeamCareerHistoryTable
+          playerLookup={playerLookup}
           playerNationalTeamCareers={playerNationalTeamCareers}
         />
       }

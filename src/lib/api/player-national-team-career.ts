@@ -28,17 +28,19 @@ export const fetchPlayerNationalTeamCareers = async (
 /**
  *
  * @param playerId
- * @param nationalTeamId
+ * @param playerNationalTeamCareerId
  * @returns PlayerNationalTeamCareerEditResponse
  */
 export const fetchPlayerNationalTeamCareerEdit = async (
   playerId: string,
-  nationalTeamId: string,
+  playerNationalTeamCareerId: string,
 ): Promise<PlayerNationalTeamCareerEditResponse> => {
   const { data } = await apiClient.get<{
     success: boolean;
     data: PlayerNationalTeamCareerEditResponse;
-  }>(`/players/${playerId}/national-team-careers/${nationalTeamId}/edit`);
+  }>(
+    `/players/${playerId}/national-team-careers/${playerNationalTeamCareerId}/edit`,
+  );
 
   return data.data;
 };
@@ -46,17 +48,19 @@ export const fetchPlayerNationalTeamCareerEdit = async (
 /**
  *
  * @param playerId
- * @param nationalTeamId
+ * @param playerNationalTeamCareerId
  * @returns PlayerNationalTeamCareerDetailResponse
  */
 export const fetchPlayerNationalTeamCareerDetail = async (
   playerId: string,
-  nationalTeamId: string,
+  playerNationalTeamCareerId: string,
 ): Promise<PlayerNationalTeamCareerDetailResponse> => {
   const { data } = await apiClient.get<{
     success: boolean;
     data: PlayerNationalTeamCareerDetailResponse;
-  }>(`/players/${playerId}/national-team-careers/${nationalTeamId}`);
+  }>(
+    `/players/${playerId}/national-team-careers/${playerNationalTeamCareerId}`,
+  );
 
   return data.data;
 };
@@ -78,18 +82,18 @@ export const createPlayerNationalTeamCareer = async (
 /**
  *
  * @param playerId
- * @param nationalTeamId
+ * @param playerNationalTeamCareerId
  * @param payload
  */
 export const updatePlayerNationalTeamCareer = async (
   playerId: string,
-  nationalTeamId: string,
+  playerNationalTeamCareerId: string,
   payload: unknown,
 ) => {
   const parsed = updatePlayerNationalTeamCareerSchema.parse(payload); // validation
 
   await apiClient.put(
-    `/players/${playerId}/national-team-careers/${nationalTeamId}`,
+    `/players/${playerId}/national-team-careers/${playerNationalTeamCareerId}`,
     parsed,
   );
 };
@@ -97,13 +101,13 @@ export const updatePlayerNationalTeamCareer = async (
 /**
  *
  * @param playerId
- * @param nationalTeamId
+ * @param playerNationalTeamCareerId
  */
 export const deletePlayerNationalTeamCareer = async (
   playerId: string,
-  nationalTeamId: string,
+  playerNationalTeamCareerId: string,
 ) => {
   await apiClient.delete(
-    `/players/${playerId}/national-team-careers/${nationalTeamId}`,
+    `/players/${playerId}/national-team-careers/${playerNationalTeamCareerId}`,
   );
 };

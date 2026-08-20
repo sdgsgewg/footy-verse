@@ -9,7 +9,7 @@ import {
 import { NextResponse } from "next/server";
 
 type PlayerNationalTeamCareerRouteContext = {
-  params: Promise<{ playerId: string; careerId: string }>;
+  params: Promise<{ playerId: string; playerNationalTeamCareerId: string }>;
 };
 
 export async function GET(
@@ -17,8 +17,10 @@ export async function GET(
   context: PlayerNationalTeamCareerRouteContext,
 ) {
   try {
-    const { careerId } = await context.params;
-    const data = await getPlayerNationalTeamCareerDetailService(careerId);
+    const { playerNationalTeamCareerId } = await context.params;
+    const data = await getPlayerNationalTeamCareerDetailService(
+      playerNationalTeamCareerId,
+    );
 
     if (!data) {
       return errorResponse(new NotFoundError("Player national team not found"));
@@ -37,18 +39,22 @@ export async function PUT(
   try {
     await authorizeManageContent();
 
-    const { playerId, careerId } = await context.params;
+    const { playerId, playerNationalTeamCareerId } = await context.params;
 
     const currentPlayerNationalTeamCareer =
-      await getPlayerNationalTeamCareerDetailService(careerId);
+      await getPlayerNationalTeamCareerDetailService(
+        playerNationalTeamCareerId,
+      );
 
     if (!currentPlayerNationalTeamCareer) {
-      return errorResponse(new NotFoundError("Player national team career not found"));
+      return errorResponse(
+        new NotFoundError("Player national team career not found"),
+      );
     }
 
     const body = await request.json();
     const data = await updatePlayerNationalTeamCareerService(
-      careerId,
+      playerNationalTeamCareerId,
       playerId,
       body,
     );
@@ -66,16 +72,18 @@ export async function DELETE(
   try {
     await authorizeManageContent();
 
-    const { careerId } = await context.params;
+    const { playerNationalTeamCareerId } = await context.params;
 
     const playerNationalTeamCareer =
-      await getPlayerNationalTeamCareerDetailService(careerId);
+      await getPlayerNationalTeamCareerDetailService(
+        playerNationalTeamCareerId,
+      );
 
     if (!playerNationalTeamCareer) {
       return errorResponse(new NotFoundError("Player national team not found"));
     }
 
-    await deletePlayerNationalTeamCareerService(careerId);
+    await deletePlayerNationalTeamCareerService(playerNationalTeamCareerId);
 
     return NextResponse.json({ success: true });
   } catch (error: unknown) {

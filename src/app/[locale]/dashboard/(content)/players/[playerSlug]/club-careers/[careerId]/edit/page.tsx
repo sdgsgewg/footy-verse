@@ -6,14 +6,14 @@ import { getPlayerLookupService } from "@/lib/services/players.service";
 export default async function Page({
   params,
 }: {
-  params: Promise<{ playerSlug: string; careerId: string }>;
+  params: Promise<{ playerSlug: string; playerClubCareerId: string }>;
 }) {
-  const { playerSlug, careerId } = await params;
+  const { playerSlug, playerClubCareerId } = await params;
 
   const playerLookup = await getPlayerLookupService(playerSlug);
 
   const playerClubCareerLookup =
-    await getPlayerClubCareerLookupService(careerId);
+    await getPlayerClubCareerLookupService(playerClubCareerId);
 
   if (!playerLookup || !playerClubCareerLookup) {
     return notFound();

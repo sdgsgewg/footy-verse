@@ -2,28 +2,26 @@
 
 import { useLocale, useTranslations } from "next-intl";
 import { formatLocaleDate } from "@/lib/utils/date";
-import { useParams } from "next/navigation";
 import { PlayerNationalTeamCareerListItem } from "@/types/player-national-team-career";
 import { DataColumn } from "@/types/table";
 import { usePlayerNationalTeamCareerActions } from "@/hooks/dashboard/player-national-teams/usePlayerNationalTeamCareerActions";
 import { DataTable } from "@/components/shared/tables/DataTable";
 import { NationalityImageLabel } from "@/components/shared/tables/cells";
+import { PlayerLookupResponse } from "@/types/player";
 
 interface Props {
+  playerLookup: PlayerLookupResponse;
   playerNationalTeamCareers: PlayerNationalTeamCareerListItem[];
   loading?: boolean;
   showActions?: boolean;
 }
 
 const PlayerNationalTeamCareerHistoryTable = ({
+  playerLookup,
   playerNationalTeamCareers,
   loading,
   showActions = false,
 }: Props) => {
-  const { playerSlug } = useParams() as {
-    playerSlug: string;
-  };
-
   const tColumn = useTranslations(
     "dashboard.playerNationalTeamCareers.table.columns",
   );
@@ -31,7 +29,7 @@ const PlayerNationalTeamCareerHistoryTable = ({
   const locale = useLocale();
 
   const { handleEdit, handleDelete } =
-    usePlayerNationalTeamCareerActions(playerSlug);
+    usePlayerNationalTeamCareerActions(playerLookup);
 
   const columns: DataColumn<PlayerNationalTeamCareerListItem>[] = [
     {

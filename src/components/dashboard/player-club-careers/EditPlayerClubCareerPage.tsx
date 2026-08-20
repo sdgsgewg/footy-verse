@@ -35,7 +35,7 @@ export default function EditPlayerClubCareerPage({
   const { playerClubCareer, isLoading, error, refetch } =
     usePlayerClubCareerEdit({
       playerId: playerLookup.id,
-      careerId: playerClubCareerLookup.id,
+      playerClubCareerId: playerClubCareerLookup.id,
     });
 
   const { playerClubCareers } = usePlayerClubCareers({

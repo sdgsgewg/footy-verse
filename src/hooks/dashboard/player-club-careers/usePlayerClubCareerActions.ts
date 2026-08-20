@@ -19,15 +19,15 @@ export function usePlayerClubCareerActions(playerLookup: PlayerLookupResponse) {
     );
   };
 
-  const handleView = (careerId: string) => {
+  const handleView = (playerClubCareerId: string) => {
     router.push(
-      `${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${playerLookup.slug}/club-careers/${careerId}`,
+      `${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${playerLookup.slug}/club-careers/${playerClubCareerId}`,
     );
   };
 
-  const handleEdit = (careerId: string) => {
+  const handleEdit = (playerClubCareerId: string) => {
     router.push(
-      `${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${playerLookup.slug}/club-careers/${careerId}/edit`,
+      `${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${playerLookup.slug}/club-careers/${playerClubCareerId}/edit`,
     );
   };
 
