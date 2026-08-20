@@ -144,18 +144,18 @@ function getCompetitionSeasonDetailBaseQuery() {
 
 /**
  *
- * @param id
+ * @param competitionSeasonId
  * @returns CompetitionSeasonEditResponse | null
  */
 export async function getCompetitionSeasonEditRepo(
-  id: string,
+  competitionSeasonId: string,
 ): Promise<CompetitionSeasonEditResponse | null> {
   const supabase = await getSupabase();
 
   const { data, error } = await supabase
     .from(getTable())
     .select(getCompetitionSeasonDetailBaseQuery())
-    .eq("id", id)
+    .eq("id", competitionSeasonId)
     .maybeSingle()
     .overrideTypes<DbCompetitionSeasonDetailRow>();
 
@@ -167,18 +167,18 @@ export async function getCompetitionSeasonEditRepo(
 
 /**
  *
- * @param id
+ * @param competitionSeasonId
  * @returns CompetitionSeasonDetailResponse | null
  */
 export async function getCompetitionSeasonDetailRepo(
-  id: string,
+  competitionSeasonId: string,
 ): Promise<CompetitionSeasonDetailResponse | null> {
   const supabase = await getSupabase();
 
   const { data, error } = await supabase
     .from(getTable())
     .select(getCompetitionSeasonDetailBaseQuery())
-    .eq("id", id)
+    .eq("id", competitionSeasonId)
     .maybeSingle()
     .overrideTypes<DbCompetitionSeasonDetailRow>();
 
@@ -245,19 +245,23 @@ export async function createCompetitionSeasonRepo(
 
 /**
  *
- * @param id
+ * @param competitionSeasonId
  * @param competitionId
  * @param competitionSeason
  * @returns CompetitionSeasonDetailResponse
  */
 export async function updateCompetitionSeasonRepo(
-  id: string,
+  competitionSeasonId: string,
   competitionId: string,
   competitionSeason: CompetitionSeasonUpdateInput,
 ): Promise<CompetitionSeasonDetailResponse> {
   const supabase = await getSupabase();
 
-  await requireEntity(getCompetitionSeasonDetailRepo, id, getLabel());
+  await requireEntity(
+    getCompetitionSeasonDetailRepo,
+    competitionSeasonId,
+    getLabel(),
+  );
 
   const slug = slugify(competitionSeason.name);
 
@@ -269,13 +273,13 @@ export async function updateCompetitionSeasonRepo(
       competition_id: competitionId,
       updated_at: new Date().toISOString(),
     })
-    .eq("id", id)
+    .eq("id", competitionSeasonId)
     .select("*")
     .single();
 
   if (error) throw error;
 
-  const result = await getCompetitionSeasonDetailRepo(id);
+  const result = await getCompetitionSeasonDetailRepo(competitionSeasonId);
 
   if (!result) {
     throw new Error("Failed to retrieve updated competition season");
@@ -286,14 +290,23 @@ export async function updateCompetitionSeasonRepo(
 
 /**
  *
- * @param id
+ * @param competitionSeasonId
  */
-export async function deleteCompetitionSeasonRepo(id: string): Promise<void> {
+export async function deleteCompetitionSeasonRepo(
+  competitionSeasonId: string,
+): Promise<void> {
   const supabase = await getSupabase();
 
-  await requireEntity(getCompetitionSeasonDetailRepo, id, getLabel());
+  await requireEntity(
+    getCompetitionSeasonDetailRepo,
+    competitionSeasonId,
+    getLabel(),
+  );
 
-  const { error } = await supabase.from(getTable()).delete().eq("id", id);
+  const { error } = await supabase
+    .from(getTable())
+    .delete()
+    .eq("id", competitionSeasonId);
 
   if (error) throw error;
 }

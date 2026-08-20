@@ -25,14 +25,18 @@ export async function getCompetitionSeasonsService(
   return getCompetitionSeasonsRepo(parsedCompetitionId, parsed);
 }
 
-export async function getCompetitionSeasonEditService(id: string) {
-  const parsedId = idSchema.parse(id);
+export async function getCompetitionSeasonEditService(
+  competitionSeasonId: string,
+) {
+  const parsedId = idSchema.parse(competitionSeasonId);
 
   return getCompetitionSeasonEditRepo(parsedId);
 }
 
-export async function getCompetitionSeasonDetailService(id: string) {
-  const parsedId = idSchema.parse(id);
+export async function getCompetitionSeasonDetailService(
+  competitionSeasonId: string,
+) {
+  const parsedId = idSchema.parse(competitionSeasonId);
 
   return getCompetitionSeasonDetailRepo(parsedId);
 }
@@ -54,19 +58,21 @@ export async function createCompetitionSeasonService(
 }
 
 export async function updateCompetitionSeasonService(
-  id: string,
+  competitionSeasonId: string,
   competitionId: string,
   input: unknown,
 ) {
-  const parsedId = idSchema.parse(id);
+  const parsedId = idSchema.parse(competitionSeasonId);
   const parsedCompetitionId = idSchema.parse(competitionId);
   const parsed = updateCompetitionSeasonSchema.parse(input);
 
   return updateCompetitionSeasonRepo(parsedId, parsedCompetitionId, parsed);
 }
 
-export async function deleteCompetitionSeasonService(id: string) {
-  const parsedId = idSchema.parse(id);
+export async function deleteCompetitionSeasonService(
+  competitionSeasonId: string,
+) {
+  const parsedId = idSchema.parse(competitionSeasonId);
 
   await deleteCompetitionSeasonRepo(parsedId);
 }

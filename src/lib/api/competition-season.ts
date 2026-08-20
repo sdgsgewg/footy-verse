@@ -4,10 +4,6 @@ import {
   CompetitionSeasonListItem,
 } from "@/types/competition-season";
 import { apiClient } from "./client";
-import {
-  createCompetitionSeasonSchema,
-  updateCompetitionSeasonSchema,
-} from "../validations/competition-seasons.schema";
 
 /**
  *
@@ -28,17 +24,17 @@ export const fetchCompetitionSeasons = async (
 /**
  *
  * @param competitionId
- * @param careerId
+ * @param competitionSeasonId
  * @returns CompetitionSeasonEditResponse
  */
 export const fetchCompetitionSeasonEdit = async (
   competitionId: string,
-  careerId: string,
+  competitionSeasonId: string,
 ): Promise<CompetitionSeasonEditResponse> => {
   const { data } = await apiClient.get<{
     success: boolean;
     data: CompetitionSeasonEditResponse;
-  }>(`/competitions/${competitionId}/seasons/${careerId}/edit`);
+  }>(`/competitions/${competitionId}/seasons/${competitionSeasonId}/edit`);
 
   return data.data;
 };
@@ -46,17 +42,17 @@ export const fetchCompetitionSeasonEdit = async (
 /**
  *
  * @param competitionId
- * @param careerId
+ * @param competitionSeasonId
  * @returns CompetitionSeasonDetailResponse
  */
 export const fetchCompetitionSeasonDetail = async (
   competitionId: string,
-  careerId: string,
+  competitionSeasonId: string,
 ): Promise<CompetitionSeasonDetailResponse> => {
   const { data } = await apiClient.get<{
     success: boolean;
     data: CompetitionSeasonDetailResponse;
-  }>(`/competitions/${competitionId}/seasons/${careerId}`);
+  }>(`/competitions/${competitionId}/seasons/${competitionSeasonId}`);
 
   return data.data;
 };
@@ -70,38 +66,36 @@ export const createCompetitionSeason = async (
   competitionId: string,
   payload: unknown,
 ) => {
-  const parsed = createCompetitionSeasonSchema.parse(payload); // validation
-
-  await apiClient.post(`/competitions/${competitionId}/seasons`, parsed);
+  await apiClient.post(`/competitions/${competitionId}/seasons`, payload);
 };
 
 /**
  *
  * @param competitionId
- * @param careerId
+ * @param competitionSeasonId
  * @param payload
  */
 export const updateCompetitionSeason = async (
   competitionId: string,
-  careerId: string,
+  competitionSeasonId: string,
   payload: unknown,
 ) => {
-  const parsed = updateCompetitionSeasonSchema.parse(payload); // validation
-
   await apiClient.put(
-    `/competitions/${competitionId}/seasons/${careerId}`,
-    parsed,
+    `/competitions/${competitionId}/seasons/${competitionSeasonId}`,
+    payload,
   );
 };
 
 /**
  *
  * @param competitionId
- * @param careerId
+ * @param competitionSeasonId
  */
 export const deleteCompetitionSeason = async (
   competitionId: string,
-  careerId: string,
+  competitionSeasonId: string,
 ) => {
-  await apiClient.delete(`/competitions/${competitionId}/seasons/${careerId}`);
+  await apiClient.delete(
+    `/competitions/${competitionId}/seasons/${competitionSeasonId}`,
+  );
 };

@@ -3,7 +3,7 @@ import { NotFoundError } from "@/lib/errors/http-error";
 import { getCompetitionSeasonEditService } from "@/lib/services/competition-seasons.service";
 
 type CompetitionSeasonRouteContext = {
-  params: Promise<{ competitionId: string; seasonId: string }>;
+  params: Promise<{ competitionId: string; competitionSeasonId: string }>;
 };
 
 export async function GET(
@@ -11,8 +11,8 @@ export async function GET(
   context: CompetitionSeasonRouteContext,
 ) {
   try {
-    const { seasonId } = await context.params;
-    const data = await getCompetitionSeasonEditService(seasonId);
+    const { competitionSeasonId } = await context.params;
+    const data = await getCompetitionSeasonEditService(competitionSeasonId);
 
     if (!data) {
       return errorResponse(new NotFoundError("Competition season not found"));
