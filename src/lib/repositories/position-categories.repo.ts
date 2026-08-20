@@ -177,12 +177,12 @@ export async function createPositionCategoryRepo(
     throw new Error("Failed to retrieve created position category");
   }
 
-  // await createEntityActivityLog({
-  //   action: ActivityLogAction.CREATE,
-  //   entity: "positionCategory",
-  //   entityId: result.id,
-  //   name: result.name,
-  // });
+  await createEntityActivityLog({
+    action: ActivityLogAction.CREATE,
+    entity: "positionCategory",
+    entityId: result.id,
+    name: result.name,
+  });
 
   return result;
 }
@@ -226,15 +226,15 @@ export async function updatePositionCategoryRepo(
     "name",
   ] as const);
 
-  // await createEntityActivityLog({
-  //   action: ActivityLogAction.UPDATE,
-  //   entity: "positionCategory",
-  //   entityId: result.id,
-  //   name: result.name,
-  //   metadata: {
-  //     changes,
-  //   },
-  // });
+  await createEntityActivityLog({
+    action: ActivityLogAction.UPDATE,
+    entity: "positionCategory",
+    entityId: result.id,
+    name: result.name,
+    metadata: {
+      changes,
+    },
+  });
 
   return result;
 }
@@ -252,10 +252,10 @@ export async function deletePositionCategoryRepo(id: string): Promise<void> {
 
   if (error) throw error;
 
-  // await createEntityActivityLog({
-  //   action: ActivityLogAction.DELETE,
-  //   entity: "positionCategory",
-  //   entityId: id,
-  //   name: positionCategory.name,
-  // });
+  await createEntityActivityLog({
+    action: ActivityLogAction.DELETE,
+    entity: "positionCategory",
+    entityId: id,
+    name: positionCategory.name,
+  });
 }
