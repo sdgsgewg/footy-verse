@@ -93,6 +93,11 @@ export default function EditPlayerNationalTeamCareerPage({
             submit({
               playerNationalTeamCareerId: playerNationalTeamCareer.id,
               payload,
+              onSuccess: () => {
+                router.push(
+                  `${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${player.slug}`,
+                );
+              },
             })
           }
         />

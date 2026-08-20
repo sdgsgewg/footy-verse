@@ -7,6 +7,7 @@ import { getApiErrorMessage, hasDuplicateError } from "@/lib/crud/error";
 import { getNameFromPayload } from "@/lib/crud/payload";
 import { isLikelyConnectionError } from "@/lib/utils/connection-error";
 import { CrudMutationOptions } from "@/types/crud";
+import { activityLogKeys } from "@/lib/react-query/keys/activityLogKeys";
 
 export function useCrudMutation<TVariables>({
   mutationFn,
@@ -34,7 +35,13 @@ export function useCrudMutation<TVariables>({
         queryClient.invalidateQueries(filters);
       });
 
-      if (["playerClubCareer", "playerNationalTeamCareer"].includes(entityKey)) {
+      queryClient.invalidateQueries({
+        queryKey: activityLogKeys.lists(),
+      });
+
+      if (
+        ["playerClubCareer", "playerNationalTeamCareer"].includes(entityKey)
+      ) {
         alert(
           `${t(`common.crud.success.${action}`, {
             entity: t(`entities.${entityKey}`),

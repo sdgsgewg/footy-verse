@@ -73,6 +73,11 @@ export default function CreatePlayerNationalTeamCareerPage({
           onSubmit={(payload) =>
             submit({
               payload,
+              onSuccess: () => {
+                router.push(
+                  `${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${player.slug}`,
+                );
+              },
             })
           }
         />
