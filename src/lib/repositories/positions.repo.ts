@@ -239,23 +239,27 @@ export async function updatePositionRepo(
 
   const slug = slugify(position.name);
 
-  const { error } = await supabase
-    .from(getPositionTable())
-    .update({
-      ...position,
-      slug,
-      updated_at: new Date().toISOString(),
-    })
-    .eq("id", id)
-    .select("*")
-    .single();
+  /**
+   * update data
+   * move category if changed
+   * normalize display order of positions from old/new category
+   */
+  const { error } = await supabase.rpc("update_position", {
+    p_position_id: id,
+    p_name: position.name,
+    p_slug: slug,
+    p_position_category_id: position.position_category_id,
+  });
 
   if (error) throw error;
 
   const result = await getPositionEditRepo(id);
+
   if (!result) {
     throw new Error("Failed to retrieve updated position");
   }
+
+  // Create activity log
 
   const changes = getChangedFields(oldPosition, result, [
     "name",
@@ -282,6 +286,8 @@ export async function reorderPositionsRepo(
 
   const { position_category_id, position_ids } = input;
 
+  // drag-and-drop operation to reorder display_order of positions from the selected position category
+
   const { error } = await supabase.rpc("reorder_positions", {
     p_position_category_id: position_category_id,
     p_position_ids: position_ids,
@@ -305,6 +311,8 @@ export async function deletePositionRepo(id: string): Promise<void> {
     .eq("id", id);
 
   if (error) throw error;
+
+  // tidy up display_order of other positions from the same position category
 
   await supabase.rpc("normalize_position_display_order", {
     p_position_category_id: position.category.id,
