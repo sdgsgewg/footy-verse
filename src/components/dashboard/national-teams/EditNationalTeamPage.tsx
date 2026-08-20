@@ -93,6 +93,11 @@ const EditNationalTeamPage = ({
             submit({
               teamId: nationalTeam.id,
               payload,
+              onSuccess: () => {
+                router.push(
+                  `${ROUTES.DASHBOARD.CONTENT.NATIONALITIES.BASE}/${nationality.slug}`,
+                );
+              },
             })
           }
         />

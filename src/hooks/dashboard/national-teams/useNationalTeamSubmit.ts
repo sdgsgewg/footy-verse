@@ -6,6 +6,8 @@ import { useUpdateNationalTeam } from "./useUpdateNationalTeam";
 type SubmitOptions = {
   teamId?: string;
   payload: UpsertNationalTeamInput;
+
+  onSuccess?: () => void;
 };
 
 export function useNationalTeamSubmit(nation: NationalityLookupResponse) {
@@ -16,16 +18,19 @@ export function useNationalTeamSubmit(nation: NationalityLookupResponse) {
   const isCreating = createMutation.isPending;
   const isUpdating = updateMutation.isPending;
 
-  const submit = ({ teamId, payload }: SubmitOptions) => {
+  const submit = ({ teamId, payload, onSuccess }: SubmitOptions) => {
     if (nation.id && teamId) {
-      updateMutation.mutate({
-        teamId,
-        data: payload,
-      });
+      updateMutation.mutate(
+        {
+          teamId,
+          data: payload,
+        },
+        { onSuccess },
+      );
       return;
     }
 
-    createMutation.mutate({ data: payload });
+    createMutation.mutate({ data: payload }, { onSuccess });
   };
 
   return {

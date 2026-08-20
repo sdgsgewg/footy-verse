@@ -81,6 +81,11 @@ const EditClubTeamPage = ({ clubLookup, clubTeamLookup }: Props) => {
             submit({
               teamId: clubTeam.id,
               payload,
+              onSuccess: () => {
+                router.push(
+                  `${ROUTES.DASHBOARD.CONTENT.CLUBS.BASE}/${club.slug}`,
+                );
+              },
             })
           }
         />

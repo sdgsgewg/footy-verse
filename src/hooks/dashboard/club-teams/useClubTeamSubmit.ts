@@ -6,6 +6,8 @@ import { UpsertClubTeamInput } from "@/types/club-team";
 type SubmitOptions = {
   teamId?: string;
   payload: UpsertClubTeamInput;
+
+  onSuccess?: () => void;
 };
 
 export function useClubTeamSubmit(club: ClubLookupResponse) {
@@ -16,16 +18,19 @@ export function useClubTeamSubmit(club: ClubLookupResponse) {
   const isCreating = createMutation.isPending;
   const isUpdating = updateMutation.isPending;
 
-  const submit = ({ teamId, payload }: SubmitOptions) => {
+  const submit = ({ teamId, payload, onSuccess }: SubmitOptions) => {
     if (club.id && teamId) {
-      updateMutation.mutate({
-        teamId,
-        data: payload,
-      });
+      updateMutation.mutate(
+        {
+          teamId,
+          data: payload,
+        },
+        { onSuccess },
+      );
       return;
     }
 
-    createMutation.mutate({ data: payload });
+    createMutation.mutate({ data: payload }, { onSuccess });
   };
 
   return {

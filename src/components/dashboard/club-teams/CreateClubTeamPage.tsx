@@ -59,6 +59,11 @@ export default function CreateClubTeamPage({ clubLookup }: Props) {
           onSubmit={(payload) =>
             submit({
               payload,
+              onSuccess: () => {
+                router.push(
+                  `${ROUTES.DASHBOARD.CONTENT.CLUBS.BASE}/${club.slug}`,
+                );
+              },
             })
           }
         />

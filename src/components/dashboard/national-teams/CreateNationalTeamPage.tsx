@@ -68,6 +68,11 @@ export default function CreateNationalTeamPage({ nationalityLookup }: Props) {
           onSubmit={(payload) =>
             submit({
               payload,
+              onSuccess: () => {
+                router.push(
+                  `${ROUTES.DASHBOARD.CONTENT.NATIONALITIES.BASE}/${nationality.slug}`,
+                );
+              },
             })
           }
         />

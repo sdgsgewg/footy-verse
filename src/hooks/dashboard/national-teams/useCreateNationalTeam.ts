@@ -1,6 +1,5 @@
 import { NationalityLookupResponse } from "@/types/nationality";
 import { useCrudMutation } from "../useCrudMutation";
-import { ROUTES } from "@/constants/routes";
 import { createNationalTeam } from "@/lib/api/national-team";
 import { nationalTeamKeys } from "@/lib/react-query/keys/nationalTeamKeys";
 
@@ -13,8 +12,6 @@ export function useCreateNationalTeam(nation: NationalityLookupResponse) {
     mutationFn: ({ data }) => createNationalTeam(nation.id, data),
 
     invalidateQueries: [{ queryKey: nationalTeamKeys.lists() }],
-
-    redirectTo: `${ROUTES.DASHBOARD.CONTENT.NATIONALITIES.BASE}/${nation.slug}`,
 
     entityKey: "nationalTeam",
 
