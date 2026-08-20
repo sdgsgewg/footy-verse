@@ -172,3 +172,30 @@ body {
   border-radius: 16px !important;
   box-shadow: 0 20px 80px rgba(0, 0, 0, 0.35) !important;
 }
+
+/* Scrollbar Styling */
+
+.scrollbar-on-hover {
+  scrollbar-width: none;
+}
+
+.scrollbar-on-hover:hover {
+  scrollbar-width: thin;
+}
+
+.scrollbar-on-hover::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollbar-on-hover::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-on-hover::-webkit-scrollbar-thumb {
+  background: transparent;
+  border-radius: 9999px;
+}
+
+.scrollbar-on-hover:hover::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted-foreground) / 0.3);
+}

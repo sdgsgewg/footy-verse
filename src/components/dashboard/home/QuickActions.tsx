@@ -18,7 +18,7 @@ export default function QuickActions() {
   const t = useTranslations("dashboard.home.quickActions");
 
   return (
-    <Card>
+    <Card className="lg:max-h-110">
       <CardHeader>
         <CardTitle>{t("title")}</CardTitle>
 

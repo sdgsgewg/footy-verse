@@ -42,7 +42,7 @@ export default function RecentActivity() {
         </div>
       </CardHeader>
 
-      <CardContent>
+      <CardContent className="lg:max-h-84 lg:overflow-y-auto scrollbar-on-hover">
         <RecentActivityList
           activityLogs={activityLogs}
           isLoading={loading}
