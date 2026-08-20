@@ -20,20 +20,26 @@ export async function getPlayerClubCareersService(playerId: string) {
   return getPlayerClubCareersRepo(parsedId);
 }
 
-export async function getPlayerClubCareerEditService(careerId: string) {
-  const parsedId = idSchema.parse(careerId);
+export async function getPlayerClubCareerEditService(
+  playerClubCareerId: string,
+) {
+  const parsedId = idSchema.parse(playerClubCareerId);
 
   return getPlayerClubCareerEditRepo(parsedId);
 }
 
-export async function getPlayerClubCareerDetailService(careerId: string) {
-  const parsedId = idSchema.parse(careerId);
+export async function getPlayerClubCareerDetailService(
+  playerClubCareerId: string,
+) {
+  const parsedId = idSchema.parse(playerClubCareerId);
 
   return getPlayerClubCareerDetailRepo(parsedId);
 }
 
-export async function getPlayerClubCareerLookupService(careerId: string) {
-  const parsedId = idSchema.parse(careerId);
+export async function getPlayerClubCareerLookupService(
+  playerClubCareerId: string,
+) {
+  const parsedId = idSchema.parse(playerClubCareerId);
 
   return getPlayerClubCareerLookupRepo(parsedId);
 }
@@ -49,19 +55,21 @@ export async function createPlayerClubCareerService(
 }
 
 export async function updatePlayerClubCareerService(
-  careerId: string,
+  playerClubCareerId: string,
   playerId: string,
   input: unknown,
 ) {
-  const parsedId = idSchema.parse(careerId);
+  const parsedId = idSchema.parse(playerClubCareerId);
   const parsedPlayerId = idSchema.parse(playerId);
   const parsed = updatePlayerClubCareerSchema.parse(input);
 
   return updatePlayerClubCareerRepo(parsedId, parsedPlayerId, parsed);
 }
 
-export async function deletePlayerClubCareerService(careerId: string) {
-  const parsedId = idSchema.parse(careerId);
+export async function deletePlayerClubCareerService(
+  playerClubCareerId: string,
+) {
+  const parsedId = idSchema.parse(playerClubCareerId);
 
   await deletePlayerClubCareerRepo(parsedId);
 }

@@ -28,17 +28,17 @@ export const fetchPlayerClubCareers = async (
 /**
  *
  * @param playerId
- * @param careerId
+ * @param playerClubCareerId
  * @returns PlayerClubCareerEditResponse
  */
 export const fetchPlayerClubCareerEdit = async (
   playerId: string,
-  careerId: string,
+  playerClubCareerId: string,
 ): Promise<PlayerClubCareerEditResponse> => {
   const { data } = await apiClient.get<{
     success: boolean;
     data: PlayerClubCareerEditResponse;
-  }>(`/players/${playerId}/club-careers/${careerId}/edit`);
+  }>(`/players/${playerId}/club-careers/${playerClubCareerId}/edit`);
 
   return data.data;
 };
@@ -46,17 +46,17 @@ export const fetchPlayerClubCareerEdit = async (
 /**
  *
  * @param playerId
- * @param careerId
+ * @param playerClubCareerId
  * @returns PlayerClubCareerDetailResponse
  */
 export const fetchPlayerClubCareerDetail = async (
   playerId: string,
-  careerId: string,
+  playerClubCareerId: string,
 ): Promise<PlayerClubCareerDetailResponse> => {
   const { data } = await apiClient.get<{
     success: boolean;
     data: PlayerClubCareerDetailResponse;
-  }>(`/players/${playerId}/club-careers/${careerId}`);
+  }>(`/players/${playerId}/club-careers/${playerClubCareerId}`);
 
   return data.data;
 };
@@ -78,27 +78,32 @@ export const createPlayerClubCareer = async (
 /**
  *
  * @param playerId
- * @param careerId
+ * @param playerClubCareerId
  * @param payload
  */
 export const updatePlayerClubCareer = async (
   playerId: string,
-  careerId: string,
+  playerClubCareerId: string,
   payload: unknown,
 ) => {
   const parsed = updatePlayerClubCareerSchema.parse(payload); // validation
 
-  await apiClient.put(`/players/${playerId}/club-careers/${careerId}`, parsed);
+  await apiClient.put(
+    `/players/${playerId}/club-careers/${playerClubCareerId}`,
+    parsed,
+  );
 };
 
 /**
  *
  * @param playerId
- * @param careerId
+ * @param playerClubCareerId
  */
 export const deletePlayerClubCareer = async (
   playerId: string,
-  careerId: string,
+  playerClubCareerId: string,
 ) => {
-  await apiClient.delete(`/players/${playerId}/club-careers/${careerId}`);
+  await apiClient.delete(
+    `/players/${playerId}/club-careers/${playerClubCareerId}`,
+  );
 };

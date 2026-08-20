@@ -2,34 +2,31 @@
 
 import { useLocale, useTranslations } from "next-intl";
 import { formatLocaleDate } from "@/lib/utils/date";
-import { useParams } from "next/navigation";
 import { usePlayerClubCareerActions } from "@/hooks/dashboard/player-club-careers/usePlayerClubCareerActions";
 import { PlayerClubCareerListItem } from "@/types/player-club-career";
 import { DataColumn } from "@/types/table";
 import { DataTable } from "../../shared/tables/DataTable";
 import { ClubImageLabel } from "@/components/shared/tables/cells";
+import { PlayerLookupResponse } from "@/types/player";
 
 interface Props {
+  playerLookup: PlayerLookupResponse;
   playerClubCareers: PlayerClubCareerListItem[];
   loading?: boolean;
   showActions?: boolean;
 }
 
 const PlayerClubCareerHistoryTable = ({
+  playerLookup,
   playerClubCareers,
   loading,
   showActions = false,
 }: Props) => {
-  const { playerSlug } = useParams() as {
-    playerSlug: string;
-  };
-
   const tColumn = useTranslations("dashboard.playerClubCareers.table.columns");
 
   const locale = useLocale();
 
-  const { handleEdit, handleDelete } =
-    usePlayerClubCareerActions(playerSlug);
+  const { handleEdit, handleDelete } = usePlayerClubCareerActions(playerLookup);
 
   const columns: DataColumn<PlayerClubCareerListItem>[] = [
     {

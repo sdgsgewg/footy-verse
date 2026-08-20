@@ -63,6 +63,7 @@ const PlayerHistory = ({ player }: Props) => {
           />
 
           <PlayerClubCareerHistoryTable
+            playerLookup={player}
             playerClubCareers={playerClubCareers}
             loading={isPlayerClubCareersLoading}
             showActions

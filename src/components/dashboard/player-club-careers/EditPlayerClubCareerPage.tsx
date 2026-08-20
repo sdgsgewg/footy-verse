@@ -81,7 +81,10 @@ export default function EditPlayerClubCareerPage({
       columns={1}
       tableTitle="Career History"
       table={
-        <PlayerClubCareerHistoryTable playerClubCareers={playerClubCareers} />
+        <PlayerClubCareerHistoryTable
+          playerLookup={playerLookup}
+          playerClubCareers={playerClubCareers}
+        />
       }
       form={
         <PlayerClubCareerForm
@@ -90,8 +93,13 @@ export default function EditPlayerClubCareerPage({
           loading={isSubmitting}
           onSubmit={(payload) =>
             submit({
-              careerId: playerClubCareer.id,
+              playerClubCareerId: playerClubCareer.id,
               payload,
+              onSuccess: () => {
+                router.push(
+                  `${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${player.slug}`,
+                );
+              },
             })
           }
         />

@@ -4,8 +4,10 @@ import { PlayerLookupResponse } from "@/types/player";
 import { useUpdatePlayerClubCareer } from "./useUpdatePlayerClubCareer";
 
 type SubmitOptions = {
-  careerId?: string;
+  playerClubCareerId?: string;
   payload: UpsertPlayerClubCareerInput;
+
+  onSuccess?: () => void;
 };
 
 export function usePlayerClubCareerSubmit(player: PlayerLookupResponse) {
@@ -16,16 +18,23 @@ export function usePlayerClubCareerSubmit(player: PlayerLookupResponse) {
   const isCreating = createMutation.isPending;
   const isUpdating = updateMutation.isPending;
 
-  const submit = ({ careerId, payload }: SubmitOptions) => {
-    if (player.id && careerId) {
-      updateMutation.mutate({
-        careerId,
-        data: payload,
-      });
+  const submit = ({
+    playerClubCareerId,
+    payload,
+    onSuccess,
+  }: SubmitOptions) => {
+    if (player.id && playerClubCareerId) {
+      updateMutation.mutate(
+        {
+          playerClubCareerId,
+          data: payload,
+        },
+        { onSuccess },
+      );
       return;
     }
 
-    createMutation.mutate({ data: payload });
+    createMutation.mutate({ data: payload }, { onSuccess });
   };
 
   return {

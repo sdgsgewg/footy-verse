@@ -3,48 +3,42 @@ import { ROUTES } from "@/constants/routes";
 import { useRouter } from "@/navigation";
 import { useDeletePlayerClubCareer } from "./useDeletePlayerClubCareer";
 import { PlayerClubCareerListItem } from "@/types/player-club-career";
+import { useDeleteAction } from "@/hooks/crud/useDeleteAction";
+import { PlayerLookupResponse } from "@/types/player";
 
-export function usePlayerClubCareerActions(playerSlug: string) {
-  const t = useTranslations("common");
+export function usePlayerClubCareerActions(playerLookup: PlayerLookupResponse) {
   const tEntities = useTranslations("entities");
 
   const router = useRouter();
 
-  const deleteMutation = useDeletePlayerClubCareer(playerSlug);
+  const deleteMutation = useDeletePlayerClubCareer(playerLookup.id);
 
   const handleCreate = () => {
     router.push(
-      `${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${playerSlug}/club-careers/create`,
+      `${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${playerLookup.slug}/club-careers/create`,
     );
   };
 
   const handleView = (careerId: string) => {
     router.push(
-      `${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${playerSlug}/club-careers/${careerId}`,
+      `${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${playerLookup.slug}/club-careers/${careerId}`,
     );
   };
 
   const handleEdit = (careerId: string) => {
     router.push(
-      `${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${playerSlug}/club-careers/${careerId}/edit`,
+      `${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${playerLookup.slug}/club-careers/${careerId}/edit`,
     );
   };
 
-  const handleDelete = (pc: PlayerClubCareerListItem) => {
-    if (
-      !confirm(
-        `${t("crud.confirm.delete", {
-          entity: tEntities("playerClubCareer").toLowerCase(),
-        })}`,
-      )
-    )
-      return;
-
-    deleteMutation.mutate({
-      careerId: pc.id,
-      data: pc,
-    });
-  };
+  const handleDelete = useDeleteAction({
+    deleteMutation,
+    entity: tEntities("playerClubCareer"),
+    getVariables: (pcc: PlayerClubCareerListItem) => ({
+      playerClubCareerId: pcc.id,
+      data: pcc,
+    }),
+  });
 
   return {
     handleCreate,

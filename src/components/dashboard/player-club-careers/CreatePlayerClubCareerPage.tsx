@@ -57,7 +57,10 @@ export default function CreatePlayerClubCareerPage({ playerLookup }: Props) {
       columns={1}
       tableTitle="Career History"
       table={
-        <PlayerClubCareerHistoryTable playerClubCareers={playerClubCareers} />
+        <PlayerClubCareerHistoryTable
+          playerLookup={playerLookup}
+          playerClubCareers={playerClubCareers}
+        />
       }
       form={
         <PlayerClubCareerForm
@@ -66,6 +69,11 @@ export default function CreatePlayerClubCareerPage({ playerLookup }: Props) {
           onSubmit={(payload) =>
             submit({
               payload,
+              onSuccess: () => {
+                router.push(
+                  `${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${player.slug}`,
+                );
+              },
             })
           }
         />

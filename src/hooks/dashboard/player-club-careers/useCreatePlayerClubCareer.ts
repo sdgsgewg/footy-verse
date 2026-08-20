@@ -1,4 +1,3 @@
-import { ROUTES } from "@/constants/routes";
 import { useCrudMutation } from "../useCrudMutation";
 import { createPlayerClubCareer } from "@/lib/api/player-club-career";
 import { playerClubCareerKeys } from "@/lib/react-query/keys/playerClubCareerKeys";
@@ -26,8 +25,6 @@ export function useCreatePlayerClubCareer(player: PlayerLookupResponse) {
       { queryKey: playerShirtNumberKeys.clubTeams() },
       { queryKey: playerShirtNumberKeys.nationalTeams() },
     ],
-
-    redirectTo: `${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${player.slug}`,
 
     entityKey: "playerClubCareer",
 

@@ -10,7 +10,7 @@ import {
 import { NextResponse } from "next/server";
 
 type PlayerClubCareerRouteContext = {
-  params: Promise<{ playerId: string; careerId: string }>;
+  params: Promise<{ playerId: string; playerClubCareerId: string }>;
 };
 
 export async function GET(
@@ -18,8 +18,8 @@ export async function GET(
   context: PlayerClubCareerRouteContext,
 ) {
   try {
-    const { careerId } = await context.params;
-    const data = await getPlayerClubCareerDetailService(careerId);
+    const { playerClubCareerId } = await context.params;
+    const data = await getPlayerClubCareerDetailService(playerClubCareerId);
 
     if (!data) {
       return errorResponse(new NotFoundError("Player career not found"));
@@ -38,17 +38,21 @@ export async function PUT(
   try {
     await authorizeManageContent();
 
-    const { playerId, careerId } = await context.params;
+    const { playerId, playerClubCareerId } = await context.params;
 
     const currentPlayerClubCareer =
-      await getPlayerClubCareerDetailService(careerId);
+      await getPlayerClubCareerDetailService(playerClubCareerId);
 
     if (!currentPlayerClubCareer) {
       return errorResponse(new NotFoundError("Player career not found"));
     }
 
     const body = await request.json();
-    const data = await updatePlayerClubCareerService(careerId, playerId, body);
+    const data = await updatePlayerClubCareerService(
+      playerClubCareerId,
+      playerId,
+      body,
+    );
 
     return successResponse(data);
   } catch (error: unknown) {
@@ -63,15 +67,16 @@ export async function DELETE(
   try {
     await authorizeManageContent();
 
-    const { careerId } = await context.params;
+    const { playerClubCareerId } = await context.params;
 
-    const playerClubCareer = await getPlayerClubCareerDetailService(careerId);
+    const playerClubCareer =
+      await getPlayerClubCareerDetailService(playerClubCareerId);
 
     if (!playerClubCareer) {
       return errorResponse(new NotFoundError("Player career not found"));
     }
 
-    await deletePlayerClubCareerService(careerId);
+    await deletePlayerClubCareerService(playerClubCareerId);
 
     return NextResponse.json({ success: true });
   } catch (error: unknown) {
