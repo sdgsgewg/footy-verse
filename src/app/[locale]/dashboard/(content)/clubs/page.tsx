@@ -16,10 +16,15 @@ import {
   ClubImageLabel,
   NationalityImageLabel,
 } from "@/components/shared/tables/cells";
+import { useState } from "react";
+import CrudFilterDialog from "@/components/templates/crud/CrudFilterDialog";
+import ClubFilterContent from "@/components/dashboard/clubs/ClubFilterContent";
+import { ClubFilter } from "@/types/club";
 
 export default function ClubsManagementPage() {
-  const tCommon = useTranslations("common");
   const tColumn = useTranslations("dashboard.clubs.columns");
+  const tFilter = useTranslations("dashboard.clubs.filter");
+  const tCommon = useTranslations("common");
 
   const { getTitle } = useCrudPageTitle();
 
@@ -31,6 +36,35 @@ export default function ClubsManagementPage() {
     goToPage,
     syncUrl,
   } = useClubFilter();
+
+  const [filterOpen, setFilterOpen] = useState(false);
+
+  const [draftFilters, setDraftFilters] = useState<ClubFilter>({
+    ...filters,
+    nationId: filters.nationId,
+  });
+
+  const handleOpenFilter = () => {
+    setDraftFilters({
+      ...filters,
+      nationId: filters.nationId,
+    });
+
+    setFilterOpen(true);
+  };
+
+  const handleApplyFilter = () => {
+    setFilter("nationId", draftFilters.nationId);
+
+    setFilterOpen(false);
+  };
+
+  const handleResetFilter = () => {
+    setDraftFilters({
+      ...filters,
+      nationId: undefined,
+    });
+  };
 
   const {
     clubs,
@@ -109,7 +143,28 @@ export default function ClubsManagementPage() {
         searchValue: filters.search,
         searchPlaceholder: tCommon("search.placeholder"),
         onSearchChange: (value) => setFilter("search", value),
+        onFilter: handleOpenFilter,
       }}
+      filterContent={
+        <CrudFilterDialog
+          open={filterOpen}
+          onOpenChange={setFilterOpen}
+          title={tFilter("title")}
+          description={tFilter("description")}
+          onApply={handleApplyFilter}
+          onReset={handleResetFilter}
+        >
+          <ClubFilterContent
+            filters={draftFilters}
+            setFilter={(key, value) =>
+              setDraftFilters((prev) => ({
+                ...prev,
+                [key]: value,
+              }))
+            }
+          />
+        </CrudFilterDialog>
+      }
       sorting={{
         sortBy: filters.sortBy,
         sortOrder: filters.sortOrder,

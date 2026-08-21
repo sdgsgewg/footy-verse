@@ -16,5 +16,10 @@
   "columns": {
     "name": "Nama",
     "nation": "Negara"
+  },
+
+  "filter": {
+    "title": "Filter Klub",
+    "description": "Filter klub berdasarkan kebangsaannya."
   }
 }

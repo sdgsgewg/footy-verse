@@ -16,6 +16,8 @@ export const CrudListPage = <TData extends DataRow>({
 
   toolbar: { searchValue, searchPlaceholder, onSearchChange, onFilter } = {},
 
+  filterContent,
+
   sorting: { sortBy, sortOrder, onSort } = {},
 
   pagination: paginationProps,
@@ -35,6 +37,8 @@ export const CrudListPage = <TData extends DataRow>({
         onCreate={onCreate}
         onReorder={onReorder}
       />
+
+      {filterContent}
 
       <DataTable
         data={data}

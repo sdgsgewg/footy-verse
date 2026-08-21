@@ -12,7 +12,7 @@ export function useNationalityOptions() {
   });
 
   return {
-    nationalities: data ?? [],
+    nationalityOptions: data ?? [],
 
     loading: isLoading,
     retrying: isRefetching,

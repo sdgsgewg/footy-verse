@@ -38,14 +38,13 @@ const PlayerForm = ({ mode, player, loading = false, onSubmit }: Props) => {
   const { form, setForm, canSubmit, buildPayload } = usePlayerForm(player);
 
   const { positions } = usePositions();
-  const { nationalities } = useNationalityOptions();
+  const { nationalityOptions } = useNationalityOptions();
 
   const isCreate = mode === "create";
 
   const preferredFootOptions = getPreferredFootOptions(tPrefFoot);
 
   const positionOptions = getPositionOptions(positions);
-  const nationalityOptions = nationalities;
 
   const handleSubmit = () => {
     onSubmit(buildPayload());

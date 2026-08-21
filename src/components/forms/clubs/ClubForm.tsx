@@ -25,11 +25,9 @@ const ClubForm = ({ mode, club, loading = false, onSubmit }: Props) => {
 
   const { form, setForm, canSubmit, buildPayload } = useClubForm(club);
 
-  const { nationalities } = useNationalityOptions();
+  const { nationalityOptions } = useNationalityOptions();
 
   const isCreate = mode === "create";
-
-  const nationalityOptions = nationalities;
 
   const handleSubmit = () => {
     onSubmit(buildPayload());

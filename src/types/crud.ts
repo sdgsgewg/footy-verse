@@ -158,6 +158,8 @@ export interface CrudListPageProps<T extends DataRow> {
 
   toolbar?: CrudToolbarProps;
 
+  filterContent?: ReactNode;
+
   sorting?: CrudSortingProps;
 
   pagination?: CrudPaginationProps;

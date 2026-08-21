@@ -16,5 +16,10 @@
   "columns": {
     "name": "Name",
     "nation": "Nation"
+  },
+
+  "filter": {
+    "title": "Filter Clubs",
+    "description": "Filter clubs based on their nationality."
   }
 }

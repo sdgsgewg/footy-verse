@@ -19,10 +19,11 @@ interface SelectFieldProps {
   name: string;
 
   value: string;
-
   options: SelectOption[];
 
   placeholder?: string;
+
+  allLabel?: string;
 
   disabled?: boolean;
   required?: boolean;
@@ -37,10 +38,11 @@ const SelectField: React.FC<SelectFieldProps> = ({
   name,
 
   value,
-
   options,
 
   placeholder = "Select option",
+
+  allLabel,
 
   disabled = false,
   required = false,
@@ -64,6 +66,8 @@ const SelectField: React.FC<SelectFieldProps> = ({
         </SelectTrigger>
 
         <SelectContent>
+          {allLabel && <SelectItem value="">{allLabel}</SelectItem>}
+
           {options.map((option) => (
             <SelectItem key={option.value} value={option.value}>
               {option.imageUrl && (
@@ -72,7 +76,7 @@ const SelectField: React.FC<SelectFieldProps> = ({
                   alt={option.label}
                   width={20}
                   height={20}
-                  className="rounded-full object-cover shrink-0"
+                  className="shrink-0 rounded-full object-cover"
                 />
               )}
 

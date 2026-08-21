@@ -18,8 +18,7 @@ const ClubFilters = ({ filters, setFilter, isSearching }: ClubFiltersProps) => {
   const tCommon = useTranslations("common");
   const tEntities = useTranslations("entities");
 
-  const { nationalities } = useNationalityOptions();
-  const nationalityOptions = nationalities;
+  const { nationalityOptions } = useNationalityOptions();
 
   return (
     <div className="flex flex-col gap-4 mb-4">

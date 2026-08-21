@@ -108,7 +108,7 @@ const ComboboxField: React.FC<ComboboxFieldProps> = ({
           <Command>
             <CommandInput placeholder={searchPlaceholder} />
 
-            <CommandList>
+            <CommandList className="max-h-60 overflow-y-scroll">
               <CommandEmpty>{emptyMessage}</CommandEmpty>
 
               <CommandGroup>

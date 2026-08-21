@@ -21,11 +21,11 @@ export default function ActiveFiltersBar({
 }: Props) {
   const tCommonActions = useTranslations("common.actions");
 
-  const { nationalities } = useNationalityOptions();
+  const { nationalityOptions } = useNationalityOptions();
 
   const nationMap = useMemo(() => {
-    return new Map(nationalities.map((nation) => [nation.value, nation.label]));
-  }, [nationalities]);
+    return new Map(nationalityOptions.map((nation) => [nation.value, nation.label]));
+  }, [nationalityOptions]);
 
   const chips: {
     label: string;
