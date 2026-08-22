@@ -3,9 +3,8 @@ import { useTranslations } from "next-intl";
 import { motion } from "framer-motion";
 import { Input } from "@/components/ui/input";
 import { NationalityFilter } from "@/types/nationality";
-import { useConfederations } from "@/hooks/dashboard/confederations";
-import { getConfederationOptions } from "@/lib/confederations/options";
 import { ComboboxField } from "@/components/forms/fields";
+import { useConfederationOptions } from "@/hooks/confederations/useConfederationOptions";
 
 interface NationalityFiltersProps {
   filters: NationalityFilter;
@@ -25,8 +24,7 @@ const NationalityFilters = ({
   const tCommon = useTranslations("common");
   const tEntities = useTranslations("entities");
 
-  const { confederations } = useConfederations();
-  const confederationOptions = getConfederationOptions(confederations);
+  const { confederationOptions } = useConfederationOptions();
 
   return (
     <div className="flex flex-col gap-4 mb-4">

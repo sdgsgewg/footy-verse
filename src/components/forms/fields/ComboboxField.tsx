@@ -21,7 +21,7 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import { SelectOption } from "@/types/select";
+import { Option } from "@/types/option";
 import Image from "next/image";
 
 interface ComboboxFieldProps {
@@ -30,7 +30,7 @@ interface ComboboxFieldProps {
 
   value: string | null | undefined;
 
-  options: SelectOption[];
+  options: Option[];
 
   placeholder?: string;
   searchPlaceholder?: string;

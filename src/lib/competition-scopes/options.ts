@@ -1,5 +1,5 @@
 import { CompetitionScopeListItem } from "@/types/competition-scope";
-import { SelectOption } from "@/types/select";
+import { Option } from "@/types/option";
 
 /**
  *
@@ -8,7 +8,7 @@ import { SelectOption } from "@/types/select";
  */
 export function getCompetitionScopeOptions(
   competitionScopes: CompetitionScopeListItem[],
-): SelectOption[] {
+): Option[] {
   return competitionScopes.map((scope) => ({
     label: scope.name,
     value: scope.id,

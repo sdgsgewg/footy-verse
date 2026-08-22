@@ -7,7 +7,7 @@ export const nationalityMutationSchema = z.object({
   image: z.string().nullable().optional(),
   name: z.string().min(1).max(255),
   fifa_code: z.string().min(1).max(3),
-  confederation_id: z.string().nullable().optional(),
+  confederation_id: idSchema,
 });
 
 export const createNationalitySchema = nationalityMutationSchema;

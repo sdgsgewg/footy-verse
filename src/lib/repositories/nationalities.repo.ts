@@ -24,7 +24,7 @@ import { NationalTeamCreateInput } from "@/types/national-team";
 import { AgeGroup } from "@/enums/AgeGroup";
 import { createPaginatedResponse } from "../pagination";
 import { slugify } from "@/utils/string";
-import { SelectOption } from "@/types/select";
+import { Option } from "@/types/option";
 import { Gender } from "@/enums/Gender";
 import { NationalTeamType } from "@/enums/NationalTeamType";
 import { createEntityActivityLog } from "./activity-logs.repo";
@@ -115,9 +115,9 @@ export async function getNationalitiesRepo(
 
 /**
  *
- * @returns
+ * @returns Option[]
  */
-export async function getNationalityOptionsRepo(): Promise<SelectOption[]> {
+export async function getNationalityOptionsRepo(): Promise<Option[]> {
   const supabase = await getSupabase();
 
   const { data, error } = await supabase

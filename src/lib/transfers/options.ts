@@ -1,5 +1,5 @@
 import { TransferType } from "@/enums/TransferType";
-import { SelectOption } from "@/types/select";
+import { Option } from "@/types/option";
 import { getTransferTypeLabel } from "./labels";
 
 type Translate = (key: string) => string;
@@ -10,7 +10,7 @@ type Translate = (key: string) => string;
  * @returns
  */
 
-export const getTransferTypeOptions = (t: Translate): SelectOption[] =>
+export const getTransferTypeOptions = (t: Translate): Option[] =>
   Object.values(TransferType).map((type) => ({
     label: getTransferTypeLabel(type, t),
     value: type,

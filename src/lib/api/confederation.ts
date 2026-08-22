@@ -6,6 +6,7 @@ import {
 } from "@/types/confederation";
 import { apiClient } from "./client";
 import { ApiResponse } from "@/types/api";
+import { Option } from "@/types/option";
 
 const baseRoute = `/confederations`;
 
@@ -22,6 +23,18 @@ export const fetchConfederations = async (
     {
       params,
     },
+  );
+
+  return data.data;
+};
+
+/**
+ *
+ * @returns Option[]
+ */
+export const fetchConfederationOptions = async (): Promise<Option[]> => {
+  const { data } = await apiClient.get<ApiResponse<Option[]>>(
+    `${baseRoute}/options`,
   );
 
   return data.data;

@@ -11,7 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { SelectOption } from "@/types/select";
+import { Option } from "@/types/option";
 import Image from "next/image";
 
 interface SelectFieldProps {
@@ -19,7 +19,7 @@ interface SelectFieldProps {
   name: string;
 
   value: string;
-  options: SelectOption[];
+  options: Option[];
 
   placeholder?: string;
 

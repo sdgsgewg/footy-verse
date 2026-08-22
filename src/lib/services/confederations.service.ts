@@ -4,6 +4,7 @@ import {
   getConfederationDetailRepo,
   getConfederationEditRepo,
   getConfederationLookupRepo,
+  getConfederationOptionsRepo,
   getConfederationsRepo,
   updateConfederationRepo,
 } from "../repositories/confederations.repo";
@@ -18,6 +19,10 @@ export async function getConfederationsService(query: unknown) {
   const parsed = confederationsQuerySchema.parse(query);
 
   return getConfederationsRepo(parsed);
+}
+
+export async function getConfederationOptionsService() {
+  return getConfederationOptionsRepo();
 }
 
 export async function getConfederationEditService(id: string) {

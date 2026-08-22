@@ -1,13 +1,13 @@
 "use client";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useLocale, useTranslations } from "next-intl";
-import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { getApiErrorMessage, hasDuplicateError } from "@/lib/crud/error";
 import { getNameFromPayload } from "@/lib/crud/payload";
 import { isLikelyConnectionError } from "@/lib/utils/connection-error";
 import { CrudMutationOptions } from "@/types/crud";
 import { activityLogKeys } from "@/lib/react-query/keys/activityLogKeys";
+import { useRouter } from "@/navigation";
 
 export function useCrudMutation<TVariables>({
   mutationFn,
@@ -22,8 +22,6 @@ export function useCrudMutation<TVariables>({
   const queryClient = useQueryClient();
 
   const router = useRouter();
-
-  const locale = useLocale();
 
   const t = useTranslations();
 
@@ -70,7 +68,7 @@ export function useCrudMutation<TVariables>({
       onSuccess?.(data, variables);
 
       if (redirectTo) {
-        router.push(`/${locale}/${redirectTo}`);
+        router.push(`${redirectTo}`);
       } else if (allowRedirect) {
         router.back();
       }

@@ -1,17 +1,17 @@
 import { useQuery } from "@tanstack/react-query";
 import { queryConfig } from "@/lib/react-query/config/queryConfig";
-import { nationalityKeys } from "@/lib/react-query/keys/nationalityKeys";
-import { fetchNationalityOptions } from "@/lib/api/nationality";
+import { confederationKeys } from "@/lib/react-query/keys/confederationKeys";
+import { fetchConfederationOptions } from "@/lib/api/confederation";
 
-export function useNationalityOptions() {
+export function useConfederationOptions() {
   const { data, isLoading, isRefetching, error, refetch } = useQuery({
-    queryKey: nationalityKeys.options(),
-    queryFn: fetchNationalityOptions,
+    queryKey: confederationKeys.options(),
+    queryFn: fetchConfederationOptions,
     ...queryConfig,
   });
 
   return {
-    nationalityOptions: data ?? [],
+    confederationOptions: data ?? [],
 
     loading: isLoading,
     retrying: isRefetching,

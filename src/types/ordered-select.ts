@@ -1,10 +1,10 @@
 import { OrderedEntity } from "./ordered";
-import { SelectOption } from "./select";
+import { Option } from "./option";
 
 export interface OrderedSelectFieldProps<T extends OrderedEntity> {
   label: string;
 
-  options: SelectOption[];
+  options: Option[];
 
   value: T[];
 

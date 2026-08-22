@@ -8,6 +8,8 @@ export const confederationKeys = {
   list: (params?: ConfederationQuery) =>
     [...confederationKeys.lists(), params] as const,
 
+  options: () => [...confederationKeys.all, "options"] as const,
+
   details: () => [...confederationKeys.all, "detail"] as const,
 
   detail: (id: string) => [...confederationKeys.details(), id] as const,

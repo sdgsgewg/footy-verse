@@ -11,6 +11,8 @@ import { getImageUrl } from "../images/image-url";
 import { STORAGE_BUCKETS } from "../storage";
 import { mapRegionResponse } from "../regions/mapper";
 import { LocationResponse } from "@/types/competition";
+import { DbOptionListRow } from "@/types/database";
+import { Option } from "@/types/option";
 
 export function mapConfederationListItem(
   confederation: DbConfederationListRow,
@@ -28,6 +30,20 @@ export function mapConfederationListItem(
     slug,
     founded: founded ?? null,
     region: mapRegionResponse(region),
+  };
+}
+
+export function mapConfederationOption(confederation: DbOptionListRow): Option {
+  const { id, name, image } = confederation;
+
+  return {
+    label: name,
+    value: id,
+    imageUrl: getImageUrl(
+      "confederation",
+      STORAGE_BUCKETS.CONFEDERATIONS,
+      image,
+    ),
   };
 }
 

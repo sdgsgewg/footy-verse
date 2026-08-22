@@ -1,5 +1,5 @@
 import { AgeGroup } from "@/enums/AgeGroup";
-import { SelectOption } from "@/types/select";
+import { Option } from "@/types/option";
 import { getAgeGroupLabel, getGenderLabel } from "./labels";
 import { Gender } from "@/enums/Gender";
 
@@ -8,9 +8,9 @@ type Translate = (key: string) => string;
 /**
  *
  * @param t
- * @returns SelectOption[]
+ * @returns Option[]
  */
-export const getAgeGroupOptions = (t: Translate): SelectOption[] =>
+export const getAgeGroupOptions = (t: Translate): Option[] =>
   Object.values(AgeGroup).map((type) => ({
     label: getAgeGroupLabel(type, t),
     value: type,
@@ -19,9 +19,9 @@ export const getAgeGroupOptions = (t: Translate): SelectOption[] =>
 /**
  *
  * @param t
- * @returns SelectOption[]
+ * @returns Option[]
  */
-export const getGenderOptions = (t: Translate): SelectOption[] =>
+export const getGenderOptions = (t: Translate): Option[] =>
   Object.values(Gender).map((gender) => ({
     label: getGenderLabel(gender, t),
     value: gender,

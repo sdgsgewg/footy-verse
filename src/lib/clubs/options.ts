@@ -1,4 +1,4 @@
-import { SelectOption } from "@/types/select";
+import { Option } from "@/types/option";
 import { ClubListItem } from "@/types/club";
 import { getSquadTypeLabel } from "./labels";
 import { SquadType } from "@/enums/SquadType";
@@ -13,7 +13,7 @@ type Translate = (key: string) => string;
 // Filter tinggal getSquadTypeOptions()
 // Form tinggal getSquadTypeOptions()
 
-export const getSquadTypeOptions = (t: Translate): SelectOption[] =>
+export const getSquadTypeOptions = (t: Translate): Option[] =>
   Object.values(SquadType).map((type) => ({
     label: getSquadTypeLabel(type, t),
     value: type,
@@ -24,7 +24,7 @@ export const getSquadTypeOptions = (t: Translate): SelectOption[] =>
  * @param clubs
  * @returns
  */
-export function getClubOptions(clubs: ClubListItem[]): SelectOption[] {
+export function getClubOptions(clubs: ClubListItem[]): Option[] {
   return clubs.map((club) => ({
     label: club.name,
     value: club.id,

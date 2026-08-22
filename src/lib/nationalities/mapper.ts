@@ -1,7 +1,6 @@
 import {
   DbNationalityDetailRow,
   DbNationalityListRow,
-  DbNationalityOptionListRow,
   DbNationalityRow,
   DbNationalityWithConfederationRow,
   NationalityDetailResponse,
@@ -14,7 +13,8 @@ import { getImageUrl } from "../images/image-url";
 import { STORAGE_BUCKETS } from "../storage";
 import { LocationResponse } from "@/types/competition";
 import { mapConfederationResponse } from "../confederations/mapper";
-import { SelectOption } from "@/types/select";
+import { Option } from "@/types/option";
+import { DbOptionListRow } from "@/types/database";
 
 /**
  *
@@ -40,8 +40,8 @@ export function mapNationalityListItem(
 }
 
 export function mapNationalityOption(
-  nationality: DbNationalityOptionListRow,
-): SelectOption {
+  nationality: DbOptionListRow,
+): Option {
   const { id, name, image } = nationality;
 
   return {

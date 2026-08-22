@@ -21,12 +21,12 @@ import {
 } from "@/components/ui/popover";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
-export interface MultiSelectOption {
+export interface MultiOption {
   id: string;
   name: string;
 }
 
-interface InputMultiSelectProps<T extends MultiSelectOption> {
+interface InputMultiSelectProps<T extends MultiOption> {
   label: string;
 
   placeholder?: string;
@@ -42,7 +42,7 @@ interface InputMultiSelectProps<T extends MultiSelectOption> {
   onChange: (value: string[]) => void;
 }
 
-const InputMultiSelect = <T extends MultiSelectOption>({
+const InputMultiSelect = <T extends MultiOption>({
   label,
   placeholder = "Select...",
   value,
@@ -108,7 +108,7 @@ const InputMultiSelect = <T extends MultiSelectOption>({
                       className="h-3 w-3 cursor-pointer"
                       onClick={(e) => {
                         e.stopPropagation();
-                    removeOption(item.id);
+                        removeOption(item.id);
                       }}
                     />
                   </Badge>

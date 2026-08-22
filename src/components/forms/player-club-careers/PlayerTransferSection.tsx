@@ -6,7 +6,7 @@ import { UpsertPlayerClubCareerInput } from "@/types/player-club-career";
 import FormSection from "../base/FormSection";
 import { TransferType } from "@/enums/TransferType";
 import ComboboxField from "../fields/ComboboxField";
-import { SelectOption } from "@/types/select";
+import { Option } from "@/types/option";
 import SelectField from "../fields/SelectField";
 import NumberField from "../fields/NumberField";
 import { getTransferTypeOptions } from "@/lib/transfers/options";
@@ -46,8 +46,7 @@ const PlayerTransferSection = ({ form, setForm }: Props) => {
     transfer_date,
   } = transfer;
 
-  const transferTypeOptions: SelectOption[] =
-    getTransferTypeOptions(tTransferType);
+  const transferTypeOptions: Option[] = getTransferTypeOptions(tTransferType);
 
   const { seasons } = useSeasons();
   const seasonOptions = getSeasonOptions(seasons);

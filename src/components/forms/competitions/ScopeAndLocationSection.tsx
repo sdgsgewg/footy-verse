@@ -7,12 +7,10 @@ import { UpsertCompetitionInput } from "@/types/competition";
 import { SelectField } from "../fields";
 import { useCompetitionScopes } from "@/hooks/dashboard/competition-scopes";
 import { getCompetitionScopeOptions } from "@/lib/competition-scopes/options";
-import { getConfederationOptions } from "@/lib/confederations/options";
-import { getNationalityOptions } from "@/lib/nationalities/options";
 import { getRegionOptions } from "@/lib/regions/options";
-import { useConfederations } from "@/hooks/dashboard/confederations";
-import { useNationalities } from "@/hooks/nationalities";
+import { useNationalityOptions } from "@/hooks/nationalities";
 import { useRegions } from "@/hooks/dashboard/regions";
+import { useConfederationOptions } from "@/hooks/confederations/useConfederationOptions";
 
 interface Props {
   form: UpsertCompetitionInput;
@@ -31,11 +29,9 @@ const ScopeAndLocationSection = ({ form, setForm }: Props) => {
   const { competitionScopes } = useCompetitionScopes();
   const competitionScopeOptions = getCompetitionScopeOptions(competitionScopes);
 
-  const { confederations } = useConfederations();
-  const confederationOptions = getConfederationOptions(confederations);
+  const { confederationOptions } = useConfederationOptions();
 
-  const { nationalities } = useNationalities();
-  const nationalityOptions = getNationalityOptions(nationalities);
+  const { nationalityOptions } = useNationalityOptions();
 
   const { regions } = useRegions();
   const regionOptions = getRegionOptions(regions);

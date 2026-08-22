@@ -1,5 +1,5 @@
 import { PositionCategoryListItem } from "@/types/position-category";
-import { SelectOption } from "@/types/select";
+import { Option } from "@/types/option";
 
 /**
  *
@@ -8,7 +8,7 @@ import { SelectOption } from "@/types/select";
  */
 export function getPositionCategoryOptions(
   positionCategories: PositionCategoryListItem[],
-): SelectOption[] {
+): Option[] {
   return positionCategories.map((pc) => ({
     label: pc.name,
     value: pc.id,

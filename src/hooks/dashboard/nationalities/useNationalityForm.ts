@@ -19,7 +19,7 @@ const emptyNationalityForm: UpsertNationalityInput = {
 
   name: "",
   fifa_code: "",
-  confederation_id: null,
+  confederation_id: "",
 };
 
 function mapNationality(
@@ -37,7 +37,7 @@ function mapNationality(
 
     name,
     fifa_code: fifaCode,
-    confederation_id: confederationId ?? null,
+    confederation_id: confederationId ?? "",
   };
 }
 
@@ -55,7 +55,9 @@ export function useNationalityForm(nationality?: NationalityEditResponse) {
 
   const canSubmit = useMemo(() => {
     const isFilled =
-      form.name.trim().length > 0 && form.fifa_code.trim().length > 0;
+      form.name.trim().length > 0 &&
+      form.fifa_code.trim().length > 0 &&
+      form.confederation_id.trim().length > 0;
 
     if (!isFilled) {
       return false;

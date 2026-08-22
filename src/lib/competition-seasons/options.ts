@@ -1,5 +1,5 @@
 import { CompetitionSeasonStatus } from "@/enums/CompetitionSeasonStatus";
-import { SelectOption } from "@/types/select";
+import { Option } from "@/types/option";
 import { getCompetitionSeasonStatusLabel } from "./labels";
 
 type Translate = (key: string) => string;
@@ -9,9 +9,7 @@ type Translate = (key: string) => string;
  * @param t
  * @returns
  */
-export const getCompetitionSeasonStatusOptions = (
-  t: Translate,
-): SelectOption[] =>
+export const getCompetitionSeasonStatusOptions = (t: Translate): Option[] =>
   Object.values(CompetitionSeasonStatus).map((status) => ({
     label: getCompetitionSeasonStatusLabel(status, t),
     value: status,

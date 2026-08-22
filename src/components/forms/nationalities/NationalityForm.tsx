@@ -7,8 +7,7 @@ import FormWrapper from "../base/FormWrapper";
 import FormContentWrapper from "../base/FormContentWrapper";
 import { ImageField, SelectField, TextField } from "../fields";
 import { NationalityEditResponse } from "@/types/nationality";
-import { useConfederations } from "@/hooks/dashboard/confederations";
-import { getConfederationOptions } from "@/lib/confederations/options";
+import { useConfederationOptions } from "@/hooks/confederations/useConfederationOptions";
 
 interface Props {
   mode: "create" | "edit";
@@ -35,8 +34,7 @@ const NationalityForm = ({
 
   const isCreate = mode === "create";
 
-  const { confederations } = useConfederations();
-  const confederationOptions = getConfederationOptions(confederations);
+  const { confederationOptions } = useConfederationOptions();
 
   const handleSubmit = () => {
     onSubmit(buildPayload());
@@ -64,7 +62,6 @@ const NationalityForm = ({
               previewUrl: URL.createObjectURL(file),
             }))
           }
-          required
         />
 
         {/* Name */}
@@ -95,6 +92,7 @@ const NationalityForm = ({
           options={confederationOptions}
           value={form.confederation_id || ""}
           onChange={(value) => setForm({ ...form, confederation_id: value })}
+          required
         />
       </FormContentWrapper>
     </FormWrapper>

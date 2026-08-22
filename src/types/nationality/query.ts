@@ -9,11 +9,6 @@ export type DbNationalityListRow = Nationality & {
   confederation: DbConfederationRow | null;
 };
 
-export type DbNationalityOptionListRow = Pick<
-  Nationality,
-  "id" | "name" | "image"
->;
-
 // Nationality Detail
 
 export type DbNationalityDetailRow = Nationality & {

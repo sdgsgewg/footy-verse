@@ -1,5 +1,5 @@
 import { Dispatch, ReactNode, SetStateAction } from "react";
-import { SelectOption } from "./select";
+import { Option } from "./option";
 import { DataColumn, DataRow } from "./table";
 import { SortOrder } from "./sort";
 import { InvalidateQueryFilters } from "@tanstack/react-query";
@@ -12,7 +12,7 @@ type CrudFormField = {
   label: string;
   placeholder?: string;
   type: FieldType;
-  options?: SelectOption[];
+  options?: Option[];
   required?: boolean;
 };
 

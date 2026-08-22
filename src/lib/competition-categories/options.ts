@@ -1,5 +1,5 @@
 import { CompetitionCategoryListItem } from "@/types/competition-category";
-import { SelectOption } from "@/types/select";
+import { Option } from "@/types/option";
 
 /**
  *
@@ -8,7 +8,7 @@ import { SelectOption } from "@/types/select";
  */
 export function getCompetitionCategoryOptions(
   competitionCategories: CompetitionCategoryListItem[],
-): SelectOption[] {
+): Option[] {
   return competitionCategories.map((category) => ({
     label: category.name,
     value: category.id,

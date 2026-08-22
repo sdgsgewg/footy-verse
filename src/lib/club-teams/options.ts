@@ -1,9 +1,7 @@
 import { ClubTeamListItem } from "@/types/club-team";
-import { SelectOption } from "@/types/select";
+import { Option } from "@/types/option";
 
-export function getClubTeamOptions(
-  clubTeams: ClubTeamListItem[],
-): SelectOption[] {
+export function getClubTeamOptions(clubTeams: ClubTeamListItem[]): Option[] {
   return clubTeams.map((ct) => ({
     label: ct.name,
     value: ct.id,

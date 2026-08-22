@@ -1,6 +1,6 @@
 import { NationalTeamType } from "@/enums/NationalTeamType";
 import { NationalTeamListItem } from "@/types/national-team";
-import { SelectOption } from "@/types/select";
+import { Option } from "@/types/option";
 import { getNationalTeamTypeLabel } from "./labels";
 
 type Translate = (key: string) => string;
@@ -8,9 +8,9 @@ type Translate = (key: string) => string;
 /**
  *
  * @param t
- * @returns SelectOption[]
+ * @returns Option[]
  */
-export const getNationalTeamTypeOptions = (t: Translate): SelectOption[] =>
+export const getNationalTeamTypeOptions = (t: Translate): Option[] =>
   Object.values(NationalTeamType).map((type) => ({
     label: getNationalTeamTypeLabel(type, t),
     value: type,
@@ -23,7 +23,7 @@ export const getNationalTeamTypeOptions = (t: Translate): SelectOption[] =>
  */
 export function getNationalTeamOptions(
   nationalTeams: NationalTeamListItem[],
-): SelectOption[] {
+): Option[] {
   return nationalTeams.map((nt) => ({
     label: nt.name,
     value: nt.id,
