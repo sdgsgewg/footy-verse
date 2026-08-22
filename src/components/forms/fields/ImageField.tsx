@@ -6,25 +6,39 @@ import { Upload, ImagePlus } from "lucide-react";
 
 import Label from "./Label";
 import { Card, CardContent } from "@/components/ui/card";
+import ErrorMessage from "./ErrorMessage";
+import { useTranslations } from "next-intl";
 
 interface Props {
-  name: string;
   label: string;
-  required?: boolean;
-  readOnly?: boolean;
+  name: string;
+
   value?: string;
   onChange: (file: File) => void;
+
+  required?: boolean;
+  readOnly?: boolean;
+
+  error?: string;
 }
 
 export default function ImageField({
-  name,
   label,
-  required,
-  readOnly,
+  name,
   value,
   onChange,
+  required,
+  readOnly,
+  error,
 }: Props) {
+  const t = useTranslations("common.form.fields.image");
+
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const supportedFormats = "PNG, JPG, JPEG, WEBP";
+
+  const errorId = error ? `${name}-error` : undefined;
+  const helpId = `${name}-help`;
 
   useEffect(() => {
     if (!value && inputRef.current) {
@@ -73,7 +87,7 @@ export default function ImageField({
                 <div className="absolute inset-0 flex items-center justify-center bg-black/55 opacity-0 transition-opacity group-hover:opacity-100">
                   <div className="flex items-center gap-2 rounded-lg bg-background/90 px-4 py-2 text-sm font-medium">
                     <Upload className="h-4 w-4" />
-                    Change Image
+                    {t("change")}
                   </div>
                 </div>
               )}
@@ -85,9 +99,11 @@ export default function ImageField({
               </div>
 
               <div>
-                <p className="font-medium text-foreground">Click to upload</p>
+                <p className="font-medium text-foreground">
+                  {t("clickToUpload")}
+                </p>
 
-                <p className="text-sm">PNG, JPG, WEBP</p>
+                {/* <p className="text-sm">PNG, JPG, WEBP</p> */}
               </div>
             </div>
           )}
@@ -102,12 +118,20 @@ export default function ImageField({
             name={name}
             type="file"
             accept="image/*"
+            aria-invalid={!!error}
+            aria-describedby={[errorId, helpId].filter(Boolean).join(" ")}
             onChange={handleFileChange}
           />
 
-          <p className="text-xs text-muted-foreground">
-            Supported formats: PNG, JPG, JPEG, WEBP
-          </p>
+          <div className="space-y-1">
+            {error && <ErrorMessage id={errorId} message={error} />}
+
+            <p id={helpId} className="text-xs text-muted-foreground">
+              {t("supportedFormatsDescription", {
+                formats: supportedFormats,
+              })}
+            </p>
+          </div>
         </>
       )}
     </div>

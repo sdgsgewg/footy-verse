@@ -3,6 +3,7 @@ import { Option } from "./option";
 
 export interface OrderedSelectFieldProps<T extends OrderedEntity> {
   label: string;
+  name: string;
 
   options: Option[];
 
@@ -17,10 +18,10 @@ export interface OrderedSelectFieldProps<T extends OrderedEntity> {
   instruction: string;
 
   disabled?: boolean;
-
   required?: boolean;
 
   className?: string;
+  error?: string;
 
   onChange: (value: T[]) => void;
 }

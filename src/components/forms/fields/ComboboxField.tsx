@@ -23,25 +23,25 @@ import {
 } from "@/components/ui/command";
 import { Option } from "@/types/option";
 import Image from "next/image";
+import ErrorMessage from "./ErrorMessage";
 
 interface ComboboxFieldProps {
   label?: string;
   name: string;
 
   value: string | null | undefined;
-
   options: Option[];
+  onChange: (value: string) => void;
 
   placeholder?: string;
   searchPlaceholder?: string;
   emptyMessage?: string;
 
-  disabled?: boolean;
   required?: boolean;
+  disabled?: boolean;
 
   className?: string;
-
-  onChange: (value: string) => void;
+  error?: string;
 }
 
 const ComboboxField: React.FC<ComboboxFieldProps> = ({
@@ -49,8 +49,8 @@ const ComboboxField: React.FC<ComboboxFieldProps> = ({
   name,
 
   value,
-
   options,
+  onChange,
 
   placeholder = "Select option",
   searchPlaceholder = "Search...",
@@ -60,12 +60,13 @@ const ComboboxField: React.FC<ComboboxFieldProps> = ({
   required = false,
 
   className,
-
-  onChange,
+  error,
 }) => {
   const [open, setOpen] = React.useState(false);
 
   const selectedOption = options.find((item) => item.value === value);
+
+  const errorId = error ? `${name}-error` : undefined;
 
   return (
     <div className={cn("flex flex-col gap-2", className)}>
@@ -78,6 +79,8 @@ const ComboboxField: React.FC<ComboboxFieldProps> = ({
             variant="outline"
             role="combobox"
             aria-expanded={open}
+            aria-invalid={!!error}
+            aria-describedby={errorId}
             disabled={disabled}
             className="h-10 w-full justify-between rounded-xl font-normal"
           >
@@ -148,6 +151,8 @@ const ComboboxField: React.FC<ComboboxFieldProps> = ({
           </Command>
         </PopoverContent>
       </Popover>
+
+      {error && <ErrorMessage id={errorId} message={error} />}
     </div>
   );
 };

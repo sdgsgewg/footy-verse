@@ -88,6 +88,7 @@ const ReorderPositionCategoriesForm = ({
         {/* Position Categories */}
         <OrderedField
           label={t("form.labels.categories")}
+          name="position_categories"
           value={orderedPositionCategories}
           getId={(item) => item.id}
           getLabel={(item) => item.name}

@@ -51,9 +51,11 @@ import { OrderedEntity, OrderedItem } from "@/types/ordered";
 import { OrderedSelectFieldProps } from "@/types/ordered-select";
 import { normalizeOrderedValues } from "@/utils/ordered";
 import Image from "next/image";
+import ErrorMessage from "./ErrorMessage";
 
 const OrderedSelectField = <T extends OrderedEntity>({
   label,
+  name,
   placeholder = "Select...",
   instruction,
   options,
@@ -63,11 +65,14 @@ const OrderedSelectField = <T extends OrderedEntity>({
   disabled = false,
   required = true,
   className,
+  error,
   onChange,
 }: OrderedSelectFieldProps<T>) => {
   const [open, setOpen] = React.useState(false);
 
   const tActions = useTranslations("common.actions");
+
+  const errorId = error ? `${name}-error` : undefined;
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -165,14 +170,24 @@ const OrderedSelectField = <T extends OrderedEntity>({
         )}
       </div>
 
-      <div className="rounded-xl border bg-card p-3">
+      <div
+        className={cn(
+          "rounded-xl border bg-card p-3",
+          error && "border-destructive",
+        )}
+      >
         <Popover open={open} onOpenChange={setOpen}>
           <PopoverTrigger asChild>
             <Button
               type="button"
               variant="outline"
               disabled={disabled || availableOptions.length === 0}
-              className="w-full justify-between"
+              aria-invalid={!!error}
+              aria-describedby={errorId}
+              className={cn(
+                "w-full justify-between",
+                error && "border-destructive",
+              )}
             >
               <span className="truncate">
                 {availableOptions.length === 0 ? "All selected" : placeholder}
@@ -222,7 +237,12 @@ const OrderedSelectField = <T extends OrderedEntity>({
         </Popover>
 
         {selectedItems.length === 0 ? (
-          <div className="mt-3 flex min-h-24 flex-col items-center justify-center gap-2 p-4 rounded-lg border border-dashed">
+          <div
+            className={cn(
+              "mt-3 flex min-h-24 flex-col items-center justify-center gap-2 rounded-lg border border-dashed p-4",
+              error && "border-destructive",
+            )}
+          >
             <ListOrdered className="size-5" />
             <span className="text-center">{instruction}</span>
           </div>
@@ -251,6 +271,8 @@ const OrderedSelectField = <T extends OrderedEntity>({
           </DndContext>
         )}
       </div>
+
+      {error && <ErrorMessage id={errorId} message={error} />}
     </div>
   );
 };

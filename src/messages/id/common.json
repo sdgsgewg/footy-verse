@@ -39,6 +39,16 @@
     }
   },
 
+  "form": {
+    "fields": {
+      "image": {
+        "clickToUpload": "Klik untuk mengunggah",
+        "change": "Ubah Gambar",
+        "supportedFormats": "Format yang didukung: {formats}"
+      }
+    }
+  },
+
   "validation": {
     "required": "{field} is required."
   },

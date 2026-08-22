@@ -154,6 +154,7 @@ const PlayerForm = ({ mode, player, loading = false, onSubmit }: Props) => {
           {/* Positions */}
           <OrderedSelectField
             label={t("form.labels.positions")}
+            name="positions"
             placeholder={t("form.placeholders.positions")}
             instruction={t("form.positions.instruction")}
             options={positionOptions}
@@ -175,6 +176,7 @@ const PlayerForm = ({ mode, player, loading = false, onSubmit }: Props) => {
           {/* Nationalities */}
           <OrderedSelectField
             label={t("form.labels.nationalities")}
+            name="nationalities"
             placeholder={t("form.placeholders.nationalities")}
             instruction={t("form.nationalities.instruction")}
             options={nationalityOptions}

@@ -27,9 +27,11 @@ import { cn } from "@/lib/utils";
 
 import SortableOrderedItem from "./SortableOrderedItem";
 import { OrderedEntity, OrderedItem, OrderedFieldProps } from "@/types/ordered";
+import ErrorMessage from "./ErrorMessage";
 
 const OrderedField = <T extends OrderedEntity>({
   label,
+  name,
   instruction,
   value,
   getId,
@@ -38,8 +40,11 @@ const OrderedField = <T extends OrderedEntity>({
   disabled = false,
   required = true,
   className,
+  error,
   onChange,
 }: OrderedFieldProps<T>) => {
+  const errorId = error ? `${name}-error` : undefined;
+
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
@@ -91,7 +96,12 @@ const OrderedField = <T extends OrderedEntity>({
     <div className={cn("flex flex-col gap-2", className)}>
       <Label label={label} required={required} />
 
-      <div className="rounded-xl border bg-card p-3">
+      <div
+        className={cn(
+          "rounded-xl border bg-card p-3",
+          error && "border-destructive",
+        )}
+      >
         {orderedItems.length === 0 ? (
           <div className="flex min-h-24 flex-col items-center justify-center gap-2 rounded-lg border border-dashed p-4">
             <ListOrdered className="size-5" />
@@ -121,6 +131,8 @@ const OrderedField = <T extends OrderedEntity>({
           </DndContext>
         )}
       </div>
+
+      {error && <ErrorMessage id={errorId} message={error} />}
     </div>
   );
 };

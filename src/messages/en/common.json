@@ -43,6 +43,16 @@
     "required": "{field} is required."
   },
 
+  "form": {
+    "fields": {
+      "image": {
+        "clickToUpload": "Click to upload",
+        "change": "Change Image",
+        "supportedFormats": "Supported formats: {formats}"
+      }
+    }
+  },
+
   "options": {
     "ageGroup": {
       "senior": "Senior",

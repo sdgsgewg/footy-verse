@@ -142,6 +142,7 @@ const ReorderPositionsForm = ({ loading = false, onSubmit }: Props) => {
         {/* Positions */}
         <OrderedField
           label={t("form.labels.positions")}
+          name="positions"
           value={orderedPositions}
           getId={(item) => item.id}
           getLabel={(item) => item.name}

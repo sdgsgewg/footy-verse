@@ -11,6 +11,7 @@ export interface OrderedItem {
 
 export interface OrderedFieldProps<T extends OrderedEntity> {
   label: string;
+  name: string;
 
   value: T[];
 
@@ -23,10 +24,10 @@ export interface OrderedFieldProps<T extends OrderedEntity> {
   instruction: string;
 
   disabled?: boolean;
-
   required?: boolean;
 
   className?: string;
+  error?: string;
 
   onChange: (value: T[]) => void;
 }

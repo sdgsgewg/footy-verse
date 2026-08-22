@@ -2,13 +2,13 @@
 
 import { Textarea } from "@/components/ui/textarea";
 import Label from "./Label";
+import ErrorMessage from "./ErrorMessage";
 
 interface TextAreaFieldProps {
   label: string;
   name: string;
 
   value: string;
-
   onChange: (value: string) => void;
 
   placeholder?: string;
@@ -19,6 +19,7 @@ interface TextAreaFieldProps {
 
   rows?: number;
   className?: string;
+  error?: string;
 }
 
 export default function TextAreaField({
@@ -32,13 +33,18 @@ export default function TextAreaField({
   disabled,
   rows = 4,
   className,
+  error,
 }: TextAreaFieldProps) {
+  const errorId = error ? `${name}-error` : undefined;
+
   return (
     <div className="flex flex-col gap-2">
       <Label label={label} required={required} readOnly={readOnly} />
 
       <Textarea
         name={name}
+        aria-invalid={!!error}
+        aria-describedby={errorId}
         value={value}
         placeholder={placeholder}
         readOnly={readOnly}
@@ -47,6 +53,8 @@ export default function TextAreaField({
         className={className}
         onChange={(e) => onChange(e.target.value)}
       />
+
+      {error && <ErrorMessage id={errorId} message={error} />}
     </div>
   );
 }

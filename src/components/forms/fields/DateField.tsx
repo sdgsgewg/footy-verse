@@ -2,13 +2,13 @@
 
 import { Input } from "@/components/ui/input";
 import Label from "./Label";
+import ErrorMessage from "./ErrorMessage";
 
 interface DateFieldProps {
   label: string;
   name: string;
 
   value: string;
-
   onChange: (value: string) => void;
 
   placeholder?: string;
@@ -18,6 +18,7 @@ interface DateFieldProps {
   disabled?: boolean;
 
   className?: string;
+  error?: string;
 }
 
 export default function DateField({
@@ -30,7 +31,10 @@ export default function DateField({
   readOnly,
   disabled,
   className,
+  error,
 }: DateFieldProps) {
+  const errorId = error ? `${name}-error` : undefined;
+
   return (
     <div className="flex flex-col gap-2">
       <Label label={label} required={required} readOnly={readOnly} />
@@ -38,6 +42,8 @@ export default function DateField({
       <Input
         type="date"
         name={name}
+        aria-invalid={!!error}
+        aria-describedby={errorId}
         value={value}
         placeholder={placeholder}
         readOnly={readOnly}
@@ -57,6 +63,8 @@ export default function DateField({
           onChange(v);
         }}
       />
+
+      {error && <ErrorMessage id={errorId} message={error} />}
     </div>
   );
 }
