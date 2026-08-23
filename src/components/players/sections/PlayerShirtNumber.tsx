@@ -17,6 +17,7 @@ const PlayerShirtNumber = ({ player }: Props) => {
   const tShirtNumberTable = useTranslations(
     "dashboard.playerShirtNumbers.table",
   );
+  const tEntities = useTranslations("entities");
 
   const {
     playerClubTeamShirtNumbers,
@@ -38,7 +39,7 @@ const PlayerShirtNumber = ({ player }: Props) => {
 
       <div className="flex flex-col gap-2">
         <section className="flex h-full min-w-0 flex-col">
-          <SubsectionHeader title="Club" />
+          <SubsectionHeader title={tEntities("club")} />
 
           <PlayerClubTeamShirtNumberHistoryTable
             playerClubTeamShirtNumbers={playerClubTeamShirtNumbers}
@@ -47,7 +48,7 @@ const PlayerShirtNumber = ({ player }: Props) => {
         </section>
 
         <section className="flex h-full min-w-0 flex-col">
-          <SubsectionHeader title="National Team" />
+          <SubsectionHeader title={tEntities("nationalTeam")} />
 
           <PlayerNationalTeamShirtNumberHistoryTable
             playerNationalTeamShirtNumbers={playerNationalTeamShirtNumbers}
