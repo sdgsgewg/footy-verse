@@ -21,6 +21,7 @@ export default function ClubsPage() {
     debouncedFilters,
     setFilter,
     goToPage,
+    changeLimit,
     syncUrl,
     clearFilters,
   } = useClubFilter();
@@ -81,6 +82,7 @@ export default function ClubsPage() {
         totalItems={total}
         loading={loading}
         onPageChange={goToPage}
+        onLimitChange={changeLimit}
       />
     </PublicPageWrapper>
   );

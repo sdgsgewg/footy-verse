@@ -117,6 +117,8 @@
   "pagination": {
     "showing": "Menampilkan {from}-{to} dari {total} data",
 
+    "rowsPerPage": "Jumlah data per halaman",
+
     "previous": "Sebelumnya",
     "next": "Berikutnya",
 
@@ -124,9 +126,7 @@
     "of": "dari",
 
     "first": "Pertama",
-    "last": "Terakhir",
-
-    "rowsPerPage": "Jumlah data per halaman"
+    "last": "Terakhir"
   },
 
   "ui": {

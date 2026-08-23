@@ -35,6 +35,7 @@ export default function PlayersManagementPage() {
     setFilter,
     setFilters,
     goToPage,
+    changeLimit,
     syncUrl,
   } = useCompetitionFilter();
 
@@ -173,6 +174,7 @@ export default function PlayersManagementPage() {
         totalItems: total,
         loading,
         onPageChange: goToPage,
+        onLimitChange: changeLimit,
       }}
     />
   );

@@ -23,13 +23,8 @@ export default function NationalitiesManagementPage() {
 
   const { getTitle } = useCrudPageTitle();
 
-  const {
-    filters,
-    debouncedFilters,
-    goToPage,
-    update,
-    syncUrl,
-  } = useNationalityFilter();
+  const { filters, debouncedFilters, goToPage, changeLimit, update, syncUrl } =
+    useNationalityFilter();
 
   const {
     nationalities,
@@ -126,6 +121,7 @@ export default function NationalitiesManagementPage() {
         totalItems: total,
         loading,
         onPageChange: goToPage,
+        onLimitChange: changeLimit,
       }}
     />
   );

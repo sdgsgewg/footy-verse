@@ -134,6 +134,7 @@ export interface CrudPaginationProps {
   loading?: boolean;
 
   onPageChange: (page: number) => void;
+  onLimitChange: (limit: number) => void;
 }
 
 // Page Props

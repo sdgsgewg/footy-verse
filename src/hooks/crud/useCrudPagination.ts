@@ -1,5 +1,6 @@
 interface PaginationFilter {
   page: number;
+  limit: number;
 }
 
 interface PaginationOptions<TFilter extends PaginationFilter> {
@@ -11,17 +12,25 @@ export function useCrudPagination<TFilter extends PaginationFilter>(
   setFilters: (values: Partial<TFilter>) => void,
   options?: PaginationOptions<TFilter>,
 ) {
+  function changeLimit(limit: number) {
+    setFilters({
+      limit,
+      page: 1,
+    } as Partial<TFilter>);
+  }
+
   function update(values: Partial<TFilter>) {
     const next = {
       ...filters,
       ...values,
     };
 
-    if (options?.shouldResetPage?.(filters, next)) {
-      values.page = 1;
-    }
+    const shouldResetPage = options?.shouldResetPage?.(filters, next) ?? false;
 
-    setFilters(values);
+    setFilters({
+      ...values,
+      ...(shouldResetPage ? { page: 1 } : {}),
+    });
   }
 
   return {
@@ -40,6 +49,8 @@ export function useCrudPagination<TFilter extends PaginationFilter>(
         page: filters.page - 1,
       } as Partial<TFilter>);
     },
+
+    changeLimit,
 
     update,
   };

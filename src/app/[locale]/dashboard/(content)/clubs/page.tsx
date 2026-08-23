@@ -33,6 +33,7 @@ export default function ClubsManagementPage() {
     setFilter,
     setFilters,
     goToPage,
+    changeLimit,
     syncUrl,
   } = useClubFilter();
 
@@ -149,6 +150,7 @@ export default function ClubsManagementPage() {
         totalItems: total,
         loading,
         onPageChange: goToPage,
+        onLimitChange: changeLimit,
       }}
     />
   );

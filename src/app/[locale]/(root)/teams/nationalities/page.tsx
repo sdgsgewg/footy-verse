@@ -21,6 +21,7 @@ export default function TeamsPage() {
     debouncedFilters,
     setFilter,
     goToPage,
+    changeLimit,
     syncUrl,
     clearFilters,
   } = useNationalityFilter();
@@ -83,6 +84,7 @@ export default function TeamsPage() {
         totalItems={total}
         loading={loading}
         onPageChange={goToPage}
+        onLimitChange={changeLimit}
       />
     </PublicPageWrapper>
   );

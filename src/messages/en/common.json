@@ -117,6 +117,8 @@
   "pagination": {
     "showing": "Showing {from}-{to} of {total} items",
 
+    "rowsPerPage": "Rows per page",
+
     "previous": "Previous",
     "next": "Next",
 
@@ -124,9 +126,7 @@
     "of": "of",
 
     "first": "First",
-    "last": "Last",
-
-    "rowsPerPage": "Rows per page"
+    "last": "Last"
   },
 
   "ui": {
