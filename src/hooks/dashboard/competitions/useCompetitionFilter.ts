@@ -1,4 +1,5 @@
 import { useCrudFilters, useCrudPagination } from "@/hooks/crud";
+import { hasFilterChanged } from "@/lib/utils/crud";
 import { CompetitionFilter } from "@/types/competition";
 
 const DEFAULT_FILTER: CompetitionFilter = {
@@ -12,15 +13,11 @@ const DEFAULT_FILTER: CompetitionFilter = {
 };
 
 export default function useCompetitionFilter() {
-  const crud = useCrudFilters(DEFAULT_FILTER);
+  const crud = useCrudFilters(DEFAULT_FILTER, {
+    shouldResetPage: hasFilterChanged(["search", "sortBy", "sortOrder"]),
+  });
 
-  const pagination = useCrudPagination(
-    crud.filters,
-    crud.updateFiltersPartial,
-    {
-      shouldResetPage: (previous, next) => previous.search !== next.search,
-    },
-  );
+  const pagination = useCrudPagination(crud.filters, crud.updateFiltersPartial);
 
   return {
     ...crud,

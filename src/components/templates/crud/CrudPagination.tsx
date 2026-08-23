@@ -56,14 +56,14 @@ export default function CrudPagination({
     return (
       <CrudPaginationWrapper>
         {/* Left */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center justify-between gap-4 md:justify-start">
           <Skeleton className="h-5 w-40" />
 
-          <Skeleton className="h-9 w-[100px]" />
+          <Skeleton className="h-9 w-25" />
         </div>
 
         {/* Right */}
-        <div className="flex items-center gap-1">
+        <div className="flex items-center justify-center md:justify-end gap-1">
           <Skeleton className="h-9 w-9 rounded-md" />
 
           <Skeleton className="h-9 w-9 rounded-md" />
@@ -98,7 +98,7 @@ export default function CrudPagination({
             value={String(limit)}
             options={CRUD_PAGE_LIMIT_OPTIONS}
             onChange={(value) => onLimitChange(Number(value))}
-            className="w-[60px]"
+            className="w-15"
           />
         </div>
       </div>

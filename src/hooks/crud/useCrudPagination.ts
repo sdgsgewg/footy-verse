@@ -3,14 +3,9 @@ interface PaginationFilter {
   limit: number;
 }
 
-interface PaginationOptions<TFilter extends PaginationFilter> {
-  shouldResetPage?: (previous: TFilter, next: TFilter) => boolean;
-}
-
 export function useCrudPagination<TFilter extends PaginationFilter>(
   filters: TFilter,
   updateFiltersPartial: (values: Partial<TFilter>) => void,
-  options?: PaginationOptions<TFilter>,
 ) {
   function goToPage(page: number) {
     updateFiltersPartial({ page } as Partial<TFilter>);
@@ -35,25 +30,10 @@ export function useCrudPagination<TFilter extends PaginationFilter>(
     } as Partial<TFilter>);
   }
 
-  function update(values: Partial<TFilter>) {
-    const next = {
-      ...filters,
-      ...values,
-    };
-
-    const shouldResetPage = options?.shouldResetPage?.(filters, next) ?? false;
-
-    updateFiltersPartial({
-      ...values,
-      ...(shouldResetPage ? { page: 1 } : {}),
-    });
-  }
-
   return {
     goToPage,
     nextPage,
     previousPage,
     changeLimit,
-    update,
   };
 }

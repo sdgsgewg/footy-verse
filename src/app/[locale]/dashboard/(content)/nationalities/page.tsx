@@ -23,8 +23,15 @@ export default function NationalitiesManagementPage() {
 
   const { getTitle } = useCrudPageTitle();
 
-  const { filters, debouncedFilters, goToPage, changeLimit, update, syncUrl } =
-    useNationalityFilter();
+  const {
+    filters,
+    debouncedFilters,
+    updateFilter,
+    updateFiltersPartial,
+    goToPage,
+    changeLimit,
+    syncUrl,
+  } = useNationalityFilter();
 
   const {
     nationalities,
@@ -81,7 +88,7 @@ export default function NationalitiesManagementPage() {
   const handleSort = createSortHandler({
     sortBy: filters.sortBy,
     sortOrder: filters.sortOrder,
-    updateFiltersPartial: update,
+    updateFiltersPartial,
   });
 
   // Sync URL on filter
@@ -107,7 +114,7 @@ export default function NationalitiesManagementPage() {
       toolbar={{
         searchValue: filters.search,
         searchPlaceholder: tCommon("search.placeholder"),
-        onSearchChange: (value) => update({ search: value }),
+        onSearchChange: (value) => updateFilter("search", value),
       }}
       sorting={{
         sortBy: filters.sortBy,

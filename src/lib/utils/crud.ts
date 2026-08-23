@@ -29,3 +29,9 @@ export function createSortHandler<TSortBy extends string>({
     }
   };
 }
+
+export function hasFilterChanged<T extends object>(keys: readonly (keyof T)[]) {
+  return (previous: T, next: T): boolean => {
+    return keys.some((key) => previous[key] !== next[key]);
+  };
+}

@@ -1,14 +1,19 @@
 import { useCallback, useMemo, useState } from "react";
+
 import { usePathname, useRouter } from "@/navigation";
+
 import { useDebounce } from "../useDebounce";
 
 interface CrudFilterBase {
   search: string;
+  page?: number;
 }
 
 interface UseCrudFiltersOptions<TFilter> {
   initialFilter?: TFilter;
   omitDefaultValuesFromUrl?: boolean;
+
+  shouldResetPage?: (previous: TFilter, next: TFilter) => boolean;
 }
 
 export function useCrudFilters<TFilter extends CrudFilterBase>(
@@ -16,12 +21,13 @@ export function useCrudFilters<TFilter extends CrudFilterBase>(
   {
     initialFilter = defaultFilter,
     omitDefaultValuesFromUrl = false,
+    shouldResetPage,
   }: UseCrudFiltersOptions<TFilter> = {},
 ) {
   const router = useRouter();
   const pathname = usePathname();
 
-  const [filters, updateFiltersPartial] = useState(initialFilter);
+  const [filters, setFilters] = useState(initialFilter);
 
   const debouncedSearch = useDebounce(filters.search, 500);
 
@@ -39,6 +45,7 @@ export function useCrudFilters<TFilter extends CrudFilterBase>(
 
       Object.entries(filter).forEach(([key, value]) => {
         const defaultValue = defaultFilter[key as keyof TFilter];
+
         const isDefaultValue = value === defaultValue;
 
         if (
@@ -70,7 +77,7 @@ export function useCrudFilters<TFilter extends CrudFilterBase>(
   );
 
   function updateFilters(updater: (previous: TFilter) => TFilter) {
-    updateFiltersPartial(updater);
+    setFilters(updater);
   }
 
   function updateFilter<K extends keyof TFilter>(key: K, value: TFilter[K]) {
@@ -78,18 +85,26 @@ export function useCrudFilters<TFilter extends CrudFilterBase>(
       const next = {
         ...previous,
         [key]: value,
-      } as TFilter;
+      };
+
+      if (shouldResetPage?.(previous, next)) {
+        next.page = 1;
+      }
 
       return next;
     });
   }
 
-  function setFiltersPartial(values: Partial<TFilter>) {
+  function updateFiltersPartial(values: Partial<TFilter>) {
     updateFilters((previous) => {
       const next = {
         ...previous,
         ...values,
-      } as TFilter;
+      };
+
+      if (shouldResetPage?.(previous, next)) {
+        next.page = 1;
+      }
 
       return next;
     });
@@ -105,7 +120,7 @@ export function useCrudFilters<TFilter extends CrudFilterBase>(
     debouncedFilters,
 
     updateFilter,
-    updateFiltersPartial: setFiltersPartial,
+    updateFiltersPartial,
 
     syncUrl,
     clearFilters,
