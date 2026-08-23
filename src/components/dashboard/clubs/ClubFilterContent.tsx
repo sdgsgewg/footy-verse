@@ -7,12 +7,15 @@ import { useTranslations } from "next-intl";
 
 interface ClubFilterContentProps {
   filters: ClubFilter;
-  setFilter: <K extends keyof ClubFilter>(key: K, value: ClubFilter[K]) => void;
+  updateFilter: <K extends keyof ClubFilter>(
+    key: K,
+    value: ClubFilter[K],
+  ) => void;
 }
 
 export default function ClubFilterContent({
   filters,
-  setFilter,
+  updateFilter,
 }: ClubFilterContentProps) {
   const tLabels = useTranslations("dashboard.clubs.form.labels");
   const tPlaceholders = useTranslations("dashboard.clubs.form.placeholders");
@@ -37,7 +40,7 @@ export default function ClubFilterContent({
           entity: tEntities("nationality").toLowerCase(),
         })}
         value={filters.nationId || null}
-        onChange={(value) => setFilter("nationId", value)}
+        onChange={(value) => updateFilter("nationId", value)}
         required
       />
     </div>

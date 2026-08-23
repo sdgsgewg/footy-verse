@@ -4,6 +4,7 @@ import { DataTable } from "@/components/shared/tables/DataTable";
 import { DataRow } from "@/types/table";
 import CrudToolbar from "./CrudToolbar";
 import CrudPagination from "./CrudPagination";
+import CrudFilterDialog from "./CrudFilterDialog";
 
 export const CrudListPage = <TData extends DataRow>({
   title,
@@ -16,7 +17,7 @@ export const CrudListPage = <TData extends DataRow>({
 
   toolbar: { searchValue, searchPlaceholder, onSearchChange, onFilter } = {},
 
-  filterContent,
+  filter,
 
   sorting: { sortBy, sortOrder, onSort } = {},
 
@@ -38,7 +39,16 @@ export const CrudListPage = <TData extends DataRow>({
         onReorder={onReorder}
       />
 
-      {filterContent}
+      {filter && (
+        <CrudFilterDialog
+          open={filter.open}
+          onOpenChange={filter.onOpenChange}
+          onApply={filter.onApply}
+          onReset={filter.onReset}
+        >
+          {filter.content}
+        </CrudFilterDialog>
+      )}
 
       <DataTable
         data={data}

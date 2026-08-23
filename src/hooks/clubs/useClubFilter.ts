@@ -26,6 +26,7 @@ export default function useClubFilter() {
   });
 
   return {
+    defaultFilters: DEFAULT_FILTER,
     ...crud,
     ...pagination,
   };

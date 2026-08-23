@@ -107,6 +107,16 @@ export interface CrudToolbarProps {
   onFilter?: () => void;
 }
 
+export interface CrudFilterProps {
+  content: React.ReactNode;
+
+  open: boolean;
+  onOpenChange: Dispatch<SetStateAction<boolean>>;
+
+  onApply: () => void;
+  onReset: () => void;
+}
+
 export interface CrudSortingProps {
   sortBy?: string;
   sortOrder?: SortOrder;
@@ -166,7 +176,7 @@ export interface CrudListPageProps<T extends DataRow> {
 
   toolbar?: CrudToolbarProps;
 
-  filterContent?: ReactNode;
+  filter?: CrudFilterProps;
 
   sorting?: CrudSortingProps;
 
