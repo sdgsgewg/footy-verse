@@ -1,17 +1,27 @@
 import { useCallback, useMemo, useState } from "react";
-import { useRouter } from "@/navigation";
+import { usePathname, useRouter } from "@/navigation";
 import { useDebounce } from "../useDebounce";
 
 interface CrudFilterBase {
   search: string;
 }
 
+interface UseCrudFiltersOptions<TFilter> {
+  initialFilter?: TFilter;
+  omitDefaultValuesFromUrl?: boolean;
+}
+
 export function useCrudFilters<TFilter extends CrudFilterBase>(
   defaultFilter: TFilter,
+  {
+    initialFilter = defaultFilter,
+    omitDefaultValuesFromUrl = false,
+  }: UseCrudFiltersOptions<TFilter> = {},
 ) {
   const router = useRouter();
+  const pathname = usePathname();
 
-  const [filters, setFilters] = useState(defaultFilter);
+  const [filters, setFilters] = useState(initialFilter);
 
   const debouncedSearch = useDebounce(filters.search, 500);
 
@@ -23,17 +33,28 @@ export function useCrudFilters<TFilter extends CrudFilterBase>(
     [filters, debouncedSearch],
   );
 
-  const createQuery = useCallback((filter: TFilter) => {
-    const params = new URLSearchParams();
+  const createQuery = useCallback(
+    (filter: TFilter) => {
+      const params = new URLSearchParams();
 
-    Object.entries(filter).forEach(([key, value]) => {
-      if (value !== undefined && value !== null && value !== "") {
-        params.set(key, String(value));
-      }
-    });
+      Object.entries(filter).forEach(([key, value]) => {
+        const defaultValue = defaultFilter[key as keyof TFilter];
+        const isDefaultValue = value === defaultValue;
 
-    return params.toString();
-  }, []);
+        if (
+          value !== undefined &&
+          value !== null &&
+          value !== "" &&
+          !(omitDefaultValuesFromUrl && isDefaultValue)
+        ) {
+          params.set(key, String(value));
+        }
+      });
+
+      return params.toString();
+    },
+    [defaultFilter, omitDefaultValuesFromUrl],
+  );
 
   const syncUrl = useCallback(
     (next: TFilter) => {
@@ -43,9 +64,9 @@ export function useCrudFilters<TFilter extends CrudFilterBase>(
 
       if (current === query) return;
 
-      router.replace(query ? `?${query}` : "?");
+      router.replace(query ? `?${query}` : pathname);
     },
-    [createQuery, router],
+    [createQuery, pathname, router],
   );
 
   function updateFilters(updater: (previous: TFilter) => TFilter) {
@@ -76,7 +97,7 @@ export function useCrudFilters<TFilter extends CrudFilterBase>(
 
   function clearFilters() {
     setFilters(defaultFilter);
-    router.replace("?");
+    syncUrl(defaultFilter);
   }
 
   return {

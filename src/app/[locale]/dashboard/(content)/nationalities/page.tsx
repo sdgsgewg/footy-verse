@@ -26,9 +26,8 @@ export default function NationalitiesManagementPage() {
   const {
     filters,
     debouncedFilters,
-    setFilter,
-    setFilters,
     goToPage,
+    update,
     syncUrl,
   } = useNationalityFilter();
 
@@ -87,7 +86,7 @@ export default function NationalitiesManagementPage() {
   const handleSort = createSortHandler({
     sortBy: filters.sortBy,
     sortOrder: filters.sortOrder,
-    setFilters,
+    setFilters: update,
   });
 
   // Sync URL on filter
@@ -113,7 +112,7 @@ export default function NationalitiesManagementPage() {
       toolbar={{
         searchValue: filters.search,
         searchPlaceholder: tCommon("search.placeholder"),
-        onSearchChange: (value) => setFilter("search", value),
+        onSearchChange: (value) => update({ search: value }),
       }}
       sorting={{
         sortBy: filters.sortBy,
