@@ -39,6 +39,13 @@
     }
   },
 
+  "unsavedChanges": {
+    "title": "Perubahan belum disimpan",
+    "description": "Anda memiliki perubahan yang belum disimpan. Yakin ingin meninggalkan halaman ini?",
+    "stay": "Tetap di halaman",
+    "leave": "Tinggalkan halaman"
+  },
+
   "form": {
     "fields": {
       "image": {

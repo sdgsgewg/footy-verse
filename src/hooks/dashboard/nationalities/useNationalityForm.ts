@@ -119,24 +119,24 @@ export function useNationalityForm(nationality?: NationalityEditResponse) {
     setErrors(errors);
   };
 
+  const isDirty = useMemo(
+    () =>
+      form.name !== initialForm.name ||
+      form.fifa_code !== initialForm.fifa_code ||
+      form.confederation_id !== initialForm.confederation_id ||
+      form.image !== initialForm.image ||
+      form.imageFile != null,
+    [form, initialForm],
+  );
+
   const canSubmit = useMemo(() => {
     const isFilled =
       form.name.trim().length > 0 &&
       form.fifa_code.trim().length > 0 &&
       form.confederation_id.trim().length > 0;
 
-    if (!isFilled) {
-      return false;
-    }
-
-    return (
-      form.name !== initialForm.name ||
-      form.fifa_code !== initialForm.fifa_code ||
-      form.confederation_id !== initialForm.confederation_id ||
-      form.image !== initialForm.image ||
-      form.imageFile != null
-    );
-  }, [form, initialForm]);
+    return isFilled && isDirty;
+  }, [form, isDirty]);
 
   const buildPayload = () => {
     return buildFormData({
@@ -159,6 +159,7 @@ export function useNationalityForm(nationality?: NationalityEditResponse) {
     form,
     initialForm,
     isEditing,
+    isDirty,
 
     errors,
 

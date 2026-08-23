@@ -39,6 +39,13 @@
     }
   },
 
+  "unsavedChanges": {
+    "title": "Unsaved changes",
+    "description": "You have unsaved changes. Are you sure you want to leave this page?",
+    "stay": "Stay on page",
+    "leave": "Leave page"
+  },
+
   "validation": {
     "required": "{field} is required."
   },

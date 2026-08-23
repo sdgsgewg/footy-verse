@@ -8,6 +8,7 @@ import FormContentWrapper from "../base/FormContentWrapper";
 import { ImageField, SelectField, TextField } from "../fields";
 import { NationalityEditResponse } from "@/types/nationality";
 import { useConfederationOptions } from "@/hooks/confederations/useConfederationOptions";
+import UnsavedChangesGuard from "../base/UnsavedChangesGuard";
 
 interface Props {
   mode: "create" | "edit";
@@ -35,6 +36,7 @@ const NationalityForm = ({
     updateField,
     updateImage,
     canSubmit,
+    isDirty,
     buildPayload,
     validate,
   } = useNationalityForm(nationality);
@@ -53,6 +55,8 @@ const NationalityForm = ({
 
   return (
     <FormWrapper>
+      <UnsavedChangesGuard when={isDirty} />
+
       <FormHeader
         loading={loading}
         isCreate={isCreate}
