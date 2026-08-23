@@ -21,7 +21,7 @@ export function useCrudFilters<TFilter extends CrudFilterBase>(
   const router = useRouter();
   const pathname = usePathname();
 
-  const [filters, setFilters] = useState(initialFilter);
+  const [filters, updateFiltersPartial] = useState(initialFilter);
 
   const debouncedSearch = useDebounce(filters.search, 500);
 
@@ -70,10 +70,10 @@ export function useCrudFilters<TFilter extends CrudFilterBase>(
   );
 
   function updateFilters(updater: (previous: TFilter) => TFilter) {
-    setFilters(updater);
+    updateFiltersPartial(updater);
   }
 
-  function setFilter<K extends keyof TFilter>(key: K, value: TFilter[K]) {
+  function updateFilter<K extends keyof TFilter>(key: K, value: TFilter[K]) {
     updateFilters((previous) => {
       const next = {
         ...previous,
@@ -96,7 +96,7 @@ export function useCrudFilters<TFilter extends CrudFilterBase>(
   }
 
   function clearFilters() {
-    setFilters(defaultFilter);
+    updateFiltersPartial(defaultFilter);
     syncUrl(defaultFilter);
   }
 
@@ -104,8 +104,8 @@ export function useCrudFilters<TFilter extends CrudFilterBase>(
     filters,
     debouncedFilters,
 
-    setFilter,
-    setFilters: setFiltersPartial,
+    updateFilter,
+    updateFiltersPartial: setFiltersPartial,
 
     syncUrl,
     clearFilters,

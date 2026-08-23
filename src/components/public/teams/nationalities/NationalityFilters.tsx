@@ -8,7 +8,7 @@ import { useConfederationOptions } from "@/hooks/confederations/useConfederation
 
 interface NationalityFiltersProps {
   filters: NationalityFilter;
-  setFilter: <K extends keyof NationalityFilter>(
+  updateFilter: <K extends keyof NationalityFilter>(
     key: K,
     value: NationalityFilter[K],
   ) => void;
@@ -17,7 +17,7 @@ interface NationalityFiltersProps {
 
 const NationalityFilters = ({
   filters,
-  setFilter,
+  updateFilter,
   isSearching,
 }: NationalityFiltersProps) => {
   const tNation = useTranslations("dashboard.nationalities");
@@ -36,7 +36,7 @@ const NationalityFilters = ({
           placeholder={tCommon("search.placeholder")}
           className="pl-9 h-9"
           value={filters.search}
-          onChange={(e) => setFilter("search", e.target.value)}
+          onChange={(e) => updateFilter("search", e.target.value)}
         />
 
         {isSearching && (
@@ -65,7 +65,9 @@ const NationalityFilters = ({
             entity: tEntities("nationality").toLowerCase(),
           })}
           value={filters.confederationId ?? null}
-          onChange={(value) => setFilter("confederationId", value ?? undefined)}
+          onChange={(value) =>
+            updateFilter("confederationId", value ?? undefined)
+          }
         />
       </div>
     </div>

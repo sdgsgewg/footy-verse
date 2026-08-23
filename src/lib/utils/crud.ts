@@ -3,7 +3,7 @@ import { SortOrder } from "@/types/sort";
 interface CreateSortHandlerOptions<TSortBy extends string> {
   sortBy: TSortBy;
   sortOrder: SortOrder;
-  setFilters: (
+  updateFiltersPartial: (
     values: Partial<{
       sortBy: TSortBy;
       sortOrder: SortOrder;
@@ -14,15 +14,15 @@ interface CreateSortHandlerOptions<TSortBy extends string> {
 export function createSortHandler<TSortBy extends string>({
   sortBy,
   sortOrder,
-  setFilters,
+  updateFiltersPartial,
 }: CreateSortHandlerOptions<TSortBy>) {
   return (column: string) => {
     if (column === sortBy) {
-      setFilters({
+      updateFiltersPartial({
         sortOrder: sortOrder === "asc" ? "desc" : "asc",
       });
     } else {
-      setFilters({
+      updateFiltersPartial({
         sortBy: column as TSortBy,
         sortOrder: "asc",
       });

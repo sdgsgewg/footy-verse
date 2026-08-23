@@ -35,7 +35,7 @@ const NationalityDetailPage = ({ nationalityLookup }: Props) => {
     refetch: refetchNationality,
   } = useNationalityDetail(nationalityLookup.id);
 
-  const { filters, setFilter } = useGroupedPlayerFilter();
+  const { filters, updateFilter } = useGroupedPlayerFilter();
 
   const { nationalTeams, loading: isNationalTeamsLoading } = useNationalTeams({
     nationId: nationalityLookup.id,
@@ -68,8 +68,8 @@ const NationalityDetailPage = ({ nationalityLookup }: Props) => {
 
     if (!seniorTeam) return;
 
-    setFilter("nationalTeamId", seniorTeam.id);
-  }, [filters.nationalTeamId, seniorTeam, setFilter]);
+    updateFilter("nationalTeamId", seniorTeam.id);
+  }, [filters.nationalTeamId, seniorTeam, updateFilter]);
 
   if (!nationality && isNationalityLoading) {
     return <EntityLoading entity="nationality" />;
@@ -98,7 +98,7 @@ const NationalityDetailPage = ({ nationalityLookup }: Props) => {
       <NationalityFilter
         nationalTeams={nationalTeams}
         filters={filters}
-        setFilter={setFilter}
+        updateFilter={updateFilter}
       />
 
       <PlayerListSection

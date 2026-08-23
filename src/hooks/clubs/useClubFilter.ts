@@ -17,13 +17,17 @@ const DEFAULT_FILTER: ClubFilter = {
 export default function useClubFilter() {
   const crud = useCrudFilters(DEFAULT_FILTER);
 
-  const pagination = useCrudPagination(crud.filters, crud.setFilters, {
-    shouldResetPage: (previous, next) =>
-      previous.search !== next.search ||
-      previous.nationId !== next.nationId ||
-      previous.sortBy !== next.sortBy ||
-      previous.sortOrder !== next.sortOrder,
-  });
+  const pagination = useCrudPagination(
+    crud.filters,
+    crud.updateFiltersPartial,
+    {
+      shouldResetPage: (previous, next) =>
+        previous.search !== next.search ||
+        previous.nationId !== next.nationId ||
+        previous.sortBy !== next.sortBy ||
+        previous.sortOrder !== next.sortOrder,
+    },
+  );
 
   return {
     defaultFilters: DEFAULT_FILTER,

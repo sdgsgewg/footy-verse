@@ -43,12 +43,16 @@ export default function useNationalityFilter() {
     omitDefaultValuesFromUrl: true,
   });
 
-  const pagination = useCrudPagination(crud.filters, crud.setFilters, {
-    shouldResetPage: (previous, next) =>
-      previous.search !== next.search ||
-      previous.sortBy !== next.sortBy ||
-      previous.sortOrder !== next.sortOrder,
-  });
+  const pagination = useCrudPagination(
+    crud.filters,
+    crud.updateFiltersPartial,
+    {
+      shouldResetPage: (previous, next) =>
+        previous.search !== next.search ||
+        previous.sortBy !== next.sortBy ||
+        previous.sortOrder !== next.sortOrder,
+    },
+  );
 
   return {
     ...crud,

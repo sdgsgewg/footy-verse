@@ -19,7 +19,7 @@ export default function ClubsPage() {
   const {
     filters,
     debouncedFilters,
-    setFilter,
+    updateFilter,
     goToPage,
     changeLimit,
     syncUrl,
@@ -52,13 +52,13 @@ export default function ClubsPage() {
       <div className="flex flex-col gap-4">
         <ClubFilters
           filters={filters}
-          setFilter={setFilter}
+          updateFilter={updateFilter}
           isSearching={isSearching}
         />
 
         <ActiveFiltersBar
           filters={filters}
-          setFilter={setFilter}
+          updateFilter={updateFilter}
           clearFilters={clearFilters}
         />
       </div>

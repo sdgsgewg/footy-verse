@@ -22,8 +22,13 @@ export default function Page() {
   const tColumn = useTranslations("dashboard.competitionCategories.columns");
   const { getTitle } = useCrudPageTitle();
 
-  const { filters, debouncedFilters, setFilter, setFilters, syncUrl } =
-    useCompetitionCategoryFilter();
+  const {
+    filters,
+    debouncedFilters,
+    updateFilter,
+    updateFiltersPartial,
+    syncUrl,
+  } = useCompetitionCategoryFilter();
 
   const { competitionCategories, loading, retrying, loadError, retryLoad } =
     useCompetitionCategories({
@@ -61,7 +66,7 @@ export default function Page() {
   const handleSort = createSortHandler({
     sortBy: filters.sortBy,
     sortOrder: filters.sortOrder,
-    setFilters,
+    updateFiltersPartial,
   });
 
   // Sync URL on filter
@@ -111,7 +116,7 @@ export default function Page() {
       toolbar={{
         searchValue: filters.search,
         searchPlaceholder: tCommon("search.placeholder"),
-        onSearchChange: (value) => setFilter("search", value),
+        onSearchChange: (value) => updateFilter("search", value),
       }}
       sorting={{
         sortBy: filters.sortBy,

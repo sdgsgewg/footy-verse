@@ -10,13 +10,13 @@ interface Props {
 
   filters: GroupedPlayerFilter;
 
-  setFilter: <K extends keyof GroupedPlayerFilter>(
+  updateFilter: <K extends keyof GroupedPlayerFilter>(
     key: K,
     value: GroupedPlayerFilter[K],
   ) => void;
 }
 
-const NationalityFilter = ({ nationalTeams, filters, setFilter }: Props) => {
+const NationalityFilter = ({ nationalTeams, filters, updateFilter }: Props) => {
   const nationalTeamOptions = getNationalTeamOptions(nationalTeams);
 
   return (
@@ -27,7 +27,7 @@ const NationalityFilter = ({ nationalTeams, filters, setFilter }: Props) => {
         placeholder="Select National Team"
         options={nationalTeamOptions}
         value={filters.nationalTeamId ?? ""}
-        onChange={(value) => setFilter("nationalTeamId", value || undefined)}
+        onChange={(value) => updateFilter("nationalTeamId", value || undefined)}
       />
     </div>
   );

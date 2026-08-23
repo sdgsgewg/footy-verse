@@ -9,14 +9,17 @@ import { useNationalityOptions } from "@/hooks/nationalities";
 interface Props {
   filters: ClubFilter;
 
-  setFilter: <K extends keyof ClubFilter>(key: K, value: ClubFilter[K]) => void;
+  updateFilter: <K extends keyof ClubFilter>(
+    key: K,
+    value: ClubFilter[K],
+  ) => void;
 
   clearFilters: () => void;
 }
 
 export default function ActiveFiltersBar({
   filters,
-  setFilter,
+  updateFilter,
   clearFilters,
 }: Props) {
   const tCommonActions = useTranslations("common.actions");
@@ -24,7 +27,9 @@ export default function ActiveFiltersBar({
   const { nationalityOptions } = useNationalityOptions();
 
   const nationMap = useMemo(() => {
-    return new Map(nationalityOptions.map((nation) => [nation.value, nation.label]));
+    return new Map(
+      nationalityOptions.map((nation) => [nation.value, nation.label]),
+    );
   }, [nationalityOptions]);
 
   const chips: {
@@ -36,7 +41,7 @@ export default function ActiveFiltersBar({
   if (filters.search) {
     chips.push({
       label: `Search: ${filters.search}`,
-      onRemove: () => setFilter("search", ""),
+      onRemove: () => updateFilter("search", ""),
     });
   }
 
@@ -44,7 +49,7 @@ export default function ActiveFiltersBar({
   if (filters.nationId) {
     chips.push({
       label: nationMap.get(filters.nationId) ?? filters.nationId,
-      onRemove: () => setFilter("nationId", undefined),
+      onRemove: () => updateFilter("nationId", undefined),
     });
   }
 

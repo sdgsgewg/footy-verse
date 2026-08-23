@@ -8,13 +8,13 @@ interface Props {
 
   filters: GroupedPlayerFilter;
 
-  setFilter: <K extends keyof GroupedPlayerFilter>(
+  updateFilter: <K extends keyof GroupedPlayerFilter>(
     key: K,
     value: GroupedPlayerFilter[K],
   ) => void;
 }
 
-const ClubFilter = ({ clubTeams, filters, setFilter }: Props) => {
+const ClubFilter = ({ clubTeams, filters, updateFilter }: Props) => {
   const clubTeamOptions = getClubTeamOptions(clubTeams);
 
   return (
@@ -25,7 +25,7 @@ const ClubFilter = ({ clubTeams, filters, setFilter }: Props) => {
         placeholder={`Select Club Team`}
         options={clubTeamOptions}
         value={filters.clubTeamId || ""}
-        onChange={(value) => setFilter("clubTeamId", value || undefined)}
+        onChange={(value) => updateFilter("clubTeamId", value || undefined)}
       />
     </div>
   );

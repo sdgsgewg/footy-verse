@@ -9,11 +9,27 @@ interface PaginationOptions<TFilter extends PaginationFilter> {
 
 export function useCrudPagination<TFilter extends PaginationFilter>(
   filters: TFilter,
-  setFilters: (values: Partial<TFilter>) => void,
+  updateFiltersPartial: (values: Partial<TFilter>) => void,
   options?: PaginationOptions<TFilter>,
 ) {
+  function goToPage(page: number) {
+    updateFiltersPartial({ page } as Partial<TFilter>);
+  }
+
+  function nextPage() {
+    updateFiltersPartial({
+      page: filters.page + 1,
+    } as Partial<TFilter>);
+  }
+
+  function previousPage() {
+    updateFiltersPartial({
+      page: filters.page - 1,
+    } as Partial<TFilter>);
+  }
+
   function changeLimit(limit: number) {
-    setFilters({
+    updateFiltersPartial({
       limit,
       page: 1,
     } as Partial<TFilter>);
@@ -27,31 +43,17 @@ export function useCrudPagination<TFilter extends PaginationFilter>(
 
     const shouldResetPage = options?.shouldResetPage?.(filters, next) ?? false;
 
-    setFilters({
+    updateFiltersPartial({
       ...values,
       ...(shouldResetPage ? { page: 1 } : {}),
     });
   }
 
   return {
-    goToPage(page: number) {
-      setFilters({ page } as Partial<TFilter>);
-    },
-
-    nextPage() {
-      setFilters({
-        page: filters.page + 1,
-      } as Partial<TFilter>);
-    },
-
-    previousPage() {
-      setFilters({
-        page: filters.page - 1,
-      } as Partial<TFilter>);
-    },
-
+    goToPage,
+    nextPage,
+    previousPage,
     changeLimit,
-
     update,
   };
 }

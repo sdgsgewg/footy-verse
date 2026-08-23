@@ -19,7 +19,7 @@ export default function TeamsPage() {
   const {
     filters,
     debouncedFilters,
-    setFilter,
+    updateFilter,
     goToPage,
     changeLimit,
     syncUrl,
@@ -54,13 +54,13 @@ export default function TeamsPage() {
       <div className="flex flex-col gap-4">
         <NationalityFilters
           filters={filters}
-          setFilter={setFilter}
+          updateFilter={updateFilter}
           isSearching={isSearching}
         />
 
         <ActiveFiltersBar
           filters={filters}
-          setFilter={setFilter}
+          updateFilter={updateFilter}
           clearFilters={clearFilters}
         />
       </div>

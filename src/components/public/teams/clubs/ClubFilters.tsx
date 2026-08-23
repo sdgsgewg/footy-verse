@@ -9,11 +9,18 @@ import { useNationalityOptions } from "@/hooks/nationalities";
 
 interface ClubFiltersProps {
   filters: ClubFilter;
-  setFilter: <K extends keyof ClubFilter>(key: K, value: ClubFilter[K]) => void;
+  updateFilter: <K extends keyof ClubFilter>(
+    key: K,
+    value: ClubFilter[K],
+  ) => void;
   isSearching: boolean;
 }
 
-const ClubFilters = ({ filters, setFilter, isSearching }: ClubFiltersProps) => {
+const ClubFilters = ({
+  filters,
+  updateFilter,
+  isSearching,
+}: ClubFiltersProps) => {
   const tClub = useTranslations("dashboard.clubs");
   const tCommon = useTranslations("common");
   const tEntities = useTranslations("entities");
@@ -30,7 +37,7 @@ const ClubFilters = ({ filters, setFilter, isSearching }: ClubFiltersProps) => {
           placeholder={tCommon("search.placeholder")}
           className="pl-9 h-9"
           value={filters.search}
-          onChange={(e) => setFilter("search", e.target.value)}
+          onChange={(e) => updateFilter("search", e.target.value)}
         />
 
         {isSearching && (
@@ -59,7 +66,7 @@ const ClubFilters = ({ filters, setFilter, isSearching }: ClubFiltersProps) => {
             entity: tEntities("nationality").toLowerCase(),
           })}
           value={filters.nationId ?? null}
-          onChange={(value) => setFilter("nationId", value ?? undefined)}
+          onChange={(value) => updateFilter("nationId", value ?? undefined)}
         />
       </div>
     </div>

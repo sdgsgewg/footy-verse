@@ -20,8 +20,13 @@ export default function SeasonsManagementPage() {
   const tColumn = useTranslations("dashboard.positions.columns");
   const { getTitle } = useCrudPageTitle();
 
-  const { filters, debouncedFilters, setFilter, setFilters, syncUrl } =
-    useSeasonFilter();
+  const {
+    filters,
+    debouncedFilters,
+    updateFilter,
+    updateFiltersPartial,
+    syncUrl,
+  } = useSeasonFilter();
 
   const { seasons, loading, retrying, loadError, retryLoad } = useSeasons({
     ...debouncedFilters,
@@ -54,7 +59,7 @@ export default function SeasonsManagementPage() {
   const handleSort = createSortHandler({
     sortBy: filters.sortBy,
     sortOrder: filters.sortOrder,
-    setFilters,
+    updateFiltersPartial,
   });
 
   // Sync URL on filter
@@ -96,7 +101,7 @@ export default function SeasonsManagementPage() {
       toolbar={{
         searchValue: filters.search,
         searchPlaceholder: tCommon("search.placeholder"),
-        onSearchChange: (value) => setFilter("search", value),
+        onSearchChange: (value) => updateFilter("search", value),
       }}
       sorting={{
         sortBy: filters.sortBy,

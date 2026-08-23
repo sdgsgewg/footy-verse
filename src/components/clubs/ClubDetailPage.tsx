@@ -30,7 +30,7 @@ const ClubDetailPage = ({ clubLookup }: Props) => {
     refetch: refetchClub,
   } = useClubDetail(clubLookup.id);
 
-  const { filters, setFilter } = useGroupedPlayerFilter();
+  const { filters, updateFilter } = useGroupedPlayerFilter();
 
   const { clubTeams, loading: isClubTeamsLoading } = useClubTeams({
     clubId: clubLookup.id,
@@ -62,8 +62,8 @@ const ClubDetailPage = ({ clubLookup }: Props) => {
 
     if (!seniorTeam) return;
 
-    setFilter("clubTeamId", seniorTeam.id);
-  }, [filters.clubTeamId, seniorTeam, setFilter]);
+    updateFilter("clubTeamId", seniorTeam.id);
+  }, [filters.clubTeamId, seniorTeam, updateFilter]);
 
   // Initial request is still loading and no cached club data is available yet.
   if (!club && isClubLoading) {
@@ -96,7 +96,7 @@ const ClubDetailPage = ({ clubLookup }: Props) => {
       <ClubFilter
         clubTeams={clubTeams}
         filters={filters}
-        setFilter={setFilter}
+        updateFilter={updateFilter}
       />
 
       <PlayerListSection

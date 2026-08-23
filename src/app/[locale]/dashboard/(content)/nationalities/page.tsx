@@ -19,7 +19,7 @@ import {
 
 export default function NationalitiesManagementPage() {
   const tCommon = useTranslations("common");
-  const tColumn = useTranslations("dashboard.nationalities.columns");
+  const tColumns = useTranslations("dashboard.nationalities.columns");
 
   const { getTitle } = useCrudPageTitle();
 
@@ -46,7 +46,7 @@ export default function NationalitiesManagementPage() {
   const columns: DataColumn<NationalityListItem>[] = [
     {
       key: "name",
-      label: tColumn("name"),
+      label: tColumns("name"),
       className: "min-w-[240px]",
 
       render: (nation) => (
@@ -57,11 +57,11 @@ export default function NationalitiesManagementPage() {
     },
     {
       key: "fifaCode",
-      label: tColumn("fifaCode"),
+      label: tColumns("fifaCode"),
     },
     {
       key: "confederation",
-      label: tColumn("confederation"),
+      label: tColumns("confederation"),
 
       render: (nation) => (
         <>
@@ -81,7 +81,7 @@ export default function NationalitiesManagementPage() {
   const handleSort = createSortHandler({
     sortBy: filters.sortBy,
     sortOrder: filters.sortOrder,
-    setFilters: update,
+    updateFiltersPartial: update,
   });
 
   // Sync URL on filter

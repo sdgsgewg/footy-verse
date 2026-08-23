@@ -9,7 +9,7 @@ import { useMemo } from "react";
 interface Props {
   filters: NationalityFilter;
 
-  setFilter: <K extends keyof NationalityFilter>(
+  updateFilter: <K extends keyof NationalityFilter>(
     key: K,
     value: NationalityFilter[K],
   ) => void;
@@ -19,7 +19,7 @@ interface Props {
 
 export default function ActiveFiltersBar({
   filters,
-  setFilter,
+  updateFilter,
   clearFilters,
 }: Props) {
   const tCommonActions = useTranslations("common.actions");
@@ -44,7 +44,7 @@ export default function ActiveFiltersBar({
   if (filters.search) {
     chips.push({
       label: `Search: ${filters.search}`,
-      onRemove: () => setFilter("search", ""),
+      onRemove: () => updateFilter("search", ""),
     });
   }
   // Confederation
@@ -53,7 +53,7 @@ export default function ActiveFiltersBar({
       label:
         confederationMap.get(filters.confederationId) ??
         filters.confederationId,
-      onRemove: () => setFilter("confederationId", undefined),
+      onRemove: () => updateFilter("confederationId", undefined),
     });
   }
 

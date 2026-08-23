@@ -21,7 +21,7 @@ import { ClubFilter } from "@/types/club";
 import { useCrudFilterDialog } from "@/hooks/crud/useCrudFilterDialog";
 
 export default function ClubsManagementPage() {
-  const tColumn = useTranslations("dashboard.clubs.columns");
+  const tColumns = useTranslations("dashboard.clubs.columns");
   const tCommon = useTranslations("common");
 
   const { getTitle } = useCrudPageTitle();
@@ -30,8 +30,8 @@ export default function ClubsManagementPage() {
     filters,
     defaultFilters,
     debouncedFilters,
-    setFilter,
-    setFilters,
+    updateFilter,
+    updateFiltersPartial,
     goToPage,
     changeLimit,
     syncUrl,
@@ -45,7 +45,11 @@ export default function ClubsManagementPage() {
     openFilter,
     applyFilter,
     resetFilter,
-  } = useCrudFilterDialog<ClubFilter>(filters, setFilters, defaultFilters);
+  } = useCrudFilterDialog<ClubFilter>(
+    filters,
+    updateFiltersPartial,
+    defaultFilters,
+  );
 
   const {
     clubs,
@@ -67,7 +71,7 @@ export default function ClubsManagementPage() {
   const columns: DataColumn<ClubListItem>[] = [
     {
       key: "name",
-      label: tColumn("name"),
+      label: tColumns("name"),
       className: "min-w-[300px]",
 
       render: (club) => (
@@ -79,7 +83,7 @@ export default function ClubsManagementPage() {
 
     {
       key: "nation",
-      label: tColumn("nation"),
+      label: tColumns("nation"),
       className: "min-w-[200px]",
 
       render: (club) =>
@@ -97,7 +101,7 @@ export default function ClubsManagementPage() {
   const handleSort = createSortHandler({
     sortBy: filters.sortBy,
     sortOrder: filters.sortOrder,
-    setFilters,
+    updateFiltersPartial,
   });
 
   // Sync URL on filter
@@ -123,7 +127,7 @@ export default function ClubsManagementPage() {
       toolbar={{
         searchValue: filters.search,
         searchPlaceholder: tCommon("search.placeholder"),
-        onSearchChange: (value) => setFilter("search", value),
+        onSearchChange: (value) => updateFilter("search", value),
         onFilter: openFilter,
       }}
       filter={{

@@ -18,8 +18,13 @@ export default function Page() {
 
   const { getTitle } = useCrudPageTitle();
 
-  const { filters, debouncedFilters, setFilter, setFilters, syncUrl } =
-    usePositionFilter();
+  const {
+    filters,
+    debouncedFilters,
+    updateFilter,
+    updateFiltersPartial,
+    syncUrl,
+  } = usePositionFilter();
 
   const { positions, loading, loadError, retrying, retryLoad } = usePositions({
     ...debouncedFilters,
@@ -47,7 +52,7 @@ export default function Page() {
   const handleSort = createSortHandler({
     sortBy: filters.sortBy,
     sortOrder: filters.sortOrder,
-    setFilters,
+    updateFiltersPartial,
   });
 
   // Sync URL on filter
@@ -74,7 +79,7 @@ export default function Page() {
       toolbar={{
         searchValue: filters.search,
         searchPlaceholder: tCommon("search.placeholder"),
-        onSearchChange: (value) => setFilter("search", value),
+        onSearchChange: (value) => updateFilter("search", value),
       }}
       sorting={{
         sortBy: filters.sortBy,

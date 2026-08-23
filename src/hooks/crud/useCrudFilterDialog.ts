@@ -2,7 +2,7 @@ import { useState } from "react";
 
 export function useCrudFilterDialog<T extends object>(
   filters: T,
-  setFilters: (filters: T) => void,
+  updateFiltersPartial: (filters: T) => void,
   defaultFilters: T,
 ) {
   const [open, setOpen] = useState(false);
@@ -21,7 +21,7 @@ export function useCrudFilterDialog<T extends object>(
   };
 
   const applyFilter = () => {
-    setFilters(draftFilters);
+    updateFiltersPartial(draftFilters);
     setOpen(false);
   };
 
