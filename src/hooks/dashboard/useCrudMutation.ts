@@ -7,6 +7,7 @@ import { CrudMutationOptions } from "@/types/crud";
 import { activityLogKeys } from "@/lib/react-query/keys/activityLogKeys";
 import { useRouter } from "@/navigation";
 import { handleCrudError } from "@/lib/react-query/config/crud-feedback";
+import { toast } from "sonner";
 
 export function useCrudMutation<TVariables>({
   mutationFn,
@@ -40,7 +41,7 @@ export function useCrudMutation<TVariables>({
       if (
         ["playerClubCareer", "playerNationalTeamCareer"].includes(entityKey)
       ) {
-        alert(
+        toast.success(
           `${t(`common.crud.success.${action}`, {
             entity: t(`entities.${entityKey}`),
           })}`,
@@ -51,13 +52,13 @@ export function useCrudMutation<TVariables>({
         const name = getNameFromPayload(payload);
 
         if (name) {
-          alert(
+          toast.success(
             `${t(`common.crud.success.${action}`, {
               entity: t(`entities.${entityKey}`),
             })}: ${name}`,
           );
         } else {
-          alert(
+          toast.success(
             `${t(`common.crud.success.${action}`, {
               entity: t(`entities.${entityKey}`),
             })}.`,

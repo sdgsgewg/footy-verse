@@ -4,6 +4,7 @@ import { getApiFormErrors } from "@/lib/forms/errors";
 import { isLikelyConnectionError } from "@/lib/utils/connection-error";
 import { CrudAction, CrudMutationError } from "@/types/crud";
 import { _Translator } from "next-intl";
+import { toast } from "sonner";
 
 interface HandleCrudErrorOptions {
   error: unknown;
@@ -25,6 +26,7 @@ export function handleCrudError({
   const fieldErrors = getApiFormErrors(error);
 
   if (fieldErrors) {
+    toast.error(t("common.crud.error.validation"));
     onError?.({
       error,
       fieldErrors,
@@ -35,12 +37,12 @@ export function handleCrudError({
   // Non-Field Errors
 
   if (isLikelyConnectionError(error)) {
-    alert(t("common.feedback.connectionIssue.actionFailed"));
+    toast.error(t("common.feedback.connectionIssue.actionFailed"));
     return;
   }
 
   if (hasDuplicateError(error)) {
-    alert(
+    toast.error(
       getApiErrorMessage(error) ??
         t("common.crud.error.duplicate", {
           entity: t(`entities.${entityKey}`),
@@ -49,7 +51,7 @@ export function handleCrudError({
     return;
   }
 
-  alert(
+  toast.error(
     [
       t(`common.crud.error.${action}`, {
         entity: t(`entities.${entityKey}`),
