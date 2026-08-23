@@ -4,7 +4,6 @@ import SectionHeader from "./SectionHeader";
 import { usePathname, useRouter } from "@/navigation";
 import { isDashboardPath } from "@/lib/utils/navigation";
 import { ROUTES } from "@/constants/routes";
-import { useParams } from "next/navigation";
 import { usePlayerClubCareers } from "@/hooks/dashboard/player-club-careers";
 import { usePlayerNationalTeamCareers } from "@/hooks/dashboard/player-national-teams";
 import {
@@ -12,19 +11,18 @@ import {
   PlayerNationalTeamCareerHistoryTable,
 } from "../table";
 import { useTranslations } from "next-intl";
+import SubsectionHeader from "./SubsectionHeader";
 
 interface Props {
   player: PlayerDetailResponse;
 }
 
-const PlayerHistory = ({ player }: Props) => {
-  const { playerSlug } = useParams() as {
-    playerSlug: string;
-  };
-
+const PlayerCareerHistory = ({ player }: Props) => {
   const router = useRouter();
   const pathname = usePathname();
   const isDashboard = isDashboardPath(pathname);
+
+  const tCareerTable = useTranslations("dashboard.playerCareers.table");
 
   const tClubCareerTable = useTranslations("dashboard.playerClubCareers.table");
   const tNationalTeamCareerTable = useTranslations(
@@ -43,24 +41,31 @@ const PlayerHistory = ({ player }: Props) => {
 
   const handleAddClubCareer = () => {
     router.push(
-      `${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${playerSlug}/club-careers/create`,
+      `${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${player.slug}/club-careers/create`,
     );
   };
 
   const handleAddNationalTeamCareer = () => {
     router.push(
-      `${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${playerSlug}/national-team-careers/create`,
+      `${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${player.slug}/national-team-careers/create`,
     );
   };
 
   return (
-    <div className="space-y-8">
-      {isDashboard && (
+    <div className="w-full">
+      <SectionHeader title={tCareerTable("title")} />
+
+      <div className="flex flex-col gap-2">
+        {/* Player Club Team Career */}
         <section>
-          <SectionHeader
-            title={tClubCareerTable("title")}
-            onAdd={handleAddClubCareer}
-          />
+          {isDashboard ? (
+            <SubsectionHeader
+              title={tClubCareerTable("title")}
+              onAdd={handleAddClubCareer}
+            />
+          ) : (
+            <SubsectionHeader title={tClubCareerTable("title")} />
+          )}
 
           <PlayerClubCareerHistoryTable
             playerLookup={player}
@@ -69,27 +74,28 @@ const PlayerHistory = ({ player }: Props) => {
             showActions
           />
         </section>
-      )}
 
-      <section>
-        {isDashboard ? (
-          <SectionHeader
-            title={tNationalTeamCareerTable("title")}
-            onAdd={handleAddNationalTeamCareer}
+        {/* Player National Team Career */}
+        <section>
+          {isDashboard ? (
+            <SubsectionHeader
+              title={tNationalTeamCareerTable("title")}
+              onAdd={handleAddNationalTeamCareer}
+            />
+          ) : (
+            <SubsectionHeader title={tNationalTeamCareerTable("title")} />
+          )}
+
+          <PlayerNationalTeamCareerHistoryTable
+            playerLookup={player}
+            playerNationalTeamCareers={playerNationalTeamCareers}
+            loading={isPlayerNationalTeamCareersLoading}
+            showActions
           />
-        ) : (
-          <SectionHeader title={tNationalTeamCareerTable("title")} />
-        )}
-
-        <PlayerNationalTeamCareerHistoryTable
-          playerLookup={player}
-          playerNationalTeamCareers={playerNationalTeamCareers}
-          loading={isPlayerNationalTeamCareersLoading}
-          showActions
-        />
-      </section>
+        </section>
+      </div>
     </div>
   );
 };
 
-export default PlayerHistory;
+export default PlayerCareerHistory;

@@ -1,6 +1,6 @@
 import DetailPageLayout from "./DetailPageLayout";
 import { PlayerDetailResponse } from "@/types/player";
-import PlayerHistory from "@/components/players/sections/PlayerHistory";
+import PlayerCareerHistory from "@/components/players/sections/PlayerCareerHistory";
 import PlayerSummary from "@/components/players/summary/PlayerSummary";
 import PlayerData from "@/components/players/sections/PlayerData";
 import PlayerTransfer from "@/components/players/sections/PlayerTransfer";
@@ -23,7 +23,7 @@ const PlayerDetailPageLayout = ({ title, player, returnTo }: Props) => {
       <PlayerData player={player} />
 
       {/* Player Club and National Team Career */}
-      <PlayerHistory player={player} />
+      <PlayerCareerHistory player={player} />
 
       {/* Player Transfer History */}
       <PlayerTransfer player={player} />

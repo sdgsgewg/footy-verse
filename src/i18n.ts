@@ -22,8 +22,18 @@ async function getMessages(locale: string) {
     players: (await import(`./messages/${locale}/dashboard/players.json`))
       .default,
 
+    playerCareers: (
+      await import(`./messages/${locale}/dashboard/player-careers.json`)
+    ).default,
+
     playerClubCareers: (
       await import(`./messages/${locale}/dashboard/player-club-careers.json`)
+    ).default,
+
+    playerNationalTeamCareers: (
+      await import(
+        `./messages/${locale}/dashboard/player-national-team-careers.json`
+      )
     ).default,
 
     playerTransfers: (
@@ -32,12 +42,6 @@ async function getMessages(locale: string) {
 
     playerShirtNumbers: (
       await import(`./messages/${locale}/dashboard/player-shirt-numbers.json`)
-    ).default,
-
-    playerNationalTeamCareers: (
-      await import(
-        `./messages/${locale}/dashboard/player-national-team-careers.json`
-      )
     ).default,
 
     clubs: (await import(`./messages/${locale}/dashboard/clubs.json`)).default,
