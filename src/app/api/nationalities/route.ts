@@ -9,6 +9,7 @@ import { getNationalityInputFromFormData } from "@/lib/nationalities/form-data";
 import {
   createNationalityService,
   getNationalitiesService,
+  precheckCreateNationalityService,
 } from "@/lib/services/nationalities.service";
 import { tryDeleteImage, uploadImage } from "@/lib/services/storage.service";
 import { STORAGE_BUCKETS } from "@/lib/storage";
@@ -32,7 +33,9 @@ export async function POST(request: Request) {
 
     const formData = await request.formData();
 
-    const body = getNationalityInputFromFormData(formData);
+    const body = await precheckCreateNationalityService(
+      getNationalityInputFromFormData(formData),
+    );
 
     let image = "";
 

@@ -30,6 +30,7 @@ import { NationalTeamType } from "@/enums/NationalTeamType";
 import { createEntityActivityLog } from "./activity-logs.repo";
 import { ActivityLogAction } from "@/enums/ActivityLogAction";
 import { getChangedFields } from "./helpers/get-changed-field";
+import { ConflictError } from "../errors/http-error";
 
 async function getSupabase() {
   return createClient();
@@ -221,6 +222,58 @@ export async function getNationalityLookupRepo(
   return data;
 }
 
+/**
+ * Provides a friendly, deterministic duplicate error before a mutation.
+ * The unique database constraints are still required to handle concurrent
+ * requests that can pass this check at the same time.
+ */
+export async function ensureNationalityUniqueRepo({
+  name,
+  fifaCode,
+  ignoreId,
+}: {
+  name: string;
+  fifaCode: string;
+  ignoreId?: string;
+}): Promise<string> {
+  const supabase = await getSupabase();
+  const slug = slugify(name);
+
+  let slugQuery = supabase
+    .from(getNationalityTable())
+    .select("id")
+    .eq("slug", slug)
+    .limit(1);
+  let fifaCodeQuery = supabase
+    .from(getNationalityTable())
+    .select("id")
+    .eq("fifa_code", fifaCode)
+    .limit(1);
+
+  if (ignoreId) {
+    slugQuery = slugQuery.neq("id", ignoreId);
+    fifaCodeQuery = fifaCodeQuery.neq("id", ignoreId);
+  }
+
+  const [slugResult, fifaCodeResult] = await Promise.all([
+    slugQuery.maybeSingle(),
+    fifaCodeQuery.maybeSingle(),
+  ]);
+
+  if (slugResult.error) throw slugResult.error;
+  if (fifaCodeResult.error) throw fifaCodeResult.error;
+
+  if (slugResult.data) {
+    throw new ConflictError("Nationality name already exists");
+  }
+
+  if (fifaCodeResult.data) {
+    throw new ConflictError("FIFA code already exists");
+  }
+
+  return slug;
+}
+
 async function insertNationalTeam(nationId: string) {
   const supabase = await getSupabase();
 
@@ -248,7 +301,10 @@ export async function createNationalityRepo(
 ): Promise<NationalityDetailResponse> {
   const supabase = await getSupabase();
 
-  const slug = slugify(nationality.name);
+  const slug = await ensureNationalityUniqueRepo({
+    name: nationality.name,
+    fifaCode: nationality.fifa_code,
+  });
 
   const { data: insertedNationality, error } = await supabase
     .from(getNationalityTable())
@@ -288,7 +344,11 @@ export async function updateNationalityRepo(
     getNationalityLabel(),
   );
 
-  const slug = slugify(nationality.name);
+  const slug = await ensureNationalityUniqueRepo({
+    name: nationality.name,
+    fifaCode: nationality.fifa_code,
+    ignoreId: id,
+  });
 
   const { image: newImage, ...rest } = nationality;
 

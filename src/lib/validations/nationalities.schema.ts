@@ -5,9 +5,10 @@ import { nationalitySortBySchema } from "./enums.schema";
 
 export const nationalityMutationSchema = z.object({
   image: imageSchema,
-  name: z.string().min(1).max(255),
+  name: z.string().trim().min(1).max(255),
   fifa_code: z
     .string()
+    .trim()
     .regex(/^[A-Z]{3}$/, "FIFA code must be 3 uppercase letters"),
   confederation_id: idSchema,
 });

@@ -6,6 +6,7 @@ import {
   getNationalityEditRepo,
   getNationalityLookupRepo,
   getNationalityOptionsRepo,
+  ensureNationalityUniqueRepo,
   updateNationalityRepo,
 } from "@/lib/repositories/nationalities.repo";
 import {
@@ -54,6 +55,38 @@ export async function updateNationalityService(id: string, input: unknown) {
   const parsed = updateNationalitySchema.parse(input);
 
   return updateNationalityRepo(parsedId, parsed);
+}
+
+/**
+ * Runs the same validated duplicate check before a route uploads an image.
+ * Mutation repositories repeat the check immediately before writing because
+ * only the database constraint can close a concurrent-request race.
+ */
+export async function precheckCreateNationalityService(input: unknown) {
+  const parsed = createNationalitySchema.parse(input);
+
+  await ensureNationalityUniqueRepo({
+    name: parsed.name,
+    fifaCode: parsed.fifa_code,
+  });
+
+  return parsed;
+}
+
+export async function precheckUpdateNationalityService(
+  id: string,
+  input: unknown,
+) {
+  const parsedId = idSchema.parse(id);
+  const parsed = updateNationalitySchema.parse(input);
+
+  await ensureNationalityUniqueRepo({
+    name: parsed.name,
+    fifaCode: parsed.fifa_code,
+    ignoreId: parsedId,
+  });
+
+  return parsed;
 }
 
 export async function deleteNationalityService(id: string) {

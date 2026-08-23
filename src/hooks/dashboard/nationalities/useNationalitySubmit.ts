@@ -1,18 +1,11 @@
-import { FormErrors } from "@/types/form";
 import { useCreateNationality } from "./useCreateNationality";
 import { useUpdateNationality } from "./useUpdateNationality";
-import { NationalityFormField } from "@/types/nationality";
 
 type SubmitOptions = {
   id?: string;
   payload: FormData;
 
   onSuccess?: () => void;
-
-  onError?: (
-    error: unknown,
-    fieldErrors?: FormErrors<NationalityFormField>,
-  ) => void;
 };
 
 export function useNationalitySubmit() {

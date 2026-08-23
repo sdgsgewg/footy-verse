@@ -10,7 +10,7 @@ import {
 } from "@/types/nationality";
 import { buildFormData } from "@/lib/forms/buildFormData";
 import { FormErrors } from "@/types/form";
-import { nationalitySchema } from "@/lib/validations/nationalities.schema";
+import { nationalityMutationSchema } from "@/lib/validations/nationalities.schema";
 import { getZodFormErrors } from "@/lib/forms/errors";
 
 const emptyNationalityForm: UpsertNationalityInput = {
@@ -99,7 +99,7 @@ export function useNationalityForm(nationality?: NationalityEditResponse) {
   };
 
   const validate = () => {
-    const result = nationalitySchema.safeParse({
+    const result = nationalityMutationSchema.safeParse({
       name: form.name,
       fifa_code: form.fifa_code,
       confederation_id: form.confederation_id,

@@ -10,6 +10,7 @@ import {
   deleteNationalityService,
   getNationalityDetailService,
   getNationalityEditService,
+  precheckUpdateNationalityService,
   updateNationalityService,
 } from "@/lib/services/nationalities.service";
 import { tryDeleteImage, uploadImage } from "@/lib/services/storage.service";
@@ -48,7 +49,10 @@ export async function PUT(request: Request, context: NationalityRouteContext) {
 
     const formData = await request.formData();
 
-    const body = getNationalityInputFromFormData(formData);
+    const body = await precheckUpdateNationalityService(
+      nationId,
+      getNationalityInputFromFormData(formData),
+    );
 
     let image = currentNationality.image;
 

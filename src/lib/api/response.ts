@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { ZodError } from "zod";
-import { HttpError } from "../errors/http-error";
+import { ConflictError, HttpError } from "../errors/http-error";
 import { getZodFormErrors } from "../forms/errors";
 
 export function successResponse<T>(data: T, status = 200) {
@@ -24,6 +24,19 @@ export function createdResponse<T>(data: T) {
 }
 
 export function errorResponse(error: unknown) {
+  // PostgreSQL's unique-constraint violation code. A repository pre-check
+  // makes this uncommon, but the database remains authoritative under races.
+  if (
+    error &&
+    typeof error === "object" &&
+    "code" in error &&
+    error.code === "23505"
+  ) {
+    return errorResponse(
+      new ConflictError("A record with the same unique value already exists"),
+    );
+  }
+
   if (error instanceof HttpError) {
     return NextResponse.json(
       {

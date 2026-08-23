@@ -21,7 +21,7 @@ export class ForbiddenError extends HttpError {
 }
 
 export class NotFoundError extends HttpError {
-  constructor(message = "Not Found") {
+constructor(message = "Not Found") {
     super(message, 404);
   }
 }
