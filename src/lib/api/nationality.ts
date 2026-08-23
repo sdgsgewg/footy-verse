@@ -70,7 +70,7 @@ export const fetchNationalityDetail = async (
   return data.data;
 };
 
-export const createNationality = async (payload: unknown) => {
+export const createNationality = async (payload: FormData) => {
   await apiClient.post(`${baseRoute}`, payload);
 };
 

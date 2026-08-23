@@ -4,6 +4,7 @@ import { DataColumn, DataRow } from "./table";
 import { SortOrder } from "./sort";
 import { InvalidateQueryFilters } from "@tanstack/react-query";
 import { Entity } from "@/config/entities";
+import { FormErrors } from "./form";
 
 type FieldType = "text" | "textarea" | "number" | "date" | "select" | "image";
 
@@ -46,6 +47,11 @@ export interface CrudPageFormProps<TForm extends CrudForm> {
 
 export type CrudAction = "create" | "edit" | "update" | "reorder" | "delete";
 
+export interface CrudMutationError {
+  error: unknown;
+  fieldErrors: FormErrors | null;
+}
+
 export interface CrudMutationOptions<TVariables> {
   mutationFn: (variables: TVariables) => Promise<unknown>;
 
@@ -60,6 +66,8 @@ export interface CrudMutationOptions<TVariables> {
   getPayload?: (variables: TVariables) => unknown;
 
   onSuccess?: (data: unknown, variables: TVariables) => void;
+
+  onError?: (error: CrudMutationError) => void;
 }
 
 // Pages

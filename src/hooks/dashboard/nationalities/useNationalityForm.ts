@@ -5,9 +5,13 @@ import { getImageUrl } from "@/lib/images/image-url";
 import { STORAGE_BUCKETS } from "@/lib/storage";
 import {
   NationalityEditResponse,
+  NationalityFormField,
   UpsertNationalityInput,
 } from "@/types/nationality";
 import { buildFormData } from "@/lib/forms/buildFormData";
+import { FormErrors } from "@/types/form";
+import { nationalitySchema } from "@/lib/validations/nationalities.schema";
+import { getZodFormErrors } from "@/lib/forms/errors";
 
 const emptyNationalityForm: UpsertNationalityInput = {
   id: "",
@@ -48,10 +52,72 @@ export function useNationalityForm(nationality?: NationalityEditResponse) {
   );
 
   const [form, setForm] = useState(initialValue);
+  const [errors, setErrors] = useState<FormErrors<NationalityFormField>>({});
 
   const initialForm = initialValue;
-
   const isEditing = nationality != null;
+
+  const clearFieldError = (field: NationalityFormField) => {
+    setErrors((prev) => {
+      if (!prev[field]) {
+        return prev;
+      }
+
+      const next = { ...prev };
+      delete next[field];
+
+      return next;
+    });
+  };
+
+  const updateField = <K extends keyof UpsertNationalityInput>(
+    field: K,
+    value: UpsertNationalityInput[K],
+  ) => {
+    setForm((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+
+    if (
+      field === "name" ||
+      field === "fifa_code" ||
+      field === "confederation_id"
+    ) {
+      clearFieldError(field);
+    }
+  };
+
+  const updateImage = (file: File) => {
+    setForm((prev) => ({
+      ...prev,
+      imageFile: file,
+      previewUrl: URL.createObjectURL(file),
+    }));
+
+    clearFieldError("image");
+  };
+
+  const validate = () => {
+    const result = nationalitySchema.safeParse({
+      name: form.name,
+      fifa_code: form.fifa_code,
+      confederation_id: form.confederation_id,
+    });
+
+    if (result.success) {
+      setErrors({});
+      return true;
+    }
+
+    setErrors(getZodFormErrors<NationalityFormField>(result.error));
+
+    return false;
+  };
+
+  const setFieldErrors = (errors: FormErrors<NationalityFormField>) => {
+    setErrors(errors);
+  };
 
   const canSubmit = useMemo(() => {
     const isFilled =
@@ -63,10 +129,6 @@ export function useNationalityForm(nationality?: NationalityEditResponse) {
       return false;
     }
 
-    if (!isEditing) {
-      return form.imageFile != null;
-    }
-
     return (
       form.name !== initialForm.name ||
       form.fifa_code !== initialForm.fifa_code ||
@@ -74,7 +136,7 @@ export function useNationalityForm(nationality?: NationalityEditResponse) {
       form.image !== initialForm.image ||
       form.imageFile != null
     );
-  }, [form, initialForm, isEditing]);
+  }, [form, initialForm]);
 
   const buildPayload = () => {
     return buildFormData({
@@ -90,13 +152,21 @@ export function useNationalityForm(nationality?: NationalityEditResponse) {
 
   const resetForm = () => {
     setForm(initialValue);
+    setErrors({});
   };
 
   return {
     form,
-    setForm,
     initialForm,
     isEditing,
+
+    errors,
+
+    updateField,
+    updateImage,
+    setFieldErrors,
+
+    validate,
     canSubmit,
     buildPayload,
     resetForm,

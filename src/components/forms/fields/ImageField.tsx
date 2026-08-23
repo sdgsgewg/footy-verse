@@ -127,7 +127,7 @@ export default function ImageField({
             {error && <ErrorMessage id={errorId} message={error} />}
 
             <p id={helpId} className="text-xs text-muted-foreground">
-              {t("supportedFormatsDescription", {
+              {t("supportedFormats", {
                 formats: supportedFormats,
               })}
             </p>

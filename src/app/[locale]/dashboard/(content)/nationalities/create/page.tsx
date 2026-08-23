@@ -25,6 +25,7 @@ export default function CreateNationalityPage() {
           onSubmit={(payload) =>
             submit({
               payload,
+
               onSuccess: () => {
                 router.push(ROUTES.DASHBOARD.CONTENT.NATIONALITIES.BASE);
               },

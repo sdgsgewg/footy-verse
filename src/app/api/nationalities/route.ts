@@ -34,17 +34,13 @@ export async function POST(request: Request) {
 
     const body = getNationalityInputFromFormData(formData);
 
+    let image = "";
+
     const file = formData.get("image");
 
-    if (!(file instanceof File) || file.size === 0) {
-      return errorResponse(new Error("Nationality image is required"));
+    if (file instanceof File && file.size > 0) {
+      image = await uploadImage(file, body.name, STORAGE_BUCKETS.NATIONALITIES);
     }
-
-    const image = await uploadImage(
-      file,
-      body.name,
-      STORAGE_BUCKETS.NATIONALITIES,
-    );
 
     body.image = image;
 

@@ -1,11 +1,18 @@
+import { FormErrors } from "@/types/form";
 import { useCreateNationality } from "./useCreateNationality";
 import { useUpdateNationality } from "./useUpdateNationality";
+import { NationalityFormField } from "@/types/nationality";
 
 type SubmitOptions = {
   id?: string;
   payload: FormData;
 
   onSuccess?: () => void;
+
+  onError?: (
+    error: unknown,
+    fieldErrors?: FormErrors<NationalityFormField>,
+  ) => void;
 };
 
 export function useNationalitySubmit() {
@@ -13,8 +20,6 @@ export function useNationalitySubmit() {
   const updateMutation = useUpdateNationality();
 
   const isSubmitting = createMutation.isPending || updateMutation.isPending;
-  const isCreating = createMutation.isPending;
-  const isUpdating = updateMutation.isPending;
 
   const submit = ({ id, payload, onSuccess }: SubmitOptions) => {
     if (id) {
@@ -23,18 +28,21 @@ export function useNationalitySubmit() {
           id,
           data: payload,
         },
-        { onSuccess },
+        {
+          onSuccess,
+        },
       );
+
       return;
     }
 
-    createMutation.mutate(payload, { onSuccess });
+    createMutation.mutate(payload, {
+      onSuccess,
+    });
   };
 
   return {
     submit,
     isSubmitting,
-    isCreating,
-    isUpdating,
   };
 }

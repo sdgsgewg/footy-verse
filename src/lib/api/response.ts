@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { ZodError } from "zod";
 import { HttpError } from "../errors/http-error";
+import { getZodFormErrors } from "../forms/errors";
 
 export function successResponse<T>(data: T, status = 200) {
   return NextResponse.json(
@@ -35,11 +36,23 @@ export function errorResponse(error: unknown) {
     );
   }
 
+  /**
+   * {
+   *   "success": false,
+   *   "error": "Validation failed",
+   *    "fields": {
+   *      "name": "Name is required",
+   *      "fifa_code": "FIFA code must contain at most 3 characters",
+   *      "confederation_id": "Invalid ID"
+   *    }
+   *  }
+   */
   if (error instanceof ZodError) {
     return NextResponse.json(
       {
         success: false,
-        error: error.issues.map((i) => i.message).join(", "),
+        error: "Validation failed",
+        fields: getZodFormErrors(error),
       },
       {
         status: 400,

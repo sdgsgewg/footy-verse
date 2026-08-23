@@ -8,6 +8,7 @@ import { isLikelyConnectionError } from "@/lib/utils/connection-error";
 import { CrudMutationOptions } from "@/types/crud";
 import { activityLogKeys } from "@/lib/react-query/keys/activityLogKeys";
 import { useRouter } from "@/navigation";
+import { getApiFormErrors } from "@/lib/forms/errors";
 
 export function useCrudMutation<TVariables>({
   mutationFn,
@@ -18,6 +19,7 @@ export function useCrudMutation<TVariables>({
   action,
   getPayload,
   onSuccess,
+  onError,
 }: CrudMutationOptions<TVariables>) {
   const queryClient = useQueryClient();
 
@@ -75,6 +77,20 @@ export function useCrudMutation<TVariables>({
     },
 
     onError: (error) => {
+      // Field Errors
+
+      const fieldErrors = getApiFormErrors(error);
+
+      if (fieldErrors) {
+        onError?.({
+          error,
+          fieldErrors,
+        });
+        return;
+      }
+
+      // Non-Field Errors
+
       if (isLikelyConnectionError(error)) {
         alert(t("common.feedback.connectionIssue.actionFailed"));
         return;
@@ -99,6 +115,11 @@ export function useCrudMutation<TVariables>({
           .filter(Boolean)
           .join(": "),
       );
+
+      onError?.({
+        error,
+        fieldErrors: null,
+      });
     },
   });
 }

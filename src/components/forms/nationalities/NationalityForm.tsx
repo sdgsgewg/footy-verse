@@ -29,14 +29,25 @@ const NationalityForm = ({
     "dashboard.nationalities.form.placeholders",
   );
 
-  const { form, setForm, canSubmit, buildPayload } =
-    useNationalityForm(nationality);
+  const {
+    form,
+    errors,
+    updateField,
+    updateImage,
+    canSubmit,
+    buildPayload,
+    validate,
+  } = useNationalityForm(nationality);
 
   const isCreate = mode === "create";
 
   const { confederationOptions } = useConfederationOptions();
 
   const handleSubmit = () => {
+    if (!validate()) {
+      return;
+    }
+
     onSubmit(buildPayload());
   };
 
@@ -55,13 +66,8 @@ const NationalityForm = ({
           label={tLabels("image")}
           name="image"
           value={(form.previewUrl ?? form.imageUrl) as string}
-          onChange={(file) =>
-            setForm((prev) => ({
-              ...prev,
-              imageFile: file,
-              previewUrl: URL.createObjectURL(file),
-            }))
-          }
+          onChange={updateImage}
+          error={errors.image}
         />
 
         {/* Name */}
@@ -70,7 +76,8 @@ const NationalityForm = ({
           name="name"
           placeholder={tPlaceholders("name") || ""}
           value={(form.name as string) ?? ""}
-          onChange={(value) => setForm({ ...form, name: value })}
+          onChange={(value) => updateField("name", value)}
+          error={errors.name}
           required
         />
 
@@ -80,7 +87,8 @@ const NationalityForm = ({
           name="fifa_code"
           placeholder={tPlaceholders("fifaCode") || ""}
           value={(form.fifa_code as string) ?? ""}
-          onChange={(value) => setForm({ ...form, fifa_code: value })}
+          onChange={(value) => updateField("fifa_code", value)}
+          error={errors.fifa_code}
           required
         />
 
@@ -91,7 +99,8 @@ const NationalityForm = ({
           placeholder={tPlaceholders("confederation")}
           options={confederationOptions}
           value={form.confederation_id || ""}
-          onChange={(value) => setForm({ ...form, confederation_id: value })}
+          onChange={(value) => updateField("confederation_id", value)}
+          error={errors.confederation_id}
           required
         />
       </FormContentWrapper>
