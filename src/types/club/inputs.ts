@@ -7,7 +7,6 @@ import {
   updateClubSchema,
 } from "@/lib/validations/clubs.schema";
 import z from "zod";
-import { ImagePayload } from "../image";
 
 /**
  * Input dari client (dari URL / API route)
@@ -26,4 +25,5 @@ export type ClubUpdateInput = z.infer<typeof updateClubSchema>;
 
 export type UpsertClubInput = z.infer<typeof clubMutationSchema> & {
   id?: string;
-} & ImagePayload;
+  imageUrl: string | null; // public URL untuk preview
+};
