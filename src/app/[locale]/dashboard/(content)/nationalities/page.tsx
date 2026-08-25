@@ -6,7 +6,7 @@ import { useTranslations } from "next-intl";
 import { CrudListPage } from "@/components/templates/crud";
 import { DataColumn } from "@/types/table";
 import { createSortHandler } from "@/lib/utils/crud";
-import { useCrudFilterSync } from "@/hooks/crud";
+import { useFilterSync } from "@/hooks/filter";
 import useNationalityFilter from "@/hooks/nationalities/useNationalityFilter";
 import { useNationalities } from "@/hooks/nationalities";
 import { useNationalityActions } from "@/hooks/dashboard/nationalities";
@@ -92,7 +92,7 @@ export default function NationalitiesManagementPage() {
   });
 
   // Sync URL on filter
-  useCrudFilterSync(debouncedFilters, syncUrl);
+  useFilterSync(debouncedFilters, syncUrl);
 
   return (
     <CrudListPage

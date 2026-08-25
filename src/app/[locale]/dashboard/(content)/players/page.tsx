@@ -4,7 +4,7 @@ import { createPlayerColumns } from "@/components/dashboard/players/columns/play
 import ConnectionErrorAlert from "@/components/feedback/ConnectionErrorAlert";
 import { CrudListPage } from "@/components/templates/crud";
 import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
-import { useCrudFilterSync } from "@/hooks/crud";
+import { useFilterSync } from "@/hooks/filter";
 import { usePlayerActions, usePlayers } from "@/hooks/dashboard/players";
 import usePlayerFilter from "@/hooks/players/usePlayerFilter";
 import { isLikelyConnectionError } from "@/lib/utils/connection-error";
@@ -62,7 +62,7 @@ export default function PlayersManagementPage() {
   });
 
   // Sync URL on filter
-  useCrudFilterSync(debouncedFilters, syncUrl);
+  useFilterSync(debouncedFilters, syncUrl);
 
   return (
     <CrudListPage

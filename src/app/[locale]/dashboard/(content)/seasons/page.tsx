@@ -3,7 +3,7 @@
 import ConnectionErrorAlert from "@/components/feedback/ConnectionErrorAlert";
 import { CrudFormTablePage } from "@/components/templates/crud";
 import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
-import { useCrudFilterSync } from "@/hooks/crud";
+import { useFilterSync } from "@/hooks/filter";
 import { useSeasonActions } from "@/hooks/dashboard/seasons";
 import { useSeasonData } from "@/hooks/dashboard/seasons/useSeasonData";
 import { useSeasons } from "@/hooks/dashboard/seasons/useSeasons";
@@ -63,7 +63,7 @@ export default function SeasonsManagementPage() {
   });
 
   // Sync URL on filter
-  useCrudFilterSync(debouncedFilters, syncUrl);
+  useFilterSync(debouncedFilters, syncUrl);
 
   return (
     <CrudFormTablePage

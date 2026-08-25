@@ -7,7 +7,7 @@ import PageHeader from "@/components/shared/PageHeader";
 import { PaginationSection } from "@/components/shared/pagination";
 import PublicPageWrapper from "@/components/wrappers/PublicPageWrapper";
 import { ROUTES } from "@/constants/routes";
-import { useCrudFilterSync } from "@/hooks/crud";
+import { useFilterSync } from "@/hooks/filter";
 import { useNationalities } from "@/hooks/nationalities";
 import useNationalityFilter from "@/hooks/nationalities/useNationalityFilter";
 import { TeamItem } from "@/types/team";
@@ -41,7 +41,7 @@ export default function TeamsPage() {
   }));
 
   // Sync URL on filter
-  useCrudFilterSync(debouncedFilters, syncUrl);
+  useFilterSync(debouncedFilters, syncUrl);
 
   return (
     <PublicPageWrapper>

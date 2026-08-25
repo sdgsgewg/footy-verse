@@ -8,7 +8,7 @@ import { IMAGES } from "@/constants/images";
 import { Gender } from "@/enums/Gender";
 import { ParticipantType } from "@/enums/ParticipantType";
 import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
-import { useCrudFilterSync } from "@/hooks/crud";
+import { useFilterSync } from "@/hooks/filter";
 import {
   useCompetitionActions,
   useCompetitions,
@@ -137,7 +137,7 @@ export default function PlayersManagementPage() {
   });
 
   // Sync URL on filter
-  useCrudFilterSync(debouncedFilters, syncUrl);
+  useFilterSync(debouncedFilters, syncUrl);
 
   return (
     <CrudListPage

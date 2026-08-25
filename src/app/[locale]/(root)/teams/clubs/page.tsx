@@ -9,7 +9,7 @@ import PublicPageWrapper from "@/components/wrappers/PublicPageWrapper";
 import { ROUTES } from "@/constants/routes";
 import { useClubs } from "@/hooks/clubs";
 import useClubFilter from "@/hooks/clubs/useClubFilter";
-import { useCrudFilterSync } from "@/hooks/crud";
+import { useFilterSync } from "@/hooks/filter";
 import { TeamItem } from "@/types/team";
 import { useTranslations } from "next-intl";
 
@@ -41,7 +41,7 @@ export default function ClubsPage() {
   }));
 
   // Sync URL on filter
-  useCrudFilterSync(debouncedFilters, syncUrl);
+  useFilterSync(debouncedFilters, syncUrl);
 
   return (
     <PublicPageWrapper>

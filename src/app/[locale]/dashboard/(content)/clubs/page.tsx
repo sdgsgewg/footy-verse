@@ -10,7 +10,7 @@ import { DataColumn } from "@/types/table";
 import { ClubListItem } from "@/types/club/responses";
 import useClubFilter from "@/hooks/clubs/useClubFilter";
 import { createSortHandler } from "@/lib/utils/crud";
-import { useCrudFilterSync } from "@/hooks/crud";
+import { useFilterSync } from "@/hooks/filter";
 import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
 import {
   ClubImageLabel,
@@ -105,7 +105,7 @@ export default function ClubsManagementPage() {
   });
 
   // Sync URL on filter
-  useCrudFilterSync(debouncedFilters, syncUrl);
+  useFilterSync(debouncedFilters, syncUrl);
 
   return (
     <CrudListPage

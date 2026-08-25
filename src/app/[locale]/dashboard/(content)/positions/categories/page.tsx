@@ -6,7 +6,7 @@ import { useTranslations } from "next-intl";
 import { CrudFormTablePage } from "@/components/templates/crud";
 import { DataColumn } from "@/types/table";
 import { createSortHandler } from "@/lib/utils/crud";
-import { useCrudFilterSync } from "@/hooks/crud";
+import { useFilterSync } from "@/hooks/filter";
 import usePositionCategoryFilter from "@/hooks/position-categories/usePositionCategoryFilter";
 import {
   usePositionCategories,
@@ -68,7 +68,7 @@ export default function Page() {
   });
 
   // Sync URL on filter
-  useCrudFilterSync(debouncedFilters, syncUrl);
+  useFilterSync(debouncedFilters, syncUrl);
 
   return (
     <CrudFormTablePage
