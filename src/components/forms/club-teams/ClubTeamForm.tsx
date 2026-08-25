@@ -11,9 +11,10 @@ import { SelectField } from "../fields";
 import { SquadType } from "@/enums/SquadType";
 import { AgeGroup } from "@/enums/AgeGroup";
 import { getAgeGroupOptions } from "@/lib/constants/options";
+import { FormMode } from "@/types/form";
 
 interface Props {
-  mode: "create" | "edit";
+  mode: FormMode;
   clubTeam?: ClubTeamEditResponse;
 
   loading?: boolean;
@@ -25,7 +26,15 @@ const ClubTeamForm = ({ mode, clubTeam, loading = false, onSubmit }: Props) => {
   const t = useTranslations("");
   const tClubTeams = useTranslations("dashboard.clubTeams");
 
-  const { form, setForm, canSubmit, buildPayload } = useClubTeamForm(clubTeam);
+  const {
+    form,
+    isDirty,
+    errors,
+    updateField,
+    validate,
+    canSubmit,
+    buildPayload,
+  } = useClubTeamForm(clubTeam);
 
   const squadTypeOptions = getSquadTypeOptions(t);
   const ageGroupOptions = getAgeGroupOptions(t);
@@ -33,11 +42,15 @@ const ClubTeamForm = ({ mode, clubTeam, loading = false, onSubmit }: Props) => {
   const isCreate = mode === "create";
 
   const handleSubmit = () => {
+    if (!validate()) {
+      return;
+    }
+
     onSubmit(buildPayload());
   };
 
   return (
-    <FormWrapper>
+    <FormWrapper isDirty={isDirty}>
       <FormHeader
         loading={loading}
         isCreate={isCreate}
@@ -53,9 +66,8 @@ const ClubTeamForm = ({ mode, clubTeam, loading = false, onSubmit }: Props) => {
           placeholder={tClubTeams("form.placeholders.squadType")}
           options={squadTypeOptions}
           value={form.squad_type || ""}
-          onChange={(value) =>
-            setForm({ ...form, squad_type: value as SquadType })
-          }
+          onChange={(value) => updateField("squad_type", value as SquadType)}
+          error={errors.squad_type}
           required
         />
 
@@ -66,9 +78,8 @@ const ClubTeamForm = ({ mode, clubTeam, loading = false, onSubmit }: Props) => {
           placeholder={tClubTeams("form.placeholders.ageGroup")}
           options={ageGroupOptions}
           value={form.age_group || ""}
-          onChange={(value) =>
-            setForm({ ...form, age_group: value as AgeGroup })
-          }
+          onChange={(value) => updateField("age_group", value as AgeGroup)}
+          error={errors.age_group}
           required
         />
       </FormContentWrapper>

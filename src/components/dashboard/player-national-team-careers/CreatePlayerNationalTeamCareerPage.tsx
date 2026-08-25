@@ -52,10 +52,6 @@ export default function CreatePlayerNationalTeamCareerPage({
     return <ErrorState onRetry={() => void refetch()} />;
   }
 
-  const handleNavigateBack = () => {
-    router.push(`${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${player.slug}`);
-  };
-
   return (
     <TableFormLayout
       title={getTitle("create", "playerNationalTeamCareer", `${player.name}`)}
@@ -82,7 +78,7 @@ export default function CreatePlayerNationalTeamCareerPage({
           }
         />
       }
-      onBack={handleNavigateBack}
+      backHref={`${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${player.slug}`}
     />
   );
 }

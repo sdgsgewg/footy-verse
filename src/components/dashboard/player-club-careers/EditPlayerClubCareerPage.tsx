@@ -71,10 +71,6 @@ export default function EditPlayerClubCareerPage({
     return <ErrorState onRetry={() => void refetch()} />;
   }
 
-  const handleNavigateBack = () => {
-    router.push(`${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${player.slug}`);
-  };
-
   return (
     <TableFormLayout
       title={getTitle("edit", "playerClubCareer", `${player.name}`)}
@@ -104,7 +100,7 @@ export default function EditPlayerClubCareerPage({
           }
         />
       }
-      onBack={handleNavigateBack}
+      backHref={`${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${player.slug}`}
     />
   );
 }

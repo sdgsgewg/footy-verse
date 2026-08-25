@@ -2,14 +2,15 @@
 
 import { AgeGroup } from "@/enums/AgeGroup";
 import { SquadType } from "@/enums/SquadType";
+import { useEntityForm } from "@/hooks/crud";
+import { clubTeamMutationSchema } from "@/lib/validations/club-teams.schema";
 import { ClubTeamEditResponse, UpsertClubTeamInput } from "@/types/club-team";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 
-const emptyClubTeamForm: UpsertClubTeamInput = {
-  id: "",
+const createEmptyClubTeamForm = (): UpsertClubTeamInput => ({
   squad_type: "",
   age_group: "",
-};
+});
 
 function mapClubTeam(clubTeam: ClubTeamEditResponse): UpsertClubTeamInput {
   const { id, squadType, ageGroup } = clubTeam;
@@ -23,45 +24,35 @@ function mapClubTeam(clubTeam: ClubTeamEditResponse): UpsertClubTeamInput {
 
 export function useClubTeamForm(clubTeam?: ClubTeamEditResponse) {
   const initialValue = useMemo(
-    () => (clubTeam ? mapClubTeam(clubTeam) : emptyClubTeamForm),
+    () => (clubTeam ? mapClubTeam(clubTeam) : createEmptyClubTeamForm()),
     [clubTeam],
   );
 
-  const [form, setForm] = useState(initialValue);
+  const { form, updateField, errors, isDirty, canSubmit, validate } =
+    useEntityForm({
+      initialValue,
+      schema: clubTeamMutationSchema,
 
-  const initialForm = initialValue;
+      dirtyFields: ["squad_type", "age_group"],
 
-  const isEditing = clubTeam != null;
-
-  const canSubmit = useMemo(() => {
-    const isFilled = form.squad_type.trim().length > 0;
-
-    if (!isFilled) {
-      return false;
-    }
-
-    return (
-      form.squad_type !== initialForm.squad_type ||
-      form.age_group !== initialForm.age_group
-    );
-  }, [form, initialForm]);
+      requiredFields: ["squad_type", "age_group"],
+    });
 
   const buildPayload = () => ({
     squad_type: form.squad_type,
     age_group: form.age_group,
   });
 
-  const resetForm = () => {
-    setForm(initialValue);
-  };
-
   return {
     form,
-    setForm,
-    initialForm,
-    isEditing,
+
+    isDirty,
+    errors,
+
+    updateField,
+
+    validate,
     canSubmit,
     buildPayload,
-    resetForm,
   };
 }

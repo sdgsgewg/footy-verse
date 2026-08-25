@@ -5,10 +5,6 @@ import {
   ClubTeamListItem,
 } from "@/types/club-team";
 import { apiClient } from "./client";
-import {
-  createClubTeamSchema,
-  updateClubTeamSchema,
-} from "../validations/club-teams.schema";
 
 const baseRoute = "/clubs";
 
@@ -73,9 +69,7 @@ export const fetchClubTeamDetail = async (
  * @param payload
  */
 export const createClubTeam = async (clubId: string, payload: unknown) => {
-  const parsed = createClubTeamSchema.parse(payload); // validation
-
-  await apiClient.post(`${baseRoute}/${clubId}/teams`, parsed);
+  await apiClient.post(`${baseRoute}/${clubId}/teams`, payload);
 };
 
 /**
@@ -89,9 +83,7 @@ export const updateClubTeam = async (
   teamId: string,
   payload: unknown,
 ) => {
-  const parsed = updateClubTeamSchema.parse(payload); // validation
-
-  await apiClient.put(`${baseRoute}/${clubId}/teams/${teamId}`, parsed);
+  await apiClient.put(`${baseRoute}/${clubId}/teams/${teamId}`, payload);
 };
 
 /**

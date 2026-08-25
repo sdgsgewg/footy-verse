@@ -67,12 +67,6 @@ const EditNationalTeamPage = ({
     return <ErrorState onRetry={() => void refetch()} />;
   }
 
-  const handleNavigateBack = () => {
-    router.push(
-      `${ROUTES.DASHBOARD.CONTENT.NATIONALITIES.BASE}/${nationality.slug}`,
-    );
-  };
-
   return (
     <TableFormLayout
       title={getTitle("edit", "nationalTeam", `${nationality.name}`)}
@@ -102,7 +96,7 @@ const EditNationalTeamPage = ({
           }
         />
       }
-      onBack={handleNavigateBack}
+      backHref={`${ROUTES.DASHBOARD.CONTENT.NATIONALITIES.BASE}/${nationality.slug}`}
     />
   );
 };

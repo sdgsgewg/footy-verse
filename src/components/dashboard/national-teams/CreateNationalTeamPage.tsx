@@ -44,12 +44,6 @@ export default function CreateNationalTeamPage({ nationalityLookup }: Props) {
     return <ErrorState onRetry={() => void refetch()} />;
   }
 
-  const handleNavigateBack = () => {
-    router.push(
-      `${ROUTES.DASHBOARD.CONTENT.NATIONALITIES.BASE}/${nationality.slug}`,
-    );
-  };
-
   return (
     <TableFormLayout
       title={getTitle("create", "nationalTeam", `${nationality.name}`)}
@@ -77,7 +71,7 @@ export default function CreateNationalTeamPage({ nationalityLookup }: Props) {
           }
         />
       }
-      onBack={handleNavigateBack}
+      backHref={`${ROUTES.DASHBOARD.CONTENT.NATIONALITIES.BASE}/${nationality.slug}`}
     />
   );
 }

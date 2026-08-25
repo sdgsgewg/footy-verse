@@ -140,6 +140,9 @@ const UnsavedChangesGuard = ({ when }: Props) => {
   const leavePage = () => {
     const navigation = pendingNavigation;
 
+    // Disable guard checks since the user has explicitly confirmed they want to leave
+    whenRef.current = false;
+
     setIsOpen(false);
     setPendingNavigation(null);
 

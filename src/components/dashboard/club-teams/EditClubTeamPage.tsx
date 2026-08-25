@@ -62,10 +62,6 @@ const EditClubTeamPage = ({ clubLookup, clubTeamLookup }: Props) => {
     return <ErrorState onRetry={() => void refetch()} />;
   }
 
-  const handleNavigateBack = () => {
-    router.push(`${ROUTES.DASHBOARD.CONTENT.CLUBS.BASE}/${club.slug}`);
-  };
-
   return (
     <TableFormLayout
       title={getTitle("edit", "clubTeam", `${club.name}`)}
@@ -90,7 +86,7 @@ const EditClubTeamPage = ({ clubLookup, clubTeamLookup }: Props) => {
           }
         />
       }
-      onBack={handleNavigateBack}
+      backHref={`${ROUTES.DASHBOARD.CONTENT.CLUBS.BASE}/${club.slug}`}
     />
   );
 };

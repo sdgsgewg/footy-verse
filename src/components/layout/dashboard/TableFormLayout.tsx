@@ -15,6 +15,7 @@ interface Props {
   form: React.ReactNode;
 
   onBack?: () => void;
+  backHref?: string;
 }
 
 const TableFormLayout = ({
@@ -24,10 +25,16 @@ const TableFormLayout = ({
   table,
   form,
   onBack,
+  backHref,
 }: Props) => {
   return (
     <>
-      <CrudPageHeader title={title} showBackButton onBack={onBack} />
+      <CrudPageHeader
+        title={title}
+        showBackButton
+        onBack={onBack}
+        backHref={backHref}
+      />
 
       <FormSectionWrapper formSize="large">
         <div

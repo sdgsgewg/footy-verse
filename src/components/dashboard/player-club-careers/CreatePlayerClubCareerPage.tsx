@@ -47,10 +47,6 @@ export default function CreatePlayerClubCareerPage({ playerLookup }: Props) {
     return <ErrorState onRetry={() => void refetch()} />;
   }
 
-  const handleNavigateBack = () => {
-    router.push(`${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${player.slug}`);
-  };
-
   return (
     <TableFormLayout
       title={getTitle("create", "playerClubCareer", `${player.name}`)}
@@ -78,7 +74,7 @@ export default function CreatePlayerClubCareerPage({ playerLookup }: Props) {
           }
         />
       }
-      onBack={handleNavigateBack}
+      backHref={`${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${player.slug}`}
     />
   );
 }

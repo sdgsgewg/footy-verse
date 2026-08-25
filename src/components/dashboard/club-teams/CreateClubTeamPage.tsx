@@ -42,10 +42,6 @@ export default function CreateClubTeamPage({ clubLookup }: Props) {
     return <ErrorState onRetry={() => void refetch()} />;
   }
 
-  const handleNavigateBack = () => {
-    router.push(`${ROUTES.DASHBOARD.CONTENT.CLUBS.BASE}/${club.slug}`);
-  };
-
   return (
     <TableFormLayout
       title={getTitle("create", "clubTeam", `${club.name}`)}
@@ -68,7 +64,7 @@ export default function CreateClubTeamPage({ clubLookup }: Props) {
           }
         />
       }
-      onBack={handleNavigateBack}
+      backHref={`${ROUTES.DASHBOARD.CONTENT.CLUBS.BASE}/${club.slug}`}
     />
   );
 }
