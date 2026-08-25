@@ -4,7 +4,7 @@ import ActiveFiltersBar from "@/components/public/teams/clubs/ActiveFiltersBar";
 import ClubFilters from "@/components/public/teams/clubs/ClubFilters";
 import TeamSection from "@/components/public/teams/TeamSection";
 import PageHeader from "@/components/shared/PageHeader";
-import CrudPagination from "@/components/templates/crud/CrudPagination";
+import { PaginationSection } from "@/components/shared/pagination";
 import PublicPageWrapper from "@/components/wrappers/PublicPageWrapper";
 import { ROUTES } from "@/constants/routes";
 import { useClubs } from "@/hooks/clubs";
@@ -21,14 +21,13 @@ export default function ClubsPage() {
     debouncedFilters,
     updateFilter,
     goToPage,
-    changeLimit,
     syncUrl,
     clearFilters,
   } = useClubFilter();
 
   const isSearching = filters.search !== debouncedFilters.search;
 
-  const { clubs, limit, totalPages, total, loading } = useClubs({
+  const { clubs, totalPages, loading } = useClubs({
     ...debouncedFilters,
     search: debouncedFilters.search || undefined,
   });
@@ -75,14 +74,11 @@ export default function ClubsPage() {
         showAllData
       />
 
-      <CrudPagination
+      <PaginationSection
         page={filters.page}
-        limit={limit}
         totalPages={totalPages}
-        totalItems={total}
-        loading={loading}
         onPageChange={goToPage}
-        onLimitChange={changeLimit}
+        isLoading={loading}
       />
     </PublicPageWrapper>
   );

@@ -23,13 +23,13 @@ const Navbar = () => {
             <NavbarLogo />
           </div>
 
-          <div className="flex items-center space-x-2 md:space-x-4">
+          <div className="flex items-center space-x-2 lg:space-x-4">
             {/* Desktop Auth Section */}
             <NavbarDesktopAuth />
 
             {/* Mobile Menu Toggle */}
             <button
-              className="md:hidden p-2 text-foreground hover:bg-muted rounded-md focus:outline-none"
+              className="lg:hidden p-2 text-foreground hover:bg-muted rounded-md focus:outline-none cursor-pointer"
               onClick={() => setMobileMenuOpen(true)}
               aria-label="Open Mobile Menu"
             >

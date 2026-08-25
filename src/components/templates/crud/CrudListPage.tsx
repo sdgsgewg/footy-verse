@@ -3,8 +3,8 @@ import { CrudPageHeader } from "./CrudPageHeader";
 import { DataTable } from "@/components/shared/tables/DataTable";
 import { DataRow } from "@/types/table";
 import CrudToolbar from "./CrudToolbar";
-import CrudPagination from "./CrudPagination";
 import CrudFilterDialog from "./CrudFilterDialog";
+import { CrudPaginationSection } from "./pagination";
 
 export const CrudListPage = <TData extends DataRow>({
   title,
@@ -24,7 +24,7 @@ export const CrudListPage = <TData extends DataRow>({
   pagination: paginationProps,
 }: CrudListPageProps<TData>) => {
   return (
-    <>
+    <div className="space-y-4">
       <CrudPageHeader title={title} />
 
       {headerContent}
@@ -64,8 +64,8 @@ export const CrudListPage = <TData extends DataRow>({
       />
 
       {paginationProps && (
-        <CrudPagination {...paginationProps} loading={loading} />
+        <CrudPaginationSection {...paginationProps} isLoading={loading} />
       )}
-    </>
+    </div>
   );
 };

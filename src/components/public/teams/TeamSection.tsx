@@ -46,9 +46,9 @@ export default function TeamSection({
   return (
     <section className="space-y-6">
       {/* Header */}
-      <div>
+      <div className="flex flex-col gap-1">
         <h2 className="text-2xl font-bold tracking-tight">{title}</h2>
-        <p className="mt-1 text-muted-foreground">{description}</p>
+        <p className="text-muted-foreground">{description}</p>
       </div>
 
       {/* Loading */}

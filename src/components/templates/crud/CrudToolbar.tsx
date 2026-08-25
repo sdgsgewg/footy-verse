@@ -36,7 +36,7 @@ export default function CrudToolbar({
   const tActions = useTranslations("common.actions");
 
   return (
-    <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+    <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
       {/* Left */}
       <div className="flex flex-1 flex-col gap-3 sm:flex-row">
         {onSearchChange && (
@@ -52,6 +52,8 @@ export default function CrudToolbar({
           </div>
         )}
 
+        {/* Right */}
+
         {onFilter && (
           <Button variant="outline" onClick={onFilter} disabled={loading}>
             <Filter className="size-4" />
@@ -61,7 +63,6 @@ export default function CrudToolbar({
         )}
       </div>
 
-      {/* Right */}
       {onCreate && (
         <Button onClick={onCreate} disabled={loading}>
           <PlusCircle className="size-4" />
@@ -71,7 +72,7 @@ export default function CrudToolbar({
       )}
 
       {onReorder && (
-        <Button onClick={onReorder} disabled={loading}>
+        <Button variant="muted" onClick={onReorder} disabled={loading}>
           <ListOrdered className="size-4" />
 
           {tActions("reorder")}

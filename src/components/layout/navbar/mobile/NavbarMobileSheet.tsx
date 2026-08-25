@@ -18,14 +18,14 @@ const NavbarMobileSheet = ({ open, onClose, children }: Props) => {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: "100%" }}
             transition={{ type: "spring", damping: 25, stiffness: 200 }}
-            className="fixed inset-0 z-50 md:hidden bg-background border-l shadow-2xl flex flex-col"
+            className="fixed inset-0 z-50 lg:hidden bg-background border-l shadow-2xl flex flex-col"
           >
             <div className="flex h-16 items-center px-4 justify-between border-b shrink-0">
               <span className="font-bold text-2xl bg-linear-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent">
                 Menu
               </span>
               <button
-                className="p-2 text-foreground hover:bg-muted rounded-md focus:outline-none"
+                className="p-2 text-foreground hover:bg-muted rounded-md focus:outline-none cursor-pointer"
                 onClick={onClose}
                 aria-label="Close Mobile Menu"
               >

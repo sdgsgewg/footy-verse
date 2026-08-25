@@ -41,13 +41,13 @@ export function CrudFormTablePage<
   } = props;
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-4">
       <CrudPageHeader title={title} />
       {headerContent}
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* FORM SECTION */}
-        <div className="lg:col-span-4 space-y-6">
+        <div className="lg:col-span-4">
           <CrudPageForm
             formFields={formFields}
             form={form as CrudForm}
@@ -62,7 +62,7 @@ export function CrudFormTablePage<
         </div>
 
         {/* TABLE SECTION */}
-        <div className="lg:col-span-8">
+        <div className="lg:col-span-8 space-y-4">
           <CrudToolbar
             loading={loading}
             searchValue={searchValue}

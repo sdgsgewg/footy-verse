@@ -5,6 +5,7 @@ import { SortOrder } from "./sort";
 import { InvalidateQueryFilters } from "@tanstack/react-query";
 import { Entity } from "@/config/entities";
 import { FormErrors } from "./form";
+import { PaginationProps } from "./pagination";
 
 type FieldType = "text" | "textarea" | "number" | "date" | "select" | "image";
 
@@ -124,16 +125,10 @@ export interface CrudSortingProps {
   onSort?: (column: string) => void;
 }
 
-export interface CrudPaginationProps {
-  page: number;
+export interface CrudPaginationProps extends PaginationProps {
   limit: number;
-
-  totalPages: number;
   totalItems: number;
-
   loading?: boolean;
-
-  onPageChange: (page: number) => void;
   onLimitChange: (limit: number) => void;
 }
 

@@ -4,7 +4,7 @@ import ActiveFiltersBar from "@/components/public/teams/nationalities/ActiveFilt
 import NationalityFilters from "@/components/public/teams/nationalities/NationalityFilters";
 import TeamSection from "@/components/public/teams/TeamSection";
 import PageHeader from "@/components/shared/PageHeader";
-import CrudPagination from "@/components/templates/crud/CrudPagination";
+import { PaginationSection } from "@/components/shared/pagination";
 import PublicPageWrapper from "@/components/wrappers/PublicPageWrapper";
 import { ROUTES } from "@/constants/routes";
 import { useCrudFilterSync } from "@/hooks/crud";
@@ -21,19 +21,16 @@ export default function TeamsPage() {
     debouncedFilters,
     updateFilter,
     goToPage,
-    changeLimit,
     syncUrl,
     clearFilters,
   } = useNationalityFilter();
 
   const isSearching = filters.search !== debouncedFilters.search;
 
-  const { nationalities, limit, totalPages, total, loading } = useNationalities(
-    {
-      ...debouncedFilters,
-      search: debouncedFilters.search || undefined,
-    },
-  );
+  const { nationalities, totalPages, loading } = useNationalities({
+    ...debouncedFilters,
+    search: debouncedFilters.search || undefined,
+  });
 
   const modifiedNationalityList: TeamItem[] = nationalities.map((nation) => ({
     id: nation.id,
@@ -77,14 +74,11 @@ export default function TeamsPage() {
         showAllData
       />
 
-      <CrudPagination
+      <PaginationSection
         page={filters.page}
-        limit={limit}
         totalPages={totalPages}
-        totalItems={total}
-        loading={loading}
         onPageChange={goToPage}
-        onLimitChange={changeLimit}
+        isLoading={loading}
       />
     </PublicPageWrapper>
   );
