@@ -1,40 +1,36 @@
+import { useEntityForm } from "@/hooks/crud";
+import { positionCategoryMutationSchema } from "@/lib/validations/position-categories.schema";
 import {
   PositionCategoryListItem,
   UpsertPositionCategoryInput,
 } from "@/types/position-category";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 
-const emptyPositionCategoryForm: UpsertPositionCategoryInput = {
+const createEmptyPositionCategoryForm = (): UpsertPositionCategoryInput => ({
   name: "",
-};
+});
 
 export function usePositionCategoryForm() {
-  const [form, setForm] = useState<UpsertPositionCategoryInput>(
-    emptyPositionCategoryForm,
-  );
+  const {
+    form,
+    setForm,
+    initialForm,
+    updateField,
+    errors,
+    isDirty,
+    canSubmit,
+    validate,
+    resetForm,
+  } = useEntityForm({
+    initialValue: createEmptyPositionCategoryForm(),
+    schema: positionCategoryMutationSchema,
 
-  const [initialForm, setInitialForm] = useState<UpsertPositionCategoryInput>(
-    emptyPositionCategoryForm,
-  );
+    dirtyFields: ["name"],
 
-  // const isEditing = Boolean(form.id);
+    requiredFields: ["name"],
+  });
+
   const [isEditing, setIsEditing] = useState(false);
-
-  const canSubmit = useMemo(() => {
-    const isFilled = form.name.trim().length > 0;
-
-    if (!isFilled) {
-      return false;
-    }
-
-    // Create
-    if (!isEditing) {
-      return true;
-    }
-
-    // Edit
-    return form.name !== initialForm.name;
-  }, [form, initialForm, isEditing]);
 
   const handleEdit = (item: PositionCategoryListItem) => {
     const mapped: UpsertPositionCategoryInput = {
@@ -42,29 +38,36 @@ export function usePositionCategoryForm() {
       name: item.name,
     };
 
-    setForm(mapped);
-    setInitialForm(mapped);
+    resetForm(mapped);
+
     setIsEditing(true);
+  };
+
+  const handleResetForm = () => {
+    resetForm();
+    setIsEditing(false);
   };
 
   const buildPayload = () => ({
     name: form.name,
   });
 
-  const resetForm = () => {
-    setForm(emptyPositionCategoryForm);
-    setInitialForm(emptyPositionCategoryForm);
-    setIsEditing(false);
-  };
-
   return {
-    isEditing,
     form,
-    setForm,
     initialForm,
-    canSubmit,
+    setForm,
+
+    isDirty,
+    isEditing,
+    errors,
+
+    updateField,
     handleEdit,
+
+    validate,
+    canSubmit,
     buildPayload,
-    resetForm,
+
+    resetForm: handleResetForm,
   };
 }

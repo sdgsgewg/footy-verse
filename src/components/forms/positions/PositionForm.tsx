@@ -22,20 +22,31 @@ interface Props {
 const PositionForm = ({ mode, position, loading = false, onSubmit }: Props) => {
   const t = useTranslations("dashboard.positions");
 
-  const { form, setForm, canSubmit, buildPayload } = usePositionForm(position);
-
-  const { positionCategories } = usePositionCategories();
+  const {
+    form,
+    isDirty,
+    errors,
+    updateField,
+    validate,
+    canSubmit,
+    buildPayload,
+  } = usePositionForm(position);
 
   const isCreate = mode === "create";
 
+  const { positionCategories } = usePositionCategories();
   const categoryOptions = getPositionCategoryOptions(positionCategories);
 
   const handleSubmit = () => {
+    if (!validate()) {
+      return;
+    }
+
     onSubmit(buildPayload());
   };
 
   return (
-    <FormWrapper>
+    <FormWrapper isDirty={isDirty}>
       <FormHeader
         loading={loading}
         isCreate={isCreate}
@@ -50,7 +61,8 @@ const PositionForm = ({ mode, position, loading = false, onSubmit }: Props) => {
           name="name"
           placeholder={t("form.placeholders.name") || ""}
           value={(form.name as string) ?? ""}
-          onChange={(value) => setForm({ ...form, name: value })}
+          onChange={(value) => updateField("name", value)}
+          error={errors.name}
           required
         />
 
@@ -61,7 +73,8 @@ const PositionForm = ({ mode, position, loading = false, onSubmit }: Props) => {
           placeholder={t("form.placeholders.category")}
           options={categoryOptions}
           value={form.position_category_id || ""}
-          onChange={(value) => setForm({ ...form, position_category_id: value })}
+          onChange={(value) => updateField("position_category_id", value)}
+          error={errors.position_category_id}
           required
         />
       </FormContentWrapper>

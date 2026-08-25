@@ -1,13 +1,15 @@
 "use client";
 
+import { useEntityForm } from "@/hooks/crud";
+import { positionMutationSchema } from "@/lib/validations/positions.schema";
 import { PositionEditResponse, UpsertPositionInput } from "@/types/position";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 
-const emptyPositionForm: UpsertPositionInput = {
+const createEmptyPositionForm = (): UpsertPositionInput => ({
   id: "",
   name: "",
   position_category_id: "",
-};
+});
 
 function mapPosition(position: PositionEditResponse): UpsertPositionInput {
   const { id, name, categoryId } = position;
@@ -21,47 +23,35 @@ function mapPosition(position: PositionEditResponse): UpsertPositionInput {
 
 export function usePositionForm(position?: PositionEditResponse) {
   const initialValue = useMemo(
-    () => (position ? mapPosition(position) : emptyPositionForm),
+    () => (position ? mapPosition(position) : createEmptyPositionForm()),
     [position],
   );
 
-  const [form, setForm] = useState(initialValue);
+  const { form, updateField, errors, isDirty, canSubmit, validate } =
+    useEntityForm({
+      initialValue,
+      schema: positionMutationSchema,
 
-  const initialForm = initialValue;
+      dirtyFields: ["name", "position_category_id"],
 
-  const isEditing = position != null;
-
-  const canSubmit = useMemo(() => {
-    const isFilled =
-      form.name.trim().length > 0 &&
-      form.position_category_id.trim().length > 0;
-
-    if (!isFilled) {
-      return false;
-    }
-
-    return (
-      form.name !== initialForm.name ||
-      form.position_category_id !== initialForm.position_category_id
-    );
-  }, [form, initialForm]);
+      requiredFields: ["name", "position_category_id"],
+    });
 
   const buildPayload = () => ({
     name: form.name,
     position_category_id: form.position_category_id,
   });
 
-  const resetForm = () => {
-    setForm(initialValue);
-  };
-
   return {
     form,
-    setForm,
-    initialForm,
-    isEditing,
+
+    isDirty,
+    errors,
+
+    updateField,
+
+    validate,
     canSubmit,
     buildPayload,
-    resetForm,
   };
 }

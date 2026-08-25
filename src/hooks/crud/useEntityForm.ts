@@ -29,6 +29,10 @@ export function useEntityForm<TForm extends Record<string, unknown>>({
   type Field = FormField<TForm>;
 
   const [form, setForm] = useState<TForm>(initialValue);
+
+  // Baseline yang digunakan untuk menentukan dirty state
+  const [initialForm, setInitialForm] = useState<TForm>(initialValue);
+
   const [errors, setErrors] = useState<FormErrors<Field>>({});
 
   const clearFieldError = (field: Field) => {
@@ -55,11 +59,11 @@ export function useEntityForm<TForm extends Record<string, unknown>>({
 
   const isDirty = useMemo(() => {
     const fieldsChanged = dirtyFields.some(
-      (field) => form[field] !== initialValue[field],
+      (field) => form[field] !== initialForm[field],
     );
 
     return fieldsChanged || additionalDirty;
-  }, [form, initialValue, dirtyFields, additionalDirty]);
+  }, [form, initialForm, dirtyFields, additionalDirty]);
 
   const isFilled = useMemo(() => {
     return requiredFields.every((field) => {
@@ -88,14 +92,30 @@ export function useEntityForm<TForm extends Record<string, unknown>>({
     return false;
   };
 
-  const reset = () => {
-    setForm(initialValue);
+  /**
+   * Reset form ke baseline saat ini.
+   *
+   * Jika diberikan value baru:
+   * - value menjadi form
+   * - value juga menjadi baseline baru
+   */
+  const resetForm = (value?: TForm) => {
+    const nextValue = value ?? initialValue;
+
+    setForm(nextValue);
+
+    if (value !== undefined) {
+      setInitialForm(value);
+    }
+
     setErrors({});
   };
 
   return {
     form,
     setForm,
+
+    initialForm,
 
     errors,
 
@@ -107,6 +127,6 @@ export function useEntityForm<TForm extends Record<string, unknown>>({
     clearFieldError,
 
     validate,
-    reset,
+    resetForm,
   };
 }
