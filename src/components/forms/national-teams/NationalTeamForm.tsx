@@ -37,8 +37,15 @@ const NationalTeamForm = ({
     "dashboard.nationalTeams.form.placeholders",
   );
 
-  const { form, setForm, canSubmit, buildPayload } =
-    useNationalTeamForm(nationalTeam);
+  const {
+    form,
+    isDirty,
+    errors,
+    updateField,
+    validate,
+    canSubmit,
+    buildPayload,
+  } = useNationalTeamForm(nationalTeam);
 
   const genderOptions = getGenderOptions(t);
   const ageGroupOptions = getAgeGroupOptions(t);
@@ -47,11 +54,15 @@ const NationalTeamForm = ({
   const isCreate = mode === "create";
 
   const handleSubmit = () => {
+    if (!validate()) {
+      return;
+    }
+
     onSubmit(buildPayload());
   };
 
   return (
-    <FormWrapper>
+    <FormWrapper isDirty={isDirty}>
       <FormHeader
         loading={loading}
         isCreate={isCreate}
@@ -67,7 +78,8 @@ const NationalTeamForm = ({
           placeholder={tPlaceholders("gender")}
           options={genderOptions}
           value={form.gender || ""}
-          onChange={(value) => setForm({ ...form, gender: value as Gender })}
+          onChange={(value) => updateField("gender", value as Gender)}
+          error={errors.gender}
           required
         />
 
@@ -78,9 +90,8 @@ const NationalTeamForm = ({
           placeholder={tPlaceholders("ageGroup")}
           options={ageGroupOptions}
           value={form.age_group || ""}
-          onChange={(value) =>
-            setForm({ ...form, age_group: value as AgeGroup })
-          }
+          onChange={(value) => updateField("age_group", value as AgeGroup)}
+          error={errors.age_group}
           required
         />
 
@@ -92,8 +103,9 @@ const NationalTeamForm = ({
           options={teamTypeOptions}
           value={form.team_type || ""}
           onChange={(value) =>
-            setForm({ ...form, team_type: value as NationalTeamType })
+            updateField("team_type", value as NationalTeamType)
           }
+          error={errors.team_type}
           required
         />
       </FormContentWrapper>

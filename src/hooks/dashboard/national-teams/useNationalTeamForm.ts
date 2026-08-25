@@ -3,18 +3,19 @@
 import { AgeGroup } from "@/enums/AgeGroup";
 import { Gender } from "@/enums/Gender";
 import { NationalTeamType } from "@/enums/NationalTeamType";
+import { useEntityForm } from "@/hooks/crud";
+import { nationalTeamMutationSchema } from "@/lib/validations/national-teams.schema";
 import {
   NationalTeamEditResponse,
   UpsertNationalTeamInput,
 } from "@/types/national-team";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 
-const emptyNationalTeamForm: UpsertNationalTeamInput = {
-  id: "",
+const createEmptyNationalTeamForm = (): UpsertNationalTeamInput => ({
   gender: "",
   age_group: "",
   team_type: "",
-};
+});
 
 function mapNationalTeam(
   nationalTeam: NationalTeamEditResponse,
@@ -32,32 +33,21 @@ function mapNationalTeam(
 export function useNationalTeamForm(nationalTeam?: NationalTeamEditResponse) {
   const initialValue = useMemo(
     () =>
-      nationalTeam ? mapNationalTeam(nationalTeam) : emptyNationalTeamForm,
+      nationalTeam
+        ? mapNationalTeam(nationalTeam)
+        : createEmptyNationalTeamForm(),
     [nationalTeam],
   );
 
-  const [form, setForm] = useState(initialValue);
+  const { form, updateField, errors, isDirty, canSubmit, validate } =
+    useEntityForm({
+      initialValue,
+      schema: nationalTeamMutationSchema,
 
-  const initialForm = initialValue;
+      dirtyFields: ["gender", "age_group", "team_type"],
 
-  const isEditing = nationalTeam != null;
-
-  const canSubmit = useMemo(() => {
-    const isFilled =
-      form.gender.trim().length > 0 &&
-      form.age_group.trim().length > 0 &&
-      form.team_type.trim().length > 0;
-
-    if (!isFilled) {
-      return false;
-    }
-
-    return (
-      form.gender !== initialForm.gender ||
-      form.age_group !== initialForm.age_group ||
-      form.team_type !== initialForm.team_type
-    );
-  }, [form, initialForm]);
+      requiredFields: ["gender", "age_group", "team_type"],
+    });
 
   const buildPayload = () => ({
     gender: form.gender,
@@ -65,17 +55,16 @@ export function useNationalTeamForm(nationalTeam?: NationalTeamEditResponse) {
     team_type: form.team_type,
   });
 
-  const resetForm = () => {
-    setForm(initialValue);
-  };
-
   return {
     form,
-    setForm,
-    initialForm,
-    isEditing,
+
+    isDirty,
+    errors,
+
+    updateField,
+
+    validate,
     canSubmit,
     buildPayload,
-    resetForm,
   };
 }
