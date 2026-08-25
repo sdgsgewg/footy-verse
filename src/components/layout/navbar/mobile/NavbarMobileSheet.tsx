@@ -21,7 +21,7 @@ const NavbarMobileSheet = ({ open, onClose, children }: Props) => {
             className="fixed inset-0 z-50 lg:hidden bg-background border-l shadow-2xl flex flex-col"
           >
             <div className="flex h-16 items-center px-4 justify-between border-b shrink-0">
-              <span className="font-bold text-2xl bg-linear-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent">
+              <span className="font-bold text-2xl bg-linear-to-r from-green-600 to-emerald-400 bg-clip-text text-transparent">
                 Menu
               </span>
               <button

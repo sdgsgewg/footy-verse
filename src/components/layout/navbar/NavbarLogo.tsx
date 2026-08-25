@@ -6,7 +6,7 @@ import React from "react";
 
 const NavbarLogo = () => {
   return (
-    <div className="flex items-center">
+    <div className="flex items-center gap-3">
       <div
         className="rounded-md shadow-md flex justify-center overflow-hidden"
         style={{ width: "100%", height: "30px" }}
@@ -21,7 +21,7 @@ const NavbarLogo = () => {
       </div>
       <Link
         href={ROUTES.HOME}
-        className="font-bold text-lg text-primary block ms-3"
+        className="font-bold text-lg block bg-linear-to-r from-green-600 to-emerald-400 bg-clip-text text-transparent"
       >
         FootyVerse
       </Link>
