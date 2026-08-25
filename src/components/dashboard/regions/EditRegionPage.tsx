@@ -34,7 +34,7 @@ const EditRegionPage = ({ regionLookup }: Props) => {
   return (
     <FormPageLayout
       title={getTitle("edit", "region")}
-      formSize="small"
+      formSize="large"
       form={
         <RegionForm
           mode="edit"
