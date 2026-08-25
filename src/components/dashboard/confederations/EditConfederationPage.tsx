@@ -43,7 +43,7 @@ const EditConfederationPage = ({ confederationLookup }: Props) => {
   return (
     <FormPageLayout
       title={getTitle("edit", "confederation")}
-      formSize="small"
+      formSize="large"
       form={
         <ConfederationForm
           mode="edit"

@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { getImageUrl } from "@/lib/images/image-url";
 import { STORAGE_BUCKETS } from "@/lib/storage";
 import { buildFormData } from "@/lib/forms/buildFormData";
@@ -8,14 +8,14 @@ import {
   ConfederationEditResponse,
   UpsertConfederationInput,
 } from "@/types/confederation";
+import { useEntityForm, useImageField } from "@/hooks/crud";
+import { confederationMutationSchema } from "@/lib/validations/confederations.schema";
 
-const emptyConfederationForm: UpsertConfederationInput = {
+const createEmptyConfederationForm = (): UpsertConfederationInput => ({
   id: "",
 
   image: null,
   imageUrl: null,
-  imageFile: null,
-  previewUrl: null,
 
   name: "",
   short_name: "",
@@ -23,7 +23,7 @@ const emptyConfederationForm: UpsertConfederationInput = {
   headquarters: "",
   website: "",
   region_id: "",
-};
+});
 
 function mapConfederation(
   confederation: ConfederationEditResponse,
@@ -48,8 +48,6 @@ function mapConfederation(
       STORAGE_BUCKETS.CONFEDERATIONS,
       image,
     ),
-    imageFile: null,
-    previewUrl: null,
 
     name,
     short_name: shortName,
@@ -65,41 +63,51 @@ export function useConfederationForm(
 ) {
   const initialValue = useMemo(
     () =>
-      confederation ? mapConfederation(confederation) : emptyConfederationForm,
+      confederation
+        ? mapConfederation(confederation)
+        : createEmptyConfederationForm(),
     [confederation],
   );
 
-  const [form, setForm] = useState(initialValue);
+  const {
+    imageFile,
+    previewUrl,
+    updateImage: setImage,
+  } = useImageField({
+    initialPreviewUrl: initialValue.imageUrl,
+  });
 
-  const initialForm = initialValue;
+  const {
+    form,
+    updateField,
+    errors,
+    isDirty,
+    canSubmit,
+    validate,
+    clearFieldError,
+  } = useEntityForm({
+    initialValue,
+    schema: confederationMutationSchema,
 
-  const isEditing = confederation != null;
+    dirtyFields: [
+      "name",
+      "short_name",
+      "founded",
+      "headquarters",
+      "website",
+      "region_id",
+      "image",
+    ],
 
-  const canSubmit = useMemo(() => {
-    const isFilled =
-      form.name.trim().length > 0 &&
-      form.short_name.trim().length > 0 &&
-      form.region_id.trim().length > 0;
+    requiredFields: ["name", "short_name", "region_id"],
 
-    if (!isFilled) {
-      return false;
-    }
+    additionalDirty: imageFile !== null,
+  });
 
-    if (!isEditing) {
-      return form.imageFile != null;
-    }
-
-    return (
-      form.name !== initialForm.name ||
-      form.short_name !== initialForm.short_name ||
-      form.founded !== initialForm.founded ||
-      form.headquarters !== initialForm.headquarters ||
-      form.website !== initialForm.website ||
-      form.region_id !== initialForm.region_id ||
-      form.image !== initialForm.image ||
-      form.imageFile != null
-    );
-  }, [form, initialForm, isEditing]);
+  const updateImage = (file: File) => {
+    setImage(file);
+    clearFieldError("image");
+  };
 
   const buildPayload = () => {
     return buildFormData({
@@ -112,21 +120,26 @@ export function useConfederationForm(
         region_id: form.region_id,
       },
       existingImage: form.image,
-      imageFile: form.imageFile,
+      imageFile,
     });
   };
 
-  const resetForm = () => {
-    setForm(initialValue);
-  };
-
   return {
-    form,
-    setForm,
-    initialForm,
-    isEditing,
+    form: {
+      ...form,
+
+      imageFile,
+      previewUrl,
+    },
+
+    isDirty,
+    errors,
+
+    updateField,
+    updateImage,
+
+    validate,
     canSubmit,
     buildPayload,
-    resetForm,
   };
 }

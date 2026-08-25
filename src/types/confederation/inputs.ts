@@ -1,5 +1,4 @@
 import z from "zod";
-import { ImagePayload } from "../image";
 import {
   confederationMutationSchema,
   confederationsQuerySchema,
@@ -27,4 +26,5 @@ export type UpsertConfederationInput = z.infer<
   typeof confederationMutationSchema
 > & {
   id?: string;
-} & ImagePayload;
+  imageUrl: string | null; // public URL untuk preview
+};

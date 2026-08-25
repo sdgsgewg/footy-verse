@@ -17,7 +17,7 @@ export default function CreateConfederationPage() {
   return (
     <FormPageLayout
       title={getTitle("create", "confederation")}
-      formSize="small"
+      formSize="large"
       form={
         <ConfederationForm
           mode="create"
