@@ -5,7 +5,6 @@ import {
   updateNationalitySchema,
 } from "@/lib/validations/nationalities.schema";
 import z from "zod";
-import { ImagePayload } from "../image";
 
 // Repo Request (from zod)
 
@@ -19,8 +18,15 @@ export type NationalityUpdateInput = z.infer<typeof updateNationalitySchema>;
 
 // Mutation
 
+// export type UpsertNationalityInput = z.infer<
+//   typeof nationalityMutationSchema
+// > & {
+//   id?: string;
+// } & ImagePayload;
+
 export type UpsertNationalityInput = z.infer<
   typeof nationalityMutationSchema
 > & {
   id?: string;
-} & ImagePayload;
+  imageUrl: string | null; // public URL untuk preview
+};

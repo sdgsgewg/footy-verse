@@ -1,30 +1,26 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { getImageUrl } from "@/lib/images/image-url";
 import { STORAGE_BUCKETS } from "@/lib/storage";
 import {
   NationalityEditResponse,
-  NationalityFormField,
   UpsertNationalityInput,
 } from "@/types/nationality";
 import { buildFormData } from "@/lib/forms/buildFormData";
-import { FormErrors } from "@/types/form";
 import { nationalityMutationSchema } from "@/lib/validations/nationalities.schema";
-import { getZodFormErrors } from "@/lib/forms/errors";
+import { useEntityForm, useImageField } from "@/hooks/crud";
 
-const emptyNationalityForm: UpsertNationalityInput = {
+const createEmptyNationalityForm = (): UpsertNationalityInput => ({
   id: "",
 
   image: null,
   imageUrl: null,
-  imageFile: null,
-  previewUrl: null,
 
   name: "",
   fifa_code: "",
   confederation_id: "",
-};
+});
 
 function mapNationality(
   nationality: NationalityEditResponse,
@@ -36,8 +32,6 @@ function mapNationality(
 
     image,
     imageUrl: getImageUrl("nationality", STORAGE_BUCKETS.NATIONALITIES, image),
-    imageFile: null,
-    previewUrl: null,
 
     name,
     fifa_code: fifaCode,
@@ -47,87 +41,42 @@ function mapNationality(
 
 export function useNationalityForm(nationality?: NationalityEditResponse) {
   const initialValue = useMemo(
-    () => (nationality ? mapNationality(nationality) : emptyNationalityForm),
+    () =>
+      nationality ? mapNationality(nationality) : createEmptyNationalityForm(),
     [nationality],
   );
 
-  const [form, setForm] = useState(initialValue);
-  const [errors, setErrors] = useState<FormErrors<NationalityFormField>>({});
+  const {
+    imageFile,
+    previewUrl,
+    updateImage: setImage,
+  } = useImageField({
+    initialPreviewUrl: initialValue.imageUrl,
+  });
 
-  const initialForm = initialValue;
+  const {
+    form,
+    updateField,
+    errors,
+    isDirty,
+    canSubmit,
+    validate,
+    clearFieldError,
+  } = useEntityForm({
+    initialValue,
+    schema: nationalityMutationSchema,
 
-  const clearFieldError = (field: NationalityFormField) => {
-    setErrors((prev) => {
-      if (!prev[field]) {
-        return prev;
-      }
+    dirtyFields: ["name", "fifa_code", "confederation_id", "image"],
 
-      const next = { ...prev };
-      delete next[field];
+    requiredFields: ["name", "fifa_code", "confederation_id"],
 
-      return next;
-    });
-  };
-
-  const updateField = <K extends keyof UpsertNationalityInput>(
-    field: K,
-    value: UpsertNationalityInput[K],
-  ) => {
-    setForm((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
-
-    if (
-      field === "name" ||
-      field === "fifa_code" ||
-      field === "confederation_id"
-    ) {
-      clearFieldError(field);
-    }
-  };
+    additionalDirty: imageFile !== null,
+  });
 
   const updateImage = (file: File) => {
-    setForm((prev) => ({
-      ...prev,
-      imageFile: file,
-      previewUrl: URL.createObjectURL(file),
-    }));
-
+    setImage(file);
     clearFieldError("image");
   };
-
-  const validate = () => {
-    const result = nationalityMutationSchema.safeParse(form);
-
-    if (result.success) {
-      setErrors({});
-      return true;
-    }
-
-    setErrors(getZodFormErrors<NationalityFormField>(result.error));
-
-    return false;
-  };
-
-  const isDirty = useMemo(
-    () =>
-      form.name !== initialForm.name ||
-      form.fifa_code !== initialForm.fifa_code ||
-      form.confederation_id !== initialForm.confederation_id ||
-      form.image !== initialForm.image ||
-      form.imageFile != null,
-    [form, initialForm],
-  );
-
-  const canSubmit = useMemo(() => {
-    const isFilled =
-      form.name.trim().length > 0 &&
-      form.fifa_code.trim().length > 0 &&
-      form.confederation_id.trim().length > 0;
-
-    return isFilled && isDirty;
-  }, [form, isDirty]);
 
   const buildPayload = () => {
     return buildFormData({
@@ -137,14 +86,19 @@ export function useNationalityForm(nationality?: NationalityEditResponse) {
         confederation_id: form.confederation_id,
       },
       existingImage: form.image,
-      imageFile: form.imageFile,
+      imageFile,
     });
   };
 
   return {
-    form,
-    isDirty,
+    form: {
+      ...form,
 
+      imageFile,
+      previewUrl,
+    },
+
+    isDirty,
     errors,
 
     updateField,
