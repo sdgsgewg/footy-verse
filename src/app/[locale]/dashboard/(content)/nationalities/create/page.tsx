@@ -17,7 +17,7 @@ export default function CreateNationalityPage() {
   return (
     <FormPageLayout
       title={getTitle("create", "nationality")}
-      formSize="small"
+      formSize="large"
       form={
         <NationalityForm
           mode="create"

@@ -99,11 +99,7 @@ export function useNationalityForm(nationality?: NationalityEditResponse) {
   };
 
   const validate = () => {
-    const result = nationalityMutationSchema.safeParse({
-      name: form.name,
-      fifa_code: form.fifa_code,
-      confederation_id: form.confederation_id,
-    });
+    const result = nationalityMutationSchema.safeParse(form);
 
     if (result.success) {
       setErrors({});

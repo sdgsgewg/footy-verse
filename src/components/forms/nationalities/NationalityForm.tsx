@@ -64,49 +64,53 @@ const NationalityForm = ({
         onSubmit={handleSubmit}
       />
 
-      <FormContentWrapper className="space-y-5">
-        {/* Image */}
-        <ImageField
-          label={tLabels("image")}
-          name="image"
-          value={(form.previewUrl ?? form.imageUrl) as string}
-          onChange={updateImage}
-          error={errors.image}
-        />
+      <FormContentWrapper className="flex flex-col gap-5 md:flex-row md:gap-12">
+        <div className="shrink-0">
+          {/* Image */}
+          <ImageField
+            label={tLabels("image")}
+            name="image"
+            value={(form.previewUrl ?? form.imageUrl) as string}
+            onChange={updateImage}
+            error={errors.image}
+          />
+        </div>
 
-        {/* Name */}
-        <TextField
-          label={tLabels("name")}
-          name="name"
-          placeholder={tPlaceholders("name") || ""}
-          value={(form.name as string) ?? ""}
-          onChange={(value) => updateField("name", value)}
-          error={errors.name}
-          required
-        />
+        <div className="flex-1 space-y-5">
+          {/* Name */}
+          <TextField
+            label={tLabels("name")}
+            name="name"
+            placeholder={tPlaceholders("name") || ""}
+            value={(form.name as string) ?? ""}
+            onChange={(value) => updateField("name", value)}
+            error={errors.name}
+            required
+          />
 
-        {/* Fifa Code */}
-        <TextField
-          label={tLabels("fifaCode")}
-          name="fifa_code"
-          placeholder={tPlaceholders("fifaCode") || ""}
-          value={(form.fifa_code as string) ?? ""}
-          onChange={(value) => updateField("fifa_code", value)}
-          error={errors.fifa_code}
-          required
-        />
+          {/* Fifa Code */}
+          <TextField
+            label={tLabels("fifaCode")}
+            name="fifa_code"
+            placeholder={tPlaceholders("fifaCode") || ""}
+            value={(form.fifa_code as string) ?? ""}
+            onChange={(value) => updateField("fifa_code", value)}
+            error={errors.fifa_code}
+            required
+          />
 
-        {/* Confederation */}
-        <SelectField
-          label={tLabels("confederation")}
-          name={`confederation`}
-          placeholder={tPlaceholders("confederation")}
-          options={confederationOptions}
-          value={form.confederation_id || ""}
-          onChange={(value) => updateField("confederation_id", value)}
-          error={errors.confederation_id}
-          required
-        />
+          {/* Confederation */}
+          <SelectField
+            label={tLabels("confederation")}
+            name={`confederation`}
+            placeholder={tPlaceholders("confederation")}
+            options={confederationOptions}
+            value={form.confederation_id || ""}
+            onChange={(value) => updateField("confederation_id", value)}
+            error={errors.confederation_id}
+            required
+          />
+        </div>
       </FormContentWrapper>
     </FormWrapper>
   );

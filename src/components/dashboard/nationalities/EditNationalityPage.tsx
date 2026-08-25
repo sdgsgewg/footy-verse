@@ -46,7 +46,7 @@ const EditNationalityPage = ({ nationalityLookup }: Props) => {
   return (
     <FormPageLayout
       title={getTitle("edit", "nationality")}
-      formSize="small"
+      formSize="large"
       form={
         <NationalityForm
           mode="edit"
