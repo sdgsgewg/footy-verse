@@ -1,6 +1,5 @@
 "use client";
 
-import { Dispatch, SetStateAction } from "react";
 import { useTranslations } from "next-intl";
 import FormSection from "../base/FormSection";
 import { UpsertCompetitionInput } from "@/types/competition";
@@ -12,13 +11,24 @@ import { useCompetitionCategories } from "@/hooks/dashboard/competition-categori
 import { AgeGroup } from "@/enums/AgeGroup";
 import { Gender } from "@/enums/Gender";
 import { ParticipantType } from "@/enums/ParticipantType";
+import { FormErrors, FormState } from "@/types/form";
 
 interface Props {
-  form: UpsertCompetitionInput;
-  setForm: Dispatch<SetStateAction<UpsertCompetitionInput>>;
+  form: FormState<UpsertCompetitionInput>;
+
+  updateField: <K extends keyof UpsertCompetitionInput>(
+    field: K,
+    value: UpsertCompetitionInput[K],
+  ) => void;
+
+  errors: FormErrors<keyof UpsertCompetitionInput & string>;
 }
 
-const CompetitionClassificationSection = ({ form, setForm }: Props) => {
+const CompetitionClassificationSection = ({
+  form,
+  updateField,
+  errors,
+}: Props) => {
   const t = useTranslations();
   const tForm = useTranslations("dashboard.competitions.form.classification");
   const tLabels = useTranslations(
@@ -50,7 +60,8 @@ const CompetitionClassificationSection = ({ form, setForm }: Props) => {
         placeholder={tPlaceholders("gender")}
         options={genderOptions}
         value={gender || ""}
-        onChange={(value) => setForm({ ...form, gender: value as Gender })}
+        onChange={(value) => updateField("gender", value as Gender)}
+        error={errors.gender}
         required
       />
 
@@ -61,11 +72,12 @@ const CompetitionClassificationSection = ({ form, setForm }: Props) => {
         placeholder={tPlaceholders("ageGroup")}
         options={ageGroupOptions}
         value={age_group || ""}
-        onChange={(value) => setForm({ ...form, age_group: value as AgeGroup })}
+        onChange={(value) => updateField("age_group", value as AgeGroup)}
+        error={errors.age_group}
         required
       />
 
-      {/* Age Group */}
+      {/* Participant Type */}
       <SelectField
         label={tLabels("participantType")}
         name="participant_type"
@@ -73,8 +85,9 @@ const CompetitionClassificationSection = ({ form, setForm }: Props) => {
         options={participantTypeOptions}
         value={participant_type || ""}
         onChange={(value) =>
-          setForm({ ...form, participant_type: value as ParticipantType })
+          updateField("participant_type", value as ParticipantType)
         }
+        error={errors.participant_type}
         required
       />
 
@@ -85,9 +98,8 @@ const CompetitionClassificationSection = ({ form, setForm }: Props) => {
         placeholder={tPlaceholders("category")}
         options={competitionCategoryOptions}
         value={competition_category_id || ""}
-        onChange={(value) =>
-          setForm({ ...form, competition_category_id: value })
-        }
+        onChange={(value) => updateField("competition_category_id", value)}
+        error={errors.competition_category_id}
         required
       />
     </FormSection>

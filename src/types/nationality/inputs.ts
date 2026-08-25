@@ -18,12 +18,6 @@ export type NationalityUpdateInput = z.infer<typeof updateNationalitySchema>;
 
 // Mutation
 
-// export type UpsertNationalityInput = z.infer<
-//   typeof nationalityMutationSchema
-// > & {
-//   id?: string;
-// } & ImagePayload;
-
 export type UpsertNationalityInput = z.infer<
   typeof nationalityMutationSchema
 > & {

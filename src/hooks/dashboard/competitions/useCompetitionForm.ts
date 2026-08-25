@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { getImageUrl } from "@/lib/images/image-url";
 import { STORAGE_BUCKETS } from "@/lib/storage";
 import { buildFormData } from "@/lib/forms/buildFormData";
@@ -11,14 +11,14 @@ import {
 import { ParticipantType } from "@/enums/ParticipantType";
 import { Gender } from "@/enums/Gender";
 import { AgeGroup } from "@/enums/AgeGroup";
+import { useEntityForm, useImageField } from "@/hooks/crud";
+import { competitionMutationSchema } from "@/lib/validations/competitions.schema";
 
-const emptyCompetitionForm: UpsertCompetitionInput = {
+const createEmptyCompetitionForm = (): UpsertCompetitionInput => ({
   id: "",
 
   image: null,
   imageUrl: null,
-  imageFile: null,
-  previewUrl: null,
 
   name: "",
   short_name: "",
@@ -34,7 +34,7 @@ const emptyCompetitionForm: UpsertCompetitionInput = {
   confederation_id: null,
   nationality_id: null,
   region_id: null,
-};
+});
 
 function mapCompetition(
   competition: CompetitionEditResponse,
@@ -60,13 +60,7 @@ function mapCompetition(
     id,
 
     image,
-    imageUrl: getImageUrl(
-      "competition",
-      STORAGE_BUCKETS.COMPETITIONS,
-      image,
-    ),
-    imageFile: null,
-    previewUrl: null,
+    imageUrl: getImageUrl("competition", STORAGE_BUCKETS.COMPETITIONS, image),
 
     name,
     short_name: shortName,
@@ -87,52 +81,65 @@ function mapCompetition(
 
 export function useCompetitionForm(competition?: CompetitionEditResponse) {
   const initialValue = useMemo(
-    () => (competition ? mapCompetition(competition) : emptyCompetitionForm),
+    () =>
+      competition ? mapCompetition(competition) : createEmptyCompetitionForm(),
     [competition],
   );
 
-  const [form, setForm] = useState(initialValue);
+  const {
+    imageFile,
+    previewUrl,
+    updateImage: setImage,
+  } = useImageField({
+    initialPreviewUrl: initialValue.imageUrl,
+  });
 
-  const initialForm = initialValue;
+  const {
+    form,
+    updateField,
+    errors,
+    isDirty,
+    canSubmit,
+    validate,
+    clearFieldError,
+  } = useEntityForm({
+    initialValue,
+    schema: competitionMutationSchema,
 
-  const isEditing = competition != null;
+    dirtyFields: [
+      "name",
+      "short_name",
+      "description",
+      "founded_year",
+      "gender",
+      "age_group",
+      "participant_type",
+      "competition_category_id",
+      "competition_scope_id",
+      "confederation_id",
+      "nationality_id",
+      "region_id",
+      "image",
+    ],
 
-  const canSubmit = useMemo(() => {
-    const isFilled =
-      form.name.trim().length > 0 &&
-      form.short_name.trim().length > 0 &&
-      form.founded_year >= 1800 &&
-      form.gender.trim().length > 0 &&
-      form.age_group.trim().length > 0 &&
-      form.participant_type.trim().length > 0 &&
-      form.competition_category_id.trim().length > 0 &&
-      form.competition_scope_id.trim().length > 0;
+    requiredFields: [
+      "name",
+      "short_name",
+      "founded_year",
+      "gender",
+      "age_group",
+      "participant_type",
+      "competition_category_id",
+      "competition_scope_id",
+    ],
 
-    if (!isFilled) {
-      return false;
-    }
+    additionalDirty: imageFile !== null,
+  });
 
-    if (!isEditing) {
-      return form.imageFile != null;
-    }
-
-    return (
-      form.name !== initialForm.name ||
-      form.short_name !== initialForm.short_name ||
-      form.description !== initialForm.description ||
-      form.founded_year !== initialForm.founded_year ||
-      form.gender !== initialForm.gender ||
-      form.age_group !== initialForm.age_group ||
-      form.participant_type !== initialForm.participant_type ||
-      form.competition_category_id !== initialForm.competition_category_id ||
-      form.competition_scope_id !== initialForm.competition_scope_id ||
-      form.confederation_id !== initialForm.confederation_id ||
-      form.nationality_id !== initialForm.nationality_id ||
-      form.region_id !== initialForm.region_id ||
-      form.image !== initialForm.image ||
-      form.imageFile != null
-    );
-  }, [form, initialForm, isEditing]);
+  const updateImage = (file: File) => {
+    setImage(file);
+    clearFieldError("image");
+  };
 
   const buildPayload = () => {
     return buildFormData({
@@ -151,21 +158,26 @@ export function useCompetitionForm(competition?: CompetitionEditResponse) {
         region_id: form.region_id,
       },
       existingImage: form.image,
-      imageFile: form.imageFile,
+      imageFile,
     });
   };
 
-  const resetForm = () => {
-    setForm(initialValue);
-  };
-
   return {
-    form,
-    setForm,
-    initialForm,
-    isEditing,
+    form: {
+      ...form,
+
+      imageFile,
+      previewUrl,
+    },
+
+    isDirty,
+    errors,
+
+    updateField,
+    updateImage,
+
+    validate,
     canSubmit,
     buildPayload,
-    resetForm,
   };
 }

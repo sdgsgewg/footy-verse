@@ -20,3 +20,8 @@ export type EntityFormOptions<
 
   buildPayload: (form: TForm) => FormData;
 };
+
+export type FormState<T> = T & {
+  imageFile: File | null;
+  previewUrl: string | null;
+};

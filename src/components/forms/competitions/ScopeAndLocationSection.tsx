@@ -1,6 +1,5 @@
 "use client";
 
-import { Dispatch, SetStateAction } from "react";
 import { useTranslations } from "next-intl";
 import FormSection from "../base/FormSection";
 import { UpsertCompetitionInput } from "@/types/competition";
@@ -11,13 +10,20 @@ import { getRegionOptions } from "@/lib/regions/options";
 import { useNationalityOptions } from "@/hooks/nationalities";
 import { useRegions } from "@/hooks/dashboard/regions";
 import { useConfederationOptions } from "@/hooks/confederations/useConfederationOptions";
+import { FormErrors } from "@/types/form";
 
 interface Props {
   form: UpsertCompetitionInput;
-  setForm: Dispatch<SetStateAction<UpsertCompetitionInput>>;
+
+  updateField: <K extends keyof UpsertCompetitionInput>(
+    field: K,
+    value: UpsertCompetitionInput[K],
+  ) => void;
+
+  errors: FormErrors<keyof UpsertCompetitionInput & string>;
 }
 
-const ScopeAndLocationSection = ({ form, setForm }: Props) => {
+const ScopeAndLocationSection = ({ form, updateField, errors }: Props) => {
   const tForm = useTranslations("dashboard.competitions.form.scopeAndLocation");
   const tLabels = useTranslations(
     "dashboard.competitions.form.labels.scopeAndLocation",
@@ -48,7 +54,8 @@ const ScopeAndLocationSection = ({ form, setForm }: Props) => {
         placeholder={tPlaceholders("scope")}
         options={competitionScopeOptions}
         value={competition_scope_id || ""}
-        onChange={(value) => setForm({ ...form, competition_scope_id: value })}
+        onChange={(value) => updateField("competition_scope_id", value)}
+        error={errors.competition_scope_id}
         required
       />
 
@@ -59,7 +66,8 @@ const ScopeAndLocationSection = ({ form, setForm }: Props) => {
         placeholder={tPlaceholders("confederation")}
         options={confederationOptions}
         value={confederation_id || ""}
-        onChange={(value) => setForm({ ...form, confederation_id: value })}
+        onChange={(value) => updateField("confederation_id", value)}
+        error={errors.confederation_id}
       />
 
       {/* Nationality */}
@@ -69,7 +77,8 @@ const ScopeAndLocationSection = ({ form, setForm }: Props) => {
         placeholder={tPlaceholders("nationality")}
         options={nationalityOptions}
         value={nationality_id || ""}
-        onChange={(value) => setForm({ ...form, nationality_id: value })}
+        onChange={(value) => updateField("nationality_id", value)}
+        error={errors.nationality_id}
       />
 
       {/* Region */}
@@ -79,7 +88,8 @@ const ScopeAndLocationSection = ({ form, setForm }: Props) => {
         placeholder={tPlaceholders("region")}
         options={regionOptions}
         value={region_id || ""}
-        onChange={(value) => setForm({ ...form, region_id: value })}
+        onChange={(value) => updateField("region_id", value)}
+        error={errors.region_id}
       />
     </FormSection>
   );

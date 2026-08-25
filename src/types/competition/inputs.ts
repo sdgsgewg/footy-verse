@@ -1,5 +1,4 @@
 import z from "zod";
-import { ImagePayload } from "../image";
 import {
   competitionMutationSchema,
   competitionsQuerySchema,
@@ -21,4 +20,5 @@ export type UpsertCompetitionInput = z.infer<
   typeof competitionMutationSchema
 > & {
   id?: string;
-} & ImagePayload;
+  imageUrl: string | null; // public URL untuk preview
+};

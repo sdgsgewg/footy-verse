@@ -24,17 +24,29 @@ const CompetitionForm = ({
   loading = false,
   onSubmit,
 }: Props) => {
-  const { form, setForm, canSubmit, buildPayload } =
-    useCompetitionForm(competition);
+  const {
+    form,
+    isDirty,
+    errors,
+    updateField,
+    updateImage,
+    validate,
+    canSubmit,
+    buildPayload,
+  } = useCompetitionForm(competition);
 
   const isCreate = mode === "create";
 
   const handleSubmit = () => {
+    if (!validate()) {
+      return;
+    }
+
     onSubmit(buildPayload());
   };
 
   return (
-    <FormWrapper>
+    <FormWrapper isDirty={isDirty}>
       <FormHeader
         loading={loading}
         isCreate={isCreate}
@@ -43,17 +55,30 @@ const CompetitionForm = ({
       />
 
       <FormContentWrapper className="space-y-8">
-        <div className="">
-          <BasicInformationSection form={form} setForm={setForm} />
+        <div>
+          <BasicInformationSection
+            form={form}
+            updateField={updateField}
+            updateImage={updateImage}
+            errors={errors}
+          />
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div className="lg:grid-cols-6">
-            <CompetitionClassificationSection form={form} setForm={setForm} />
+            <CompetitionClassificationSection
+              form={form}
+              updateField={updateField}
+              errors={errors}
+            />
           </div>
 
           <div className="lg:grid-cols-6">
-            <ScopeAndLocationSection form={form} setForm={setForm} />
+            <ScopeAndLocationSection
+              form={form}
+              updateField={updateField}
+              errors={errors}
+            />
           </div>
         </div>
       </FormContentWrapper>
