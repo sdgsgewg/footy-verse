@@ -19,6 +19,7 @@ interface Props {
   required?: boolean;
   readOnly?: boolean;
 
+  imageClassName?: string;
   error?: string;
 }
 
@@ -29,6 +30,7 @@ export default function ImageField({
   onChange,
   required,
   readOnly,
+  imageClassName = "object-cover",
   error,
 }: Props) {
   const t = useTranslations("common.form.fields.image");
@@ -80,7 +82,7 @@ export default function ImageField({
                 alt="Preview"
                 fill
                 sizes="208px"
-                className="object-contain"
+                className={imageClassName}
               />
 
               {!readOnly && (

@@ -64,6 +64,7 @@ const ConfederationForm = ({
               previewUrl: URL.createObjectURL(file),
             }))
           }
+          imageClassName="object-contain"
           required
         />
 

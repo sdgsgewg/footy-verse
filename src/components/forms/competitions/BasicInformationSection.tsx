@@ -38,6 +38,7 @@ const BasicInformationSection = ({ form, setForm }: Props) => {
                 previewUrl: URL.createObjectURL(file),
               }))
             }
+            imageClassName="object-contain"
           />
         </div>
 

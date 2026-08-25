@@ -56,6 +56,7 @@ const ClubForm = ({ mode, club, loading = false, onSubmit }: Props) => {
           name="image"
           value={(form.previewUrl ?? form.imageUrl) as string}
           onChange={updateImage}
+          imageClassName="object-contain"
           error={errors.image}
         />
       </>
