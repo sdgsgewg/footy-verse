@@ -1,4 +1,4 @@
-import { useCrudFilters } from "@/hooks/crud";
+import { useFilters } from "@/hooks/filter";
 import { CompetitionScopeFilter } from "@/types/competition-scope";
 
 const DEFAULT_FILTER: CompetitionScopeFilter = {
@@ -9,7 +9,7 @@ const DEFAULT_FILTER: CompetitionScopeFilter = {
 };
 
 export default function useCompetitionScopeFilter() {
-  const crud = useCrudFilters(DEFAULT_FILTER);
+  const crud = useFilters(DEFAULT_FILTER);
 
   return {
     ...crud,

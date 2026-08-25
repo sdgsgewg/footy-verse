@@ -1,10 +1,10 @@
 import { NationalityFilter } from "@/types/nationality";
-import { useCrudFilters } from "../crud/useCrudFilters";
-import { useCrudPagination } from "../crud";
+import { useFilters } from "../filter";
 import { useSearchParams } from "next/navigation";
 import { useMemo } from "react";
 import { hasFilterChanged, parseSearchParams } from "@/lib/utils/crud";
 import { nationalitiesQuerySchema } from "@/lib/validations/nationalities.schema";
+import { usePagination } from "../pagination";
 
 const DEFAULT_FILTER: NationalityFilter = {
   search: "",
@@ -26,13 +26,13 @@ export default function useNationalityFilter() {
     [searchParams],
   );
 
-  const crud = useCrudFilters(DEFAULT_FILTER, {
+  const crud = useFilters(DEFAULT_FILTER, {
     initialFilter,
     omitDefaultValuesFromUrl: true,
     shouldResetPage: hasFilterChanged(["search", "sortBy", "sortOrder"]),
   });
 
-  const pagination = useCrudPagination(crud.filters, crud.updateFiltersPartial);
+  const pagination = usePagination(crud.filters, crud.updateFiltersPartial);
 
   return {
     ...crud,

@@ -1,4 +1,4 @@
-import { useCrudFilters } from "@/hooks/crud";
+import { useFilters } from "@/hooks/filter";
 import { ConfederationFilter } from "@/types/confederation";
 
 const DEFAULT_FILTER: ConfederationFilter = {
@@ -9,7 +9,7 @@ const DEFAULT_FILTER: ConfederationFilter = {
 };
 
 export default function useConfederationFilter() {
-  const crud = useCrudFilters(DEFAULT_FILTER);
+  const crud = useFilters(DEFAULT_FILTER);
 
   return {
     ...crud,

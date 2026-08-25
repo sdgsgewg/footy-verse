@@ -1,5 +1,5 @@
 import { GroupedPlayerFilter } from "@/types/player";
-import { useCrudFilters } from "../crud/useCrudFilters";
+import { useFilters } from "../filter";
 
 const DEFAULT_FILTER: GroupedPlayerFilter = {
   search: "",
@@ -14,7 +14,7 @@ const DEFAULT_FILTER: GroupedPlayerFilter = {
 };
 
 export default function useGroupedPlayerFilter() {
-  const crud = useCrudFilters(DEFAULT_FILTER);
+  const crud = useFilters(DEFAULT_FILTER);
 
   return {
     ...crud,

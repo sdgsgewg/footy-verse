@@ -1,5 +1,5 @@
 import { PositionFilter } from "@/types/position";
-import { useCrudFilters } from "../crud/useCrudFilters";
+import { useFilters } from "../filter";
 
 const DEFAULT_FILTER: PositionFilter = {
   search: "",
@@ -11,7 +11,7 @@ const DEFAULT_FILTER: PositionFilter = {
 };
 
 export default function usePositionFilter() {
-  const crud = useCrudFilters(DEFAULT_FILTER);
+  const crud = useFilters(DEFAULT_FILTER);
 
   return {
     ...crud,

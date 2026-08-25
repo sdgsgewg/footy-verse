@@ -1,7 +1,7 @@
 import { PlayerFilter } from "@/types/player";
-import { useCrudFilters } from "../crud/useCrudFilters";
-import { useCrudPagination } from "../crud";
+import { useFilters } from "../filter";
 import { hasFilterChanged } from "@/lib/utils/crud";
+import { usePagination } from "../pagination";
 
 const DEFAULT_FILTER: PlayerFilter = {
   search: "",
@@ -17,7 +17,7 @@ const DEFAULT_FILTER: PlayerFilter = {
 };
 
 export default function usePlayerFilter() {
-  const crud = useCrudFilters(DEFAULT_FILTER, {
+  const crud = useFilters(DEFAULT_FILTER, {
     shouldResetPage: hasFilterChanged([
       "search",
       "clubTeamId",
@@ -28,7 +28,7 @@ export default function usePlayerFilter() {
     ]),
   });
 
-  const pagination = useCrudPagination(crud.filters, crud.updateFiltersPartial);
+  const pagination = usePagination(crud.filters, crud.updateFiltersPartial);
 
   return {
     ...crud,

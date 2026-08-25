@@ -3,7 +3,7 @@ interface PaginationFilter {
   limit: number;
 }
 
-export function useCrudPagination<TFilter extends PaginationFilter>(
+export function usePagination<TFilter extends PaginationFilter>(
   filters: TFilter,
   updateFiltersPartial: (values: Partial<TFilter>) => void,
 ) {

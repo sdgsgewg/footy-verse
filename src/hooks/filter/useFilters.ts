@@ -16,7 +16,7 @@ interface UseCrudFiltersOptions<TFilter> {
   shouldResetPage?: (previous: TFilter, next: TFilter) => boolean;
 }
 
-export function useCrudFilters<TFilter extends CrudFilterBase>(
+export function useFilters<TFilter extends CrudFilterBase>(
   defaultFilter: TFilter,
   {
     initialFilter = defaultFilter,

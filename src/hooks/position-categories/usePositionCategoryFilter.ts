@@ -1,5 +1,5 @@
 import { PositionCategoryFilter } from "@/types/position-category";
-import { useCrudFilters } from "../crud/useCrudFilters";
+import { useFilters } from "../filter";
 
 const DEFAULT_FILTER: PositionCategoryFilter = {
   search: "",
@@ -9,7 +9,7 @@ const DEFAULT_FILTER: PositionCategoryFilter = {
 };
 
 export default function usePositionCategoryFilter() {
-  const crud = useCrudFilters(DEFAULT_FILTER);
+  const crud = useFilters(DEFAULT_FILTER);
 
   return {
     ...crud,

@@ -1,4 +1,5 @@
-import { useCrudFilters, useCrudPagination } from "@/hooks/crud";
+import { useFilters } from "@/hooks/filter";
+import { usePagination } from "@/hooks/pagination";
 import { hasFilterChanged } from "@/lib/utils/crud";
 import { ActivityLogFilter } from "@/types/activity-log";
 
@@ -13,11 +14,11 @@ const DEFAULT_FILTER: ActivityLogFilter = {
 };
 
 export default function useActivityLogFilter() {
-  const crud = useCrudFilters(DEFAULT_FILTER, {
+  const crud = useFilters(DEFAULT_FILTER, {
     shouldResetPage: hasFilterChanged(["search", "sortBy", "sortOrder"]),
   });
 
-  const pagination = useCrudPagination(crud.filters, crud.updateFiltersPartial);
+  const pagination = usePagination(crud.filters, crud.updateFiltersPartial);
 
   return {
     ...crud,

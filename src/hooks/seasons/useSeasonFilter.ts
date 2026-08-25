@@ -1,5 +1,5 @@
 import { SeasonFilter } from "@/types/season";
-import { useCrudFilters } from "../crud/useCrudFilters";
+import { useFilters } from "../filter";
 
 const DEFAULT_FILTER: SeasonFilter = {
   search: "",
@@ -9,7 +9,7 @@ const DEFAULT_FILTER: SeasonFilter = {
 };
 
 export default function useSeasonFilter() {
-  const crud = useCrudFilters(DEFAULT_FILTER);
+  const crud = useFilters(DEFAULT_FILTER);
 
   return {
     ...crud,

@@ -1,4 +1,4 @@
-import { useCrudFilters } from "@/hooks/crud";
+import { useFilters } from "@/hooks/filter";
 import { RegionFilter } from "@/types/region";
 
 const DEFAULT_FILTER: RegionFilter = {
@@ -9,7 +9,7 @@ const DEFAULT_FILTER: RegionFilter = {
 };
 
 export default function useRegionFilter() {
-  const crud = useCrudFilters(DEFAULT_FILTER);
+  const crud = useFilters(DEFAULT_FILTER);
 
   return {
     ...crud,
