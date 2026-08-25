@@ -5,15 +5,11 @@ import { useTranslations } from "next-intl";
 import { ClubEditResponse } from "@/types/club";
 import { ComboboxField, ImageField, TextField } from "../fields";
 import { useNationalityOptions } from "@/hooks/nationalities";
-import {
-  FormHeader,
-  FormWrapper,
-  SideBySideFormContentWrapper,
-  UnsavedChangesGuard,
-} from "../base";
+import { FormHeader, FormWrapper, SideBySideFormContentWrapper } from "../base";
+import { FormMode } from "@/types/form";
 
 interface Props {
-  mode: "create" | "edit";
+  mode: FormMode;
   club?: ClubEditResponse;
 
   loading?: boolean;
@@ -102,9 +98,7 @@ const ClubForm = ({ mode, club, loading = false, onSubmit }: Props) => {
   };
 
   return (
-    <FormWrapper>
-      <UnsavedChangesGuard when={isDirty} />
-
+    <FormWrapper isDirty={isDirty}>
       <FormHeader
         loading={loading}
         isCreate={isCreate}

@@ -3,15 +3,16 @@
 import { useTranslations } from "next-intl";
 import FormHeader from "../base/FormHeader";
 import FormWrapper from "../base/FormWrapper";
-import FormContentWrapper from "../base/FormContentWrapper";
 import { ImageField, SelectField, TextField } from "../fields";
 import { RegionEditResponse } from "@/types/region";
 import { useRegionForm, useRegions } from "@/hooks/dashboard/regions";
 import { getRegionOptions, getRegionTypeOptions } from "@/lib/regions/options";
 import { RegionType } from "@/enums/RegionType";
+import { FormMode } from "@/types/form";
+import { SideBySideFormContentWrapper } from "../base";
 
 interface Props {
-  mode: "create" | "edit";
+  mode: FormMode;
   region?: RegionEditResponse;
 
   loading?: boolean;
@@ -26,7 +27,16 @@ const RegionForm = ({ mode, region, loading = false, onSubmit }: Props) => {
     "dashboard.regions.form.options.regionType",
   );
 
-  const { form, setForm, canSubmit, buildPayload } = useRegionForm(region);
+  const {
+    form,
+    isDirty,
+    errors,
+    updateField,
+    updateImage,
+    validate,
+    canSubmit,
+    buildPayload,
+  } = useRegionForm(region);
 
   const isCreate = mode === "create";
 
@@ -37,41 +47,39 @@ const RegionForm = ({ mode, region, loading = false, onSubmit }: Props) => {
   const regionOptions = getRegionOptions(regions);
 
   const handleSubmit = () => {
+    if (!validate()) {
+      return;
+    }
+
     onSubmit(buildPayload());
   };
 
-  return (
-    <FormWrapper>
-      <FormHeader
-        loading={loading}
-        isCreate={isCreate}
-        canSubmit={canSubmit}
-        onSubmit={handleSubmit}
-      />
-
-      <FormContentWrapper className="space-y-5">
+  const LeftSideContent = () => {
+    return (
+      <>
         {/* Image */}
         <ImageField
           label={tLabels("image")}
           name="image"
           value={(form.previewUrl ?? form.imageUrl) as string}
-          onChange={(file) =>
-            setForm((prev) => ({
-              ...prev,
-              imageFile: file,
-              previewUrl: URL.createObjectURL(file),
-            }))
-          }
-          required
+          onChange={updateImage}
+          error={errors.image}
         />
+      </>
+    );
+  };
 
+  const RightSideContent = () => {
+    return (
+      <>
         {/* Name */}
         <TextField
           label={tLabels("name")}
           name="name"
           placeholder={tPlaceholders("name") || ""}
           value={(form.name as string) ?? ""}
-          onChange={(value) => setForm({ ...form, name: value })}
+          onChange={(value) => updateField("name", value)}
+          error={errors.name}
           required
         />
 
@@ -82,9 +90,8 @@ const RegionForm = ({ mode, region, loading = false, onSubmit }: Props) => {
           placeholder={tPlaceholders("regionType")}
           options={regionTypeOptions}
           value={form.region_type || ""}
-          onChange={(value) =>
-            setForm({ ...form, region_type: value as RegionType })
-          }
+          onChange={(value) => updateField("region_type", value as RegionType)}
+          error={errors.region_type}
           required
         />
 
@@ -95,9 +102,26 @@ const RegionForm = ({ mode, region, loading = false, onSubmit }: Props) => {
           placeholder={tPlaceholders("parentRegion")}
           options={regionOptions}
           value={form.parent_region_id || ""}
-          onChange={(value) => setForm({ ...form, parent_region_id: value })}
+          onChange={(value) => updateField("parent_region_id", value)}
+          error={errors.parent_region_id}
         />
-      </FormContentWrapper>
+      </>
+    );
+  };
+
+  return (
+    <FormWrapper isDirty={isDirty}>
+      <FormHeader
+        loading={loading}
+        isCreate={isCreate}
+        canSubmit={canSubmit}
+        onSubmit={handleSubmit}
+      />
+
+      <SideBySideFormContentWrapper
+        left={LeftSideContent()}
+        right={RightSideContent()}
+      />
     </FormWrapper>
   );
 };

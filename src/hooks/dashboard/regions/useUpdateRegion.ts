@@ -5,7 +5,7 @@ import { regionKeys } from "@/lib/react-query/keys/regionKeys";
 
 interface UpdateRegionPayload {
   id: string;
-  data: unknown;
+  data: FormData;
 }
 
 export function useUpdateRegion() {

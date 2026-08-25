@@ -5,15 +5,11 @@ import { useTranslations } from "next-intl";
 import { ImageField, SelectField, TextField } from "../fields";
 import { NationalityEditResponse } from "@/types/nationality";
 import { useConfederationOptions } from "@/hooks/confederations/useConfederationOptions";
-import {
-  FormHeader,
-  FormWrapper,
-  SideBySideFormContentWrapper,
-  UnsavedChangesGuard,
-} from "../base";
+import { FormHeader, FormWrapper, SideBySideFormContentWrapper } from "../base";
+import { FormMode } from "@/types/form";
 
 interface Props {
-  mode: "create" | "edit";
+  mode: FormMode;
   nationality?: NationalityEditResponse;
 
   loading?: boolean;
@@ -111,9 +107,7 @@ const NationalityForm = ({
   };
 
   return (
-    <FormWrapper>
-      <UnsavedChangesGuard when={isDirty} />
-
+    <FormWrapper isDirty={isDirty}>
       <FormHeader
         loading={loading}
         isCreate={isCreate}

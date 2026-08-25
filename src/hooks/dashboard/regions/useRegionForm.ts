@@ -3,8 +3,15 @@
 import { useMemo, useState } from "react";
 import { getImageUrl } from "@/lib/images/image-url";
 import { STORAGE_BUCKETS } from "@/lib/storage";
-import { RegionEditResponse, UpsertRegionInput } from "@/types/region";
+import {
+  RegionEditResponse,
+  RegionFormField,
+  UpsertRegionInput,
+} from "@/types/region";
 import { buildFormData } from "@/lib/forms/buildFormData";
+import { FormErrors } from "@/types/form";
+import { regionMutationSchema } from "@/lib/validations/regions.schema";
+import { getZodFormErrors } from "@/lib/forms/errors";
 
 const emptyRegionForm: UpsertRegionInput = {
   id: "",
@@ -43,31 +50,80 @@ export function useRegionForm(region?: RegionEditResponse) {
   );
 
   const [form, setForm] = useState(initialValue);
+  const [errors, setErrors] = useState<FormErrors<RegionFormField>>({});
 
   const initialForm = initialValue;
 
-  const isEditing = region != null;
+  const clearFieldError = (field: RegionFormField) => {
+    setErrors((prev) => {
+      if (!prev[field]) {
+        return prev;
+      }
+
+      const next = { ...prev };
+      delete next[field];
+
+      return next;
+    });
+  };
+
+  const updateField = <K extends keyof UpsertRegionInput>(
+    field: K,
+    value: UpsertRegionInput[K],
+  ) => {
+    setForm((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+
+    if (
+      field === "name" ||
+      field === "region_type" ||
+      field === "parent_region_id"
+    ) {
+      clearFieldError(field);
+    }
+  };
+
+  const updateImage = (file: File) => {
+    setForm((prev) => ({
+      ...prev,
+      imageFile: file,
+      previewUrl: URL.createObjectURL(file),
+    }));
+
+    clearFieldError("image");
+  };
+
+  const validate = () => {
+    const result = regionMutationSchema.safeParse(form);
+
+    if (result.success) {
+      setErrors({});
+      return true;
+    }
+
+    setErrors(getZodFormErrors<RegionFormField>(result.error));
+
+    return false;
+  };
+
+  const isDirty = useMemo(
+    () =>
+      form.name !== initialForm.name ||
+      form.region_type !== initialForm.region_type ||
+      form.parent_region_id !== initialForm.parent_region_id ||
+      form.image !== initialForm.image ||
+      form.imageFile != null,
+    [form, initialForm],
+  );
 
   const canSubmit = useMemo(() => {
     const isFilled =
       form.name.trim().length > 0 && form.region_type.trim().length > 0;
 
-    if (!isFilled) {
-      return false;
-    }
-
-    if (!isEditing) {
-      return form.imageFile != null;
-    }
-
-    return (
-      form.name !== initialForm.name ||
-      form.region_type !== initialForm.region_type ||
-      form.parent_region_id !== initialForm.parent_region_id ||
-      form.image !== initialForm.image ||
-      form.imageFile != null
-    );
-  }, [form, initialForm, isEditing]);
+    return isFilled && isDirty;
+  }, [form, isDirty]);
 
   const buildPayload = () => {
     return buildFormData({
@@ -81,17 +137,17 @@ export function useRegionForm(region?: RegionEditResponse) {
     });
   };
 
-  const resetForm = () => {
-    setForm(initialValue);
-  };
-
   return {
     form,
-    setForm,
-    initialForm,
-    isEditing,
+    isDirty,
+
+    errors,
+
+    updateField,
+    updateImage,
+
+    validate,
     canSubmit,
     buildPayload,
-    resetForm,
   };
 }

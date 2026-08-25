@@ -13,7 +13,7 @@ export default function CreateRegionPage() {
   return (
     <FormPageLayout
       title={getTitle("create", "region")}
-      formSize="small"
+      formSize="large"
       form={
         <RegionForm
           mode="create"

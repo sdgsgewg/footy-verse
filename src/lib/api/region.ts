@@ -6,13 +6,8 @@ import {
 } from "@/types/region";
 import { apiClient } from "./client";
 import { ApiResponse } from "@/types/api";
-import {
-  createRegionSchema,
-  updateRegionSchema,
-} from "../validations/regions.schema";
 
 const baseRoute = `/regions`;
-const baseRouteWithApi = `/api/regions`;
 
 /**
  *
@@ -62,46 +57,12 @@ export const fetchRegionDetail = async (
   return data.data;
 };
 
-export const createRegion = async (payload: unknown) => {
-  if (payload instanceof FormData) {
-    const response = await fetch(`${baseRouteWithApi}`, {
-      method: "POST",
-      body: payload,
-    });
-
-    if (!response.ok) {
-      const data = await response.json().catch(() => null);
-
-      throw new Error(data?.error ?? "Failed to create region");
-    }
-
-    return;
-  }
-
-  const parsed = createRegionSchema.parse(payload); // validation
-
-  await apiClient.post(`${baseRoute}`, parsed);
+export const createRegion = async (payload: FormData) => {
+  await apiClient.post(`${baseRoute}`, payload);
 };
 
-export const updateRegion = async (id: string, payload: unknown) => {
-  if (payload instanceof FormData) {
-    const response = await fetch(`${baseRouteWithApi}/${id}`, {
-      method: "PUT",
-      body: payload,
-    });
-
-    if (!response.ok) {
-      const data = await response.json().catch(() => null);
-
-      throw new Error(data?.error ?? "Failed to update region");
-    }
-
-    return;
-  }
-
-  const parsed = updateRegionSchema.parse(payload); // validation
-
-  await apiClient.put(`${baseRoute}/${id}`, parsed);
+export const updateRegion = async (id: string, payload: FormData) => {
+  await apiClient.put(`${baseRoute}/${id}`, payload);
 };
 
 export const deleteRegion = async (id: string) => {

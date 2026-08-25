@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { idSchema, slugSchema } from "./primitives.schema";
+import { idSchema, nullableIdSchema, slugSchema } from "./primitives.schema";
 import { baseQuerySchema, sortingQuerySchema } from "./query.schema";
 import { regionSortBySchema, regionTypeSchema } from "./enums.schema";
 
@@ -7,7 +7,7 @@ export const regionMutationSchema = z.object({
   image: z.string().nullable().optional(),
   name: z.string().min(1).max(255),
   region_type: regionTypeSchema,
-  parent_region_id: z.string().nullable().optional(),
+  parent_region_id: nullableIdSchema,
 });
 
 export const createRegionSchema = regionMutationSchema;
