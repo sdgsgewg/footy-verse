@@ -11,7 +11,7 @@
       "image": "Unggah gambar",
       "name": "Masukkan nama",
       "fifaCode": "Masukkan kode FIFA (3 huruf kapital)",
-      "confederation": "Pilih Konfederasi"
+      "confederation": "Pilih konfederasi"
     }
   },
 
@@ -19,9 +19,5 @@
     "name": "Nama",
     "fifaCode": "Kode FIFA ",
     "confederation": "Konfederasi"
-  },
-
-  "actions": {
-    "addNew": "Tambah Kebangsaan Baru"
   }
 }

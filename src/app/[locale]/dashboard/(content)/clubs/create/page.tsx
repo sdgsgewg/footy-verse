@@ -17,7 +17,7 @@ export default function CreateClubPage() {
   return (
     <FormPageLayout
       title={getTitle("create", "club")}
-      formSize="small"
+      formSize="large"
       form={
         <ClubForm
           mode="create"

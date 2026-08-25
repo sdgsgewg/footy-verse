@@ -55,7 +55,6 @@ export function useNationalityForm(nationality?: NationalityEditResponse) {
   const [errors, setErrors] = useState<FormErrors<NationalityFormField>>({});
 
   const initialForm = initialValue;
-  const isEditing = nationality != null;
 
   const clearFieldError = (field: NationalityFormField) => {
     setErrors((prev) => {
@@ -111,10 +110,6 @@ export function useNationalityForm(nationality?: NationalityEditResponse) {
     return false;
   };
 
-  const setFieldErrors = (errors: FormErrors<NationalityFormField>) => {
-    setErrors(errors);
-  };
-
   const isDirty = useMemo(
     () =>
       form.name !== initialForm.name ||
@@ -146,26 +141,17 @@ export function useNationalityForm(nationality?: NationalityEditResponse) {
     });
   };
 
-  const resetForm = () => {
-    setForm(initialValue);
-    setErrors({});
-  };
-
   return {
     form,
-    initialForm,
-    isEditing,
     isDirty,
 
     errors,
 
     updateField,
     updateImage,
-    setFieldErrors,
 
     validate,
     canSubmit,
     buildPayload,
-    resetForm,
   };
 }

@@ -2,12 +2,15 @@
 
 import { useClubForm } from "@/hooks/dashboard/clubs";
 import { useTranslations } from "next-intl";
-import FormHeader from "../base/FormHeader";
-import FormWrapper from "../base/FormWrapper";
 import { ClubEditResponse } from "@/types/club";
-import FormContentWrapper from "../base/FormContentWrapper";
 import { ComboboxField, ImageField, TextField } from "../fields";
 import { useNationalityOptions } from "@/hooks/nationalities";
+import {
+  FormHeader,
+  FormWrapper,
+  SideBySideFormContentWrapper,
+  UnsavedChangesGuard,
+} from "../base";
 
 interface Props {
   mode: "create" | "edit";
@@ -19,61 +22,70 @@ interface Props {
 }
 
 const ClubForm = ({ mode, club, loading = false, onSubmit }: Props) => {
-  const t = useTranslations("dashboard.clubs");
+  const tLabels = useTranslations("dashboard.clubs.form.labels");
+  const tPlaceholders = useTranslations("dashboard.clubs.form.placeholders");
+
   const tEntities = useTranslations("entities");
   const tCommon = useTranslations("common");
 
-  const { form, setForm, canSubmit, buildPayload } = useClubForm(club);
-
-  const { nationalityOptions } = useNationalityOptions();
+  const {
+    form,
+    isDirty,
+    errors,
+    updateField,
+    updateImage,
+    validate,
+    canSubmit,
+    buildPayload,
+  } = useClubForm(club);
 
   const isCreate = mode === "create";
 
+  const { nationalityOptions } = useNationalityOptions();
+
   const handleSubmit = () => {
+    if (!validate()) {
+      return;
+    }
+
     onSubmit(buildPayload());
   };
 
-  return (
-    <FormWrapper>
-      <FormHeader
-        loading={loading}
-        isCreate={isCreate}
-        canSubmit={canSubmit}
-        onSubmit={handleSubmit}
-      />
-
-      <FormContentWrapper className="space-y-5">
+  const LeftSideContent = () => {
+    return (
+      <>
         {/* Image */}
         <ImageField
-          label={t("form.labels.image")}
+          label={tLabels("image")}
           name="image"
           value={(form.previewUrl ?? form.imageUrl) as string}
-          onChange={(file) =>
-            setForm((prev) => ({
-              ...prev,
-              imageFile: file,
-              previewUrl: URL.createObjectURL(file),
-            }))
-          }
-          required
+          onChange={updateImage}
+          error={errors.image}
         />
+      </>
+    );
+  };
 
+  const RightSideContent = () => {
+    return (
+      <>
         {/* Name */}
         <TextField
-          label={t("form.labels.name")}
+          label={tLabels("name")}
           name="name"
-          placeholder={t("form.placeholders.name") || ""}
+          placeholder={tPlaceholders("name") || ""}
           value={(form.name as string) ?? ""}
-          onChange={(value) => setForm({ ...form, name: value })}
+          onChange={(value) => updateField("name", value)}
+          error={errors.name}
           required
         />
 
         {/* Nation */}
         <ComboboxField
-          label={t("form.labels.nation")}
+          label={tLabels("nation")}
           name={`nationality`}
           options={nationalityOptions}
-          placeholder={t("form.placeholders.nation")}
+          placeholder={tPlaceholders("nation")}
           searchPlaceholder={tCommon("combobox.searchEntity", {
             entity: tEntities("nationality").toLowerCase(),
           })}
@@ -81,10 +93,29 @@ const ClubForm = ({ mode, club, loading = false, onSubmit }: Props) => {
             entity: tEntities("nationality").toLowerCase(),
           })}
           value={form.nation_id || null}
-          onChange={(value) => setForm({ ...form, nation_id: value })}
+          onChange={(value) => updateField("nation_id", value)}
+          error={errors.nation_id}
           required
         />
-      </FormContentWrapper>
+      </>
+    );
+  };
+
+  return (
+    <FormWrapper>
+      <UnsavedChangesGuard when={isDirty} />
+
+      <FormHeader
+        loading={loading}
+        isCreate={isCreate}
+        canSubmit={canSubmit}
+        onSubmit={handleSubmit}
+      />
+
+      <SideBySideFormContentWrapper
+        left={LeftSideContent()}
+        right={RightSideContent()}
+      />
     </FormWrapper>
   );
 };

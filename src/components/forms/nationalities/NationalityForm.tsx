@@ -2,13 +2,15 @@
 
 import { useNationalityForm } from "@/hooks/dashboard/nationalities";
 import { useTranslations } from "next-intl";
-import FormHeader from "../base/FormHeader";
-import FormWrapper from "../base/FormWrapper";
-import FormContentWrapper from "../base/FormContentWrapper";
 import { ImageField, SelectField, TextField } from "../fields";
 import { NationalityEditResponse } from "@/types/nationality";
 import { useConfederationOptions } from "@/hooks/confederations/useConfederationOptions";
-import UnsavedChangesGuard from "../base/UnsavedChangesGuard";
+import {
+  FormHeader,
+  FormWrapper,
+  SideBySideFormContentWrapper,
+  UnsavedChangesGuard,
+} from "../base";
 
 interface Props {
   mode: "create" | "edit";
@@ -32,13 +34,13 @@ const NationalityForm = ({
 
   const {
     form,
+    isDirty,
     errors,
     updateField,
     updateImage,
-    canSubmit,
-    isDirty,
-    buildPayload,
     validate,
+    canSubmit,
+    buildPayload,
   } = useNationalityForm(nationality);
 
   const isCreate = mode === "create";
@@ -53,6 +55,61 @@ const NationalityForm = ({
     onSubmit(buildPayload());
   };
 
+  const LeftSideContent = () => {
+    return (
+      <>
+        {/* Image */}
+        <ImageField
+          label={tLabels("image")}
+          name="image"
+          value={(form.previewUrl ?? form.imageUrl) as string}
+          onChange={updateImage}
+          error={errors.image}
+        />
+      </>
+    );
+  };
+
+  const RightSideContent = () => {
+    return (
+      <>
+        {/* Name */}
+        <TextField
+          label={tLabels("name")}
+          name="name"
+          placeholder={tPlaceholders("name") || ""}
+          value={(form.name as string) ?? ""}
+          onChange={(value) => updateField("name", value)}
+          error={errors.name}
+          required
+        />
+
+        {/* Fifa Code */}
+        <TextField
+          label={tLabels("fifaCode")}
+          name="fifa_code"
+          placeholder={tPlaceholders("fifaCode") || ""}
+          value={(form.fifa_code as string) ?? ""}
+          onChange={(value) => updateField("fifa_code", value)}
+          error={errors.fifa_code}
+          required
+        />
+
+        {/* Confederation */}
+        <SelectField
+          label={tLabels("confederation")}
+          name={`confederation`}
+          placeholder={tPlaceholders("confederation")}
+          options={confederationOptions}
+          value={form.confederation_id || ""}
+          onChange={(value) => updateField("confederation_id", value)}
+          error={errors.confederation_id}
+          required
+        />
+      </>
+    );
+  };
+
   return (
     <FormWrapper>
       <UnsavedChangesGuard when={isDirty} />
@@ -64,54 +121,10 @@ const NationalityForm = ({
         onSubmit={handleSubmit}
       />
 
-      <FormContentWrapper className="flex flex-col gap-5 md:flex-row md:gap-12">
-        <div className="shrink-0">
-          {/* Image */}
-          <ImageField
-            label={tLabels("image")}
-            name="image"
-            value={(form.previewUrl ?? form.imageUrl) as string}
-            onChange={updateImage}
-            error={errors.image}
-          />
-        </div>
-
-        <div className="flex-1 space-y-5">
-          {/* Name */}
-          <TextField
-            label={tLabels("name")}
-            name="name"
-            placeholder={tPlaceholders("name") || ""}
-            value={(form.name as string) ?? ""}
-            onChange={(value) => updateField("name", value)}
-            error={errors.name}
-            required
-          />
-
-          {/* Fifa Code */}
-          <TextField
-            label={tLabels("fifaCode")}
-            name="fifa_code"
-            placeholder={tPlaceholders("fifaCode") || ""}
-            value={(form.fifa_code as string) ?? ""}
-            onChange={(value) => updateField("fifa_code", value)}
-            error={errors.fifa_code}
-            required
-          />
-
-          {/* Confederation */}
-          <SelectField
-            label={tLabels("confederation")}
-            name={`confederation`}
-            placeholder={tPlaceholders("confederation")}
-            options={confederationOptions}
-            value={form.confederation_id || ""}
-            onChange={(value) => updateField("confederation_id", value)}
-            error={errors.confederation_id}
-            required
-          />
-        </div>
-      </FormContentWrapper>
+      <SideBySideFormContentWrapper
+        left={LeftSideContent()}
+        right={RightSideContent()}
+      />
     </FormWrapper>
   );
 };

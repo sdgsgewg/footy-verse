@@ -41,7 +41,7 @@ const EditClubPage = ({ clubLookup }: Props) => {
   return (
     <FormPageLayout
       title={getTitle("edit", "club")}
-      formSize="small"
+      formSize="large"
       form={
         <ClubForm
           mode="edit"

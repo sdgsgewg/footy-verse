@@ -80,7 +80,7 @@ export default function ImageField({
                 alt="Preview"
                 fill
                 sizes="208px"
-                className="object-cover"
+                className="object-contain"
               />
 
               {!readOnly && (

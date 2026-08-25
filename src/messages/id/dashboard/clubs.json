@@ -1,25 +1,20 @@
 {
   "form": {
     "labels": {
-      "image": "Gambar Klub",
-      "name": "Nama Klub",
+      "image": "Gambar",
+      "name": "Nama",
       "nation": "Asal Negara"
     },
 
     "placeholders": {
-      "image": "Pilih Gambar",
-      "name": "Input nama",
-      "nation": "Pilih Asal Negara"
+      "image": "Unggah Gambar",
+      "name": "Masukkan nama",
+      "nation": "Pilih asal negara"
     }
   },
 
   "columns": {
     "name": "Nama",
     "nation": "Negara"
-  },
-
-  "filter": {
-    "title": "Filter Klub",
-    "description": "Filter klub berdasarkan kebangsaannya."
   }
 }

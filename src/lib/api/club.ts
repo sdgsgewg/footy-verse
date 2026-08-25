@@ -44,11 +44,10 @@ export const fetchClubEdit = async (id: string): Promise<ClubEditResponse> => {
  */
 export const fetchClubDetail = async (
   id: string,
-): Promise<ClubDetailResponse> => {
-  const { data } = await apiClient.get<{
-    success: boolean;
-    data: ClubDetailResponse;
-  }>(`${baseRoute}/${id}`);
+): Promise<ClubDetailResponse | null> => {
+  const { data } = await apiClient.get<ApiResponse<ClubDetailResponse>>(
+    `${baseRoute}/${id}`,
+  );
 
   return data.data;
 };
