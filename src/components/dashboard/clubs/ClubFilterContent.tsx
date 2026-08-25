@@ -41,7 +41,6 @@ export default function ClubFilterContent({
         })}
         value={filters.nationId || null}
         onChange={(value) => updateFilter("nationId", value)}
-        required
       />
     </div>
   );

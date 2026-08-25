@@ -10,12 +10,14 @@ import { useFilterSync } from "@/hooks/filter";
 import useNationalityFilter from "@/hooks/nationalities/useNationalityFilter";
 import { useNationalities } from "@/hooks/nationalities";
 import { useNationalityActions } from "@/hooks/dashboard/nationalities";
-import { NationalityListItem } from "@/types/nationality";
+import { NationalityFilter, NationalityListItem } from "@/types/nationality";
 import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
 import {
   ConfederationImageLabel,
   NationalityImageLabel,
 } from "@/components/shared/tables/cells";
+import NationalityFilterContent from "@/components/dashboard/nationalities/NationalityFilterContent";
+import { useCrudFilterDialog } from "@/hooks/crud/useCrudFilterDialog";
 
 export default function NationalitiesManagementPage() {
   const tCommon = useTranslations("common");
@@ -25,6 +27,7 @@ export default function NationalitiesManagementPage() {
 
   const {
     filters,
+    defaultFilters,
     debouncedFilters,
     updateFilter,
     updateFiltersPartial,
@@ -32,6 +35,20 @@ export default function NationalitiesManagementPage() {
     changeLimit,
     syncUrl,
   } = useNationalityFilter();
+
+  const {
+    filterOpen,
+    setFilterOpen,
+    draftFilters,
+    updateDraftFilter,
+    openFilter,
+    applyFilter,
+    resetFilter,
+  } = useCrudFilterDialog<NationalityFilter>(
+    filters,
+    updateFiltersPartial,
+    defaultFilters,
+  );
 
   const {
     nationalities,
@@ -115,6 +132,19 @@ export default function NationalitiesManagementPage() {
         searchValue: filters.search,
         searchPlaceholder: tCommon("search.placeholder"),
         onSearchChange: (value) => updateFilter("search", value),
+        onFilter: openFilter,
+      }}
+      filter={{
+        content: (
+          <NationalityFilterContent
+            filters={draftFilters}
+            updateFilter={updateDraftFilter}
+          />
+        ),
+        open: filterOpen,
+        onOpenChange: setFilterOpen,
+        onApply: applyFilter,
+        onReset: resetFilter,
       }}
       sorting={{
         sortBy: filters.sortBy,

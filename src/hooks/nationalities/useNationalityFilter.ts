@@ -35,6 +35,7 @@ export default function useNationalityFilter() {
   const pagination = usePagination(crud.filters, crud.updateFiltersPartial);
 
   return {
+    defaultFilters: DEFAULT_FILTER,
     ...crud,
     ...pagination,
   };
