@@ -1,9 +1,5 @@
 import { apiClient } from "./client";
 import {
-  createPlayerSchema,
-  updatePlayerSchema,
-} from "../validations/players.schema";
-import {
   GroupedPlayerListItem,
   GroupedPlayerQuery,
   PlayerDetailResponse,
@@ -14,7 +10,6 @@ import {
 import { ApiResponse } from "@/types/api";
 
 const baseRoute = "/players";
-const baseRouteWithApi = "/api/players";
 
 /**
  *
@@ -87,25 +82,8 @@ export const fetchPlayerDetail = async (
  * @param payload
  * @returns void
  */
-export const createPlayer = async (payload: unknown): Promise<void> => {
-  if (payload instanceof FormData) {
-    const response = await fetch(`${baseRouteWithApi}`, {
-      method: "POST",
-      body: payload,
-    });
-
-    if (!response.ok) {
-      const data = await response.json().catch(() => null);
-
-      throw new Error(data?.error ?? "Failed to create player");
-    }
-
-    return;
-  }
-
-  const parsed = createPlayerSchema.parse(payload); // validation
-
-  await apiClient.post(`${baseRoute}`, parsed);
+export const createPlayer = async (payload: FormData): Promise<void> => {
+  await apiClient.post(`${baseRoute}`, payload);
 };
 
 /**
@@ -116,26 +94,9 @@ export const createPlayer = async (payload: unknown): Promise<void> => {
  */
 export const updatePlayer = async (
   id: string,
-  payload: unknown,
+  payload: FormData,
 ): Promise<void> => {
-  if (payload instanceof FormData) {
-    const response = await fetch(`${baseRouteWithApi}/${id}`, {
-      method: "PUT",
-      body: payload,
-    });
-
-    if (!response.ok) {
-      const data = await response.json().catch(() => null);
-
-      throw new Error(data?.error ?? "Failed to update player");
-    }
-
-    return;
-  }
-
-  const parsed = updatePlayerSchema.parse(payload); // validation
-
-  await apiClient.put(`${baseRoute}/${id}`, parsed);
+  await apiClient.put(`${baseRoute}/${id}`, payload);
 };
 
 /**

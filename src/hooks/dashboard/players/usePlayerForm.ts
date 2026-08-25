@@ -1,19 +1,19 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { PreferredFoot } from "@/enums/PreferredFoot";
 import { PlayerEditResponse, UpsertPlayerInput } from "@/types/player";
 import { STORAGE_BUCKETS } from "@/lib/storage";
 import { getImageUrl } from "@/lib/images/image-url";
 import { buildFormData } from "@/lib/forms/buildFormData";
+import { useEntityForm, useImageField } from "@/hooks/crud";
+import { playerMutationSchema } from "@/lib/validations/players.schema";
 
-const emptyPlayerForm: UpsertPlayerInput = {
+const createEmptyPlayerForm = (): UpsertPlayerInput => ({
   id: "",
 
   image: null,
   imageUrl: null,
-  imageFile: null,
-  previewUrl: null,
 
   name: "",
   dob: "",
@@ -27,7 +27,7 @@ const emptyPlayerForm: UpsertPlayerInput = {
 
   positions: [],
   nationalities: [],
-};
+});
 
 function mapPlayer(player: PlayerEditResponse): UpsertPlayerInput {
   return {
@@ -35,8 +35,6 @@ function mapPlayer(player: PlayerEditResponse): UpsertPlayerInput {
 
     image: player.image,
     imageUrl: getImageUrl("player", STORAGE_BUCKETS.PLAYERS, player.image),
-    imageFile: null,
-    previewUrl: null,
 
     name: player.name,
     dob: player.dob,
@@ -62,60 +60,60 @@ function mapPlayer(player: PlayerEditResponse): UpsertPlayerInput {
 
 export function usePlayerForm(player?: PlayerEditResponse) {
   const initialValue = useMemo(
-    () => (player ? mapPlayer(player) : emptyPlayerForm),
+    () => (player ? mapPlayer(player) : createEmptyPlayerForm()),
     [player],
   );
 
-  const [form, setForm] = useState(initialValue);
+  const {
+    imageFile,
+    previewUrl,
+    updateImage: setImage,
+  } = useImageField({
+    initialPreviewUrl: initialValue.imageUrl,
+  });
 
-  const initialForm = initialValue;
+  const {
+    form,
+    updateField,
+    errors,
+    isDirty,
+    canSubmit,
+    validate,
+    clearFieldError,
+  } = useEntityForm({
+    initialValue,
+    schema: playerMutationSchema,
 
-  const isEditing = player != null;
+    dirtyFields: [
+      "name",
+      "dob",
+      "pob",
+      "preferred_foot",
+      "height",
+      "weight",
+      "market_value",
+      "image",
+      "positions",
+      "nationalities",
+    ],
 
-  const arePositionsValid =
-    form.positions.length > 0 &&
-    form.positions.every((position) => position.position_id.trim().length > 0);
+    requiredFields: [
+      "name",
+      "dob",
+      "pob",
+      "preferred_foot",
+      "height",
+      "weight",
+      "market_value",
+    ],
 
-  const areNationalitiesValid =
-    form.nationalities.length > 0 &&
-    form.nationalities.every((nation) => nation.nation_id.trim().length > 0);
+    additionalDirty: imageFile !== null,
+  });
 
-  const canSubmit = useMemo(() => {
-    const isFilled =
-      form.name.trim().length > 0 &&
-      form.dob.trim().length > 0 &&
-      form.pob.trim().length > 0 &&
-      form.positions.length > 0 &&
-      form.height > 0 &&
-      form.weight > 0 &&
-      form.market_value > 0 &&
-      arePositionsValid &&
-      areNationalitiesValid;
-
-    if (!isFilled) {
-      return false;
-    }
-
-    if (!isEditing) {
-      return form.imageFile != null;
-    }
-
-    return (
-      form.name !== initialForm.name ||
-      form.dob !== initialForm.dob ||
-      form.pob !== initialForm.pob ||
-      form.preferred_foot !== initialForm.preferred_foot ||
-      form.height !== initialForm.height ||
-      form.weight !== initialForm.weight ||
-      form.market_value !== initialForm.market_value ||
-      JSON.stringify(form.positions) !==
-        JSON.stringify(initialForm.positions) ||
-      JSON.stringify(form.nationalities) !==
-        JSON.stringify(initialForm.nationalities) ||
-      form.image !== initialForm.image ||
-      form.imageFile != null
-    );
-  }, [form, arePositionsValid, areNationalitiesValid, initialForm, isEditing]);
+  const updateImage = (file: File) => {
+    setImage(file);
+    clearFieldError("image");
+  };
 
   const buildPayload = () => {
     return buildFormData({
@@ -131,21 +129,26 @@ export function usePlayerForm(player?: PlayerEditResponse) {
         nationalities: form.nationalities,
       },
       existingImage: form.image,
-      imageFile: form.imageFile,
+      imageFile,
     });
   };
 
-  const resetForm = () => {
-    setForm(initialValue);
-  };
-
   return {
-    form,
-    setForm,
-    initialForm,
-    isEditing,
+    form: {
+      ...form,
+
+      imageFile,
+      previewUrl,
+    },
+
+    isDirty,
+    errors,
+
+    updateField,
+    updateImage,
+
+    validate,
     canSubmit,
     buildPayload,
-    resetForm,
   };
 }

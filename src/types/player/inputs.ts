@@ -1,5 +1,3 @@
-// zod infer
-
 import z from "zod";
 
 import {
@@ -9,7 +7,6 @@ import {
   playerMutationSchema,
   groupedPlayersQuerySchema,
 } from "@/lib/validations/players.schema";
-import { ImagePayload } from "../image";
 import { createPlayerPositionSchema } from "@/lib/validations/player-positions.schema";
 import { createPlayerNationalitySchema } from "@/lib/validations/player-nationalities.schema";
 
@@ -44,4 +41,5 @@ export type PlayerNationalityCreateInput = z.infer<
 
 export type UpsertPlayerInput = z.infer<typeof playerMutationSchema> & {
   id?: string;
-} & ImagePayload;
+  imageUrl: string | null; // public URL untuk preview
+};

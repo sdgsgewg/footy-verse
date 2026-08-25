@@ -4,7 +4,7 @@ import { playerKeys } from "@/lib/react-query/keys/playerKeys";
 
 interface UpdatePlayerPayload {
   id: string;
-  data: unknown;
+  data: FormData;
 }
 
 export function useUpdatePlayer() {

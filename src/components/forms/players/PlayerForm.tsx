@@ -31,27 +31,42 @@ interface Props {
 
 const PlayerForm = ({ mode, player, loading = false, onSubmit }: Props) => {
   const t = useTranslations("dashboard.players");
+  const tLabels = useTranslations("dashboard.players.form.labels");
+  const tPlaceholders = useTranslations("dashboard.players.form.placeholders");
+
   const tPrefFoot = useTranslations(
     "dashboard.players.form.options.preferredFoot",
   );
 
-  const { form, setForm, canSubmit, buildPayload } = usePlayerForm(player);
-
-  const { positions } = usePositions();
-  const { nationalityOptions } = useNationalityOptions();
+  const {
+    form,
+    isDirty,
+    errors,
+    updateField,
+    updateImage,
+    validate,
+    canSubmit,
+    buildPayload,
+  } = usePlayerForm(player);
 
   const isCreate = mode === "create";
 
   const preferredFootOptions = getPreferredFootOptions(tPrefFoot);
 
+  const { positions } = usePositions();
   const positionOptions = getPositionOptions(positions);
+  const { nationalityOptions } = useNationalityOptions();
 
   const handleSubmit = () => {
+    if (!validate()) {
+      return;
+    }
+
     onSubmit(buildPayload());
   };
 
   return (
-    <FormWrapper>
+    <FormWrapper isDirty={isDirty}>
       <FormHeader
         loading={loading}
         isCreate={isCreate}
@@ -63,89 +78,90 @@ const PlayerForm = ({ mode, player, loading = false, onSubmit }: Props) => {
         <div className="lg:grid-cols-6 space-y-5">
           {/* Image */}
           <ImageField
-            label={t("form.labels.image")}
+            label={tLabels("image")}
             name="image"
             value={(form.previewUrl ?? form.imageUrl) as string}
-            onChange={(file) =>
-              setForm((prev) => ({
-                ...prev,
-                imageFile: file,
-                previewUrl: URL.createObjectURL(file),
-              }))
-            }
-            required
+            onChange={updateImage}
+            error={errors.image}
           />
 
           {/* Name */}
           <TextField
-            label={t("form.labels.name")}
+            label={tLabels("name")}
             name="name"
-            placeholder={t("form.placeholders.name") || ""}
+            placeholder={tPlaceholders("name") || ""}
             value={(form.name as string) ?? ""}
-            onChange={(value) => setForm({ ...form, name: value })}
+            onChange={(value) => updateField("name", value)}
+            error={errors.name}
             required
           />
 
           {/* DOB */}
           <DateField
-            label={t("form.labels.dob")}
+            label={tLabels("dob")}
             name="dob"
-            placeholder={t("form.placeholders.dob") || ""}
+            placeholder={tPlaceholders("dob") || ""}
             value={(form.dob as string) ?? ""}
-            onChange={(value) => setForm({ ...form, dob: value })}
+            onChange={(value) => updateField("dob", value)}
+            error={errors.dob}
             required
           />
 
           {/* POB */}
           <TextField
-            label={t("form.labels.pob")}
+            label={tLabels("pob")}
             name="pob"
-            placeholder={t("form.placeholders.pob") || ""}
+            placeholder={tPlaceholders("pob") || ""}
             value={(form.pob as string) ?? ""}
-            onChange={(value) => setForm({ ...form, pob: value })}
+            onChange={(value) => updateField("pob", value)}
+            error={errors.pob}
             required
           />
 
           {/* Height */}
           <NumberField
-            label={t("form.labels.height")}
+            label={tLabels("height")}
             name="height"
-            placeholder={t("form.placeholders.height")}
+            placeholder={tPlaceholders("height")}
             value={form.height}
-            onChange={(value) => setForm({ ...form, height: value! })}
+            onChange={(value) => updateField("height", value!)}
+            error={errors.height}
             required
           />
 
           {/* Weight */}
           <NumberField
-            label={t("form.labels.weight")}
+            label={tLabels("weight")}
             name="weight"
-            placeholder={t("form.placeholders.weight")}
+            placeholder={tPlaceholders("weight")}
             value={form.weight}
-            onChange={(value) => setForm({ ...form, weight: value! })}
+            onChange={(value) => updateField("weight", value!)}
+            error={errors.weight}
             required
           />
 
           {/* Preferred Foot */}
           <SelectField
-            label={t("form.labels.preferredFoot")}
+            label={tLabels("preferredFoot")}
             name="preferred_foot"
-            placeholder={t("form.placeholders.preferredFoot")}
+            placeholder={tPlaceholders("preferredFoot")}
             options={preferredFootOptions}
             value={form.preferred_foot || ""}
             onChange={(value) =>
-              setForm({ ...form, preferred_foot: value as PreferredFoot })
+              updateField("preferred_foot", value as PreferredFoot)
             }
+            error={errors.preferred_foot}
             required
           />
 
           {/* Market Value */}
           <NumberField
-            label={t("form.labels.marketValue")}
+            label={tLabels("marketValue")}
             name="market_value"
-            placeholder={t("form.placeholders.marketValue")}
+            placeholder={tPlaceholders("marketValue")}
             value={form.market_value}
-            onChange={(value) => setForm({ ...form, market_value: value! })}
+            onChange={(value) => updateField("market_value", value!)}
+            error={errors.market_value}
             required
           />
         </div>
@@ -153,9 +169,9 @@ const PlayerForm = ({ mode, player, loading = false, onSubmit }: Props) => {
         <div className="lg:grid-cols-6 space-y-5">
           {/* Positions */}
           <OrderedSelectField
-            label={t("form.labels.positions")}
+            label={tLabels("positions")}
             name="positions"
-            placeholder={t("form.placeholders.positions")}
+            placeholder={tPlaceholders("positions")}
             instruction={t("form.positions.instruction")}
             options={positionOptions}
             value={form.positions}
@@ -164,20 +180,16 @@ const PlayerForm = ({ mode, player, loading = false, onSubmit }: Props) => {
               position_id: id,
               display_order: order,
             })}
-            onChange={(positions) =>
-              setForm({
-                ...form,
-                positions,
-              })
-            }
+            onChange={(value) => updateField("positions", value)}
+            error={errors.positions}
             required
           />
 
           {/* Nationalities */}
           <OrderedSelectField
-            label={t("form.labels.nationalities")}
+            label={tLabels("nationalities")}
             name="nationalities"
-            placeholder={t("form.placeholders.nationalities")}
+            placeholder={tPlaceholders("nationalities")}
             instruction={t("form.nationalities.instruction")}
             options={nationalityOptions}
             value={form.nationalities}
@@ -186,12 +198,8 @@ const PlayerForm = ({ mode, player, loading = false, onSubmit }: Props) => {
               nation_id: id,
               display_order: order,
             })}
-            onChange={(nationalities) =>
-              setForm({
-                ...form,
-                nationalities,
-              })
-            }
+            onChange={(value) => updateField("nationalities", value)}
+            error={errors.nationalities}
             required
           />
         </div>

@@ -1,17 +1,4 @@
 {
-  "title": "Kelola Pemain",
-  "subtitle": "Tambah, edit, atau hapus pemain.",
-
-  "create": {
-    "title": "Buat Pemain",
-    "subtitle": "Buat pemain baru"
-  },
-
-  "edit": {
-    "title": "Edit Pemain",
-    "subtitle": "Edit pemain"
-  },
-
   "form": {
     "positions": {
       "instruction": "Tambahkan minimal satu posisi, lalu seret untuk mengatur prioritas."
@@ -68,9 +55,5 @@
       "nationality": "Kebangsaan",
       "marketValue": "Nilai Pasar"
     }
-  },
-
-  "actions": {
-    "addNew": "Add New Player Career"
   }
 }

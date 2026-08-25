@@ -1,17 +1,4 @@
 {
-  "title": "Manage Players",
-  "subtitle": "Add, edit, or delete players.",
-
-  "create": {
-    "title": "Create Player",
-    "subtitle": "Add new player"
-  },
-
-  "edit": {
-    "title": "Edit Player",
-    "subtitle": "Edit player"
-  },
-
   "form": {
     "positions": {
       "instruction": "Add at least one position, then drag to set priority."
@@ -68,9 +55,5 @@
       "nationality": "Nationality",
       "marketValue": "Market Value"
     }
-  },
-
-  "actions": {
-    "addNew": "Add New Player"
   }
 }
