@@ -8,6 +8,8 @@ export const competitionCategoryKeys = {
   list: (params?: CompetitionCategoryQuery) =>
     [...competitionCategoryKeys.lists(), params] as const,
 
+  options: () => [...competitionCategoryKeys.all, "options"] as const,
+
   details: () => [...competitionCategoryKeys.all, "detail"] as const,
 
   detail: (slug: string) =>

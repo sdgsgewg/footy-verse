@@ -10,6 +10,7 @@ import {
   createCompetitionScopeSchema,
   updateCompetitionScopeSchema,
 } from "../validations/competition-scopes.schema";
+import { Option } from "@/types/option";
 
 const baseRoute = "/competitions/scopes";
 
@@ -26,6 +27,18 @@ export const fetchCompetitionScopes = async (
     {
       params,
     },
+  );
+
+  return data.data;
+};
+
+/**
+ *
+ * @returns Option[]
+ */
+export const fetchCompetitionScopeOptions = async (): Promise<Option[]> => {
+  const { data } = await apiClient.get<ApiResponse<Option[]>>(
+    `${baseRoute}/options`,
   );
 
   return data.data;

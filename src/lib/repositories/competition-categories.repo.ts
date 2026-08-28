@@ -1,5 +1,4 @@
 import { createClient } from "@/utils/supabase/server";
-import { ensureUniqueSlug } from "./helpers/slug";
 import { requireEntity } from "./helpers/require-entity";
 import { ENTITY_CONFIG } from "@/config/entities";
 import {
@@ -20,6 +19,9 @@ import { slugify } from "@/utils/string";
 import { createEntityActivityLog } from "./activity-logs.repo";
 import { ActivityLogAction } from "@/enums/ActivityLogAction";
 import { getChangedFields } from "./helpers/get-changed-field";
+import { Option } from "@/types/option";
+import { mapEntityOption } from "../entities/mapper";
+import { ensureUniqueFieldsRepo } from "./helpers/uniqueness";
 
 async function getSupabase() {
   return createClient();
@@ -68,6 +70,34 @@ export async function getCompetitionCategoriesRepo(
   if (error) throw error;
 
   return (data ?? []).map(mapCompetitionCategoryListItem);
+}
+
+/**
+ *
+ * @returns Option[]
+ */
+export async function getCompetitionCategoryOptionsRepo(): Promise<Option[]> {
+  const supabase = await getSupabase();
+
+  const { data, error } = await supabase
+    .from(getTable())
+    .select(
+      `
+      id,
+      name
+    `,
+    )
+    .order("name", {
+      ascending: true,
+    });
+
+  if (error) {
+    throw error;
+  }
+
+  if (!data || data.length === 0) return [];
+
+  return data.map((data) => mapEntityOption(data, "competitionCategory"));
 }
 
 /**
@@ -136,6 +166,30 @@ export async function getCompetitionCategoryLookupRepo(
   return data;
 }
 
+export async function ensureCompetitionCategoryUniqueRepo({
+  name,
+  ignoreId,
+}: {
+  name: string;
+  ignoreId?: string;
+}): Promise<string> {
+  const slug = slugify(name);
+
+  await ensureUniqueFieldsRepo({
+    table: getTable(),
+    fields: [
+      {
+        field: "slug",
+        value: slug,
+        message: "Competition category name already exists",
+      },
+    ],
+    ignoreId,
+  });
+
+  return slug;
+}
+
 /**
  *
  * @param competitionCategory
@@ -146,8 +200,7 @@ export async function createCompetitionCategoryRepo(
 ): Promise<CompetitionCategoryDetailResponse> {
   const supabase = await getSupabase();
 
-  const slug = await ensureUniqueSlug({
-    table: getTable(),
+  const slug = await ensureCompetitionCategoryUniqueRepo({
     name: competitionCategory.name,
   });
 
@@ -188,7 +241,10 @@ export async function updateCompetitionCategoryRepo(
     getLabel(),
   );
 
-  const slug = slugify(competitionCategory.name);
+  const slug = ensureCompetitionCategoryUniqueRepo({
+    name: competitionCategory.name,
+    ignoreId: id,
+  });
 
   const { error } = await supabase
     .from(getTable())

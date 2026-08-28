@@ -9,6 +9,7 @@ import { getCompetitionInputFromFormData } from "@/lib/competitions/form-data";
 import {
   createCompetitionService,
   getCompetitionsService,
+  precheckCreateCompetitionService,
 } from "@/lib/services/competitions.service";
 
 import { tryDeleteImage, uploadImage } from "@/lib/services/storage.service";
@@ -33,19 +34,17 @@ export async function POST(request: Request) {
 
     const formData = await request.formData();
 
-    const body = getCompetitionInputFromFormData(formData);
+    const body = await precheckCreateCompetitionService(
+      getCompetitionInputFromFormData(formData),
+    );
+
+    let image = "";
 
     const file = formData.get("image");
 
-    if (!(file instanceof File) || file.size === 0) {
-      return errorResponse(new Error("Competition image is required"));
+    if (file instanceof File && file.size > 0) {
+      image = await uploadImage(file, body.name, STORAGE_BUCKETS.COMPETITIONS);
     }
-
-    const image = await uploadImage(
-      file,
-      body.name,
-      STORAGE_BUCKETS.COMPETITIONS,
-    );
 
     body.image = image;
 

@@ -1,12 +1,7 @@
 "use client";
 
 import ConnectionErrorAlert from "@/components/feedback/ConnectionErrorAlert";
-import { CompetitionImageLabel } from "@/components/shared/tables/cells";
-import { ImageLabel } from "@/components/shared/tables/cells/ImageLabel";
 import { CrudListPage } from "@/components/templates/crud";
-import { IMAGES } from "@/constants/images";
-import { Gender } from "@/enums/Gender";
-import { ParticipantType } from "@/enums/ParticipantType";
 import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
 import { useFilterSync } from "@/hooks/filter";
 import {
@@ -14,13 +9,13 @@ import {
   useCompetitions,
 } from "@/hooks/dashboard/competitions";
 import useCompetitionFilter from "@/hooks/dashboard/competitions/useCompetitionFilter";
-import { getParticipantTypeLabel } from "@/lib/competitions/labels";
-import { getGenderLabel } from "@/lib/constants/labels";
 import { isLikelyConnectionError } from "@/lib/utils/connection-error";
 import { createSortHandler } from "@/lib/utils/crud";
-import { CompetitionListItem } from "@/types/competition";
-import { DataColumn } from "@/types/table";
+import { CompetitionFilter } from "@/types/competition";
 import { useTranslations } from "next-intl";
+import CompetitionFilterContent from "@/components/dashboard/competitions/CompetitionFilterContent";
+import { useCrudFilterDialog } from "@/hooks/crud/useCrudFilterDialog";
+import { createCompetitionColumns } from "@/components/dashboard/competitions/columns/competition-columns";
 
 export default function PlayersManagementPage() {
   const t = useTranslations();
@@ -31,6 +26,7 @@ export default function PlayersManagementPage() {
 
   const {
     filters,
+    defaultFilters,
     debouncedFilters,
     updateFilter,
     updateFiltersPartial,
@@ -38,6 +34,20 @@ export default function PlayersManagementPage() {
     changeLimit,
     syncUrl,
   } = useCompetitionFilter();
+
+  const {
+    filterOpen,
+    setFilterOpen,
+    draftFilters,
+    updateDraftFilter,
+    openFilter,
+    applyFilter,
+    resetFilter,
+  } = useCrudFilterDialog<CompetitionFilter>(
+    filters,
+    updateFiltersPartial,
+    defaultFilters,
+  );
 
   const {
     competitions,
@@ -56,79 +66,17 @@ export default function PlayersManagementPage() {
   const { handleCreate, handleView, handleEdit, handleDelete } =
     useCompetitionActions();
 
-  const columns: DataColumn<CompetitionListItem>[] = [
+  const columns = createCompetitionColumns(
     {
-      key: "name",
-      label: tColumn("name"),
-      className: "min-w-[16rem]",
-
-      render: (competition) => (
-        <CompetitionImageLabel
-          imageUrl={competition.imageUrl}
-          label={competition.name}
-        />
-      ),
-
-      sortable: true,
+      name: tColumn("name"),
+      category: tColumn("category"),
+      scope: tColumn("scope"),
+      participantType: tColumn("participant"),
+      gender: tColumn("gender"),
+      location: tColumn("location"),
     },
-
-    {
-      key: "category",
-      label: tColumn("category"),
-      render: (competition) => competition.category.name,
-    },
-
-    {
-      key: "scope",
-      label: tColumn("scope"),
-      render: (competition) => competition.scope.name,
-    },
-
-    {
-      key: "participantType",
-      label: tColumn("participant"),
-      render: (competition) =>
-        getParticipantTypeLabel(
-          competition.participantType as ParticipantType,
-          t,
-        ),
-    },
-
-    {
-      key: "gender",
-      label: tColumn("gender"),
-      render: (competition) => getGenderLabel(competition.gender as Gender, t),
-    },
-
-    {
-      key: "location",
-      label: tColumn("location"),
-      className: "min-w-[14rem]",
-
-      render: (competition) => (
-        <>
-          {competition.location ? (
-            <ImageLabel
-              image={{
-                src: competition.location.imageUrl ?? IMAGES.COMMON.DEFAULT,
-                alt: competition.location.name,
-
-                aspectRatio: "none",
-
-                className: {
-                  container: "w-8 h-8",
-                  image: "object-contain",
-                },
-              }}
-              label={competition.location.name}
-            />
-          ) : (
-            <span>{`-`}</span>
-          )}
-        </>
-      ),
-    },
-  ];
+    t,
+  );
 
   const handleSort = createSortHandler({
     sortBy: filters.sortBy,
@@ -160,6 +108,19 @@ export default function PlayersManagementPage() {
         searchValue: filters.search,
         searchPlaceholder: tCommon("search.placeholder"),
         onSearchChange: (value) => updateFilter("search", value),
+        onFilter: openFilter,
+      }}
+      filter={{
+        content: (
+          <CompetitionFilterContent
+            filters={draftFilters}
+            updateFilter={updateDraftFilter}
+          />
+        ),
+        open: filterOpen,
+        onOpenChange: setFilterOpen,
+        onApply: applyFilter,
+        onReset: resetFilter,
       }}
       sorting={{
         sortBy: filters.sortBy,

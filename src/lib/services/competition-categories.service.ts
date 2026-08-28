@@ -5,6 +5,7 @@ import {
   getCompetitionCategoryDetailRepo,
   getCompetitionCategoryEditRepo,
   getCompetitionCategoryLookupRepo,
+  getCompetitionCategoryOptionsRepo,
   updateCompetitionCategoryRepo,
 } from "../repositories/competition-categories.repo";
 import {
@@ -18,6 +19,10 @@ export async function getCompetitionCategoriesService(query: unknown) {
   const parsed = competitionCategoriesQuerySchema.parse(query);
 
   return getCompetitionCategoriesRepo(parsed);
+}
+
+export async function getCompetitionCategoryOptionsService() {
+  return getCompetitionCategoryOptionsRepo();
 }
 
 export async function getCompetitionCategoryEditService(id: string) {

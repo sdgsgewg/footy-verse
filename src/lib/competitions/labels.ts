@@ -1,6 +1,5 @@
 import { ParticipantType } from "@/enums/ParticipantType";
-
-type Translate = (key: string) => string;
+import { Translate } from "@/types/translate";
 
 /**
  *

@@ -7,10 +7,6 @@ import {
 import { apiClient } from "./client";
 
 import { ApiResponse } from "@/types/api";
-import {
-  createPositionCategorySchema,
-  updatePositionCategorySchema,
-} from "../validations/position-categories.schema";
 import { Option } from "@/types/option";
 
 const baseRoute = "/positions/categories";
@@ -76,13 +72,11 @@ export const fetchPositionCategoryDetail = async (
 };
 
 export const createPositionCategory = async (payload: unknown) => {
-  const parsed = createPositionCategorySchema.parse(payload); // validation
-  await apiClient.post(`${baseRoute}`, parsed);
+  await apiClient.post(`${baseRoute}`, payload);
 };
 
 export const updatePositionCategory = async (id: string, payload: unknown) => {
-  const parsed = updatePositionCategorySchema.parse(payload); // validation
-  await apiClient.put(`${baseRoute}/${id}`, parsed);
+  await apiClient.put(`${baseRoute}/${id}`, payload);
 };
 
 export const reorderPositionCategories = async (payload: unknown) => {

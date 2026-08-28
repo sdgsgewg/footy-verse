@@ -4,6 +4,7 @@ import {
   getCompetitionScopeDetailRepo,
   getCompetitionScopeEditRepo,
   getCompetitionScopeLookupRepo,
+  getCompetitionScopeOptionsRepo,
   getCompetitionScopesRepo,
   updateCompetitionScopeRepo,
 } from "../repositories/competition-scopes.repo";
@@ -18,6 +19,10 @@ export async function getCompetitionScopesService(query: unknown) {
   const parsed = competitionScopesQuerySchema.parse(query);
 
   return getCompetitionScopesRepo(parsed);
+}
+
+export async function getCompetitionScopeOptionsService() {
+  return getCompetitionScopeOptionsRepo();
 }
 
 export async function getCompetitionScopeEditService(id: string) {

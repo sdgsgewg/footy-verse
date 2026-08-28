@@ -8,6 +8,7 @@ import {
 import {
   createCompetitionRepo,
   deleteCompetitionRepo,
+  ensureCompetitionUniqueRepo,
   getCompetitionDetailRepo,
   getCompetitionEditRepo,
   getCompetitionLookupRepo,
@@ -52,6 +53,31 @@ export async function updateCompetitionService(id: string, input: unknown) {
   const parsed = updateCompetitionSchema.parse(input);
 
   return updateCompetitionRepo(parsedId, parsed);
+}
+
+export async function precheckCreateCompetitionService(input: unknown) {
+  const parsed = createCompetitionSchema.parse(input);
+
+  await ensureCompetitionUniqueRepo({
+    name: parsed.name,
+  });
+
+  return parsed;
+}
+
+export async function precheckUpdateCompetitionService(
+  id: string,
+  input: unknown,
+) {
+  const parsedId = idSchema.parse(id);
+  const parsed = updateCompetitionSchema.parse(input);
+
+  await ensureCompetitionUniqueRepo({
+    name: parsed.name,
+    ignoreId: parsedId,
+  });
+
+  return parsed;
 }
 
 export async function deleteCompetitionService(id: string) {

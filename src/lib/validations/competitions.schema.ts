@@ -60,5 +60,8 @@ export const competitionSchema = competitionMutationSchema.extend({
 export const competitionsSchema = z.array(competitionSchema);
 
 export const competitionsQuerySchema = listQuerySchema.extend({
+  categoryId: idSchema.optional(),
+  scopeId: idSchema.optional(),
+
   sortBy: competitionSortBySchema.default("name"),
 });

@@ -8,6 +8,8 @@ export const competitionScopeKeys = {
   list: (params?: CompetitionScopeQuery) =>
     [...competitionScopeKeys.lists(), params] as const,
 
+  options: () => [...competitionScopeKeys.all, "options"] as const,
+
   details: () => [...competitionScopeKeys.all, "detail"] as const,
 
   detail: (slug: string) => [...competitionScopeKeys.details(), slug] as const,

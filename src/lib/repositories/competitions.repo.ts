@@ -28,6 +28,7 @@ import { CompetitionLookupResponse } from "@/types/competition";
 import { createEntityActivityLog } from "./activity-logs.repo";
 import { ActivityLogAction } from "@/enums/ActivityLogAction";
 import { getChangedFields } from "./helpers/get-changed-field";
+import { ensureUniqueFieldsRepo } from "./helpers/uniqueness";
 
 async function getSupabase() {
   return createClient();
@@ -232,6 +233,30 @@ export async function getCompetitionLookupRepo(
   return data;
 }
 
+export async function ensureCompetitionUniqueRepo({
+  name,
+  ignoreId,
+}: {
+  name: string;
+  ignoreId?: string;
+}): Promise<string> {
+  const slug = slugify(name);
+
+  await ensureUniqueFieldsRepo({
+    table: getTable(),
+    fields: [
+      {
+        field: "slug",
+        value: slug,
+        message: "Competition name already exists",
+      },
+    ],
+    ignoreId,
+  });
+
+  return slug;
+}
+
 /**
  *
  * @param competition
@@ -242,7 +267,9 @@ export async function createCompetitionRepo(
 ): Promise<CompetitionDetailResponse> {
   const supabase = await getSupabase();
 
-  const slug = slugify(competition.name);
+  const slug = ensureCompetitionUniqueRepo({
+    name: competition.name,
+  });
 
   const { data: insertedCompetition, error } = await supabase
     .from(getTable())
@@ -288,7 +315,10 @@ export async function updateCompetitionRepo(
 
   const { image: newImage, ...rest } = competition;
 
-  const slug = slugify(competition.name);
+  const slug = ensureCompetitionUniqueRepo({
+    name: competition.name,
+    ignoreId: id,
+  });
 
   const finalImage = await prepareUpdatedImage({
     oldName: oldCompetition.name,

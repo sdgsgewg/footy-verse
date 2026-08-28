@@ -1,5 +1,4 @@
 import { createClient } from "@/utils/supabase/server";
-import { ensureUniqueSlug } from "./helpers/slug";
 import { requireEntity } from "./helpers/require-entity";
 import { ENTITY_CONFIG } from "@/config/entities";
 
@@ -21,6 +20,9 @@ import {
 import { createEntityActivityLog } from "./activity-logs.repo";
 import { ActivityLogAction } from "@/enums/ActivityLogAction";
 import { getChangedFields } from "./helpers/get-changed-field";
+import { Option } from "@/types/option";
+import { mapEntityOption } from "../entities/mapper";
+import { ensureUniqueFieldsRepo } from "./helpers/uniqueness";
 
 async function getSupabase() {
   return createClient();
@@ -69,6 +71,34 @@ export async function getCompetitionScopesRepo(
   if (error) throw error;
 
   return (data ?? []).map(mapCompetitionScopeListItem);
+}
+
+/**
+ *
+ * @returns Option[]
+ */
+export async function getCompetitionScopeOptionsRepo(): Promise<Option[]> {
+  const supabase = await getSupabase();
+
+  const { data, error } = await supabase
+    .from(getTable())
+    .select(
+      `
+      id,
+      name
+    `,
+    )
+    .order("name", {
+      ascending: true,
+    });
+
+  if (error) {
+    throw error;
+  }
+
+  if (!data || data.length === 0) return [];
+
+  return data.map((data) => mapEntityOption(data, "competitionScope"));
 }
 
 /**
@@ -137,6 +167,30 @@ export async function getCompetitionScopeLookupRepo(
   return data;
 }
 
+export async function ensureCompetitionScopeUniqueRepo({
+  name,
+  ignoreId,
+}: {
+  name: string;
+  ignoreId?: string;
+}): Promise<string> {
+  const slug = slugify(name);
+
+  await ensureUniqueFieldsRepo({
+    table: getTable(),
+    fields: [
+      {
+        field: "slug",
+        value: slug,
+        message: "Competition scope name already exists",
+      },
+    ],
+    ignoreId,
+  });
+
+  return slug;
+}
+
 /**
  *
  * @param competitionScope
@@ -147,8 +201,7 @@ export async function createCompetitionScopeRepo(
 ): Promise<CompetitionScopeDetailResponse> {
   const supabase = await getSupabase();
 
-  const slug = await ensureUniqueSlug({
-    table: getTable(),
+  const slug = await ensureCompetitionScopeUniqueRepo({
     name: competitionScope.name,
   });
 
@@ -189,7 +242,10 @@ export async function updateCompetitionScopeRepo(
     getLabel(),
   );
 
-  const slug = slugify(competitionScope.name);
+  const slug = await ensureCompetitionScopeUniqueRepo({
+    name: competitionScope.name,
+    ignoreId: id,
+  });
 
   const { error } = await supabase
     .from(getTable())

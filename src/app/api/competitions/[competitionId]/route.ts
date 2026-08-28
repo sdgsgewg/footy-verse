@@ -10,6 +10,7 @@ import {
   deleteCompetitionService,
   getCompetitionDetailService,
   getCompetitionEditService,
+  precheckUpdateCompetitionService,
   updateCompetitionService,
 } from "@/lib/services/competitions.service";
 
@@ -49,7 +50,10 @@ export async function PUT(request: Request, context: CompetitionRouteContext) {
 
     const formData = await request.formData();
 
-    const body = getCompetitionInputFromFormData(formData);
+    const body = await precheckUpdateCompetitionService(
+      competitionId,
+      getCompetitionInputFromFormData(formData),
+    );
 
     let image = currentCompetition.image;
 
