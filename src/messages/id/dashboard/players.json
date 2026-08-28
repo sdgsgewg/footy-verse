@@ -45,6 +45,26 @@
     }
   },
 
+  "filter": {
+    "form": {
+      "labels": {
+        "nation": "Kebangsaan",
+        "age": "Umur",
+        "club": "Klub",
+        "position": "Posisi",
+        "marketValue": "Nilai Pasar (Euro)"
+      },
+
+      "placeholders": {
+        "nation": "Pilih kebangsaan",
+        "age": "Masukkan umur",
+        "club": "Pilih klub",
+        "position": "Pilih posisi",
+        "marketValue": "Masukkan nilai pasar (Euro)"
+      }
+    }
+  },
+
   "table": {
     "title": "Player List",
 

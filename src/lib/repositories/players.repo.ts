@@ -54,8 +54,16 @@ const getPlayerNationalityTable = () => {
   return ENTITY_CONFIG["playerNationality"]["table"];
 };
 
-function getPlayersBaseQuery(options?: { isNationFiltered?: boolean }) {
-  const nationJoin = options?.isNationFiltered ? "!inner" : "";
+function getPlayersBaseQuery(options?: {
+  isNationFiltered?: boolean;
+}) {
+  const nationFilterJoin = options?.isNationFiltered
+    ? `
+      player_nationalities_filter:player_nationalities!inner (
+        nation_id
+      ),
+    `
+    : "";
 
   return `
     id,
@@ -82,7 +90,9 @@ function getPlayersBaseQuery(options?: { isNationFiltered?: boolean }) {
       )
     ),
 
-    player_nationalities${nationJoin} (
+    ${nationFilterJoin}
+
+    player_nationalities (
       display_order,
       nation_id,
 
@@ -246,7 +256,9 @@ export async function getPlayersRepo(
   }
 
   if (params.nationId) {
-    query = query.eq("player_nationalities.nation_id", params.nationId);
+    query = query
+      .eq("player_nationalities_filter.nation_id", params.nationId)
+      .eq("player_nationalities.display_order", 1);
   }
 
   if (params.clubTeamId) {

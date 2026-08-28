@@ -14,5 +14,9 @@ export default function CrudPaginationSection({
     return <CrudPaginationSkeleton />;
   }
 
+  if (pagination.totalItems === 0) {
+    return <></>;
+  }
+
   return <CrudPagination {...pagination} />;
 }

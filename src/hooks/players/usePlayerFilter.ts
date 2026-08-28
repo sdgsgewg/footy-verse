@@ -1,7 +1,10 @@
 import { PlayerFilter } from "@/types/player";
 import { useFilters } from "../filter";
-import { hasFilterChanged } from "@/lib/utils/crud";
+import { hasFilterChanged, parseSearchParams } from "@/lib/utils/crud";
 import { usePagination } from "../pagination";
+import { useSearchParams } from "next/navigation";
+import { useMemo } from "react";
+import { playersQuerySchema } from "@/lib/validations/players.schema";
 
 const DEFAULT_FILTER: PlayerFilter = {
   search: "",
@@ -17,7 +20,16 @@ const DEFAULT_FILTER: PlayerFilter = {
 };
 
 export default function usePlayerFilter() {
+  const searchParams = useSearchParams();
+
+  const initialFilter = useMemo(
+    () => parseSearchParams(searchParams, playersQuerySchema),
+    [searchParams],
+  );
+
   const crud = useFilters(DEFAULT_FILTER, {
+    initialFilter,
+    omitDefaultValuesFromUrl: true,
     shouldResetPage: hasFilterChanged([
       "search",
       "clubTeamId",
@@ -31,6 +43,7 @@ export default function usePlayerFilter() {
   const pagination = usePagination(crud.filters, crud.updateFiltersPartial);
 
   return {
+    defaultFilters: DEFAULT_FILTER,
     ...crud,
     ...pagination,
   };

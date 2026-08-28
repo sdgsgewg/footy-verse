@@ -12,5 +12,9 @@ export default function PaginationSection({ isLoading, ...pagination }: Props) {
     return <PaginationSkeleton />;
   }
 
+  if (pagination.totalPages <= 1) {
+    return <></>;
+  }
+
   return <Pagination {...pagination} />;
 }

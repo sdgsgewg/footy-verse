@@ -2,23 +2,25 @@
 
 import { ComboboxField } from "@/components/forms/fields";
 import { useNationalityOptions } from "@/hooks/nationalities";
-import { ClubFilter } from "@/types/club";
+import { PlayerFilter } from "@/types/player";
 import { useTranslations } from "next-intl";
 
-interface ClubFilterContentProps {
-  filters: ClubFilter;
-  updateFilter: <K extends keyof ClubFilter>(
+interface PlayerFilterContentProps {
+  filters: PlayerFilter;
+  updateFilter: <K extends keyof PlayerFilter>(
     key: K,
-    value: ClubFilter[K],
+    value: PlayerFilter[K],
   ) => void;
 }
 
-export default function ClubFilterContent({
+export default function PlayerFilterContent({
   filters,
   updateFilter,
-}: ClubFilterContentProps) {
-  const tLabels = useTranslations("dashboard.clubs.form.labels");
-  const tPlaceholders = useTranslations("dashboard.clubs.form.placeholders");
+}: PlayerFilterContentProps) {
+  const tLabels = useTranslations("dashboard.players.filter.form.labels");
+  const tPlaceholders = useTranslations(
+    "dashboard.players.filter.form.placeholders",
+  );
 
   const tEntities = useTranslations("entities");
   const tCommon = useTranslations("common");
@@ -30,7 +32,7 @@ export default function ClubFilterContent({
       {/* Nationality */}
       <ComboboxField
         label={tLabels("nation")}
-        name={`nationality`}
+        name={`nation`}
         options={nationalityOptions}
         placeholder={tPlaceholders("nation")}
         searchPlaceholder={tCommon("combobox.searchEntity", {

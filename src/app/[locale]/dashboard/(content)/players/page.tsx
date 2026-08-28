@@ -10,6 +10,9 @@ import usePlayerFilter from "@/hooks/players/usePlayerFilter";
 import { isLikelyConnectionError } from "@/lib/utils/connection-error";
 import { createSortHandler } from "@/lib/utils/crud";
 import { useTranslations } from "next-intl";
+import { useCrudFilterDialog } from "@/hooks/crud/useCrudFilterDialog";
+import { PlayerFilter } from "@/types/player";
+import PlayerFilterContent from "@/components/dashboard/players/PlayerFilterContent";
 
 export default function PlayersManagementPage() {
   const tCommon = useTranslations("common");
@@ -19,6 +22,7 @@ export default function PlayersManagementPage() {
 
   const {
     filters,
+    defaultFilters,
     debouncedFilters,
     updateFilter,
     updateFiltersPartial,
@@ -26,6 +30,20 @@ export default function PlayersManagementPage() {
     changeLimit,
     syncUrl,
   } = usePlayerFilter();
+
+  const {
+    filterOpen,
+    setFilterOpen,
+    draftFilters,
+    updateDraftFilter,
+    openFilter,
+    applyFilter,
+    resetFilter,
+  } = useCrudFilterDialog<PlayerFilter>(
+    filters,
+    updateFiltersPartial,
+    defaultFilters,
+  );
 
   const {
     players,
@@ -85,6 +103,19 @@ export default function PlayersManagementPage() {
         searchValue: filters.search,
         searchPlaceholder: tCommon("search.placeholder"),
         onSearchChange: (value) => updateFilter("search", value),
+        onFilter: openFilter,
+      }}
+      filter={{
+        content: (
+          <PlayerFilterContent
+            filters={draftFilters}
+            updateFilter={updateDraftFilter}
+          />
+        ),
+        open: filterOpen,
+        onOpenChange: setFilterOpen,
+        onApply: applyFilter,
+        onReset: resetFilter,
       }}
       sorting={{
         sortBy: filters.sortBy,

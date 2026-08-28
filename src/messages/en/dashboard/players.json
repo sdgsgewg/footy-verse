@@ -45,6 +45,26 @@
     }
   },
 
+  "filter": {
+    "form": {
+      "labels": {
+        "nation": "Nation",
+        "age": "Age",
+        "club": "Club",
+        "position": "Position",
+        "marketValue": "Market Value (Euro)"
+      },
+
+      "placeholders": {
+        "nation": "Select a nation",
+        "age": "Enter age",
+        "club": "Select a club",
+        "position": "Select a position",
+        "marketValue": "Enter market value (Euro)"
+      }
+    }
+  },
+
   "table": {
     "title": "Player List",
 

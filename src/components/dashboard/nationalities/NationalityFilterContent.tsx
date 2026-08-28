@@ -28,7 +28,7 @@ export default function NationalityFilterContent({
   const { confederationOptions } = useConfederationOptions();
 
   return (
-    <div className="space-y-4">
+    <>
       {/* Confederation */}
       <ComboboxField
         label={tLabels("confederation")}
@@ -44,6 +44,6 @@ export default function NationalityFilterContent({
         value={filters.confederationId || null}
         onChange={(value) => updateFilter("confederationId", value)}
       />
-    </div>
+    </>
   );
 }
