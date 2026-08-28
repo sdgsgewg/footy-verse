@@ -95,7 +95,7 @@ function getClubTeamDetailBaseQuery() {
       image
     ),
 
-    player_club_careers (
+    player_club_team_careers (
       player_career:player_careers (
         player:players (
           id,

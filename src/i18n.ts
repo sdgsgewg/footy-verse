@@ -26,8 +26,8 @@ async function getMessages(locale: string) {
       await import(`./messages/${locale}/dashboard/player-careers.json`)
     ).default,
 
-    playerClubCareers: (
-      await import(`./messages/${locale}/dashboard/player-club-careers.json`)
+    playerClubTeamCareers: (
+      await import(`./messages/${locale}/dashboard/player-club-team-careers.json`)
     ).default,
 
     playerNationalTeamCareers: (

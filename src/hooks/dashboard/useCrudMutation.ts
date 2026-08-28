@@ -39,7 +39,7 @@ export function useCrudMutation<TVariables>({
       });
 
       if (
-        ["playerClubCareer", "playerNationalTeamCareer"].includes(entityKey)
+        ["playerClubTeamCareer", "playerNationalTeamCareer"].includes(entityKey)
       ) {
         toast.success(
           `${t(`common.crud.success.${action}`, {

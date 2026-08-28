@@ -29,7 +29,7 @@ import {
 } from "@/types/player";
 import { createPaginatedResponse } from "../pagination";
 import { DbPlayerNationalTeamCareerRow } from "@/types/player-national-team-career";
-import { DbPlayerClubCareerRow } from "@/types/player-club-career";
+import { DbPlayerClubTeamCareerRow } from "@/types/player-club-team-career";
 import { createEntityActivityLog } from "./activity-logs.repo";
 import { ActivityLogAction } from "@/enums/ActivityLogAction";
 import { getChangedFields } from "./helpers/get-changed-field";
@@ -54,9 +54,7 @@ const getPlayerNationalityTable = () => {
   return ENTITY_CONFIG["playerNationality"]["table"];
 };
 
-function getPlayersBaseQuery(options?: {
-  isNationFiltered?: boolean;
-}) {
+function getPlayersBaseQuery(options?: { isNationFiltered?: boolean }) {
   const nationFilterJoin = options?.isNationFiltered
     ? `
       player_nationalities_filter:player_nationalities!inner (
@@ -116,11 +114,11 @@ function getPlayersBaseQuery(options?: {
         end_date
       ),
 
-      player_club_career:player_club_careers (
+      player_club_team_career:player_club_team_careers (
         id,
         club_team_id,
 
-        club_team:club_teams!player_club_careers_club_team_id_fkey (
+        club_team:club_teams!player_club_team_careers_club_team_id_fkey (
           id,
           squad_type,
           age_group,
@@ -139,7 +137,7 @@ function getPlayersBaseQuery(options?: {
           contract_end
         ),
 
-        player_transfer:player_transfers!transfers_player_club_career_id_fkey (
+        player_transfer:player_transfers!player_transfers_player_club_team_career_id_fkey (
           id,
           transfer_type
         )
@@ -170,10 +168,10 @@ async function getPlayerIdsByClubTeam(clubTeamId: string): Promise<string[]> {
   const supabase = await getSupabase();
 
   const { data, error } = await supabase
-    .from("player_club_careers")
+    .from("player_club_team_careers")
     .select(
       `
-      player_career:player_careers!player_club_careers_player_career_id_fkey (
+      player_career:player_careers!player_club_team_careers_player_career_id_fkey (
         left_at,
         player_id
       )
@@ -181,7 +179,7 @@ async function getPlayerIdsByClubTeam(clubTeamId: string): Promise<string[]> {
     )
     .eq("club_team_id", clubTeamId)
     .is("player_career.left_at", null)
-    .overrideTypes<DbPlayerClubCareerRow[]>();
+    .overrideTypes<DbPlayerClubTeamCareerRow[]>();
 
   if (error) {
     throw error;
@@ -263,7 +261,7 @@ export async function getPlayersRepo(
 
   if (params.clubTeamId) {
     query = query.eq(
-      "club_team_filter.player_club_career.club_team_id",
+      "club_team_filter.player_club_team_career.club_team_id",
       params.clubTeamId,
     );
   }
@@ -422,11 +420,11 @@ function getPlayerDetailBaseQuery() {
         end_date
       ),
 
-      player_club_career:player_club_careers (
+      player_club_team_career:player_club_team_careers (
         id,
         club_team_id,
   
-        club_team:club_teams!player_club_careers_club_team_id_fkey (
+        club_team:club_teams!player_club_team_careers_club_team_id_fkey (
           id,
           squad_type,
           age_group,
@@ -438,12 +436,12 @@ function getPlayerDetailBaseQuery() {
           )
         ),
   
-        player_contracts:player_contracts!player_contracts_player_club_career_id_fkey (
+        player_contracts:player_contracts!player_contracts_player_club_team_career_id_fkey (
           contract_start,
           contract_end
         ),
 
-        player_transfer:player_transfers!transfers_player_club_career_id_fkey (
+        player_transfer:player_transfers!transfers_player_club_team_career_id_fkey (
           id,
           transfer_type
         )

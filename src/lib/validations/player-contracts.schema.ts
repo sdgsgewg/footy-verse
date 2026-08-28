@@ -2,7 +2,7 @@ import { z } from "zod";
 import { idSchema } from "./primitives.schema";
 
 export const playerContractMutationSchema = z.object({
-  player_club_career_id: idSchema.optional(),
+  player_club_team_career_id: idSchema.optional(),
   contract_start: z.string(),
   contract_end: z.string(),
   salary: z.number().min(0),
@@ -14,7 +14,7 @@ export const updatePlayerContractSchema = playerContractMutationSchema;
 
 export const playerContractSchema = playerContractMutationSchema.extend({
   id: idSchema,
-  player_club_career_id: idSchema,
+  player_club_team_career_id: idSchema,
   created_at: z.string(),
   updated_at: z.string().nullable(),
 });

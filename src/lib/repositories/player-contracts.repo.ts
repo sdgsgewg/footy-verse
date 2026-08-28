@@ -12,18 +12,18 @@ async function getSupabase() {
 
 /**
  *
- * @param playerClubCareerId
+ * @param playerClubTeamCareerId
  * @param playerContracts
  */
 export async function createPlayerContractsRepo(
-  playerClubCareerId: string,
+  playerClubTeamCareerId: string,
   playerContracts: PlayerContractCreateInput[],
 ) {
   const supabase = await getSupabase();
 
   const playerContractInserts: PlayerContractCreateInput[] =
     playerContracts.map((pc) => ({
-      player_club_career_id: playerClubCareerId,
+      player_club_team_career_id: playerClubTeamCareerId,
       contract_start: pc.contract_start,
       contract_end: pc.contract_end,
       salary: pc.salary,
@@ -37,15 +37,15 @@ export async function createPlayerContractsRepo(
 
 /**
  *
- * @param playerClubCareerId
+ * @param playerClubTeamCareerId
  */
-export async function deletePlayerContractRepo(playerClubCareerId: string) {
+export async function deletePlayerContractRepo(playerClubTeamCareerId: string) {
   const supabase = await getSupabase();
 
   const { error: deleteContractError } = await supabase
     .from(getTable())
     .delete()
-    .eq("player_club_career_id", playerClubCareerId);
+    .eq("player_club_team_career_id", playerClubTeamCareerId);
 
   if (deleteContractError) throw deleteContractError;
 }

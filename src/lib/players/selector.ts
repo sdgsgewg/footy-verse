@@ -2,7 +2,7 @@ import { TransferType } from "@/enums/TransferType";
 import { ClubTeamResponse } from "@/types/club-team";
 import {
   DbPlayerCareerRow,
-  DbPlayerClubCareerRow,
+  DbPlayerClubTeamCareerRow,
   DbPlayerDetailRow,
   DbPlayerListRow,
   DbPlayerNationalTeamCareerRow,
@@ -32,7 +32,7 @@ export function getCurrentClubTeamRecentPlayerCareer(
 
   // 2. Check whether player careers have player club career, then sort from latest to oldest
   const clubCareers = player.player_careers
-    .filter((career) => career.player_club_career !== null)
+    .filter((career) => career.player_club_team_career !== null)
     .toSorted(
       (a, b) =>
         new Date(b.left_at ?? b.joined_at).getDate() -
@@ -48,14 +48,14 @@ export function getCurrentClubTeamRecentPlayerCareer(
     (career) => career.left_at === null,
   );
 
-  if (!currentPlayerCareer || !currentPlayerCareer.player_club_career)
+  if (!currentPlayerCareer || !currentPlayerCareer.player_club_team_career)
     return undefined;
 
   const initialPlayerCareer = player.player_careers.find(
     (c) =>
-      c.player_club_career?.club_team_id ===
-        currentPlayerCareer.player_club_career?.club_team_id &&
-      c.player_club_career?.player_transfer.transfer_type !=
+      c.player_club_team_career?.club_team_id ===
+        currentPlayerCareer.player_club_team_career?.club_team_id &&
+      c.player_club_team_career?.player_transfer.transfer_type !=
         TransferType.LOAN_RETURN,
   );
 
@@ -63,8 +63,8 @@ export function getCurrentClubTeamRecentPlayerCareer(
 
   // 4. Check if the most recent transfer is a loan return
   const recentPlayerCareer =
-    currentPlayerCareer.player_club_career.player_transfer.transfer_type ===
-    TransferType.LOAN_RETURN
+    currentPlayerCareer.player_club_team_career.player_transfer
+      .transfer_type === TransferType.LOAN_RETURN
       ? initialPlayerCareer
       : currentPlayerCareer;
 
@@ -99,7 +99,7 @@ export function getCurrentContract(
   if (!recentPlayerCareer) return undefined;
 
   const clubTeamContracts =
-    recentPlayerCareer.player_club_career?.player_contracts;
+    recentPlayerCareer.player_club_team_career?.player_contracts;
 
   if (!clubTeamContracts || clubTeamContracts.length === 0) {
     return undefined;
@@ -121,13 +121,13 @@ export function getCurrentContract(
  */
 export function getCurrentClubTeamCareer(
   player: DbPlayerListRow | DbPlayerDetailRow,
-): DbPlayerClubCareerRow | undefined {
+): DbPlayerClubTeamCareerRow | undefined {
   const recentPlayerCareer = getCurrentClubTeamRecentPlayerCareer(player);
 
-  if (!recentPlayerCareer || !recentPlayerCareer.player_club_career)
+  if (!recentPlayerCareer || !recentPlayerCareer.player_club_team_career)
     return undefined;
 
-  return recentPlayerCareer.player_club_career;
+  return recentPlayerCareer.player_club_team_career;
 }
 
 /**
@@ -138,10 +138,10 @@ export function getCurrentClubTeamCareer(
  */
 export function getCurrentClubTeamShirtNumber(
   careers: DbPlayerCareerRow[],
-  currentClubTeamCareer: DbPlayerClubCareerRow,
+  currentClubTeamCareer: DbPlayerClubTeamCareerRow,
 ): number | undefined {
   const currentCareer = careers.find(
-    (c) => c.player_club_career?.id === currentClubTeamCareer.id,
+    (c) => c.player_club_team_career?.id === currentClubTeamCareer.id,
   );
 
   if (!currentCareer) return undefined;
@@ -277,7 +277,7 @@ export function getCurrentClubTeam(
 
   // 2. Check whether player careers have player club career
   const clubCareers = player.player_careers.filter(
-    (career) => career.player_club_career !== null,
+    (career) => career.player_club_team_career !== null,
   );
 
   if (clubCareers.length === 0) {
@@ -287,17 +287,17 @@ export function getCurrentClubTeam(
   // 3. Find the active club career
   const current = clubCareers.find((career) => career.left_at === null);
 
-  if (current && current.player_club_career)
-    return mapClubTeamResponse(current.player_club_career.club_team);
+  if (current && current.player_club_team_career)
+    return mapClubTeamResponse(current.player_club_team_career.club_team);
 
   // 4. If no active career, find the latest one
   const latest = clubCareers.toSorted(
     (a, b) => new Date(b.left_at!).getTime() - new Date(a.left_at!).getTime(),
   )[0];
 
-  if (!latest || !latest.player_club_career) return undefined;
+  if (!latest || !latest.player_club_team_career) return undefined;
 
-  return mapClubTeamResponse(latest.player_club_career.club_team);
+  return mapClubTeamResponse(latest.player_club_team_career.club_team);
 }
 
 /**

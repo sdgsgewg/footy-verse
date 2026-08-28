@@ -1,7 +1,7 @@
 import { Player } from "./database";
 import { DbPlayerPositionRow } from "../player-position";
 import { DbPlayerNationalityRow } from "../player-nationality";
-import { PlayerClubCareer } from "../player-club-career";
+import { PlayerClubTeamCareer } from "../player-club-team-career";
 import { DbClubTeamRow } from "../club-team";
 import { PlayerContractSummary } from "../player-contract";
 import { PlayerCareer } from "../player-career";
@@ -32,8 +32,8 @@ export type DbPlayerListQueryRow = DbPlayerListRow & {
 
 type DbPlayerTransferRow = Pick<PlayerTransfer, "id" | "transfer_type">;
 
-export type DbPlayerClubCareerRow = Pick<
-  PlayerClubCareer,
+export type DbPlayerClubTeamCareerRow = Pick<
+  PlayerClubTeamCareer,
   "id" | "club_team_id"
 > & {
   club_team: DbClubTeamRow;
@@ -53,7 +53,7 @@ export type DbPlayerCareerRow = Pick<
   "id" | "joined_at" | "left_at" | "career_type"
 > & {
   player_shirt_numbers: DbPlayerShirtNumberRow[];
-  player_club_career: DbPlayerClubCareerRow | null;
+  player_club_team_career: DbPlayerClubTeamCareerRow | null;
   player_national_team_career: DbPlayerNationalTeamCareerRow | null;
 };
 

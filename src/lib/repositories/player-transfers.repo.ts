@@ -31,7 +31,7 @@ function getPlayerTransfersBaseQuery() {
   return `
     *,
 
-    player_club_career:player_club_careers!inner (
+    player_club_team_career:player_club_team_careers!inner (
       player_career:player_careers!inner (
         player_id
       )
@@ -85,7 +85,7 @@ export async function getPlayerTransfersRepo(
 
   // Filter
 
-  query = query.eq("player_club_career.player_career.player_id", playerId);
+  query = query.eq("player_club_team_career.player_career.player_id", playerId);
 
   // Sort
 
@@ -141,18 +141,18 @@ function getPlayerTransferDetailBaseQuery() {
 
 /**
  *
- * @param playerClubCareerId
+ * @param playerClubTeamCareerId
  * @returns PlayerTransferDetailResponse | null
  */
-export async function getPlayerTransferDetailByPlayerClubCareerIdRepo(
-  playerClubCareerId: string,
+export async function getPlayerTransferDetailByPlayerClubTeamCareerIdRepo(
+  playerClubTeamCareerId: string,
 ): Promise<PlayerTransferDetailResponse | null> {
   const supabase = await getSupabase();
 
   const { data, error } = await supabase
     .from(getTable())
     .select(getPlayerTransferDetailBaseQuery())
-    .eq("player_club_career_id", playerClubCareerId)
+    .eq("player_club_team_career_id", playerClubTeamCareerId)
     .maybeSingle()
     .overrideTypes<DbPlayerTransferDetailRow>();
 
@@ -164,17 +164,17 @@ export async function getPlayerTransferDetailByPlayerClubCareerIdRepo(
 
 /**
  *
- * @param playerClubCareerId
+ * @param playerClubTeamCareerId
  * @param transfer
  */
 export async function createPlayerTransferRepo(
-  playerClubCareerId: string,
+  playerClubTeamCareerId: string,
   transfer: PlayerTransferCreateInput,
 ) {
   const supabase = await getSupabase();
 
   const transferInsert: PlayerTransferCreateInput = {
-    player_club_career_id: playerClubCareerId,
+    player_club_team_career_id: playerClubTeamCareerId,
     from_club_team_id: transfer.from_club_team_id,
     to_club_team_id: transfer.to_club_team_id,
     season_id: transfer.season_id,
@@ -192,19 +192,19 @@ export async function createPlayerTransferRepo(
 
 /**
  *
- * @param playerClubCareerId
+ * @param playerClubTeamCareerId
  * @param playerTransfer
  * @returns PlayerTransferDetailResponse
  */
-export async function updatePlayerTransferByPlayerClubCareerIdRepo(
-  playerClubCareerId: string,
+export async function updatePlayerTransferByPlayerClubTeamCareerIdRepo(
+  playerClubTeamCareerId: string,
   playerTransfer: PlayerTransferUpdateInput,
 ): Promise<PlayerTransferDetailResponse> {
   const supabase = await getSupabase();
 
   await requireEntity(
-    getPlayerTransferDetailByPlayerClubCareerIdRepo,
-    playerClubCareerId,
+    getPlayerTransferDetailByPlayerClubTeamCareerIdRepo,
+    playerClubTeamCareerId,
     getLabel(),
   );
 
@@ -216,12 +216,13 @@ export async function updatePlayerTransferByPlayerClubCareerIdRepo(
       ...rest,
       updated_at: new Date().toISOString(),
     })
-    .eq("player_club_career_id", playerClubCareerId);
+    .eq("player_club_team_career_id", playerClubTeamCareerId);
 
   if (playerTransferError) throw playerTransferError;
 
-  const result =
-    await getPlayerTransferDetailByPlayerClubCareerIdRepo(playerClubCareerId);
+  const result = await getPlayerTransferDetailByPlayerClubTeamCareerIdRepo(
+    playerClubTeamCareerId,
+  );
 
   if (!result) {
     throw new Error("Failed to retrieve updated player transfer");
@@ -232,15 +233,15 @@ export async function updatePlayerTransferByPlayerClubCareerIdRepo(
 
 /**
  *
- * @param playerClubCareerId
+ * @param playerClubTeamCareerId
  */
-export async function deletePlayerTransferRepo(playerClubCareerId: string) {
+export async function deletePlayerTransferRepo(playerClubTeamCareerId: string) {
   const supabase = await getSupabase();
 
   const { error: deleteTransferError } = await supabase
     .from(getTable())
     .delete()
-    .eq("player_club_career_id", playerClubCareerId);
+    .eq("player_club_team_career_id", playerClubTeamCareerId);
 
   if (deleteTransferError) throw deleteTransferError;
 }

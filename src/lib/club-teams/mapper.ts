@@ -44,11 +44,12 @@ export function mapClubTeamEditResponse(
 export function mapClubTeamDetailResponse(
   clubTeam: DbClubTeamDetailRow,
 ): ClubTeamDetailResponse {
-  const { id, squad_type, age_group, club, player_club_careers } = clubTeam;
+  const { id, squad_type, age_group, club, player_club_team_careers } =
+    clubTeam;
 
-  const squadSize = player_club_careers.length;
+  const squadSize = player_club_team_careers.length;
 
-  const marketValues = player_club_careers.map(
+  const marketValues = player_club_team_careers.map(
     (pcc) => pcc.player_career.player.market_value,
   );
 

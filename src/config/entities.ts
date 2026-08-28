@@ -105,10 +105,10 @@ export const ENTITY_CONFIG = {
     supportsSlug: false,
   },
 
-  playerClubCareer: {
-    table: "player_club_careers",
-    label: "Player club career",
-    activityType: "PLAYER_CLUB_CAREER",
+  playerClubTeamCareer: {
+    table: "player_club_team_careers",
+    label: "Player club team career",
+    activityType: "PLAYER_CLUB_TEAM_CAREER",
     supportsImage: false,
     supportsSlug: false,
   },

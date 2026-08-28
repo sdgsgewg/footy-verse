@@ -28,8 +28,8 @@ function getPlayerClubTeamShirtNumbersBaseQuery() {
     player_career:player_careers!player_shirt_numbers_player_career_id_fkey!inner (
       player_id,
 
-      player_club_career:player_club_careers!player_club_careers_player_career_id_fkey!inner (
-        club_team:club_teams!player_club_careers_club_team_id_fkey (
+      player_club_team_career:player_club_team_careers!player_club_team_careers_player_career_id_fkey!inner (
+        club_team:club_teams!player_club_team_careers_club_team_id_fkey (
           id,
           squad_type,
           age_group,

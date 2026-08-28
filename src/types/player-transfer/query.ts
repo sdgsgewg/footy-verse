@@ -14,7 +14,7 @@ export type DbPlayerTransferListRow = PlayerTransfer & {
   to_club_team: DbClubTeamRow;
   season: SeasonSummary;
 
-  player_club_career: PlayerTransferFilterQuery;
+  player_club_team_career: PlayerTransferFilterQuery;
 };
 
 // Player Transfer Detail

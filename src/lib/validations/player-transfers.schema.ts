@@ -7,7 +7,7 @@ import {
 } from "./enums.schema";
 
 export const playerTransferMutationSchema = z.object({
-  player_club_career_id: idSchema.optional(),
+  player_club_team_career_id: idSchema.optional(),
   season_id: idSchema,
   from_club_team_id: idSchema,
   to_club_team_id: idSchema,
@@ -22,7 +22,7 @@ export const updatePlayerTransferSchema = playerTransferMutationSchema;
 
 export const playerTransferSchema = playerTransferMutationSchema.extend({
   id: idSchema,
-  player_club_career_id: idSchema,
+  player_club_team_career_id: idSchema,
   created_at: z.string(),
   updated_at: z.string().nullable(),
 });

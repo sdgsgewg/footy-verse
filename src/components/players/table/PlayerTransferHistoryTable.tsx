@@ -17,7 +17,7 @@ interface Props {
 const PlayerTransferHistoryTable = ({ playerTransfers, loading }: Props) => {
   const tColumn = useTranslations("dashboard.playerTransfers.table.columns");
   const tTransferType = useTranslations(
-    "dashboard.playerClubCareers.form.options.transferType",
+    "dashboard.playerClubTeamCareers.form.options.transferType",
   );
 
   const locale = useLocale();

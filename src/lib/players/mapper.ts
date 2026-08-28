@@ -41,7 +41,7 @@ export function mapPlayerListItem(player: DbPlayerListRow): PlayerListItem {
 
   const currentNationality = getCurrentNationality(player.player_nationalities);
 
-  const currentClub = getCurrentClubTeam(player);
+  const currentClubTeam = getCurrentClubTeam(player);
 
   const marketValue = formatEuroValue(player.market_value);
 
@@ -52,7 +52,7 @@ export function mapPlayerListItem(player: DbPlayerListRow): PlayerListItem {
     dob: formatDateOfBirth(player.dob),
     mainPosition,
     currentNationality,
-    currentClubTeam: currentClub ?? null,
+    currentClubTeam: currentClubTeam ?? null,
     marketValue,
   };
 }

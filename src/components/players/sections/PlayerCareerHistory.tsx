@@ -4,10 +4,10 @@ import SectionHeader from "./SectionHeader";
 import { usePathname, useRouter } from "@/navigation";
 import { isDashboardPath } from "@/lib/utils/navigation";
 import { ROUTES } from "@/constants/routes";
-import { usePlayerClubCareers } from "@/hooks/dashboard/player-club-careers";
+import { usePlayerClubTeamCareers } from "@/hooks/dashboard/player-club-team-careers";
 import { usePlayerNationalTeamCareers } from "@/hooks/dashboard/player-national-teams";
 import {
-  PlayerClubCareerHistoryTable,
+  PlayerClubTeamCareerHistoryTable,
   PlayerNationalTeamCareerHistoryTable,
 } from "../table";
 import { useTranslations } from "next-intl";
@@ -24,13 +24,15 @@ const PlayerCareerHistory = ({ player }: Props) => {
 
   const tCareerTable = useTranslations("dashboard.playerCareers.table");
 
-  const tClubCareerTable = useTranslations("dashboard.playerClubCareers.table");
+  const tClubCareerTable = useTranslations(
+    "dashboard.playerClubTeamCareers.table",
+  );
   const tNationalTeamCareerTable = useTranslations(
     "dashboard.playerNationalTeamCareers.table",
   );
 
-  const { playerClubCareers, loading: isPlayerClubCareersLoading } =
-    usePlayerClubCareers({ playerId: player.id });
+  const { playerClubTeamCareers, loading: isPlayerClubTeamCareersLoading } =
+    usePlayerClubTeamCareers({ playerId: player.id });
 
   const {
     playerNationalTeamCareers,
@@ -67,10 +69,10 @@ const PlayerCareerHistory = ({ player }: Props) => {
             <SubsectionHeader title={tClubCareerTable("title")} />
           )}
 
-          <PlayerClubCareerHistoryTable
+          <PlayerClubTeamCareerHistoryTable
             playerLookup={player}
-            playerClubCareers={playerClubCareers}
-            loading={isPlayerClubCareersLoading}
+            playerClubTeamCareers={playerClubTeamCareers}
+            loading={isPlayerClubTeamCareersLoading}
             showActions
           />
         </section>

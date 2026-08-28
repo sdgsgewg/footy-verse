@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { getPlayerLookupService } from "@/lib/services/players.service";
-import CreatePlayerClubCareerPage from "@/components/dashboard/player-club-careers/CreatePlayerClubCareerPage";
+import CreatePlayerClubTeamCareerPage from "@/components/dashboard/player-club-team-careers/CreatePlayerClubTeamCareerPage";
 
 export default async function Page({
   params,
@@ -15,5 +15,5 @@ export default async function Page({
     return notFound();
   }
 
-  return <CreatePlayerClubCareerPage playerLookup={playerLookup} />;
+  return <CreatePlayerClubTeamCareerPage playerLookup={playerLookup} />;
 }

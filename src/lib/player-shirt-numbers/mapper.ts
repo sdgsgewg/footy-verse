@@ -18,7 +18,9 @@ export function mapPlayerClubTeamShirtNumberListItem(
 
   return {
     id,
-    clubTeam: mapClubTeamResponse(player_career.player_club_career.club_team),
+    clubTeam: mapClubTeamResponse(
+      player_career.player_club_team_career.club_team,
+    ),
     shirtNumber: shirt_number,
     startDate: start_date,
     endDate: end_date,

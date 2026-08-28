@@ -10,7 +10,7 @@ export type DbPlayerClubTeamShirtNumberListRow = PlayerShirtNumber & {
   player_career: {
     player_id: string;
 
-    player_club_career: {
+    player_club_team_career: {
       club_team: DbClubTeamRow;
     };
   };

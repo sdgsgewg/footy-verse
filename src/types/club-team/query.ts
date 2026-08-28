@@ -1,5 +1,5 @@
 import { DbClubRow } from "../club/query";
-import { DbPlayerClubCareerWithPlayerCareerRow } from "../player-club-career";
+import { DbPlayerClubTeamCareerWithPlayerCareerRow } from "../player-club-team-career";
 import { ClubTeam } from "./database";
 
 // Supabase Query Result
@@ -17,7 +17,7 @@ export type DbClubTeamListRow = Pick<
 
 export type DbClubTeamDetailRow = ClubTeam & {
   club: DbClubRow;
-  player_club_careers: DbPlayerClubCareerWithPlayerCareerRow[];
+  player_club_team_careers: DbPlayerClubTeamCareerWithPlayerCareerRow[];
 };
 
 // Helpers
