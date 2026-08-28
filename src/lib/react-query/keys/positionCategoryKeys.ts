@@ -8,6 +8,8 @@ export const positionCategoryKeys = {
   list: (params?: PositionCategoryQuery) =>
     [...positionCategoryKeys.lists(), params] as const,
 
+  options: () => [...positionCategoryKeys.all, "options"] as const,
+
   details: () => [...positionCategoryKeys.all, "detail"] as const,
 
   detail: (slug: string) => [...positionCategoryKeys.details(), slug] as const,

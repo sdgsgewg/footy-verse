@@ -1,5 +1,4 @@
 import { createClient } from "@/utils/supabase/server";
-import { ensureUniqueSlug } from "./helpers/slug";
 import { requireEntity } from "./helpers/require-entity";
 import { ENTITY_CONFIG } from "@/config/entities";
 import {
@@ -20,6 +19,10 @@ import {
 import { createEntityActivityLog } from "./activity-logs.repo";
 import { ActivityLogAction } from "@/enums/ActivityLogAction";
 import { getChangedFields } from "./helpers/get-changed-field";
+import { Option } from "@/types/option";
+import { mapEntityOption } from "../entities/mapper";
+import { slugify } from "@/utils/string";
+import { ensureUniqueFieldsRepo } from "./helpers/uniqueness";
 
 async function getSupabase() {
   return createClient();
@@ -68,6 +71,34 @@ export async function getPositionCategoriesRepo(
   if (error) throw error;
 
   return (data ?? []).map(mapPositionCategoryListItem);
+}
+
+/**
+ *
+ * @returns Option[]
+ */
+export async function getPositionCategoryOptionsRepo(): Promise<Option[]> {
+  const supabase = await getSupabase();
+
+  const { data, error } = await supabase
+    .from(getTable())
+    .select(
+      `
+      id,
+      name
+    `,
+    )
+    .order("name", {
+      ascending: true,
+    });
+
+  if (error) {
+    throw error;
+  }
+
+  if (!data || data.length === 0) return [];
+
+  return data.map((data) => mapEntityOption(data, "positionCategory"));
 }
 
 /**
@@ -136,6 +167,30 @@ export async function getPositionCategoryLookupRepo(
   return data;
 }
 
+export async function ensurePositionCategoryUniqueRepo({
+  name,
+  ignoreId,
+}: {
+  name: string;
+  ignoreId?: string;
+}): Promise<string> {
+  const slug = slugify(name);
+
+  await ensureUniqueFieldsRepo({
+    table: getTable(),
+    fields: [
+      {
+        field: "slug",
+        value: slug,
+        message: "Position category name already exists",
+      },
+    ],
+    ignoreId,
+  });
+
+  return slug;
+}
+
 /**
  *
  * @param positionCategory
@@ -146,8 +201,7 @@ export async function createPositionCategoryRepo(
 ): Promise<PositionCategoryDetailResponse> {
   const supabase = await getSupabase();
 
-  const slug = await ensureUniqueSlug({
-    table: getTable(),
+  const slug = await ensurePositionCategoryUniqueRepo({
     name: positionCategory.name,
   });
 
@@ -200,9 +254,9 @@ export async function updatePositionCategoryRepo(
     getLabel(),
   );
 
-  const slug = await ensureUniqueSlug({
-    table: getTable(),
+  const slug = await ensurePositionCategoryUniqueRepo({
     name: positionCategory.name,
+    ignoreId: id,
   });
 
   const { error } = await supabase

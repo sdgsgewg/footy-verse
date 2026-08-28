@@ -8,9 +8,11 @@ import { DataColumn } from "@/types/table";
 import { createSortHandler } from "@/lib/utils/crud";
 import { useFilterSync } from "@/hooks/filter";
 import usePositionFilter from "@/hooks/positions/usePositionFilter";
-import { PositionListItem } from "@/types/position";
+import { PositionFilter, PositionListItem } from "@/types/position";
 import { usePositionActions, usePositions } from "@/hooks/dashboard/positions";
 import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
+import PositionFilterContent from "@/components/dashboard/positions/PositionFilterContent";
+import { useCrudFilterDialog } from "@/hooks/crud/useCrudFilterDialog";
 
 export default function Page() {
   const tCommon = useTranslations("common");
@@ -20,11 +22,26 @@ export default function Page() {
 
   const {
     filters,
+    defaultFilters,
     debouncedFilters,
     updateFilter,
     updateFiltersPartial,
     syncUrl,
   } = usePositionFilter();
+
+  const {
+    filterOpen,
+    setFilterOpen,
+    draftFilters,
+    updateDraftFilter,
+    openFilter,
+    applyFilter,
+    resetFilter,
+  } = useCrudFilterDialog<PositionFilter>(
+    filters,
+    updateFiltersPartial,
+    defaultFilters,
+  );
 
   const { positions, loading, loadError, retrying, retryLoad } = usePositions({
     ...debouncedFilters,
@@ -80,6 +97,19 @@ export default function Page() {
         searchValue: filters.search,
         searchPlaceholder: tCommon("search.placeholder"),
         onSearchChange: (value) => updateFilter("search", value),
+        onFilter: openFilter,
+      }}
+      filter={{
+        content: (
+          <PositionFilterContent
+            filters={draftFilters}
+            updateFilter={updateDraftFilter}
+          />
+        ),
+        open: filterOpen,
+        onOpenChange: setFilterOpen,
+        onApply: applyFilter,
+        onReset: resetFilter,
       }}
       sorting={{
         sortBy: filters.sortBy,

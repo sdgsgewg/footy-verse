@@ -11,7 +11,6 @@ import {
   ReorderPositionsInput,
 } from "@/types/position";
 import { createClient } from "@/utils/supabase/server";
-import { ensureUniqueSlug } from "./helpers/slug";
 import { requireEntity } from "./helpers/require-entity";
 import { ENTITY_CONFIG } from "@/config/entities";
 import {
@@ -23,16 +22,17 @@ import { slugify } from "@/utils/string";
 import { createEntityActivityLog } from "./activity-logs.repo";
 import { ActivityLogAction } from "@/enums/ActivityLogAction";
 import { getChangedFields } from "./helpers/get-changed-field";
+import { ensureUniqueFieldsRepo } from "./helpers/uniqueness";
 
 async function getSupabase() {
   return createClient();
 }
 
-const getPositionLabel = () => {
+const getLabel = () => {
   return ENTITY_CONFIG["position"]["label"];
 };
 
-const getPositionTable = () => {
+const getTable = () => {
   return ENTITY_CONFIG["position"]["table"];
 };
 
@@ -61,7 +61,7 @@ export async function getPositionsRepo(
 
   // Base Query
 
-  let query = supabase.from(getPositionTable()).select(
+  let query = supabase.from(getTable()).select(
     getPositionsBaseQuery({
       isCategoryFiltered: !!params.categoryId,
     }),
@@ -117,7 +117,7 @@ export async function getPositionEditRepo(
   const supabase = await getSupabase();
 
   const { data, error } = await supabase
-    .from(getPositionTable())
+    .from(getTable())
     .select(getPositionDetailQuery())
     .eq("id", id)
     .maybeSingle()
@@ -140,7 +140,7 @@ export async function getPositionDetailRepo(
   const supabase = await getSupabase();
 
   const { data, error } = await supabase
-    .from(getPositionTable())
+    .from(getTable())
     .select(getPositionDetailQuery())
     .eq("id", id)
     .maybeSingle()
@@ -163,7 +163,7 @@ export async function getPositionLookupRepo(
   const supabase = await getSupabase();
 
   const { data, error } = await supabase
-    .from(getPositionTable())
+    .from(getTable())
     .select(`id, slug`)
     .eq("slug", slug)
     .maybeSingle();
@@ -172,6 +172,30 @@ export async function getPositionLookupRepo(
   if (!data) return null;
 
   return data;
+}
+
+export async function ensurePositionUniqueRepo({
+  name,
+  ignoreId,
+}: {
+  name: string;
+  ignoreId?: string;
+}): Promise<string> {
+  const slug = slugify(name);
+
+  await ensureUniqueFieldsRepo({
+    table: getTable(),
+    fields: [
+      {
+        field: "slug",
+        value: slug,
+        message: "Position name already exists",
+      },
+    ],
+    ignoreId,
+  });
+
+  return slug;
 }
 
 /**
@@ -184,13 +208,12 @@ export async function createPositionRepo(
 ): Promise<PositionDetailResponse> {
   const supabase = await getSupabase();
 
-  const slug = await ensureUniqueSlug({
-    table: getPositionTable(),
+  const slug = await ensurePositionUniqueRepo({
     name: position.name,
   });
 
   const { data: lastPosition, error: lastPositionError } = await supabase
-    .from(getPositionTable())
+    .from(getTable())
     .select("display_order")
     .eq("position_category_id", position.position_category_id)
     .order("display_order", { ascending: false })
@@ -202,7 +225,7 @@ export async function createPositionRepo(
   const displayOrder = (lastPosition?.display_order ?? 0) + 1;
 
   const { data: insertedPosition, error } = await supabase
-    .from(getPositionTable())
+    .from(getTable())
     .insert({ ...position, slug, display_order: displayOrder })
     .select("*")
     .single();
@@ -231,13 +254,12 @@ export async function updatePositionRepo(
 ): Promise<PositionEditResponse> {
   const supabase = await getSupabase();
 
-  const oldPosition = await requireEntity(
-    getPositionEditRepo,
-    id,
-    getPositionLabel(),
-  );
+  const oldPosition = await requireEntity(getPositionEditRepo, id, getLabel());
 
-  const slug = slugify(position.name);
+  const slug = ensurePositionUniqueRepo({
+    name: position.name,
+    ignoreId: id,
+  });
 
   /**
    * update data
@@ -299,16 +321,9 @@ export async function reorderPositionsRepo(
 export async function deletePositionRepo(id: string): Promise<void> {
   const supabase = await getSupabase();
 
-  const position = await requireEntity(
-    getPositionDetailRepo,
-    id,
-    getPositionLabel(),
-  );
+  const position = await requireEntity(getPositionDetailRepo, id, getLabel());
 
-  const { error } = await supabase
-    .from(getPositionTable())
-    .delete()
-    .eq("id", id);
+  const { error } = await supabase.from(getTable()).delete().eq("id", id);
 
   if (error) throw error;
 

@@ -11,6 +11,7 @@ import {
   createPositionCategorySchema,
   updatePositionCategorySchema,
 } from "../validations/position-categories.schema";
+import { Option } from "@/types/option";
 
 const baseRoute = "/positions/categories";
 
@@ -27,6 +28,18 @@ export const fetchPositionCategories = async (
     {
       params,
     },
+  );
+
+  return data.data;
+};
+
+/**
+ *
+ * @returns Option[]
+ */
+export const fetchPositionCategoryOptions = async (): Promise<Option[]> => {
+  const { data } = await apiClient.get<ApiResponse<Option[]>>(
+    `${baseRoute}/options`,
   );
 
   return data.data;

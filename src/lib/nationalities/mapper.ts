@@ -13,8 +13,6 @@ import { getImageUrl } from "../images/image-url";
 import { STORAGE_BUCKETS } from "../storage";
 import { LocationResponse } from "@/types/competition";
 import { mapConfederationResponse } from "../confederations/mapper";
-import { Option } from "@/types/option";
-import { DbOptionListRow } from "@/types/database";
 
 /**
  *
@@ -36,18 +34,6 @@ export function mapNationalityListItem(
     confederation: confederation
       ? mapConfederationResponse(confederation)
       : null,
-  };
-}
-
-export function mapNationalityOption(
-  nationality: DbOptionListRow,
-): Option {
-  const { id, name, image } = nationality;
-
-  return {
-    label: name,
-    value: id,
-    imageUrl: getImageUrl("nationality", STORAGE_BUCKETS.NATIONALITIES, image),
   };
 }
 

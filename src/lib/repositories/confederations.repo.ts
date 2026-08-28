@@ -19,12 +19,12 @@ import {
   mapConfederationDetailResponse,
   mapConfederationEditResponse,
   mapConfederationListItem,
-  mapConfederationOption,
 } from "../confederations/mapper";
 import { createEntityActivityLog } from "./activity-logs.repo";
 import { ActivityLogAction } from "@/enums/ActivityLogAction";
 import { getChangedFields } from "./helpers/get-changed-field";
 import { Option } from "@/types/option";
+import { mapEntityOption } from "../entities/mapper";
 
 async function getSupabase() {
   return createClient();
@@ -116,7 +116,9 @@ export async function getConfederationOptionsRepo(): Promise<Option[]> {
 
   if (!data || data.length === 0) return [];
 
-  return data.map(mapConfederationOption);
+  return data.map((data) =>
+    mapEntityOption(data, "confederation", STORAGE_BUCKETS.CONFEDERATIONS),
+  );
 }
 
 function getConfederationDetailBaseQuery() {

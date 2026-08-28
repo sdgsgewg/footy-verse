@@ -18,7 +18,6 @@ import {
   mapNationalityDetailResponse,
   mapNationalityEditResponse,
   mapNationalityListItem,
-  mapNationalityOption,
 } from "../nationalities/mapper";
 import { NationalTeamCreateInput } from "@/types/national-team";
 import { AgeGroup } from "@/enums/AgeGroup";
@@ -30,7 +29,8 @@ import { NationalTeamType } from "@/enums/NationalTeamType";
 import { createEntityActivityLog } from "./activity-logs.repo";
 import { ActivityLogAction } from "@/enums/ActivityLogAction";
 import { getChangedFields } from "./helpers/get-changed-field";
-import { ConflictError } from "../errors/http-error";
+import { ensureUniqueFieldsRepo } from "./helpers/uniqueness";
+import { mapEntityOption } from "../entities/mapper";
 
 async function getSupabase() {
   return createClient();
@@ -140,7 +140,9 @@ export async function getNationalityOptionsRepo(): Promise<Option[]> {
 
   if (!data || data.length === 0) return [];
 
-  return data.map(mapNationalityOption);
+  return data.map((data) =>
+    mapEntityOption(data, "nationality", STORAGE_BUCKETS.NATIONALITIES),
+  );
 }
 
 /**
@@ -222,11 +224,6 @@ export async function getNationalityLookupRepo(
   return data;
 }
 
-/**
- * Provides a friendly, deterministic duplicate error before a mutation.
- * The unique database constraints are still required to handle concurrent
- * requests that can pass this check at the same time.
- */
 export async function ensureNationalityUniqueRepo({
   name,
   fifaCode,
@@ -236,40 +233,24 @@ export async function ensureNationalityUniqueRepo({
   fifaCode: string;
   ignoreId?: string;
 }): Promise<string> {
-  const supabase = await getSupabase();
   const slug = slugify(name);
 
-  let slugQuery = supabase
-    .from(getNationalityTable())
-    .select("id")
-    .eq("slug", slug)
-    .limit(1);
-  let fifaCodeQuery = supabase
-    .from(getNationalityTable())
-    .select("id")
-    .eq("fifa_code", fifaCode)
-    .limit(1);
-
-  if (ignoreId) {
-    slugQuery = slugQuery.neq("id", ignoreId);
-    fifaCodeQuery = fifaCodeQuery.neq("id", ignoreId);
-  }
-
-  const [slugResult, fifaCodeResult] = await Promise.all([
-    slugQuery.maybeSingle(),
-    fifaCodeQuery.maybeSingle(),
-  ]);
-
-  if (slugResult.error) throw slugResult.error;
-  if (fifaCodeResult.error) throw fifaCodeResult.error;
-
-  if (slugResult.data) {
-    throw new ConflictError("Nationality name already exists");
-  }
-
-  if (fifaCodeResult.data) {
-    throw new ConflictError("FIFA code already exists");
-  }
+  await ensureUniqueFieldsRepo({
+    table: getNationalityTable(),
+    fields: [
+      {
+        field: "slug",
+        value: slug,
+        message: "Nationality name already exists",
+      },
+      {
+        field: "fifa_code",
+        value: fifaCode,
+        message: "FIFA code already exists",
+      },
+    ],
+    ignoreId,
+  });
 
   return slug;
 }

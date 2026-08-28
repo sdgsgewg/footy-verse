@@ -5,6 +5,7 @@ import {
   getPositionCategoryDetailRepo,
   getPositionCategoryEditRepo,
   getPositionCategoryLookupRepo,
+  getPositionCategoryOptionsRepo,
   reorderPositionCategoriesRepo,
   updatePositionCategoryRepo,
 } from "../repositories/position-categories.repo";
@@ -20,6 +21,10 @@ export async function getPositionCategoriesService(query: unknown) {
   const parsed = positionCategoriesQuerySchema.parse(query);
 
   return getPositionCategoriesRepo(parsed);
+}
+
+export async function getPositionCategoryOptionsService() {
+  return getPositionCategoryOptionsRepo();
 }
 
 export async function getPositionCategoryEditService(id: string) {
