@@ -22,6 +22,8 @@ import {
 import { createEntityActivityLog } from "./activity-logs.repo";
 import { ActivityLogAction } from "@/enums/ActivityLogAction";
 import { getChangedFields } from "./helpers/get-changed-field";
+import { Option } from "@/types/option";
+import { mapEntityOption } from "../entities/mapper";
 
 async function getSupabase() {
   return createClient();
@@ -82,6 +84,37 @@ export async function getRegionsRepo(
   const regionMap = new Map(data.map((region) => [region.id, region]));
 
   return data.map((region) => mapRegionListItem(region, regionMap));
+}
+
+/**
+ *
+ * @returns Option[]
+ */
+export async function getRegionOptionsRepo(): Promise<Option[]> {
+  const supabase = await getSupabase();
+
+  const { data, error } = await supabase
+    .from(getTable())
+    .select(
+      `
+      id,
+      name,
+      image
+    `,
+    )
+    .order("name", {
+      ascending: true,
+    });
+
+  if (error) {
+    throw error;
+  }
+
+  if (!data || data.length === 0) return [];
+
+  return data.map((data) =>
+    mapEntityOption(data, "region", STORAGE_BUCKETS.REGIONS),
+  );
 }
 
 /**

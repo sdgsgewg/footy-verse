@@ -4,8 +4,7 @@ import { useTranslations } from "next-intl";
 import FormHeader from "../base/FormHeader";
 import FormWrapper from "../base/FormWrapper";
 import { DateField, ImageField, SelectField, TextField } from "../fields";
-import { useRegions } from "@/hooks/dashboard/regions";
-import { getRegionOptions } from "@/lib/regions/options";
+import { useRegionOptions } from "@/hooks/dashboard/regions";
 import { ConfederationEditResponse } from "@/types/confederation";
 import { useConfederationForm } from "@/hooks/dashboard/confederations";
 import { SideBySideFormContentWrapper } from "../base";
@@ -43,8 +42,7 @@ const ConfederationForm = ({
 
   const isCreate = mode === "create";
 
-  const { regions } = useRegions();
-  const regionOptions = getRegionOptions(regions);
+  const { regionOptions } = useRegionOptions();
 
   const handleSubmit = () => {
     if (!validate()) {

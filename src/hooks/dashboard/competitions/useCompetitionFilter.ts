@@ -12,6 +12,9 @@ const DEFAULT_FILTER: CompetitionFilter = {
   categoryId: undefined,
   scopeId: undefined,
 
+  participantType: undefined,
+  gender: undefined,
+
   page: 1,
   limit: 20,
 

@@ -7,6 +7,8 @@ export const regionKeys = {
 
   list: (params?: RegionQuery) => [...regionKeys.lists(), params] as const,
 
+  options: () => [...regionKeys.all, "options"] as const,
+
   details: () => [...regionKeys.all, "detail"] as const,
 
   detail: (id: string) => [...regionKeys.details(), id] as const,

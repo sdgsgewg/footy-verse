@@ -6,8 +6,7 @@ import { UpsertCompetitionInput } from "@/types/competition";
 import { SelectField } from "../fields";
 import { getAgeGroupOptions, getGenderOptions } from "@/lib/constants/options";
 import { getParticipantTypeOptions } from "@/lib/competitions/options";
-import { getCompetitionCategoryOptions } from "@/lib/competition-categories/options";
-import { useCompetitionCategories } from "@/hooks/dashboard/competition-categories";
+import { useCompetitionCategoryOptions } from "@/hooks/dashboard/competition-categories";
 import { AgeGroup } from "@/enums/AgeGroup";
 import { Gender } from "@/enums/Gender";
 import { ParticipantType } from "@/enums/ParticipantType";
@@ -44,10 +43,7 @@ const CompetitionClassificationSection = ({
 
   const participantTypeOptions = getParticipantTypeOptions(t);
 
-  const { competitionCategories } = useCompetitionCategories();
-  const competitionCategoryOptions = getCompetitionCategoryOptions(
-    competitionCategories,
-  );
+  const { competitionCategoryOptions } = useCompetitionCategoryOptions();
 
   const { gender, age_group, participant_type, competition_category_id } = form;
 

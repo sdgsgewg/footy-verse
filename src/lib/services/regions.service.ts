@@ -9,6 +9,7 @@ import {
   getRegionDetailRepo,
   getRegionEditRepo,
   getRegionLookupRepo,
+  getRegionOptionsRepo,
   getRegionsRepo,
   updateRegionRepo,
 } from "../repositories/regions.repo";
@@ -18,6 +19,10 @@ export async function getRegionsService(query: unknown) {
   const parsed = regionsQuerySchema.parse(query);
 
   return getRegionsRepo(parsed);
+}
+
+export async function getRegionOptionsService() {
+  return getRegionOptionsRepo();
 }
 
 export async function getRegionEditService(id: string) {

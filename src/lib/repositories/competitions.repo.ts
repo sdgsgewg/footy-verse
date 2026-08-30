@@ -42,7 +42,13 @@ const getTable = () => {
   return ENTITY_CONFIG["competition"]["table"];
 };
 
-function getCompetitionsBaseQuery() {
+function getCompetitionsBaseQuery({
+  isCategoryFiltered = false,
+  isScopeFiltered = false,
+}: {
+  isCategoryFiltered: boolean;
+  isScopeFiltered: boolean;
+}) {
   return `
     id,
     image,
@@ -53,12 +59,12 @@ function getCompetitionsBaseQuery() {
     age_group,
     participant_type,
 
-    category:competition_categories (
+    category:competition_categories${isCategoryFiltered ? "!inner" : ""} (
       id,
       name
     ),
 
-    scope:competition_scopes (
+    scope:competition_scopes${isScopeFiltered ? "!inner" : ""} (
       id,
       name
     ),
@@ -94,13 +100,35 @@ export async function getCompetitionsRepo(
   const supabase = await getSupabase();
 
   // Base Query
-  let query = supabase.from(getTable()).select(getCompetitionsBaseQuery(), {
-    count: "exact",
-  });
+  let query = supabase.from(getTable()).select(
+    getCompetitionsBaseQuery({
+      isCategoryFiltered: !!params.categoryId,
+      isScopeFiltered: !!params.scopeId,
+    }),
+    {
+      count: "exact",
+    },
+  );
 
   // Filter
   if (params.search) {
     query = query.ilike("name", `%${params.search}%`);
+  }
+
+  if (params.categoryId) {
+    query = query.eq("category.id", params.categoryId);
+  }
+
+  if (params.scopeId) {
+    query = query.eq("scope.id", params.scopeId);
+  }
+
+  if (params.participantType) {
+    query = query.eq("participant_type", params.participantType);
+  }
+
+  if (params.gender) {
+    query = query.eq("gender", params.gender);
   }
 
   // Sort

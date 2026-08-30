@@ -4,13 +4,11 @@ import { useTranslations } from "next-intl";
 import FormSection from "../base/FormSection";
 import { UpsertCompetitionInput } from "@/types/competition";
 import { SelectField } from "../fields";
-import { useCompetitionScopes } from "@/hooks/dashboard/competition-scopes";
-import { getCompetitionScopeOptions } from "@/lib/competition-scopes/options";
-import { getRegionOptions } from "@/lib/regions/options";
 import { useNationalityOptions } from "@/hooks/nationalities";
-import { useRegions } from "@/hooks/dashboard/regions";
+import { useRegionOptions } from "@/hooks/dashboard/regions";
 import { useConfederationOptions } from "@/hooks/confederations/useConfederationOptions";
 import { FormErrors } from "@/types/form";
+import { useCompetitionScopeOptions } from "@/hooks/dashboard/competition-scopes";
 
 interface Props {
   form: UpsertCompetitionInput;
@@ -32,15 +30,13 @@ const ScopeAndLocationSection = ({ form, updateField, errors }: Props) => {
     "dashboard.competitions.form.placeholders.scopeAndLocation",
   );
 
-  const { competitionScopes } = useCompetitionScopes();
-  const competitionScopeOptions = getCompetitionScopeOptions(competitionScopes);
+  const { competitionScopeOptions } = useCompetitionScopeOptions();
 
   const { confederationOptions } = useConfederationOptions();
 
   const { nationalityOptions } = useNationalityOptions();
 
-  const { regions } = useRegions();
-  const regionOptions = getRegionOptions(regions);
+  const { regionOptions } = useRegionOptions();
 
   const { competition_scope_id, confederation_id, nationality_id, region_id } =
     form;

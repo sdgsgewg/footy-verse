@@ -1,8 +1,12 @@
 "use client";
 
 import { SelectField } from "@/components/forms/fields";
+import { Gender } from "@/enums/Gender";
+import { ParticipantType } from "@/enums/ParticipantType";
 import { useCompetitionCategoryOptions } from "@/hooks/dashboard/competition-categories";
 import { useCompetitionScopeOptions } from "@/hooks/dashboard/competition-scopes/useCompetitionScopeOptions";
+import { getParticipantTypeOptions } from "@/lib/competitions/options";
+import { getGenderOptions } from "@/lib/constants/options";
 import { CompetitionFilter } from "@/types/competition";
 import { useTranslations } from "next-intl";
 
@@ -18,6 +22,8 @@ export default function CompetitionFilterContent({
   filters,
   updateFilter,
 }: CompetitionFilterContentProps) {
+  const t = useTranslations();
+
   const tLabels = useTranslations("dashboard.competitions.form.labels");
   const tPlaceholders = useTranslations(
     "dashboard.competitions.form.placeholders",
@@ -26,6 +32,10 @@ export default function CompetitionFilterContent({
   const { competitionCategoryOptions } = useCompetitionCategoryOptions();
 
   const { competitionScopeOptions } = useCompetitionScopeOptions();
+
+  const genderOptions = getGenderOptions(t);
+
+  const participantTypeOptions = getParticipantTypeOptions(t);
 
   return (
     <>
@@ -47,6 +57,28 @@ export default function CompetitionFilterContent({
         options={competitionScopeOptions}
         value={filters.scopeId || ""}
         onChange={(value) => updateFilter("scopeId", value)}
+      />
+
+      {/* Participant Type */}
+      <SelectField
+        label={tLabels("classification.participantType")}
+        name="participant_type"
+        placeholder={tPlaceholders("classification.participantType")}
+        options={participantTypeOptions}
+        value={filters.participantType || ""}
+        onChange={(value) =>
+          updateFilter("participantType", value as ParticipantType)
+        }
+      />
+
+      {/* Gender */}
+      <SelectField
+        label={tLabels("classification.gender")}
+        name="gender"
+        placeholder={tPlaceholders("classification.gender")}
+        options={genderOptions}
+        value={filters.gender || ""}
+        onChange={(value) => updateFilter("gender", value as Gender)}
       />
     </>
   );

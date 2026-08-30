@@ -5,8 +5,8 @@ import FormHeader from "../base/FormHeader";
 import FormWrapper from "../base/FormWrapper";
 import { ImageField, SelectField, TextField } from "../fields";
 import { RegionEditResponse } from "@/types/region";
-import { useRegionForm, useRegions } from "@/hooks/dashboard/regions";
-import { getRegionOptions, getRegionTypeOptions } from "@/lib/regions/options";
+import { useRegionForm, useRegionOptions } from "@/hooks/dashboard/regions";
+import { getRegionTypeOptions } from "@/lib/regions/options";
 import { RegionType } from "@/enums/RegionType";
 import { FormMode } from "@/types/form";
 import { SideBySideFormContentWrapper } from "../base";
@@ -40,11 +40,9 @@ const RegionForm = ({ mode, region, loading = false, onSubmit }: Props) => {
 
   const isCreate = mode === "create";
 
-  const { regions } = useRegions();
+  const { regionOptions } = useRegionOptions();
 
   const regionTypeOptions = getRegionTypeOptions(tRegionType);
-
-  const regionOptions = getRegionOptions(regions);
 
   const handleSubmit = () => {
     if (!validate()) {

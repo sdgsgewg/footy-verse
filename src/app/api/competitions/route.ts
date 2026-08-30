@@ -18,7 +18,12 @@ import { CompetitionQuery } from "@/types/competition";
 
 export async function GET(request: Request) {
   try {
-    const query = getCrudQuery<CompetitionQuery>(request);
+    const query = getCrudQuery<CompetitionQuery>(request, [
+      "categoryId",
+      "scopeId",
+      "participantType",
+      "gender",
+    ]);
 
     const data = await getCompetitionsService(query);
 

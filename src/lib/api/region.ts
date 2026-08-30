@@ -6,6 +6,7 @@ import {
 } from "@/types/region";
 import { apiClient } from "./client";
 import { ApiResponse } from "@/types/api";
+import { Option } from "@/types/option";
 
 const baseRoute = `/regions`;
 
@@ -22,6 +23,18 @@ export const fetchRegions = async (
     {
       params,
     },
+  );
+
+  return data.data;
+};
+
+/**
+ *
+ * @returns Option[]
+ */
+export const fetchRegionOptions = async (): Promise<Option[]> => {
+  const { data } = await apiClient.get<ApiResponse<Option[]>>(
+    `${baseRoute}/options`,
   );
 
   return data.data;

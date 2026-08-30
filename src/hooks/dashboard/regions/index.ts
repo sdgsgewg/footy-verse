@@ -1,4 +1,5 @@
 export * from "./useRegions";
+export * from "./useRegionOptions";
 export * from "./useRegionFilter";
 export * from "./useRegionDetail";
 export * from "./useRegionEdit";

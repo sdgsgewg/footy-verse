@@ -15,16 +15,3 @@ export const getRegionTypeOptions = (t: Translate): Option[] =>
     label: getRegionTypeLabel(type, t),
     value: type,
   }));
-
-/**
- *
- * @param regions
- * @returns
- */
-export function getRegionOptions(regions: RegionListItem[]): Option[] {
-  return regions.map((region) => ({
-    label: region.name,
-    value: region.id,
-    imageUrl: region.imageUrl,
-  }));
-}

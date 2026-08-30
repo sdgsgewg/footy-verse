@@ -63,5 +63,8 @@ export const competitionsQuerySchema = listQuerySchema.extend({
   categoryId: idSchema.optional(),
   scopeId: idSchema.optional(),
 
+  participantType: participantTypeSchema.optional(),
+  gender: genderSchema.optional(),
+
   sortBy: competitionSortBySchema.default("name"),
 });
