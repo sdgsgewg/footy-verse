@@ -25,6 +25,7 @@ import { ActivityLogAction } from "@/enums/ActivityLogAction";
 import { getChangedFields } from "./helpers/get-changed-field";
 import { Option } from "@/types/option";
 import { mapEntityOption } from "../entities/mapper";
+import { ensureUniqueFieldsRepo } from "./helpers/uniqueness";
 
 async function getSupabase() {
   return createClient();
@@ -201,6 +202,30 @@ export async function getConfederationLookupRepo(
   return data;
 }
 
+export async function ensureConfederationUniqueRepo({
+  name,
+  ignoreId,
+}: {
+  name: string;
+  ignoreId?: string;
+}): Promise<string> {
+  const slug = slugify(name);
+
+  await ensureUniqueFieldsRepo({
+    table: getTable(),
+    fields: [
+      {
+        field: "slug",
+        value: slug,
+        message: "Confederation name already exists",
+      },
+    ],
+    ignoreId,
+  });
+
+  return slug;
+}
+
 /**
  *
  * @param confederation
@@ -211,7 +236,9 @@ export async function createConfederationRepo(
 ): Promise<ConfederationDetailResponse> {
   const supabase = await getSupabase();
 
-  const slug = slugify(confederation.name);
+  const slug = await ensureConfederationUniqueRepo({
+    name: confederation.name,
+  });
 
   const { data: insertedConfederation, error } = await supabase
     .from(getTable())
@@ -249,7 +276,10 @@ export async function updateConfederationRepo(
     getLabel(),
   );
 
-  const slug = slugify(confederation.name);
+  const slug = await ensureConfederationUniqueRepo({
+    name: confederation.name,
+    ignoreId: id,
+  });
 
   const { image: newImage, ...rest } = confederation;
 

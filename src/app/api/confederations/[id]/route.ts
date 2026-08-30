@@ -10,6 +10,7 @@ import {
   deleteConfederationService,
   getConfederationDetailService,
   getConfederationEditService,
+  precheckUpdateConfederationService,
   updateConfederationService,
 } from "@/lib/services/confederations.service";
 
@@ -55,7 +56,10 @@ export async function PUT(
 
     const formData = await request.formData();
 
-    const body = getConfederationInputFromFormData(formData);
+    const body = await precheckUpdateConfederationService(
+      id,
+      getConfederationInputFromFormData(formData),
+    );
 
     let image = currentConfederation.image;
 

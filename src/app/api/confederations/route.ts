@@ -9,6 +9,7 @@ import { getConfederationInputFromFormData } from "@/lib/confederations/form-dat
 import {
   createConfederationService,
   getConfederationsService,
+  precheckCreateConfederationService,
 } from "@/lib/services/confederations.service";
 
 import { tryDeleteImage, uploadImage } from "@/lib/services/storage.service";
@@ -33,19 +34,21 @@ export async function POST(request: Request) {
 
     const formData = await request.formData();
 
-    const body = getConfederationInputFromFormData(formData);
+    const body = await precheckCreateConfederationService(
+      getConfederationInputFromFormData(formData),
+    );
+
+    let image = "";
 
     const file = formData.get("image");
 
-    if (!(file instanceof File) || file.size === 0) {
-      return errorResponse(new Error("Confederation image is required"));
+    if (file instanceof File && file.size > 0) {
+      image = await uploadImage(
+        file,
+        body.name,
+        STORAGE_BUCKETS.CONFEDERATIONS,
+      );
     }
-
-    const image = await uploadImage(
-      file,
-      body.name,
-      STORAGE_BUCKETS.CONFEDERATIONS,
-    );
 
     body.image = image;
 

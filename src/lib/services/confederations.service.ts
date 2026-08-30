@@ -1,6 +1,7 @@
 import {
   createConfederationRepo,
   deleteConfederationRepo,
+  ensureConfederationUniqueRepo,
   getConfederationDetailRepo,
   getConfederationEditRepo,
   getConfederationLookupRepo,
@@ -54,6 +55,31 @@ export async function updateConfederationService(id: string, input: unknown) {
   const parsed = updateConfederationSchema.parse(input);
 
   return updateConfederationRepo(parsedId, parsed);
+}
+
+export async function precheckCreateConfederationService(input: unknown) {
+  const parsed = createConfederationSchema.parse(input);
+
+  await ensureConfederationUniqueRepo({
+    name: parsed.name,
+  });
+
+  return parsed;
+}
+
+export async function precheckUpdateConfederationService(
+  id: string,
+  input: unknown,
+) {
+  const parsedId = idSchema.parse(id);
+  const parsed = updateConfederationSchema.parse(input);
+
+  await ensureConfederationUniqueRepo({
+    name: parsed.name,
+    ignoreId: parsedId,
+  });
+
+  return parsed;
 }
 
 export async function deleteConfederationService(id: string) {
