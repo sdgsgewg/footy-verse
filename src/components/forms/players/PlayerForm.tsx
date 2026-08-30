@@ -101,6 +101,8 @@ const PlayerForm = ({ mode, player, loading = false, onSubmit }: Props) => {
             label={tLabels("dob")}
             name="dob"
             placeholder={tPlaceholders("dob") || ""}
+            startMonth={new Date(1900, 0)}
+            endMonth={new Date()}
             value={(form.dob as string) ?? ""}
             onChange={(value) => updateField("dob", value)}
             error={errors.dob}
@@ -124,7 +126,7 @@ const PlayerForm = ({ mode, player, loading = false, onSubmit }: Props) => {
             name="height"
             placeholder={tPlaceholders("height")}
             value={form.height}
-            onChange={(value) => updateField("height", value!)}
+            onChange={(value) => updateField("height", value)}
             error={errors.height}
             required
           />
@@ -135,7 +137,7 @@ const PlayerForm = ({ mode, player, loading = false, onSubmit }: Props) => {
             name="weight"
             placeholder={tPlaceholders("weight")}
             value={form.weight}
-            onChange={(value) => updateField("weight", value!)}
+            onChange={(value) => updateField("weight", value)}
             error={errors.weight}
             required
           />
@@ -160,7 +162,7 @@ const PlayerForm = ({ mode, player, loading = false, onSubmit }: Props) => {
             name="market_value"
             placeholder={tPlaceholders("marketValue")}
             value={form.market_value}
-            onChange={(value) => updateField("market_value", value!)}
+            onChange={(value) => updateField("market_value", value)}
             error={errors.market_value}
             required
           />

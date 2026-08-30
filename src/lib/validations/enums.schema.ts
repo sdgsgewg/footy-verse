@@ -66,11 +66,7 @@ export const positionSortBySchema = z.enum(["name", "created_at"]);
 
 export const playerSortBySchema = z.enum(["name", "dob", "marketValue"]);
 
-export const prefFootSchema = z.enum([
-  PreferredFoot.RIGHT,
-  PreferredFoot.LEFT,
-  PreferredFoot.BOTH,
-]);
+export const prefFootSchema = z.enum(PreferredFoot);
 
 // Player Career
 

@@ -19,11 +19,11 @@ const createEmptyPlayerForm = (): UpsertPlayerInput => ({
   dob: "",
   pob: "",
 
-  preferred_foot: PreferredFoot.RIGHT,
+  preferred_foot: "",
 
-  height: 0,
-  weight: 0,
-  market_value: 0,
+  height: null,
+  weight: null,
+  market_value: null,
 
   positions: [],
   nationalities: [],
