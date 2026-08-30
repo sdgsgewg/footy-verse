@@ -27,7 +27,6 @@ export async function GET(request: Request) {
 
     return successResponse(data);
   } catch (error) {
-    console.error(error);
     return errorResponse(error);
   }
 }

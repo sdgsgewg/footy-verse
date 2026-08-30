@@ -24,6 +24,7 @@ import { ActivityLogAction } from "@/enums/ActivityLogAction";
 import { getChangedFields } from "./helpers/get-changed-field";
 import { Option } from "@/types/option";
 import { mapEntityOption } from "../entities/mapper";
+import { ensureUniqueFieldsRepo } from "./helpers/uniqueness";
 
 async function getSupabase() {
   return createClient();
@@ -183,6 +184,30 @@ export async function getRegionLookupRepo(
   return data;
 }
 
+export async function ensureRegionUniqueRepo({
+  name,
+  ignoreId,
+}: {
+  name: string;
+  ignoreId?: string;
+}): Promise<string> {
+  const slug = slugify(name);
+
+  await ensureUniqueFieldsRepo({
+    table: getTable(),
+    fields: [
+      {
+        field: "slug",
+        value: slug,
+        message: "Region name already exists",
+      },
+    ],
+    ignoreId,
+  });
+
+  return slug;
+}
+
 /**
  *
  * @param region
@@ -193,7 +218,9 @@ export async function createRegionRepo(
 ): Promise<RegionDetailResponse> {
   const supabase = await getSupabase();
 
-  const slug = slugify(region.name);
+  const slug = ensureRegionUniqueRepo({
+    name: region.name,
+  });
 
   const { data: insertedRegion, error } = await supabase
     .from(getTable())
@@ -227,7 +254,10 @@ export async function updateRegionRepo(
 
   const oldRegion = await requireEntity(getRegionEditRepo, id, getLabel());
 
-  const slug = slugify(region.name);
+  const slug = ensureRegionUniqueRepo({
+    name: region.name,
+    ignoreId: id,
+  });
 
   const finalImage = await prepareUpdatedImage({
     oldName: oldRegion.name,

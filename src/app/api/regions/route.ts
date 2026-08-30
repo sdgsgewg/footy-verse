@@ -1,5 +1,4 @@
 import { getCrudQuery } from "@/lib/api/query";
-import { isFormDataRequest } from "@/lib/api/request";
 import {
   createdResponse,
   errorResponse,
@@ -10,6 +9,7 @@ import { getRegionInputFromFormData } from "@/lib/regions/form-data";
 import {
   createRegionService,
   getRegionsService,
+  precheckCreateRegionService,
 } from "@/lib/services/regions.service";
 import { tryDeleteImage, uploadImage } from "@/lib/services/storage.service";
 import { STORAGE_BUCKETS } from "@/lib/storage";
@@ -31,24 +31,19 @@ export async function POST(request: Request) {
   try {
     await authorizeManageContent();
 
-    if (!isFormDataRequest(request)) {
-      const body = await request.json();
-      const data = await createRegionService(body);
-
-      return createdResponse(data);
-    }
-
     const formData = await request.formData();
 
-    const body = getRegionInputFromFormData(formData);
+    const body = await precheckCreateRegionService(
+      getRegionInputFromFormData(formData),
+    );
+
+    let image = "";
 
     const file = formData.get("image");
 
-    if (!(file instanceof File) || file.size === 0) {
-      return errorResponse(new Error("Region image is required"));
+    if (file instanceof File && file.size > 0) {
+      image = await uploadImage(file, body.name, STORAGE_BUCKETS.REGIONS);
     }
-
-    const image = await uploadImage(file, body.name, STORAGE_BUCKETS.REGIONS);
 
     body.image = image;
 

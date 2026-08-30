@@ -1,4 +1,3 @@
-import { isFormDataRequest } from "@/lib/api/request";
 import {
   errorResponse,
   noContentResponse,
@@ -11,6 +10,7 @@ import {
   deleteRegionService,
   getRegionDetailService,
   getRegionEditService,
+  precheckUpdateRegionService,
   updateRegionService,
 } from "@/lib/services/regions.service";
 import { tryDeleteImage, uploadImage } from "@/lib/services/storage.service";
@@ -47,16 +47,12 @@ export async function PUT(request: Request, context: RegionRouteContext) {
       return errorResponse(new NotFoundError("Region not found"));
     }
 
-    if (!isFormDataRequest(request)) {
-      const body = await request.json();
-      const data = await updateRegionService(id, body);
-
-      return successResponse(data);
-    }
-
     const formData = await request.formData();
 
-    const body = getRegionInputFromFormData(formData);
+    const body = await precheckUpdateRegionService(
+      id,
+      getRegionInputFromFormData(formData),
+    );
 
     let image = currentRegion.image;
 
