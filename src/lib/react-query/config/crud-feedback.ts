@@ -54,7 +54,7 @@ export function handleCrudError({
   toast.error(
     [
       t(`common.crud.error.${action}`, {
-        entity: t(`entities.${entityKey}`),
+        entity: t(`entities.${entityKey}`).toLocaleLowerCase(),
       }),
       getApiErrorMessage(error),
     ]

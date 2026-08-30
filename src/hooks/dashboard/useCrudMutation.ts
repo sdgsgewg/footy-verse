@@ -38,12 +38,14 @@ export function useCrudMutation<TVariables>({
         queryKey: activityLogKeys.lists(),
       });
 
+      const modifiedEntity = t(`entities.${entityKey}`).toLocaleLowerCase();
+
       if (
         ["playerClubTeamCareer", "playerNationalTeamCareer"].includes(entityKey)
       ) {
         toast.success(
           `${t(`common.crud.success.${action}`, {
-            entity: t(`entities.${entityKey}`),
+            entity: modifiedEntity,
           })}`,
         );
       } else {
@@ -54,13 +56,13 @@ export function useCrudMutation<TVariables>({
         if (name) {
           toast.success(
             `${t(`common.crud.success.${action}`, {
-              entity: t(`entities.${entityKey}`),
+              entity: modifiedEntity,
             })}: ${name}`,
           );
         } else {
           toast.success(
             `${t(`common.crud.success.${action}`, {
-              entity: t(`entities.${entityKey}`),
+              entity: modifiedEntity,
             })}.`,
           );
         }
