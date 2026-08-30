@@ -15,13 +15,17 @@ import DateField from "../fields/DateField";
 import { useSeasons } from "@/hooks/dashboard/seasons";
 import { useClubTeams } from "@/hooks/club-teams";
 import { getClubTeamOptions } from "@/lib/club-teams/options";
+import { FormErrors } from "@/types/form";
 
 interface Props {
   form: UpsertPlayerClubTeamCareerInput;
+
   setForm: Dispatch<SetStateAction<UpsertPlayerClubTeamCareerInput>>;
+
+  errors: FormErrors;
 }
 
-const PlayerTransferSection = ({ form, setForm }: Props) => {
+const PlayerTransferSection = ({ form, setForm, errors }: Props) => {
   const tForm = useTranslations(
     "dashboard.playerClubTeamCareers.form.transfer",
   );
@@ -73,21 +77,22 @@ const PlayerTransferSection = ({ form, setForm }: Props) => {
           })}
           value={season_id}
           onChange={(value) =>
-            setForm({
+            setForm((prev) => ({
               ...form,
               transfer: {
-                ...transfer,
+                ...prev.transfer,
                 season_id: value,
               },
-            })
+            }))
           }
+          error={errors["transfer.season_id"]}
           required
         />
 
         {/* From Club */}
         <ComboboxField
           label={tLabels("fromClub")}
-          name={`from-club`}
+          name={`from_club_team`}
           options={clubTeamOptions}
           placeholder={tPlaceholders("fromClub") || ""}
           searchPlaceholder={tCommon("combobox.searchEntity", {
@@ -98,21 +103,22 @@ const PlayerTransferSection = ({ form, setForm }: Props) => {
           })}
           value={from_club_team_id}
           onChange={(value) =>
-            setForm({
+            setForm((prev) => ({
               ...form,
               transfer: {
-                ...transfer,
+                ...prev.transfer,
                 from_club_team_id: value,
               },
-            })
+            }))
           }
+          error={errors["transfer.from_club_team_id"]}
           required
         />
 
         {/* To Club */}
         <ComboboxField
           label={tLabels("toClub")}
-          name={`to-club`}
+          name={`to_club_team`}
           options={clubTeamOptions}
           placeholder={tPlaceholders("toClub") || ""}
           searchPlaceholder={tCommon("combobox.searchEntity", {
@@ -123,14 +129,15 @@ const PlayerTransferSection = ({ form, setForm }: Props) => {
           })}
           value={to_club_team_id}
           onChange={(value) =>
-            setForm({
+            setForm((prev) => ({
               ...form,
               transfer: {
-                ...transfer,
+                ...prev.transfer,
                 to_club_team_id: value,
               },
-            })
+            }))
           }
+          error={errors["transfer.to_club_team_id"]}
           required
         />
 
@@ -142,14 +149,15 @@ const PlayerTransferSection = ({ form, setForm }: Props) => {
           options={transferTypeOptions}
           value={transfer_type || ""}
           onChange={(value) =>
-            setForm({
+            setForm((prev) => ({
               ...form,
               transfer: {
-                ...transfer,
+                ...prev.transfer,
                 transfer_type: value as TransferType,
               },
-            })
+            }))
           }
+          error={errors["transfer.transfer_type"]}
           required
         />
 
@@ -160,14 +168,15 @@ const PlayerTransferSection = ({ form, setForm }: Props) => {
           placeholder={tPlaceholders("transferFee")}
           value={transfer_fee}
           onChange={(value) =>
-            setForm({
+            setForm((prev) => ({
               ...form,
               transfer: {
-                ...transfer,
+                ...prev.transfer,
                 transfer_fee: value!,
               },
-            })
+            }))
           }
+          error={errors["transfer.transfer_fee"]}
           required
         />
 
@@ -178,14 +187,15 @@ const PlayerTransferSection = ({ form, setForm }: Props) => {
           placeholder={tPlaceholders("transferDate") || ""}
           value={transfer_date}
           onChange={(value) =>
-            setForm({
+            setForm((prev) => ({
               ...form,
               transfer: {
-                ...transfer,
+                ...prev.transfer,
                 transfer_date: value,
               },
-            })
+            }))
           }
+          error={errors["transfer.transfer_date"]}
           required
         />
       </>

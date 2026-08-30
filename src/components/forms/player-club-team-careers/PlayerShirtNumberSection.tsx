@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import DynamicFormSection from "../base/DynamicFormSection";
 import { UpsertPlayerClubTeamCareerInput } from "@/types/player-club-team-career";
 import { DateField, NumberField } from "../fields";
+import { FormErrors } from "@/types/form";
 
 type ShirtNumber = NonNullable<
   UpsertPlayerClubTeamCareerInput["shirt_numbers"]
@@ -12,19 +13,28 @@ type ShirtNumber = NonNullable<
 
 interface Props {
   form: UpsertPlayerClubTeamCareerInput;
+
   setForm: Dispatch<SetStateAction<UpsertPlayerClubTeamCareerInput>>;
+
+  errors: FormErrors;
 }
 
-const PlayerShirtNumberSection = ({ form, setForm }: Props) => {
+const PlayerShirtNumberSection = ({ form, setForm, errors }: Props) => {
   const tForm = useTranslations(
     "dashboard.playerClubTeamCareers.form.shirtNumbers",
   );
+
   const tLabels = useTranslations(
     "dashboard.playerClubTeamCareers.form.labels.shirtNumbers",
   );
+
   const tPlaceholders = useTranslations(
     "dashboard.playerClubTeamCareers.form.placeholders.shirtNumbers",
   );
+
+  const getShirtNumberError = (index: number, field: keyof ShirtNumber) => {
+    return errors[`contracts.${index}.${String(field)}`];
+  };
 
   return (
     <DynamicFormSection<ShirtNumber>
@@ -52,6 +62,7 @@ const PlayerShirtNumberSection = ({ form, setForm }: Props) => {
             placeholder={tPlaceholders("shirtNumber") || ""}
             value={item.shirt_number}
             onChange={(v) => updateItem(index, "shirt_number", v ?? 1)}
+            error={getShirtNumberError(index, "shirt_number")}
           />
 
           {/* Start Date */}
@@ -61,6 +72,7 @@ const PlayerShirtNumberSection = ({ form, setForm }: Props) => {
             placeholder={tPlaceholders("startDate") || ""}
             value={item.start_date}
             onChange={(v) => updateItem(index, "start_date", v)}
+            error={getShirtNumberError(index, "start_date")}
           />
 
           {/* End Date */}
@@ -70,6 +82,7 @@ const PlayerShirtNumberSection = ({ form, setForm }: Props) => {
             placeholder={tPlaceholders("endDate") || ""}
             value={item.end_date ?? ""}
             onChange={(v) => updateItem(index, "end_date", v)}
+            error={getShirtNumberError(index, "end_date")}
           />
         </>
       )}

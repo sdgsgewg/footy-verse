@@ -1,36 +1,39 @@
 "use client";
 
 import { TransferType } from "@/enums/TransferType";
+import { useEntityForm } from "@/hooks/crud";
+import { playerClubTeamCareerMutationSchema } from "@/lib/validations/player-club-team-careers.schema";
 import {
   PlayerClubTeamCareerEditResponse,
   UpsertPlayerClubTeamCareerInput,
 } from "@/types/player-club-team-career";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 
-const emptyPlayerClubTeamCareerForm: UpsertPlayerClubTeamCareerInput = {
-  id: "",
+const createEmptyPlayerClubTeamCareerForm =
+  (): UpsertPlayerClubTeamCareerInput => ({
+    id: "",
 
-  club_team_id: "",
-  player_career_id: "",
+    club_team_id: "",
+    player_career_id: "",
 
-  career: {
-    joined_at: "",
-    left_at: "",
-  },
+    career: {
+      joined_at: "",
+      left_at: "",
+    },
 
-  contracts: [],
+    contracts: [],
 
-  shirt_numbers: [],
+    shirt_numbers: [],
 
-  transfer: {
-    season_id: "",
-    from_club_team_id: "",
-    to_club_team_id: "",
-    transfer_type: TransferType.TRANSFER,
-    transfer_fee: 0,
-    transfer_date: "",
-  },
-};
+    transfer: {
+      season_id: "",
+      from_club_team_id: "",
+      to_club_team_id: "",
+      transfer_type: TransferType.TRANSFER,
+      transfer_fee: 0,
+      transfer_date: "",
+    },
+  });
 
 function mapPlayerClubTeamCareer(
   playerClubTeamCareer: PlayerClubTeamCareerEditResponse,
@@ -85,71 +88,73 @@ export function usePlayerClubTeamCareerForm(
     () =>
       playerClubTeamCareer
         ? mapPlayerClubTeamCareer(playerClubTeamCareer)
-        : emptyPlayerClubTeamCareerForm,
+        : createEmptyPlayerClubTeamCareerForm(),
     [playerClubTeamCareer],
   );
 
-  const [form, setForm] = useState(initialValue);
+  function isPlayerClubTeamCareerFormFilled(
+    form: UpsertPlayerClubTeamCareerInput,
+  ) {
+    const isCareerValid = form.career.joined_at.trim().length > 0;
 
-  const initialForm = initialValue;
+    const areContractsValid = form.contracts
+      ? form.contracts.every((item) => {
+          return (
+            item.contract_start.trim().length > 0 &&
+            item.contract_end.trim().length > 0 &&
+            item.salary > 0
+          );
+        })
+      : false;
 
-  const isEditing = playerClubTeamCareer != null;
+    const areShirtNumbersValid = form.shirt_numbers
+      ? form.shirt_numbers.every((item) => {
+          return item.shirt_number > 0 && item.start_date.trim().length > 0;
+        })
+      : false;
 
-  const isCareerValid = form.career.joined_at.trim().length > 0;
+    const isTransferValid =
+      form.transfer.season_id.trim().length > 0 &&
+      form.transfer.from_club_team_id.trim().length > 0 &&
+      form.transfer.to_club_team_id.trim().length > 0 &&
+      form.transfer.transfer_type.trim().length > 0 &&
+      form.transfer.transfer_fee >= 0 &&
+      form.transfer.transfer_date.trim().length > 0;
 
-  const areContractsValid =
-    form.contracts &&
-    form.contracts.every((item) => {
-      return (
-        item.contract_start.trim().length > 0 &&
-        item.contract_end.trim().length > 0 &&
-        item.salary > 0
-      );
-    });
-
-  const areShirtNumbersValid =
-    form.shirt_numbers &&
-    form.shirt_numbers.every((item) => {
-      return item.shirt_number > 0 && item.start_date.trim().length > 0;
-    });
-
-  const isTransferValid =
-    form.transfer.season_id.trim().length > 0 &&
-    form.transfer.from_club_team_id.trim().length > 0 &&
-    form.transfer.to_club_team_id.trim().length > 0 &&
-    form.transfer.transfer_type.trim().length > 0 &&
-    form.transfer.transfer_fee >= 0 &&
-    form.transfer.transfer_date.trim().length > 0;
-
-  const canSubmit = useMemo(() => {
-    const isFilled =
+    return (
       form.club_team_id.trim().length > 0 &&
       isCareerValid &&
       areContractsValid &&
       areShirtNumbersValid &&
-      isTransferValid;
-
-    if (!isFilled) {
-      return false;
-    }
-
-    return (
-      form.club_team_id !== initialForm.club_team_id ||
-      JSON.stringify(form.career) !== JSON.stringify(initialForm.career) ||
-      JSON.stringify(form.contracts) !==
-        JSON.stringify(initialForm.contracts) ||
-      JSON.stringify(form.shirt_numbers) !==
-        JSON.stringify(initialForm.shirt_numbers) ||
-      JSON.stringify(form.transfer) !== JSON.stringify(initialForm.transfer)
+      isTransferValid
     );
-  }, [
+  }
+
+  const {
     form,
-    isCareerValid,
-    areContractsValid,
-    areShirtNumbersValid,
-    isTransferValid,
-    initialForm,
-  ]);
+    setForm,
+    errors,
+    isDirty,
+    canSubmit,
+    validate,
+    clearFieldError,
+  } = useEntityForm({
+    initialValue,
+
+    schema: playerClubTeamCareerMutationSchema,
+
+    dirtyFields: [
+      "club_team_id",
+      "career",
+      "contracts",
+      "shirt_numbers",
+      "transfer",
+    ],
+
+    requiredFields: ["club_team_id"],
+
+    isFilled: isPlayerClubTeamCareerFormFilled,
+  });
 
   const buildPayload = () => {
     const {
@@ -189,17 +194,17 @@ export function usePlayerClubTeamCareerForm(
     return payload;
   };
 
-  const resetForm = () => {
-    setForm(initialValue);
-  };
-
   return {
     form,
     setForm,
-    initialForm,
-    isEditing,
+
+    isDirty,
+    errors,
+
+    clearFieldError,
+
+    validate,
     canSubmit,
     buildPayload,
-    resetForm,
   };
 }

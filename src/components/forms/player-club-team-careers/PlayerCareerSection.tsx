@@ -8,13 +8,17 @@ import DateField from "../fields/DateField";
 import { UpsertPlayerClubTeamCareerInput } from "@/types/player-club-team-career";
 import { useClubTeams } from "@/hooks/club-teams";
 import { getClubTeamOptions } from "@/lib/club-teams/options";
+import { FormErrors } from "@/types/form";
 
 interface Props {
   form: UpsertPlayerClubTeamCareerInput;
+
   setForm: Dispatch<SetStateAction<UpsertPlayerClubTeamCareerInput>>;
+
+  errors: FormErrors;
 }
 
-const PlayerClubTeamCareerSection = ({ form, setForm }: Props) => {
+const PlayerClubTeamCareerSection = ({ form, setForm, errors }: Props) => {
   const tForm = useTranslations("dashboard.playerClubTeamCareers.form.career");
   const tLabels = useTranslations(
     "dashboard.playerClubTeamCareers.form.labels.career",
@@ -26,11 +30,10 @@ const PlayerClubTeamCareerSection = ({ form, setForm }: Props) => {
   const tEntities = useTranslations("entities");
   const tCommon = useTranslations("common");
 
-  const { club_team_id, career } = form;
+  const { club_team_id } = form;
   const { joined_at, left_at } = form.career;
 
   const { clubTeams } = useClubTeams();
-
   const clubTeamOptions = getClubTeamOptions(clubTeams);
 
   return (
@@ -49,11 +52,12 @@ const PlayerClubTeamCareerSection = ({ form, setForm }: Props) => {
           entity: tEntities("club").toLowerCase(),
         })}
         onChange={(value) =>
-          setForm({
-            ...form,
+          setForm((prev) => ({
+            ...prev,
             club_team_id: value,
-          })
+          }))
         }
+        error={errors.club_team_id}
         required
       />
 
@@ -64,14 +68,15 @@ const PlayerClubTeamCareerSection = ({ form, setForm }: Props) => {
         placeholder={tPlaceholders("joinedAt") || ""}
         value={joined_at}
         onChange={(value) =>
-          setForm({
-            ...form,
+          setForm((prev) => ({
+            ...prev,
             career: {
-              ...career,
+              ...prev.career,
               joined_at: value,
             },
-          })
+          }))
         }
+        error={errors["career.joined_at"]}
         required
       />
 
@@ -82,14 +87,15 @@ const PlayerClubTeamCareerSection = ({ form, setForm }: Props) => {
         placeholder={tPlaceholders("leftAt") || ""}
         value={left_at ?? ""}
         onChange={(value) =>
-          setForm({
-            ...form,
+          setForm((prev) => ({
+            ...prev,
             career: {
-              ...career,
+              ...prev.career,
               left_at: value,
             },
-          })
+          }))
         }
+        error={errors["career.left_at"]}
       />
     </FormSection>
   );

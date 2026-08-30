@@ -441,7 +441,7 @@ function getPlayerDetailBaseQuery() {
           contract_end
         ),
 
-        player_transfer:player_transfers!transfers_player_club_team_career_id_fkey (
+        player_transfer:player_transfers!player_transfers_player_club_team_career_id_fkey (
           id,
           transfer_type
         )

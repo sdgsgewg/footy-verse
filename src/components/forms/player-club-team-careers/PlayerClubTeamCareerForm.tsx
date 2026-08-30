@@ -28,17 +28,21 @@ const PlayerClubTeamCareerForm = ({
   loading = false,
   onSubmit,
 }: Props) => {
-  const { form, setForm, canSubmit, buildPayload } =
+  const { form, setForm, isDirty, errors, validate, canSubmit, buildPayload } =
     usePlayerClubTeamCareerForm(playerClubTeamCareer);
 
   const isCreate = mode === "create";
 
   const handleSubmit = () => {
+    if (!validate()) {
+      return;
+    }
+
     onSubmit(buildPayload());
   };
 
   return (
-    <FormWrapper>
+    <FormWrapper isDirty={isDirty}>
       <FormHeader
         loading={loading}
         isCreate={isCreate}
@@ -49,21 +53,37 @@ const PlayerClubTeamCareerForm = ({
       <FormContentWrapper className="space-y-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div className="lg:grid-cols-6">
-            <PlayerCareerSection form={form} setForm={setForm} />
+            <PlayerCareerSection
+              form={form}
+              setForm={setForm}
+              errors={errors}
+            />
           </div>
 
           <div className="lg:grid-cols-6">
-            <PlayerTransferSection form={form} setForm={setForm} />
+            <PlayerTransferSection
+              form={form}
+              setForm={setForm}
+              errors={errors}
+            />
           </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div className="lg:grid-cols-6">
-            <PlayerContractSection form={form} setForm={setForm} />
+            <PlayerContractSection
+              form={form}
+              setForm={setForm}
+              errors={errors}
+            />
           </div>
 
           <div className="lg:grid-cols-6">
-            <PlayerShirtNumberSection form={form} setForm={setForm} />
+            <PlayerShirtNumberSection
+              form={form}
+              setForm={setForm}
+              errors={errors}
+            />
           </div>
         </div>
       </FormContentWrapper>

@@ -7,7 +7,10 @@ import { getZodFormErrors } from "@/lib/forms/errors";
 
 type FormField<TForm> = keyof TForm & string;
 
-interface UseEntityFormOptions<TForm extends Record<string, unknown>> {
+interface UseEntityFormOptions<
+  TForm extends Record<string, unknown>,
+  TErrorField extends string = string,
+> {
   initialValue: TForm;
 
   schema: z.ZodTypeAny;
@@ -16,36 +19,46 @@ interface UseEntityFormOptions<TForm extends Record<string, unknown>> {
 
   requiredFields?: readonly FormField<TForm>[];
 
-  additionalDirty?: boolean;
+  additionalDirty?: boolean; // support additional field check (ex: imageFile) that is not included in the main fields
+
+  isFilled?: (form: TForm) => boolean; // to support nested form check for 'canSubmit' function
 }
 
-export function useEntityForm<TForm extends Record<string, unknown>>({
+export function useEntityForm<
+  TForm extends Record<string, unknown>,
+  TErrorField extends string = string,
+>({
   initialValue,
   schema,
   dirtyFields,
   requiredFields = [],
   additionalDirty = false,
-}: UseEntityFormOptions<TForm>) {
-  type Field = FormField<TForm>;
-
+  isFilled: customIsFilled,
+}: UseEntityFormOptions<TForm, TErrorField>) {
   const [form, setForm] = useState<TForm>(initialValue);
 
   // Baseline yang digunakan untuk menentukan dirty state
   const [initialForm, setInitialForm] = useState<TForm>(initialValue);
 
-  const [errors, setErrors] = useState<FormErrors<Field>>({});
+  const [errors, setErrors] = useState<FormErrors<TErrorField>>({});
 
-  const clearFieldError = (field: Field) => {
+  const clearError = (field: string) => {
     setErrors((prev) => {
-      if (!prev[field]) {
+      const key = field as TErrorField;
+
+      if (!prev[key]) {
         return prev;
       }
 
       const next = { ...prev };
-      delete next[field];
+      delete next[key];
 
       return next;
     });
+  };
+
+  const clearFieldError = (field: TErrorField) => {
+    clearError(field);
   };
 
   const updateField = <K extends keyof TForm>(field: K, value: TForm[K]) => {
@@ -54,7 +67,7 @@ export function useEntityForm<TForm extends Record<string, unknown>>({
       [field]: value,
     }));
 
-    clearFieldError(field as Field);
+    clearError(String(field));
   };
 
   const isDirty = useMemo(() => {
@@ -66,6 +79,10 @@ export function useEntityForm<TForm extends Record<string, unknown>>({
   }, [form, initialForm, dirtyFields, additionalDirty]);
 
   const isFilled = useMemo(() => {
+    if (customIsFilled) {
+      return customIsFilled(form);
+    }
+
     return requiredFields.every((field) => {
       const value = form[field];
 
@@ -75,7 +92,7 @@ export function useEntityForm<TForm extends Record<string, unknown>>({
 
       return value != null;
     });
-  }, [form, requiredFields]);
+  }, [form, requiredFields, customIsFilled]);
 
   const canSubmit = isFilled && isDirty;
 
@@ -87,7 +104,7 @@ export function useEntityForm<TForm extends Record<string, unknown>>({
       return true;
     }
 
-    setErrors(getZodFormErrors<Field>(result.error));
+    setErrors(getZodFormErrors<TErrorField>(result.error));
 
     return false;
   };

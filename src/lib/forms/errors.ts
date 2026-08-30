@@ -9,13 +9,13 @@ export function getZodFormErrors<T extends string>(
   const errors: FormErrors<T> = {};
 
   for (const issue of error.issues) {
-    const field = issue.path[0];
+    const path = issue.path.join(".");
 
-    if (typeof field !== "string") {
+    if (!path) {
       continue;
     }
 
-    const key = field as T;
+    const key = path as T;
 
     if (!errors[key]) {
       errors[key] = issue.message;

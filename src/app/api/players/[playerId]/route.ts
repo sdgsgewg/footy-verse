@@ -28,6 +28,7 @@ export async function GET(_request: Request, context: PlayerRouteContext) {
 
     return successResponse(data);
   } catch (error) {
+    console.error(error);
     return errorResponse(error);
   }
 }

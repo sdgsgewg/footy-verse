@@ -41,6 +41,7 @@ const BasicInformationSection = ({
     <FormSection title={tForm("title")}>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <div className="lg:grid-cols-6">
+          {/* Image */}
           <ImageField
             label={tLabels("image")}
             name="image"
@@ -52,6 +53,7 @@ const BasicInformationSection = ({
         </div>
 
         <div className="lg:grid-cols-6 space-y-5">
+          {/* Name */}
           <TextField
             label={tLabels("name")}
             name="name"
@@ -62,6 +64,7 @@ const BasicInformationSection = ({
             required
           />
 
+          {/* Short Name */}
           <TextField
             label={tLabels("shortName")}
             name="short_name"
@@ -72,6 +75,7 @@ const BasicInformationSection = ({
             required
           />
 
+          {/* Description */}
           <TextAreaField
             label={tLabels("description")}
             name="description"
@@ -81,6 +85,7 @@ const BasicInformationSection = ({
             error={errors.description}
           />
 
+          {/* Founded Year */}
           <NumberField
             label={tLabels("foundedYear")}
             name="founded_year"
