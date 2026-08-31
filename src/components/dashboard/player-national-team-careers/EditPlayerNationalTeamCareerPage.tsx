@@ -72,7 +72,11 @@ export default function EditPlayerNationalTeamCareerPage({
 
   return (
     <TableFormLayout
-      title={getTitle("edit", "playerNationalTeamCareer", `${player.name}`)}
+      title={getTitle(
+        "edit",
+        "playerNationalTeamCareer",
+        `${player.summary.shortName}`,
+      )}
       columns={1}
       tableTitle="National Team History"
       table={

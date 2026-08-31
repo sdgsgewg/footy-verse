@@ -13,14 +13,14 @@ interface Props {
 export default function PlayerCard({ teamType, player, onNavigate }: Props) {
   const {
     imageUrl,
-    name,
+    shortName,
     shirtNumber,
     mainPosition,
     currentNationality,
     currentClubTeam,
   } = player;
 
-  const names = name.split(" ");
+  const names = shortName.split(" ");
   const firstName = names[0];
   const lastName = names.slice(1).join(" ") || names[0];
 
@@ -39,7 +39,7 @@ export default function PlayerCard({ teamType, player, onNavigate }: Props) {
     >
       <ImageWrapper
         src={imageUrl}
-        alt={name}
+        alt={shortName}
         aspectRatio="none"
         hoverOverlay
         className={{

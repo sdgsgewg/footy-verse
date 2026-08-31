@@ -9,7 +9,7 @@ const DEFAULT_FILTER: GroupedPlayerFilter = {
   clubTeamId: undefined,
   nationalTeamId: undefined,
 
-  sortBy: "name",
+  sortBy: "shortName",
   sortOrder: "asc",
 };
 

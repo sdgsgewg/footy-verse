@@ -22,7 +22,7 @@ export interface PlayerListItem {
   shirtNumber: ShirtNumberResponse;
 
   imageUrl: string;
-  name: string;
+  shortName: string;
   slug: string;
   mainPosition: PositionResponse;
 
@@ -48,7 +48,8 @@ export interface GroupedPlayerListItem {
 
 export interface PlayerEditResponse {
   id: string;
-  name: string;
+  fullName: string;
+  shortName: string;
   image: string | null;
 
   dob: string;
@@ -69,7 +70,7 @@ export interface PlayerEditResponse {
 export interface PlayerSummaryResponse {
   shirtNumber: ShirtNumberResponse;
   imageUrl: string | null;
-  name: string;
+  shortName: string;
 
   dob: string;
   pob: string;
@@ -87,14 +88,12 @@ export interface PlayerSummaryResponse {
 
 export interface PlayerDetailResponse {
   id: string;
-  image: string | null;
-  name: string;
   slug: string;
 
   summary: PlayerSummaryResponse;
 
   profile: {
-    name: string;
+    fullName: string;
     dob: string;
     pob: string;
     height: string;

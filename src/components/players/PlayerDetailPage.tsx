@@ -31,9 +31,13 @@ export default function PlayerDetailPage({ playerLookup, returnTo }: Props) {
     return <ErrorState onRetry={() => void refetch()} />;
   }
 
-  const { name } = player;
+  const { shortName } = player.summary;
 
   return (
-    <PlayerDetailPageLayout title={name} player={player} returnTo={returnTo} />
+    <PlayerDetailPageLayout
+      title={shortName}
+      player={player}
+      returnTo={returnTo}
+    />
   );
 }

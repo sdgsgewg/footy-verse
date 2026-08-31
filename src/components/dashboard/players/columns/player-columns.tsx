@@ -40,7 +40,7 @@ export function createPlayerColumns(
     },
 
     player: {
-      key: "name",
+      key: "shortName",
       label: labels.player,
       className: "min-w-[16rem]",
       sortable: true,
@@ -48,7 +48,7 @@ export function createPlayerColumns(
       render: (player) => (
         <PlayerImageLabel
           imageUrl={player.imageUrl}
-          label={player.name}
+          label={player.shortName}
           subtitle={player.mainPosition.name}
         />
       ),

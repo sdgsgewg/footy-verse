@@ -13,7 +13,7 @@ interface Props {
 
 const PlayerSummary = ({ summary }: Props) => {
   const {
-    name,
+    shortName,
     imageUrl,
     shirtNumber,
     dob,
@@ -36,7 +36,7 @@ const PlayerSummary = ({ summary }: Props) => {
             {shirtNumber.clubTeam && (
               <span className="mr-2 text-primary">#{shirtNumber.clubTeam}</span>
             )}
-            {name}
+            {shortName}
           </h1>
 
           <p className="text-muted-foreground">{mainPosition.name}</p>
@@ -45,7 +45,7 @@ const PlayerSummary = ({ summary }: Props) => {
       image={
         <ImageWrapper
           src={imageUrl ?? IMAGES.COMMON.DEFAULT_PLAYER}
-          alt={name}
+          alt={shortName}
           clickable
           hoverOverlay
           aspectRatio="video"

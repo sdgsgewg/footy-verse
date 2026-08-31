@@ -8,7 +8,6 @@ import {
   mapPlayerListItem,
 } from "../players/mapper";
 import { ENTITY_CONFIG } from "@/config/entities";
-import { ensureUniqueSlug } from "./helpers/slug";
 import { requireEntity } from "./helpers/require-entity";
 import { deleteEntityImage, prepareUpdatedImage } from "./helpers/image";
 import { slugify } from "@/utils/string";
@@ -66,7 +65,7 @@ function getPlayersBaseQuery(options?: { isNationFiltered?: boolean }) {
   return `
     id,
     image,
-    name,
+    short_name,
     slug,
     dob,
     market_value,
@@ -218,7 +217,7 @@ async function getPlayerIdsByNationalTeam(
 }
 
 const sortColumnMap = {
-  name: "name",
+  shortName: "short_name",
   dob: "dob",
   marketValue: "market_value",
 } as const;
@@ -587,10 +586,7 @@ export async function createPlayerRepo(
 ): Promise<PlayerEditResponse> {
   const supabase = await getSupabase();
 
-  const slug = await ensureUniqueSlug({
-    table: getPlayerTable(),
-    name: player.name,
-  });
+  const slug = slugify(player.short_name ?? "");
 
   const { market_value, positions, nationalities, ...rest } = player;
 
@@ -621,7 +617,7 @@ export async function createPlayerRepo(
     action: ActivityLogAction.CREATE,
     entity: "player",
     entityId: result.id,
-    name: result.name,
+    name: result.shortName,
   });
 
   return result;
@@ -645,12 +641,12 @@ export async function updatePlayerRepo(
     getPlayerLabel(),
   );
 
-  const slug = slugify(player.name);
+  const slug = slugify(player.short_name);
 
   const finalImage = await prepareUpdatedImage({
-    oldName: oldPlayer.name,
-    newName: player.name,
-    oldImage: oldPlayer.name,
+    oldName: oldPlayer.shortName,
+    newName: player.short_name,
+    oldImage: oldPlayer.shortName,
     newImage: player.image ?? "",
     bucket: STORAGE_BUCKETS.PLAYERS,
   });
@@ -696,7 +692,8 @@ export async function updatePlayerRepo(
   }
 
   const changes = getChangedFields(oldPlayer, result, [
-    "name",
+    "fullName",
+    "shortName",
     "image",
     "dob",
     "pob",
@@ -712,7 +709,7 @@ export async function updatePlayerRepo(
     action: ActivityLogAction.UPDATE,
     entity: "player",
     entityId: result.id,
-    name: result.name,
+    name: result.shortName,
     metadata: {
       changes,
     },
@@ -755,6 +752,6 @@ export async function deletePlayerRepo(id: string): Promise<void> {
     action: ActivityLogAction.DELETE,
     entity: "player",
     entityId: id,
-    name: player.name,
+    name: player.shortName,
   });
 }

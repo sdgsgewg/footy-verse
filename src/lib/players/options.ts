@@ -23,7 +23,7 @@ export const getPreferredFootOptions = (t: Translate): Option[] =>
  */
 export function getPlayerOptions(players: PlayerListItem[]): Option[] {
   return players.map((player) => ({
-    label: player.name,
+    label: player.shortName,
     value: player.id,
     imageUrl: player.imageUrl,
   }));

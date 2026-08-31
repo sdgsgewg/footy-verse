@@ -54,7 +54,11 @@ export default function CreatePlayerNationalTeamCareerPage({
 
   return (
     <TableFormLayout
-      title={getTitle("create", "playerNationalTeamCareer", `${player.name}`)}
+      title={getTitle(
+        "create",
+        "playerNationalTeamCareer",
+        `${player.summary.shortName}`,
+      )}
       columns={1}
       tableTitle="National Team History"
       table={

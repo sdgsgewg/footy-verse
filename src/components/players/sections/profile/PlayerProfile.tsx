@@ -10,7 +10,7 @@ interface Props {
 
 const PlayerProfile = ({ player }: Props) => {
   const {
-    name,
+    fullName,
     dob,
     pob,
     height,
@@ -23,7 +23,7 @@ const PlayerProfile = ({ player }: Props) => {
 
   return (
     <div className="h-full">
-      <RecordData label="Name" value={name} />
+      <RecordData label="Name" value={fullName} />
 
       <RecordData label="Date of Birth" value={dob} />
       <RecordData label="Place of Birth" value={pob} />

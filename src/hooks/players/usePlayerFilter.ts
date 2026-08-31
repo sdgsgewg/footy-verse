@@ -15,7 +15,7 @@ const DEFAULT_FILTER: PlayerFilter = {
   page: 1,
   limit: 20,
 
-  sortBy: "name",
+  sortBy: "shortName",
   sortOrder: "asc",
 };
 

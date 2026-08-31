@@ -13,6 +13,7 @@ import {
 import Label from "./Label";
 import ErrorMessage from "./ErrorMessage";
 import { useLocale } from "next-intl";
+import { Calendar1, CalendarDays } from "lucide-react";
 
 interface DateFieldProps {
   label: string;
@@ -109,11 +110,12 @@ export default function DateField({
             disabled={isDisabled}
             aria-invalid={!!error}
             aria-describedby={errorId}
-            className={`w-full justify-start font-normal ${
+            className={`w-full flex items-center justify-between font-normal ${
               !date ? "text-muted-foreground" : ""
             } ${className ?? ""}`}
           >
             {formattedDate || placeholder}
+            <CalendarDays />
           </Button>
         </PopoverTrigger>
 

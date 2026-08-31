@@ -9,8 +9,9 @@
     },
 
     "labels": {
-      "image": "Gambar Pemain",
-      "name": "Nama Pemain",
+      "image": "Gambar",
+      "fullName": "Nama Lengkap",
+      "shortName": "Nama Singkat",
       "dob": "Tanggal Lahir",
       "pob": "Tempat Lahir",
       "height": "Tinggi (cm)",
@@ -24,7 +25,8 @@
 
     "placeholders": {
       "image": "Pilih Gambar",
-      "name": "Masukkan nama",
+      "fullName": "Masukkan nama lengkap",
+      "shortName": "Masukkan nama singkat",
       "dob": "Pilih tanggal lahir",
       "pob": "Masukkan tempat lahir",
       "height": "Masukkan tinggi (cm)",

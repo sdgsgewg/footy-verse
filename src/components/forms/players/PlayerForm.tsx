@@ -84,14 +84,25 @@ const PlayerForm = ({ mode, player, loading = false, onSubmit }: Props) => {
             error={errors.image}
           />
 
-          {/* Name */}
+          {/* Full Name */}
           <TextField
-            label={tLabels("name")}
-            name="name"
-            placeholder={tPlaceholders("name") || ""}
-            value={(form.name as string) ?? ""}
-            onChange={(value) => updateField("name", value)}
-            error={errors.name}
+            label={tLabels("fullName")}
+            name="full_name"
+            placeholder={tPlaceholders("fullName") || ""}
+            value={(form.full_name as string) ?? ""}
+            onChange={(value) => updateField("full_name", value)}
+            error={errors.full_name}
+            required
+          />
+
+          {/* Short Name */}
+          <TextField
+            label={tLabels("shortName")}
+            name="short_name"
+            placeholder={tPlaceholders("shortName") || ""}
+            value={(form.short_name as string) ?? ""}
+            onChange={(value) => updateField("short_name", value)}
+            error={errors.short_name}
             required
           />
 

@@ -35,20 +35,24 @@ import { formatEuroValue } from "../formatters/currency";
  * @returns PlayerListItem
  */
 export function mapPlayerListItem(player: DbPlayerListRow): PlayerListItem {
+  const { short_name, market_value, player_positions, player_nationalities } =
+    player;
+
   const shirtNumber = getCurrentShirtNumber(player);
 
-  const mainPosition = getMainPosition(player.player_positions);
+  const mainPosition = getMainPosition(player_positions);
 
-  const currentNationality = getCurrentNationality(player.player_nationalities);
+  const currentNationality = getCurrentNationality(player_nationalities);
 
   const currentClubTeam = getCurrentClubTeam(player);
 
-  const marketValue = formatEuroValue(player.market_value);
+  const marketValue = formatEuroValue(market_value);
 
   return {
     ...player,
     imageUrl: getImageUrl("player", STORAGE_BUCKETS.PLAYERS, player.image),
     shirtNumber,
+    shortName: short_name,
     dob: formatDateOfBirth(player.dob),
     mainPosition,
     currentNationality,
@@ -98,6 +102,8 @@ export function mapPlayerEditResponse(
   player: DbPlayerDetailRow,
 ): PlayerEditResponse {
   const {
+    full_name,
+    short_name,
     preferred_foot,
     market_value,
     player_positions,
@@ -106,6 +112,10 @@ export function mapPlayerEditResponse(
 
   return {
     ...player,
+
+    fullName: full_name,
+    shortName: short_name,
+
     preferredFoot: preferred_foot,
     marketValue: market_value,
 
@@ -158,14 +168,12 @@ export function mapPlayerDetailResponse(
 
   return {
     id: player.id,
-    image: player.image,
-    name: player.name,
     slug: player.slug,
 
     summary: {
       shirtNumber,
       imageUrl: getImageUrl("player", STORAGE_BUCKETS.PLAYERS, player.image),
-      name: player.name,
+      shortName: player.short_name,
       dob,
       pob: player.pob,
       currentNationality,
@@ -179,7 +187,7 @@ export function mapPlayerDetailResponse(
     },
 
     profile: {
-      name: player.name,
+      fullName: player.full_name,
       dob,
       pob: player.pob,
       height,

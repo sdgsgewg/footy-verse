@@ -11,7 +11,8 @@ import {
 
 export const playerMutationSchema = z.object({
   image: z.string().nullable().optional(),
-  name: z.string().min(1).max(255),
+  full_name: z.string().min(1).max(255),
+  short_name: z.string().min(1).max(255),
   dob: z.string(),
   pob: z.string().min(1).max(255),
   preferred_foot: z.union([prefFootSchema, z.literal("")]),
@@ -41,7 +42,7 @@ export const playersQuerySchema = listQuerySchema.extend({
 
   positionId: idSchema.optional(),
 
-  sortBy: playerSortBySchema.default("name"),
+  sortBy: playerSortBySchema.default("shortName"),
 });
 
 export const groupedPlayersQuerySchema = baseQuerySchema
@@ -54,5 +55,5 @@ export const groupedPlayersQuerySchema = baseQuerySchema
 
     positionId: z.string().optional(),
 
-    sortBy: playerSortBySchema.default("name"),
+    sortBy: playerSortBySchema.default("shortName"),
   });

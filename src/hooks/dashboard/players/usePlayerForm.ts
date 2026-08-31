@@ -15,7 +15,9 @@ const createEmptyPlayerForm = (): UpsertPlayerInput => ({
   image: null,
   imageUrl: null,
 
-  name: "",
+  full_name: "",
+  short_name: "",
+
   dob: "",
   pob: "",
 
@@ -36,7 +38,9 @@ function mapPlayer(player: PlayerEditResponse): UpsertPlayerInput {
     image: player.image,
     imageUrl: getImageUrl("player", STORAGE_BUCKETS.PLAYERS, player.image),
 
-    name: player.name,
+    full_name: player.fullName,
+    short_name: player.shortName,
+
     dob: player.dob,
     pob: player.pob,
 
@@ -85,7 +89,8 @@ export function usePlayerForm(player?: PlayerEditResponse) {
     schema: playerMutationSchema,
 
     dirtyFields: [
-      "name",
+      "full_name",
+      "short_name",
       "dob",
       "pob",
       "preferred_foot",
@@ -98,7 +103,8 @@ export function usePlayerForm(player?: PlayerEditResponse) {
     ],
 
     requiredFields: [
-      "name",
+      "full_name",
+      "short_name",
       "dob",
       "pob",
       "preferred_foot",
@@ -118,7 +124,8 @@ export function usePlayerForm(player?: PlayerEditResponse) {
   const buildPayload = () => {
     return buildFormData({
       values: {
-        name: form.name,
+        full_name: form.full_name,
+        short_name: form.short_name,
         dob: form.dob,
         pob: form.pob,
         preferred_foot: form.preferred_foot,

@@ -73,7 +73,11 @@ export default function EditPlayerClubTeamCareerPage({
 
   return (
     <TableFormLayout
-      title={getTitle("edit", "playerClubTeamCareer", `${player.name}`)}
+      title={getTitle(
+        "edit",
+        "playerClubTeamCareer",
+        `${player.summary.shortName}`,
+      )}
       columns={1}
       tableTitle="Career History"
       table={

@@ -16,7 +16,7 @@ import { PlayerTransfer } from "../player-transfer";
 
 export type DbPlayerListRow = Pick<
   Player,
-  "id" | "image" | "name" | "slug" | "dob" | "market_value"
+  "id" | "image" | "short_name" | "slug" | "dob" | "market_value"
 > & {
   player_positions: DbPlayerPositionRow[];
   player_nationalities: DbPlayerNationalityRow[];

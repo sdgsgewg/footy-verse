@@ -64,7 +64,7 @@ export const positionSortBySchema = z.enum(["name", "created_at"]);
 
 //Player
 
-export const playerSortBySchema = z.enum(["name", "dob", "marketValue"]);
+export const playerSortBySchema = z.enum(["shortName", "dob", "marketValue"]);
 
 export const prefFootSchema = z.enum(PreferredFoot);
 

@@ -9,8 +9,9 @@
     },
 
     "labels": {
-      "image": "Player Image",
-      "name": "Player Name",
+      "image": "Image",
+      "fullName": "Full Name",
+      "shortName": "Short Name",
       "dob": "Date of Birth",
       "pob": "Place of Birth",
       "height": "Height (cm)",
@@ -24,13 +25,14 @@
 
     "placeholders": {
       "image": "Choose Image",
-      "name": "Input Player Name",
-      "dob": "Select Date of Birth",
-      "pob": "Input Place of Birth",
-      "height": "Input Height",
-      "weight": "Input Weight",
-      "preferredFoot": "Select Preferred Foot",
-      "marketValue": "Input Market Value",
+      "fullName": "Input full name",
+      "shortName": "Input short name",
+      "dob": "Select date of birth",
+      "pob": "Input place of birth",
+      "height": "Input height",
+      "weight": "Input weight",
+      "preferredFoot": "Select preferred foot",
+      "marketValue": "Input market value",
 
       "positions": "Select Positions",
       "nationalities": "Select Nationalities"
