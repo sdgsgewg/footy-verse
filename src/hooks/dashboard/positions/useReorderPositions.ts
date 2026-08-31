@@ -1,4 +1,3 @@
-import { ROUTES } from "@/constants/routes";
 import { useCrudMutation } from "../useCrudMutation";
 import { reorderPositions } from "@/lib/api/position";
 import { positionKeys } from "@/lib/react-query/keys/positionKeys";
@@ -12,8 +11,6 @@ export function useReorderPositions() {
     mutationFn: ({ data }) => reorderPositions(data),
 
     invalidateQueries: [{ queryKey: positionKeys.lists() }],
-
-    redirectTo: ROUTES.DASHBOARD.CONTENT.POSITIONS.BASE,
 
     entityKey: "position",
 

@@ -11,7 +11,7 @@ import {
 import PositionForm from "@/components/forms/positions/PositionForm";
 import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
 import { useRouter } from "@/navigation";
-import { ROUTES } from "@/constants/routes";
+import { ENTITY_CONFIG } from "@/config/entities";
 
 interface Props {
   positionLookup: PositionLookupResponse;
@@ -57,7 +57,7 @@ const EditPositionPage = ({ positionLookup }: Props) => {
               id: position.id,
               payload,
               onSuccess: () => {
-                router.push(ROUTES.DASHBOARD.CONTENT.POSITIONS.BASE);
+                router.push(ENTITY_CONFIG["position"]["dashboardRoute"]);
               },
             })
           }

@@ -2,7 +2,7 @@
 
 import PositionForm from "@/components/forms/positions/PositionForm";
 import FormPageLayout from "@/components/layout/dashboard/FormPageLayout";
-import { ROUTES } from "@/constants/routes";
+import { ENTITY_CONFIG } from "@/config/entities";
 import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
 import { usePositionSubmit } from "@/hooks/dashboard/positions";
 import { useRouter } from "@/navigation";
@@ -26,7 +26,7 @@ export default function CreatePositionPage() {
             submit({
               payload,
               onSuccess: () => {
-                router.push(ROUTES.DASHBOARD.CONTENT.POSITIONS.BASE);
+                router.push(ENTITY_CONFIG["position"]["dashboardRoute"]);
               },
             })
           }

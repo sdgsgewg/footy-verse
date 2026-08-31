@@ -7,12 +7,16 @@ import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
 import { RegionLookupResponse } from "@/types/region";
 import { useRegionEdit, useRegionSubmit } from "@/hooks/dashboard/regions";
 import RegionForm from "@/components/forms/regions/RegionForm";
+import { useRouter } from "@/navigation";
+import { ENTITY_CONFIG } from "@/config/entities";
 
 interface Props {
   regionLookup: RegionLookupResponse;
 }
 
 const EditRegionPage = ({ regionLookup }: Props) => {
+  const router = useRouter();
+
   const { getTitle } = useCrudPageTitle();
 
   const { region, isLoading, error, refetch } = useRegionEdit(regionLookup.id);
@@ -44,6 +48,9 @@ const EditRegionPage = ({ regionLookup }: Props) => {
             submit({
               id: region.id,
               payload,
+              onSuccess: () => {
+                router.push(ENTITY_CONFIG["region"]["dashboardRoute"]);
+              },
             })
           }
         />

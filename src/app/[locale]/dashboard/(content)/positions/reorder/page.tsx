@@ -3,9 +3,9 @@
 import FormPageLayout from "@/components/layout/dashboard/FormPageLayout";
 import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
 import { useRouter } from "@/navigation";
-import { ROUTES } from "@/constants/routes";
 import ReorderPositionsForm from "@/components/forms/positions/ReorderPositionsForm";
 import { useReorderPositionsSubmit } from "@/hooks/dashboard/positions";
+import { ENTITY_CONFIG } from "@/config/entities";
 
 export default function ReorderPositionsPage() {
   const router = useRouter();
@@ -25,7 +25,7 @@ export default function ReorderPositionsPage() {
             submit({
               payload,
               onSuccess: () => {
-                router.push(ROUTES.DASHBOARD.CONTENT.POSITIONS.BASE);
+                router.push(ENTITY_CONFIG["position"]["dashboardRoute"]);
               },
             })
           }

@@ -4,6 +4,8 @@ import { useUpdateRegion } from "./useUpdateRegion";
 type SubmitOptions = {
   id?: string;
   payload: FormData;
+
+  onSuccess?: () => void;
 };
 
 export function useRegionSubmit() {
@@ -14,12 +16,15 @@ export function useRegionSubmit() {
   const isCreating = createMutation.isPending;
   const isUpdating = updateMutation.isPending;
 
-  const submit = ({ id, payload }: SubmitOptions) => {
+  const submit = ({ id, payload, onSuccess }: SubmitOptions) => {
     if (id) {
-      updateMutation.mutate({
-        id,
-        data: payload,
-      });
+      updateMutation.mutate(
+        {
+          id,
+          data: payload,
+        },
+        { onSuccess },
+      );
       return;
     }
 
