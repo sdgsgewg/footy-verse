@@ -106,7 +106,7 @@ const OrderedField = <T extends OrderedEntity>({
           <div className="flex min-h-24 flex-col items-center justify-center gap-2 rounded-lg border border-dashed p-4">
             <ListOrdered className="size-5" />
 
-            <span className="text-center">{instruction}</span>
+            <span className="text-sm text-center">{instruction}</span>
           </div>
         ) : (
           <DndContext

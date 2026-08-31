@@ -13,7 +13,7 @@ import {
 import Label from "./Label";
 import ErrorMessage from "./ErrorMessage";
 import { useLocale } from "next-intl";
-import { Calendar1, CalendarDays } from "lucide-react";
+import { CalendarDays } from "lucide-react";
 
 interface DateFieldProps {
   label: string;

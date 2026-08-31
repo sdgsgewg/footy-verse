@@ -244,7 +244,7 @@ const OrderedSelectField = <T extends OrderedEntity>({
             )}
           >
             <ListOrdered className="size-5" />
-            <span className="text-center">{instruction}</span>
+            <span className="text-sm text-center">{instruction}</span>
           </div>
         ) : (
           <DndContext

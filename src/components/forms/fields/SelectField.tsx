@@ -69,7 +69,11 @@ const SelectField: React.FC<SelectFieldProps> = ({
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
 
-        <SelectContent>
+        <SelectContent
+          position="popper"
+          sideOffset={4}
+          className="w-(--radix-select-trigger-width) max-h-60"
+        >
           {allLabel && <SelectItem value="">{allLabel}</SelectItem>}
 
           {options.map((option) => (
@@ -80,7 +84,7 @@ const SelectField: React.FC<SelectFieldProps> = ({
                   alt={option.label}
                   width={20}
                   height={20}
-                  className="shrink-0 rounded-full object-cover"
+                  className="size-5 shrink-0 rounded-full object-cover"
                 />
               )}
 
