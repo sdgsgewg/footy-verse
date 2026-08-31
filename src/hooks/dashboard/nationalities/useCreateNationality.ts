@@ -9,6 +9,7 @@ export function useCreateNationality() {
 
     invalidateQueries: [
       { queryKey: nationalityKeys.lists() },
+      { queryKey: nationalityKeys.options() },
 
       { queryKey: nationalTeamKeys.lists() },
     ],

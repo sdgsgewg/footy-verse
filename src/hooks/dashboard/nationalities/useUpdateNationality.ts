@@ -14,6 +14,7 @@ export function useUpdateNationality() {
 
     invalidateQueries: [
       { queryKey: nationalityKeys.lists() },
+      { queryKey: nationalityKeys.options() },
       { queryKey: nationalityKeys.details() },
       { queryKey: nationalityKeys.edits() },
 

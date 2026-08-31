@@ -1,6 +1,6 @@
 import { deleteClub } from "@/lib/api/club";
 import { useCrudMutation } from "../useCrudMutation";
-import { clubKeys } from "@/lib/react-query/keys/clubKeys";
+import { clubKeys, clubTeamKeys } from "@/lib/react-query/keys";
 
 interface DeleteClubPayload {
   id: string;
@@ -11,7 +11,11 @@ export function useDeleteClub() {
   return useCrudMutation<DeleteClubPayload>({
     mutationFn: ({ id }) => deleteClub(id),
 
-    invalidateQueries: [{ queryKey: clubKeys.lists() }],
+    invalidateQueries: [
+      { queryKey: clubKeys.lists() },
+
+      { queryKey: clubTeamKeys.lists() },
+    ],
 
     entityKey: "club",
 
