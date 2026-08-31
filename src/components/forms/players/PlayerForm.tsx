@@ -4,7 +4,7 @@ import { usePlayerForm } from "@/hooks/dashboard/players";
 import FormHeader from "../base/FormHeader";
 import FormWrapper from "../base/FormWrapper";
 import { PlayerEditResponse } from "@/types/player";
-import { usePositions } from "@/hooks/dashboard/positions";
+import { usePositionOptions } from "@/hooks/dashboard/positions";
 import FormContentWrapper from "../base/FormContentWrapper";
 import {
   DateField,
@@ -17,7 +17,6 @@ import {
 import { useTranslations } from "next-intl";
 import { getPreferredFootOptions } from "@/lib/players/options";
 import { PreferredFoot } from "@/enums/PreferredFoot";
-import { getPositionOptions } from "@/lib/positions/options";
 import { useNationalityOptions } from "@/hooks/nationalities";
 
 interface Props {
@@ -53,8 +52,8 @@ const PlayerForm = ({ mode, player, loading = false, onSubmit }: Props) => {
 
   const preferredFootOptions = getPreferredFootOptions(tPrefFoot);
 
-  const { positions } = usePositions();
-  const positionOptions = getPositionOptions(positions);
+  const { positionOptions } = usePositionOptions();
+
   const { nationalityOptions } = useNationalityOptions();
 
   const handleSubmit = () => {

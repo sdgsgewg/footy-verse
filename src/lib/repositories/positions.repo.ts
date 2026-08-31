@@ -23,6 +23,8 @@ import { createEntityActivityLog } from "./activity-logs.repo";
 import { ActivityLogAction } from "@/enums/ActivityLogAction";
 import { getChangedFields } from "./helpers/get-changed-field";
 import { ensureUniqueFieldsRepo } from "./helpers/uniqueness";
+import { Option } from "@/types/option";
+import { mapEntityOption } from "../entities/mapper";
 
 async function getSupabase() {
   return createClient();
@@ -93,6 +95,34 @@ export async function getPositionsRepo(
   if (error) throw error;
 
   return (data ?? []).map(mapPositionListItem);
+}
+
+/**
+ *
+ * @returns Option[]
+ */
+export async function getPositionOptionsRepo(): Promise<Option[]> {
+  const supabase = await getSupabase();
+
+  const { data, error } = await supabase
+    .from(getTable())
+    .select(
+      `
+      id,
+      name
+    `,
+    )
+    .order("name", {
+      ascending: true,
+    });
+
+  if (error) {
+    throw error;
+  }
+
+  if (!data || data.length === 0) return [];
+
+  return data.map((data) => mapEntityOption(data, "position"));
 }
 
 function getPositionDetailQuery() {

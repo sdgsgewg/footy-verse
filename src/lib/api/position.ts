@@ -6,6 +6,7 @@ import {
   PositionQuery,
 } from "@/types/position";
 import { ApiResponse } from "@/types/api";
+import { Option } from "@/types/option";
 
 const baseRoute = "/positions";
 
@@ -22,6 +23,18 @@ export const fetchPositions = async (
     {
       params,
     },
+  );
+
+  return data.data;
+};
+
+/**
+ *
+ * @returns Option[]
+ */
+export const fetchPositionOptions = async (): Promise<Option[]> => {
+  const { data } = await apiClient.get<ApiResponse<Option[]>>(
+    `${baseRoute}/options`,
   );
 
   return data.data;

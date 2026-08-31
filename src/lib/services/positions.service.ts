@@ -4,6 +4,7 @@ import {
   getPositionDetailRepo,
   getPositionEditRepo,
   getPositionLookupRepo,
+  getPositionOptionsRepo,
   getPositionsRepo,
   reorderPositionsRepo,
   updatePositionRepo,
@@ -20,6 +21,10 @@ export async function getPositionsService(query: unknown) {
   const parsed = positionsQuerySchema.parse(query);
 
   return getPositionsRepo(parsed);
+}
+
+export async function getPositionOptionsService() {
+  return getPositionOptionsRepo();
 }
 
 export async function getPositionEditService(id: string) {
