@@ -13,23 +13,25 @@ export function usePlayerClubTeamCareerActions(
 
   const router = useRouter();
 
+  const clubTeamCareerBaseRoute = "club-team-careers";
+
   const deleteMutation = useDeletePlayerClubTeamCareer(playerLookup.id);
 
   const handleCreate = () => {
     router.push(
-      `${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${playerLookup.slug}/club-careers/create`,
+      `${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${playerLookup.slug}/${clubTeamCareerBaseRoute}/create`,
     );
   };
 
   const handleView = (playerClubTeamCareerId: string) => {
     router.push(
-      `${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${playerLookup.slug}/club-careers/${playerClubTeamCareerId}`,
+      `${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${playerLookup.slug}/${clubTeamCareerBaseRoute}/${playerClubTeamCareerId}`,
     );
   };
 
   const handleEdit = (playerClubTeamCareerId: string) => {
     router.push(
-      `${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${playerLookup.slug}/club-careers/${playerClubTeamCareerId}/edit`,
+      `${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${playerLookup.slug}/${clubTeamCareerBaseRoute}/${playerClubTeamCareerId}/edit`,
     );
   };
 

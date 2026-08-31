@@ -27,7 +27,6 @@ export async function GET(_request: Request, context: PlayerRouteContext) {
 
     return successResponse(data);
   } catch (error) {
-    console.error(error);
     return errorResponse(error);
   }
 }
@@ -70,7 +69,6 @@ export async function PUT(request: Request, context: PlayerRouteContext) {
       throw error;
     }
   } catch (error: unknown) {
-    console.error(error);
     return errorResponse(error);
   }
 }

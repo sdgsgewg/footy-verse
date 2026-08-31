@@ -5,7 +5,7 @@ import {
   successResponse,
 } from "@/lib/api/response";
 import { authorizeManageContent } from "@/lib/auth/api-authorization";
-import { getNationalityInputFromFormData } from "@/lib/nationalities/form-data";
+import { getPlayerInputFromFormData } from "@/lib/players/form-data";
 import {
   createPlayerService,
   getPlayersService,
@@ -36,14 +36,14 @@ export async function POST(request: Request) {
 
     const formData = await request.formData();
 
-    const body = getNationalityInputFromFormData(formData);
+    const body = getPlayerInputFromFormData(formData);
 
     let image = "";
 
     const file = formData.get("image");
 
     if (file instanceof File && file.size > 0) {
-      image = await uploadImage(file, body.name, STORAGE_BUCKETS.PLAYERS);
+      image = await uploadImage(file, body.short_name, STORAGE_BUCKETS.PLAYERS);
     }
 
     body.image = image;

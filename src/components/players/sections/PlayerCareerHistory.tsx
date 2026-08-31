@@ -43,7 +43,7 @@ const PlayerCareerHistory = ({ player }: Props) => {
 
   const handleAddClubCareer = () => {
     router.push(
-      `${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${player.slug}/club-careers/create`,
+      `${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${player.slug}/club-team-careers/create`,
     );
   };
 

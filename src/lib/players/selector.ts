@@ -30,7 +30,7 @@ export function getCurrentClubTeamRecentPlayerCareer(
   // 1. If no player careers then return undefined
   if (player.player_careers.length === 0) return undefined;
 
-  // 2. Check whether player careers have player club career, then sort from latest to oldest
+  // 2. Check whether player careers have player club team career, then sort from latest to oldest
   const clubCareers = player.player_careers
     .filter((career) => career.player_club_team_career !== null)
     .toSorted(
