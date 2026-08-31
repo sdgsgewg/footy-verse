@@ -145,15 +145,6 @@ export const ENTITY_CONFIG = {
     supportsSlug: false,
   },
 
-  season: {
-    table: "seasons",
-    label: "Season",
-    activityType: "SEASON",
-    supportsImage: false,
-    supportsSlug: false,
-    dashboardRoute: ROUTES.DASHBOARD.CONTENT.SEASONS.BASE,
-  },
-
   region: {
     table: "regions",
     label: "Region",

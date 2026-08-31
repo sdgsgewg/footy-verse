@@ -8,7 +8,6 @@ import {
 
 export const playerTransferMutationSchema = z.object({
   player_club_team_career_id: idSchema.optional(),
-  season_id: idSchema,
   from_club_team_id: idSchema,
   to_club_team_id: idSchema,
   transfer_type: transferTypeSchema,

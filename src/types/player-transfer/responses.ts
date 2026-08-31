@@ -21,7 +21,6 @@ export interface PlayerTransferListItem {
 
 export interface PlayerTransferEditResponse {
   id: string;
-  seasonId: string;
   fromClubTeamId: string;
   toClubTeamId: string;
   transferType: string;

@@ -43,14 +43,12 @@ export function mapPlayerTransferEditResponse(
     transfer_type,
     transfer_fee,
     transfer_date,
-    season_id,
     from_club_team_id,
     to_club_team_id,
   } = playerTransfer;
 
   return {
     id,
-    seasonId: season_id,
     fromClubTeamId: from_club_team_id,
     toClubTeamId: to_club_team_id,
     transferType: transfer_type,

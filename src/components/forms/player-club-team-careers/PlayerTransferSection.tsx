@@ -10,9 +10,7 @@ import { Option } from "@/types/option";
 import SelectField from "../fields/SelectField";
 import NumberField from "../fields/NumberField";
 import { getTransferTypeOptions } from "@/lib/transfers/options";
-import { getSeasonOptions } from "@/lib/seasons/options";
 import DateField from "../fields/DateField";
-import { useSeasons } from "@/hooks/dashboard/seasons";
 import { useClubTeams } from "@/hooks/club-teams";
 import { getClubTeamOptions } from "@/lib/club-teams/options";
 import { FormErrors } from "@/types/form";
@@ -44,7 +42,6 @@ const PlayerTransferSection = ({ form, setForm, errors }: Props) => {
 
   const { transfer } = form;
   const {
-    season_id,
     from_club_team_id,
     to_club_team_id,
     transfer_type,
@@ -54,41 +51,12 @@ const PlayerTransferSection = ({ form, setForm, errors }: Props) => {
 
   const transferTypeOptions: Option[] = getTransferTypeOptions(tTransferType);
 
-  const { seasons } = useSeasons();
-  const seasonOptions = getSeasonOptions(seasons);
-
   const { clubTeams } = useClubTeams();
   const clubTeamOptions = getClubTeamOptions(clubTeams);
 
   return (
     <FormSection title={tForm("title")}>
       <>
-        {/* Season */}
-        <ComboboxField
-          label={tLabels("season")}
-          name={`season`}
-          options={seasonOptions}
-          placeholder={tPlaceholders("season") || ""}
-          searchPlaceholder={tCommon("combobox.searchEntity", {
-            entity: tEntities("season").toLowerCase(),
-          })}
-          emptyMessage={tCommon("combobox.noEntityFound", {
-            entity: tEntities("season").toLowerCase(),
-          })}
-          value={season_id}
-          onChange={(value) =>
-            setForm((prev) => ({
-              ...form,
-              transfer: {
-                ...prev.transfer,
-                season_id: value,
-              },
-            }))
-          }
-          error={errors["transfer.season_id"]}
-          required
-        />
-
         {/* From Club */}
         <ComboboxField
           label={tLabels("fromClub")}

@@ -26,7 +26,6 @@ const createEmptyPlayerClubTeamCareerForm =
     shirt_numbers: [],
 
     transfer: {
-      season_id: "",
       from_club_team_id: "",
       to_club_team_id: "",
       transfer_type: TransferType.TRANSFER,
@@ -71,7 +70,6 @@ function mapPlayerClubTeamCareer(
     })),
 
     transfer: {
-      season_id: transfer.seasonId,
       from_club_team_id: transfer.fromClubTeamId,
       to_club_team_id: transfer.toClubTeamId,
       transfer_type: transfer.transferType as TransferType,
@@ -114,7 +112,6 @@ export function usePlayerClubTeamCareerForm(
       : false;
 
     const isTransferValid =
-      form.transfer.season_id.trim().length > 0 &&
       form.transfer.from_club_team_id.trim().length > 0 &&
       form.transfer.to_club_team_id.trim().length > 0 &&
       form.transfer.transfer_type.trim().length > 0 &&

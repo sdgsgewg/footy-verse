@@ -64,9 +64,6 @@ async function getMessages(locale: string) {
       await import(`./messages/${locale}/dashboard/position-categories.json`)
     ).default,
 
-    seasons: (await import(`./messages/${locale}/dashboard/seasons.json`))
-      .default,
-
     regions: (await import(`./messages/${locale}/dashboard/regions.json`))
       .default,
 

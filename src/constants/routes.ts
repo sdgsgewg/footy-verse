@@ -20,19 +20,23 @@ export const ROUTES = {
 
   DASHBOARD: {
     BASE: "/dashboard",
+
     CONTENT: {
       PLAYERS: {
         BASE: "/dashboard/players",
         CREATE: "/dashboard/players/create",
       },
+
       CLUBS: {
         BASE: "/dashboard/clubs",
         CREATE: "/dashboard/clubs/create",
       },
+
       NATIONALITIES: {
         BASE: "/dashboard/nationalities",
         CREATE: "/dashboard/nationalities/create",
       },
+
       POSITIONS: {
         BASE: "/dashboard/positions",
         CREATE: "/dashboard/positions/create",
@@ -41,18 +45,17 @@ export const ROUTES = {
           CREATE: "/dashboard/positions/categories/create",
         },
       },
-      SEASONS: {
-        BASE: "/dashboard/seasons",
-        CREATE: "/dashboard/seasons/create",
-      },
+
       REGIONS: {
         BASE: "/dashboard/regions",
         CREATE: "/dashboard/regions/create",
       },
+
       CONFEDERATIONS: {
         BASE: "/dashboard/confederations",
         CREATE: "/dashboard/confederations/create",
       },
+
       COMPETITIONS: {
         BASE: "/dashboard/competitions",
         CREATE: "/dashboard/competitions/create",
@@ -60,11 +63,13 @@ export const ROUTES = {
         SCOPES: "/dashboard/competitions/scopes",
       },
     },
+
     SYSTEM: {
       USERS: {
         BASE: "/dashboard/users",
         CREATE: "/dashboard/users/create",
       },
+
       ROLES: {
         BASE: "/dashboard/roles",
         CREATE: "/dashboard/roles/create",

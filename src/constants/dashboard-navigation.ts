@@ -1,13 +1,4 @@
-import {
-  CalendarRange,
-  Flag,
-  Goal,
-  Map,
-  Network,
-  Shield,
-  Trophy,
-  Users,
-} from "lucide-react";
+import { Flag, Goal, Map, Network, Shield, Trophy, Users } from "lucide-react";
 
 import { ROUTES } from "@/constants/routes";
 
@@ -31,11 +22,6 @@ export const DASHBOARD_CONTENT_ITEMS = [
     key: "positions",
     href: ROUTES.DASHBOARD.CONTENT.POSITIONS.BASE,
     icon: Goal,
-  },
-  {
-    key: "seasons",
-    href: ROUTES.DASHBOARD.CONTENT.SEASONS.BASE,
-    icon: CalendarRange,
   },
   {
     key: "regions",

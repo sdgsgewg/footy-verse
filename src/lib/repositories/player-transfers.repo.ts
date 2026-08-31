@@ -59,11 +59,6 @@ function getPlayerTransfersBaseQuery() {
         name,
         image
       )
-    ),
-
-    season:seasons!transfers_season_id_fkey (
-      id,
-      name
     )
   `;
 }
@@ -130,11 +125,6 @@ function getPlayerTransferDetailBaseQuery() {
         name,
         image
       )
-    ),
-
-    season:seasons!transfers_season_id_fkey (
-      id,
-      name
     )
   `;
 }
@@ -177,7 +167,6 @@ export async function createPlayerTransferRepo(
     player_club_team_career_id: playerClubTeamCareerId,
     from_club_team_id: transfer.from_club_team_id,
     to_club_team_id: transfer.to_club_team_id,
-    season_id: transfer.season_id,
     transfer_date: transfer.transfer_date,
     transfer_fee: transfer.transfer_fee,
     transfer_type: transfer.transfer_type,
