@@ -2,10 +2,14 @@
 
 import PositionForm from "@/components/forms/positions/PositionForm";
 import FormPageLayout from "@/components/layout/dashboard/FormPageLayout";
+import { ROUTES } from "@/constants/routes";
 import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
 import { usePositionSubmit } from "@/hooks/dashboard/positions";
+import { useRouter } from "@/navigation";
 
 export default function CreatePositionPage() {
+  const router = useRouter();
+
   const { getTitle } = useCrudPageTitle();
 
   const { submit, isSubmitting } = usePositionSubmit();
@@ -21,6 +25,9 @@ export default function CreatePositionPage() {
           onSubmit={(payload) =>
             submit({
               payload,
+              onSuccess: () => {
+                router.push(ROUTES.DASHBOARD.CONTENT.POSITIONS.BASE);
+              },
             })
           }
         />

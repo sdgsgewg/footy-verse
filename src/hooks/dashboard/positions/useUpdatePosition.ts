@@ -1,4 +1,3 @@
-import { ROUTES } from "@/constants/routes";
 import { useCrudMutation } from "../useCrudMutation";
 import { updatePosition } from "@/lib/api/position";
 import { positionKeys } from "@/lib/react-query/keys/positionKeys";
@@ -17,8 +16,6 @@ export function useUpdatePosition() {
       { queryKey: positionKeys.details() },
       { queryKey: positionKeys.edits() },
     ],
-
-    redirectTo: ROUTES.DASHBOARD.CONTENT.POSITIONS.BASE,
 
     entityKey: "position",
 

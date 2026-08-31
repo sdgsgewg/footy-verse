@@ -5,6 +5,8 @@ import { useUpdatePosition } from "./useUpdatePosition";
 type SubmitOptions = {
   id?: string;
   payload: UpsertPositionInput;
+
+  onSuccess?: () => void;
 };
 
 export function usePositionSubmit() {
@@ -15,12 +17,15 @@ export function usePositionSubmit() {
   const isCreating = createMutation.isPending;
   const isUpdating = updateMutation.isPending;
 
-  const submit = ({ id, payload }: SubmitOptions) => {
+  const submit = ({ id, payload, onSuccess }: SubmitOptions) => {
     if (id) {
-      updateMutation.mutate({
-        id,
-        data: payload,
-      });
+      updateMutation.mutate(
+        {
+          id,
+          data: payload,
+        },
+        { onSuccess },
+      );
       return;
     }
 

@@ -10,12 +10,16 @@ import {
 } from "@/hooks/dashboard/positions";
 import PositionForm from "@/components/forms/positions/PositionForm";
 import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
+import { useRouter } from "@/navigation";
+import { ROUTES } from "@/constants/routes";
 
 interface Props {
   positionLookup: PositionLookupResponse;
 }
 
 const EditPositionPage = ({ positionLookup }: Props) => {
+  const router = useRouter();
+
   const { getTitle } = useCrudPageTitle();
 
   const { position, isLoading, error, refetch } = usePositionEdit(
@@ -52,6 +56,9 @@ const EditPositionPage = ({ positionLookup }: Props) => {
             submit({
               id: position.id,
               payload,
+              onSuccess: () => {
+                router.push(ROUTES.DASHBOARD.CONTENT.POSITIONS.BASE);
+              },
             })
           }
         />
