@@ -19,7 +19,6 @@ export function mapPlayerTransferListItem(
     transfer_type,
     transfer_fee,
     transfer_date,
-    season,
     from_club_team,
     to_club_team,
   } = playerTransfer;
@@ -30,7 +29,7 @@ export function mapPlayerTransferListItem(
     transferFee: formatEuroValue(transfer_fee),
     transferDate: transfer_date,
 
-    season: mapSeasonResponse(season),
+    season: mapSeasonResponse(transfer_date),
     fromClubTeam: mapClubTeamResponse(from_club_team),
     toClubTeam: mapClubTeamResponse(to_club_team),
   };
@@ -68,7 +67,6 @@ export function mapPlayerTransferDetailResponse(
     transfer_type,
     transfer_fee,
     transfer_date,
-    season,
     from_club_team,
     to_club_team,
   } = playerTransfer;
@@ -79,7 +77,7 @@ export function mapPlayerTransferDetailResponse(
     transferFee: transfer_fee,
     transferDate: transfer_date,
 
-    season: mapSeasonResponse(season),
+    season: mapSeasonResponse(transfer_date),
     fromClubTeam: mapClubTeamResponse(from_club_team),
     toClubTeam: mapClubTeamResponse(to_club_team),
   };

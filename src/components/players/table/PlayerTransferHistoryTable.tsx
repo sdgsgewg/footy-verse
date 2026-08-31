@@ -26,7 +26,7 @@ const PlayerTransferHistoryTable = ({ playerTransfers, loading }: Props) => {
     {
       key: "season",
       label: tColumn("season"),
-      render: (transfer) => transfer.season.name,
+      render: (transfer) => transfer.season,
     },
 
     {

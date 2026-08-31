@@ -1,6 +1,5 @@
 import { DbClubTeamRow } from "../club-team";
 import { PlayerCareer } from "../player-career";
-import { SeasonSummary } from "../season";
 import { PlayerTransfer } from "./database";
 
 // Player Transfer List
@@ -12,7 +11,6 @@ type PlayerTransferFilterQuery = {
 export type DbPlayerTransferListRow = PlayerTransfer & {
   from_club_team: DbClubTeamRow;
   to_club_team: DbClubTeamRow;
-  season: SeasonSummary;
 
   player_club_team_career: PlayerTransferFilterQuery;
 };
@@ -22,7 +20,6 @@ export type DbPlayerTransferListRow = PlayerTransfer & {
 export type DbPlayerTransferDetailRow = PlayerTransfer & {
   from_club_team: DbClubTeamRow;
   to_club_team: DbClubTeamRow;
-  season: SeasonSummary;
 };
 
 // Helper for other entity
@@ -30,5 +27,4 @@ export type DbPlayerTransferDetailRow = PlayerTransfer & {
 export type DbPlayerTransferRow = PlayerTransfer & {
   from_club_team: DbClubTeamRow;
   to_club_team: DbClubTeamRow;
-  season: SeasonSummary;
 };
