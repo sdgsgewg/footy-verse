@@ -58,9 +58,6 @@ export interface CrudMutationOptions<TVariables> {
 
   invalidateQueries?: InvalidateQueryFilters[];
 
-  allowRedirect?: boolean;
-  redirectTo?: string;
-
   entityKey: Entity;
   action: CrudAction;
 

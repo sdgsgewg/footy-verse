@@ -5,15 +5,12 @@ import { useTranslations } from "next-intl";
 import { getNameFromPayload } from "@/lib/crud/payload";
 import { CrudMutationOptions } from "@/types/crud";
 import { activityLogKeys } from "@/lib/react-query/keys/activityLogKeys";
-import { useRouter } from "@/navigation";
 import { handleCrudError } from "@/lib/react-query/config/crud-feedback";
 import { toast } from "sonner";
 
 export function useCrudMutation<TVariables>({
   mutationFn,
   invalidateQueries,
-  allowRedirect = false,
-  redirectTo,
   entityKey,
   action,
   getPayload,
@@ -21,8 +18,6 @@ export function useCrudMutation<TVariables>({
   onError,
 }: CrudMutationOptions<TVariables>) {
   const queryClient = useQueryClient();
-
-  const router = useRouter();
 
   const t = useTranslations();
 
@@ -69,12 +64,6 @@ export function useCrudMutation<TVariables>({
       }
 
       onSuccess?.(data, variables);
-
-      if (redirectTo) {
-        router.push(`${redirectTo}`);
-      } else if (allowRedirect) {
-        router.back();
-      }
     },
 
     onError: (error) => {
