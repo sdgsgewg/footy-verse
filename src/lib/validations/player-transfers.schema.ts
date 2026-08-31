@@ -10,14 +10,8 @@ export const playerTransferMutationSchema = z.object({
   player_club_team_career_id: idSchema.optional(),
   from_club_team_id: idSchema,
   to_club_team_id: idSchema,
-  transfer_type: transferTypeSchema,
-  transfer_fee: z
-    .number()
-    .nonnegative()
-    .nullable()
-    .refine((value) => value !== null, {
-      message: "Transfer fee is required",
-    }),
+  transfer_type: z.union([transferTypeSchema, z.literal("")]),
+  transfer_fee: z.number().nonnegative().nullable(),
   transfer_date: z.string(),
 });
 

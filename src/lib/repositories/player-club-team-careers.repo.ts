@@ -165,11 +165,6 @@ function getPlayerClubTeamCareerDetailBaseQuery() {
             name,
             image
           )
-        ),
-
-        season:seasons!transfers_season_id_fkey (
-          id,
-          name
         )
     )
   `;

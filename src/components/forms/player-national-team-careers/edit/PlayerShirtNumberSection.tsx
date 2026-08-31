@@ -34,8 +34,9 @@ const PlayerShirtNumberSection = ({ form, setForm }: Props) => {
       items={form.shirt_numbers ?? []}
       minItems={1}
       createItem={() => ({
-        shirt_number: 1,
-        start_date: "",
+        shirt_number: null,
+        start_date:
+          (form.shirt_numbers?.length ?? 0) === 0 ? form.career.joined_at : "",
         end_date: "",
       })}
       onChange={(items) =>
@@ -73,6 +74,16 @@ const PlayerShirtNumberSection = ({ form, setForm }: Props) => {
             placeholder={tPlaceholders("endDate") || ""}
             value={item.end_date ?? ""}
             onChange={(v) => updateItem(index, "end_date", v)}
+            startMonth={
+              item.start_date
+                ? new Date(
+                    Number(item.start_date.slice(0, 4)),
+                    Number(item.start_date.slice(5, 7)) - 1,
+                    Number(item.start_date.slice(8, 10)),
+                  )
+                : undefined
+            }
+            endMonth={new Date(2100, 11, 31)}
           />
         </>
       )}

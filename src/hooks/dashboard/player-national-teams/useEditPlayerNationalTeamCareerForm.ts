@@ -61,7 +61,11 @@ export function useEditPlayerNationalTeamCareerForm(
   const isCareerValid = form.career.joined_at.trim().length > 0;
 
   const areShirtNumbersValid = form.shirt_numbers.every((item) => {
-    return item.shirt_number > 0 && item.start_date.trim().length > 0;
+    return (
+      item.shirt_number !== null &&
+      item.shirt_number > 0 &&
+      item.start_date.trim().length > 0
+    );
   });
 
   const canSubmit = useMemo(() => {

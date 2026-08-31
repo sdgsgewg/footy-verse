@@ -51,7 +51,7 @@ const PlayerTransferSection = ({ form, setForm, errors }: Props) => {
 
   const transferTypeOptions: Option[] = getTransferTypeOptions(tTransferType);
 
-  const { clubTeams } = useClubTeams();
+  const { clubTeams, loading: clubTeamLoading } = useClubTeams();
   const clubTeamOptions = getClubTeamOptions(clubTeams);
 
   return (
@@ -63,6 +63,7 @@ const PlayerTransferSection = ({ form, setForm, errors }: Props) => {
           name={`from_club_team`}
           options={clubTeamOptions}
           placeholder={tPlaceholders("fromClub") || ""}
+          loading={clubTeamLoading}
           searchPlaceholder={tCommon("combobox.searchEntity", {
             entity: tEntities("club").toLowerCase(),
           })}
@@ -72,7 +73,7 @@ const PlayerTransferSection = ({ form, setForm, errors }: Props) => {
           value={from_club_team_id}
           onChange={(value) =>
             setForm((prev) => ({
-              ...form,
+              ...prev,
               transfer: {
                 ...prev.transfer,
                 from_club_team_id: value,
@@ -89,6 +90,7 @@ const PlayerTransferSection = ({ form, setForm, errors }: Props) => {
           name={`to_club_team`}
           options={clubTeamOptions}
           placeholder={tPlaceholders("toClub") || ""}
+          loading={clubTeamLoading}
           searchPlaceholder={tCommon("combobox.searchEntity", {
             entity: tEntities("club").toLowerCase(),
           })}
@@ -98,7 +100,9 @@ const PlayerTransferSection = ({ form, setForm, errors }: Props) => {
           value={to_club_team_id}
           onChange={(value) =>
             setForm((prev) => ({
-              ...form,
+              ...prev,
+              club_team_id: value,
+
               transfer: {
                 ...prev.transfer,
                 to_club_team_id: value,
@@ -118,7 +122,7 @@ const PlayerTransferSection = ({ form, setForm, errors }: Props) => {
           value={transfer_type || ""}
           onChange={(value) =>
             setForm((prev) => ({
-              ...form,
+              ...prev,
               transfer: {
                 ...prev.transfer,
                 transfer_type: value as TransferType,
@@ -137,10 +141,10 @@ const PlayerTransferSection = ({ form, setForm, errors }: Props) => {
           value={transfer_fee}
           onChange={(value) =>
             setForm((prev) => ({
-              ...form,
+              ...prev,
               transfer: {
                 ...prev.transfer,
-                transfer_fee: value!,
+                transfer_fee: value,
               },
             }))
           }
@@ -156,7 +160,7 @@ const PlayerTransferSection = ({ form, setForm, errors }: Props) => {
           value={transfer_date}
           onChange={(value) =>
             setForm((prev) => ({
-              ...form,
+              ...prev,
               transfer: {
                 ...prev.transfer,
                 transfer_date: value,

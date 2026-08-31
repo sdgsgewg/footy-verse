@@ -44,7 +44,6 @@
       },
 
       "transfer": {
-        "season": "Season",
         "fromClub": "From Club",
         "toClub": "To Club",
         "transferType": "Transfer Type",
@@ -73,7 +72,6 @@
       },
 
       "transfer": {
-        "season": "Select Season",
         "fromClub": "Select From Club",
         "toClub": "Select To Club",
         "transferType": "Select Transfer Type",

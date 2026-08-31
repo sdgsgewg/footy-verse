@@ -28,8 +28,8 @@ const createEmptyPlayerClubTeamCareerForm =
     transfer: {
       from_club_team_id: "",
       to_club_team_id: "",
-      transfer_type: TransferType.TRANSFER,
-      transfer_fee: 0,
+      transfer_type: "",
+      transfer_fee: null,
       transfer_date: "",
     },
   });
@@ -100,6 +100,7 @@ export function usePlayerClubTeamCareerForm(
           return (
             item.contract_start.trim().length > 0 &&
             item.contract_end.trim().length > 0 &&
+            item.salary !== null &&
             item.salary > 0
           );
         })
@@ -107,7 +108,11 @@ export function usePlayerClubTeamCareerForm(
 
     const areShirtNumbersValid = form.shirt_numbers
       ? form.shirt_numbers.every((item) => {
-          return item.shirt_number > 0 && item.start_date.trim().length > 0;
+          return (
+            item.shirt_number !== null &&
+            item.shirt_number > 0 &&
+            item.start_date.trim().length > 0
+          );
         })
       : false;
 
@@ -115,6 +120,7 @@ export function usePlayerClubTeamCareerForm(
       form.transfer.from_club_team_id.trim().length > 0 &&
       form.transfer.to_club_team_id.trim().length > 0 &&
       form.transfer.transfer_type.trim().length > 0 &&
+      form.transfer.transfer_fee !== null &&
       form.transfer.transfer_fee >= 0 &&
       form.transfer.transfer_date.trim().length > 0;
 

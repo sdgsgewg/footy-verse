@@ -33,7 +33,7 @@ const PlayerClubTeamCareerSection = ({ form, setForm, errors }: Props) => {
   const { club_team_id } = form;
   const { joined_at, left_at } = form.career;
 
-  const { clubTeams } = useClubTeams();
+  const { clubTeams, loading: clubTeamLoading } = useClubTeams();
   const clubTeamOptions = getClubTeamOptions(clubTeams);
 
   return (
@@ -45,6 +45,7 @@ const PlayerClubTeamCareerSection = ({ form, setForm, errors }: Props) => {
         options={clubTeamOptions}
         value={club_team_id}
         placeholder={tPlaceholders("club")}
+        loading={clubTeamLoading}
         searchPlaceholder={tCommon("combobox.searchEntity", {
           entity: tEntities("club").toLowerCase(),
         })}
@@ -55,6 +56,11 @@ const PlayerClubTeamCareerSection = ({ form, setForm, errors }: Props) => {
           setForm((prev) => ({
             ...prev,
             club_team_id: value,
+
+            transfer: {
+              ...prev.transfer,
+              to_club_team_id: value,
+            },
           }))
         }
         error={errors.club_team_id}
@@ -70,9 +76,15 @@ const PlayerClubTeamCareerSection = ({ form, setForm, errors }: Props) => {
         onChange={(value) =>
           setForm((prev) => ({
             ...prev,
+
             career: {
               ...prev.career,
               joined_at: value,
+            },
+
+            transfer: {
+              ...prev.transfer,
+              transfer_date: value,
             },
           }))
         }
@@ -89,6 +101,7 @@ const PlayerClubTeamCareerSection = ({ form, setForm, errors }: Props) => {
         onChange={(value) =>
           setForm((prev) => ({
             ...prev,
+
             career: {
               ...prev.career,
               left_at: value,

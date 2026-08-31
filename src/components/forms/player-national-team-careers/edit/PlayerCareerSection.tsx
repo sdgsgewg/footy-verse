@@ -8,13 +8,13 @@ import { ComboboxField, DateField } from "../../fields";
 import { useNationalTeams } from "@/hooks/national-teams";
 import { getNationalTeamOptions } from "@/lib/national-teams/options";
 
-const PlayerCareerSection = ({
-  form,
-  setForm,
-}: {
+interface Props {
   form: UpsertPlayerNationalTeamCareerInput;
+
   setForm: Dispatch<SetStateAction<UpsertPlayerNationalTeamCareerInput>>;
-}) => {
+}
+
+const PlayerCareerSection = ({ form, setForm }: Props) => {
   const tForm = useTranslations(
     "dashboard.playerNationalTeamCareers.form.career",
   );
@@ -29,10 +29,10 @@ const PlayerCareerSection = ({
   const tEntities = useTranslations("entities");
   const tCommon = useTranslations("common");
 
-  const { national_team_id, career } = form;
+  const { national_team_id } = form;
   const { joined_at, left_at } = form.career;
 
-  const { nationalTeams } = useNationalTeams();
+  const { nationalTeams, loading: nationalTeamLoading } = useNationalTeams();
   const nationalTeamOptions = getNationalTeamOptions(nationalTeams);
 
   return (
@@ -43,6 +43,7 @@ const PlayerCareerSection = ({
         name={`national_team`}
         options={nationalTeamOptions}
         placeholder={tPlaceholders("nation") || ""}
+        loading={nationalTeamLoading}
         searchPlaceholder={tCommon("combobox.searchEntity", {
           entity: tEntities("nationality").toLowerCase(),
         })}
@@ -50,7 +51,12 @@ const PlayerCareerSection = ({
           entity: tEntities("nationality").toLowerCase(),
         })}
         value={national_team_id}
-        onChange={(value) => setForm({ ...form, national_team_id: value })}
+        onChange={(value) =>
+          setForm((prev) => ({
+            ...prev,
+            national_team_id: value,
+          }))
+        }
         required
       />
 
@@ -61,13 +67,14 @@ const PlayerCareerSection = ({
         placeholder={tPlaceholders("joinedAt") || ""}
         value={joined_at}
         onChange={(value) =>
-          setForm({
-            ...form,
+          setForm((prev) => ({
+            ...prev,
+
             career: {
-              ...career,
+              ...prev.career,
               joined_at: value,
             },
-          })
+          }))
         }
         required
       />
@@ -79,13 +86,14 @@ const PlayerCareerSection = ({
         placeholder={tPlaceholders("leftAt") || ""}
         value={left_at ?? ""}
         onChange={(value) =>
-          setForm({
-            ...form,
+          setForm((prev) => ({
+            ...prev,
+
             career: {
-              ...career,
+              ...prev.career,
               left_at: value,
             },
-          })
+          }))
         }
       />
     </FormSection>

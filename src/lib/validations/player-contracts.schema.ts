@@ -5,7 +5,7 @@ export const playerContractMutationSchema = z.object({
   player_club_team_career_id: idSchema.optional(),
   contract_start: z.string(),
   contract_end: z.string(),
-  salary: z.number().min(0),
+  salary: z.number().nonnegative().min(0).nullable(),
 });
 
 export const createPlayerContractSchema = playerContractMutationSchema;

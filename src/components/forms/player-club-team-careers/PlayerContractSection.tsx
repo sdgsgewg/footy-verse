@@ -44,9 +44,10 @@ const PlayerContractSection = ({ form, setForm, errors }: Props) => {
       items={form.contracts ?? []}
       minItems={0}
       createItem={() => ({
-        contract_start: "",
+        contract_start:
+          (form.contracts?.length ?? 0) === 0 ? form.career.joined_at : "",
         contract_end: "",
-        salary: 1,
+        salary: null,
       })}
       onChange={(items) =>
         setForm((prev) => ({
@@ -74,6 +75,16 @@ const PlayerContractSection = ({ form, setForm, errors }: Props) => {
             value={item.contract_end ?? ""}
             onChange={(v) => updateItem(index, "contract_end", v)}
             error={getContractError(index, "contract_end")}
+            startMonth={
+              item.contract_start
+                ? new Date(
+                    Number(item.contract_start.slice(0, 4)),
+                    Number(item.contract_start.slice(5, 7)) - 1,
+                    Number(item.contract_start.slice(8, 10)),
+                  )
+                : undefined
+            }
+            endMonth={new Date(2100, 11, 31)}
           />
 
           {/* Salary */}
