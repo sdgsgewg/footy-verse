@@ -1,12 +1,11 @@
 import { getCrudQuery } from "@/lib/api/query";
-import { isFormDataRequest } from "@/lib/api/request";
 import {
   createdResponse,
   errorResponse,
   successResponse,
 } from "@/lib/api/response";
 import { authorizeManageContent } from "@/lib/auth/api-authorization";
-import { getPlayerInputFromFormData } from "@/lib/players/form-data";
+import { getNationalityInputFromFormData } from "@/lib/nationalities/form-data";
 import {
   createPlayerService,
   getPlayersService,
@@ -35,24 +34,17 @@ export async function POST(request: Request) {
   try {
     await authorizeManageContent();
 
-    if (!isFormDataRequest(request)) {
-      const body = await request.json();
-      const data = await createPlayerService(body);
-
-      return createdResponse(data);
-    }
-
     const formData = await request.formData();
 
-    const body = getPlayerInputFromFormData(formData);
+    const body = getNationalityInputFromFormData(formData);
+
+    let image = "";
 
     const file = formData.get("image");
 
-    if (!(file instanceof File) || file.size === 0) {
-      return errorResponse(new Error("Player image is required"));
+    if (file instanceof File && file.size > 0) {
+      image = await uploadImage(file, body.name, STORAGE_BUCKETS.PLAYERS);
     }
-
-    const image = await uploadImage(file, body.name, STORAGE_BUCKETS.PLAYERS);
 
     body.image = image;
 

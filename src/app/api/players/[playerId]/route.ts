@@ -1,4 +1,3 @@
-import { isFormDataRequest } from "@/lib/api/request";
 import { errorResponse, successResponse } from "@/lib/api/response";
 import { authorizeManageContent } from "@/lib/auth/api-authorization";
 import { NotFoundError } from "@/lib/errors/http-error";
@@ -45,13 +44,6 @@ export async function PUT(request: Request, context: PlayerRouteContext) {
       return errorResponse(new NotFoundError("Player not found"));
     }
 
-    if (!isFormDataRequest(request)) {
-      const body = await request.json();
-      const data = await updatePlayerService(playerId, body);
-
-      return successResponse(data);
-    }
-
     const formData = await request.formData();
 
     const body = getPlayerInputFromFormData(formData);
@@ -61,7 +53,7 @@ export async function PUT(request: Request, context: PlayerRouteContext) {
     const file = formData.get("image");
 
     if (file instanceof File && file.size > 0) {
-      image = await uploadImage(file, body.name, STORAGE_BUCKETS.PLAYERS);
+      image = await uploadImage(file, body.short_name, STORAGE_BUCKETS.PLAYERS);
     }
 
     body.image = image;
@@ -78,6 +70,7 @@ export async function PUT(request: Request, context: PlayerRouteContext) {
       throw error;
     }
   } catch (error: unknown) {
+    console.error(error);
     return errorResponse(error);
   }
 }

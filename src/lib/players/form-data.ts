@@ -7,7 +7,8 @@ import {
 export function getPlayerInputFromFormData(formData: FormData) {
   return {
     image: null as string | null,
-    name: parseStringField(formData, "name"),
+    full_name: parseStringField(formData, "full_name"),
+    short_name: parseStringField(formData, "short_name"),
     dob: parseStringField(formData, "dob"),
     pob: parseStringField(formData, "pob"),
     preferred_foot: parseStringField(formData, "preferred_foot"),
