@@ -28,11 +28,12 @@ export default function PlayerFilterContent({
   const tEntities = useTranslations("entities");
   const tCommon = useTranslations("common");
 
-  const { positionOptions } = usePositionOptions();
+  const { positionOptions, loading: positionLoading } = usePositionOptions();
 
-  const { nationalityOptions } = useNationalityOptions();
+  const { nationalityOptions, loading: nationalityLoading } =
+    useNationalityOptions();
 
-  const { clubTeams } = useClubTeams();
+  const { clubTeams, loading: clubTeamLoading } = useClubTeams();
   const clubTeamOptions = getClubTeamOptions(clubTeams);
 
   return (
@@ -43,6 +44,7 @@ export default function PlayerFilterContent({
         name={`position`}
         options={positionOptions}
         placeholder={tPlaceholders("position")}
+        loading={positionLoading}
         searchPlaceholder={tCommon("combobox.searchEntity", {
           entity: tEntities("position").toLowerCase(),
         })}
@@ -59,6 +61,7 @@ export default function PlayerFilterContent({
         name={`nation`}
         options={nationalityOptions}
         placeholder={tPlaceholders("nation")}
+        loading={nationalityLoading}
         searchPlaceholder={tCommon("combobox.searchEntity", {
           entity: tEntities("nationality").toLowerCase(),
         })}
@@ -75,6 +78,7 @@ export default function PlayerFilterContent({
         name={`club_team`}
         options={clubTeamOptions}
         placeholder={tPlaceholders("club")}
+        loading={clubTeamLoading}
         searchPlaceholder={tCommon("combobox.searchEntity", {
           entity: tEntities("club").toLowerCase(),
         })}

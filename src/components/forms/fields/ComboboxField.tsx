@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Check, ChevronDown } from "lucide-react";
+import { Check, ChevronDown, Loader2 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import Label from "./Label";
@@ -24,6 +24,7 @@ import {
 import { Option } from "@/types/option";
 import Image from "next/image";
 import ErrorMessage from "./ErrorMessage";
+import { useTranslations } from "next-intl";
 
 interface ComboboxFieldProps {
   label?: string;
@@ -37,8 +38,9 @@ interface ComboboxFieldProps {
   searchPlaceholder?: string;
   emptyMessage?: string;
 
-  required?: boolean;
   disabled?: boolean;
+  loading?: boolean;
+  required?: boolean;
 
   className?: string;
   error?: string;
@@ -57,11 +59,14 @@ const ComboboxField: React.FC<ComboboxFieldProps> = ({
   emptyMessage = "No data found.",
 
   disabled = false,
+  loading = false,
   required = false,
 
   className,
   error,
 }) => {
+  const tCommonStates = useTranslations("common.states");
+
   const [open, setOpen] = React.useState(false);
 
   const selectedOption = options.find((item) => item.value === value);
@@ -81,37 +86,48 @@ const ComboboxField: React.FC<ComboboxFieldProps> = ({
             aria-expanded={open}
             aria-invalid={!!error}
             aria-describedby={errorId}
-            disabled={disabled}
+            disabled={disabled || loading}
             className="h-10 w-full justify-between rounded-xl font-normal"
           >
             <div className="flex items-center gap-2 overflow-hidden">
-              {selectedOption?.imageUrl && (
-                <Image
-                  src={selectedOption.imageUrl}
-                  alt={selectedOption.label}
-                  width={20}
-                  height={20}
-                  className="rounded-full object-cover shrink-0"
-                />
+              {loading ? (
+                <Loader2 className="h-4 w-4 shrink-0 animate-spin opacity-50" />
+              ) : (
+                selectedOption?.imageUrl && (
+                  <Image
+                    src={selectedOption.imageUrl}
+                    alt={selectedOption.label}
+                    width={20}
+                    height={20}
+                    className="shrink-0 rounded-full object-cover"
+                  />
+                )
               )}
 
               <span className="truncate">
-                {selectedOption?.label ?? placeholder}
+                {loading
+                  ? tCommonStates("loading")
+                  : (selectedOption?.label ?? placeholder)}
               </span>
             </div>
 
-            <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+            {loading ? (
+              <Loader2 className="ml-2 h-4 w-4 shrink-0 animate-spin opacity-50" />
+            ) : (
+              <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+            )}
           </Button>
         </PopoverTrigger>
 
         <PopoverContent
           align="start"
           className="w-[--radix-popover-trigger-width] p-0"
+          onWheel={(e) => e.stopPropagation()}
         >
           <Command>
             <CommandInput placeholder={searchPlaceholder} />
 
-            <CommandList className="max-h-60 overflow-y-scroll">
+            <CommandList className="max-h-60 overflow-y-auto">
               <CommandEmpty>{emptyMessage}</CommandEmpty>
 
               <CommandGroup>
