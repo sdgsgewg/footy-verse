@@ -53,11 +53,39 @@ const getPlayerNationalityTable = () => {
   return ENTITY_CONFIG["playerNationality"]["table"];
 };
 
-function getPlayersBaseQuery(options?: { isNationFiltered?: boolean }) {
-  const nationFilterJoin = options?.isNationFiltered
+function getPlayersBaseQuery({
+  isPositionFiltered = false,
+  isNationFiltered = false,
+  isClubTeamFiltered = false,
+}: {
+  isPositionFiltered: boolean;
+  isNationFiltered: boolean;
+  isClubTeamFiltered: boolean;
+}) {
+  const positionFilterJoin = isPositionFiltered
+    ? `
+      player_positions_filter:player_positions!inner (
+        position_id
+      ),
+    `
+    : "";
+
+  const nationFilterJoin = isNationFiltered
     ? `
       player_nationalities_filter:player_nationalities!inner (
         nation_id
+      ),
+    `
+    : "";
+
+  const clubTeamFilterJoin = isClubTeamFiltered
+    ? `
+      club_team_filter:player_careers!inner (
+        left_at,
+
+        player_club_team_career:player_club_team_careers!inner (
+          club_team_id
+        )
       ),
     `
     : "";
@@ -69,6 +97,8 @@ function getPlayersBaseQuery(options?: { isNationFiltered?: boolean }) {
     slug,
     dob,
     market_value,
+
+    ${positionFilterJoin}
 
     player_positions (
       display_order,
@@ -99,6 +129,8 @@ function getPlayersBaseQuery(options?: { isNationFiltered?: boolean }) {
         image
       )
     ),
+
+       ${clubTeamFilterJoin}
 
     player_careers (
       id,
@@ -234,7 +266,9 @@ export async function getPlayersRepo(
 
   let query = supabase.from(getPlayerTable()).select(
     getPlayersBaseQuery({
+      isPositionFiltered: !!params.positionId,
       isNationFiltered: !!params.nationId,
+      isClubTeamFiltered: !!params.clubTeamId,
     }),
     {
       count: "exact",
@@ -243,12 +277,12 @@ export async function getPlayersRepo(
 
   // Filter
   if (params.search) {
-    query = query.ilike("name", `%${params.search}%`);
+    query = query.ilike("short_name", `%${params.search}%`);
   }
 
   if (params.positionId) {
     query = query
-      .eq("player_positions.position_id", params.positionId)
+      .eq("player_positions_filter.position_id", params.positionId)
       .eq("player_positions.display_order", 1);
   }
 
@@ -259,10 +293,12 @@ export async function getPlayersRepo(
   }
 
   if (params.clubTeamId) {
-    query = query.eq(
-      "club_team_filter.player_club_team_career.club_team_id",
-      params.clubTeamId,
-    );
+    query = query
+      .eq(
+        "club_team_filter.player_club_team_career.club_team_id",
+        params.clubTeamId,
+      )
+      .is("club_team_filter.left_at", null);
   }
 
   // Sort
@@ -328,7 +364,9 @@ export async function getGroupedPlayersRepo(
 
   let query = supabase.from(getPlayerTable()).select(
     getPlayersBaseQuery({
+      isPositionFiltered: !!params.positionId,
       isNationFiltered: !!params.nationId,
+      isClubTeamFiltered: !!params.clubTeamId,
     }),
   );
 

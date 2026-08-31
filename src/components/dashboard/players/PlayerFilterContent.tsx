@@ -1,7 +1,10 @@
 "use client";
 
 import { ComboboxField } from "@/components/forms/fields";
+import { useClubTeams } from "@/hooks/club-teams";
+import { usePositionOptions } from "@/hooks/dashboard/positions";
 import { useNationalityOptions } from "@/hooks/nationalities";
+import { getClubTeamOptions } from "@/lib/club-teams/options";
 import { PlayerFilter } from "@/types/player";
 import { useTranslations } from "next-intl";
 
@@ -25,10 +28,31 @@ export default function PlayerFilterContent({
   const tEntities = useTranslations("entities");
   const tCommon = useTranslations("common");
 
+  const { positionOptions } = usePositionOptions();
+
   const { nationalityOptions } = useNationalityOptions();
+
+  const { clubTeams } = useClubTeams();
+  const clubTeamOptions = getClubTeamOptions(clubTeams);
 
   return (
     <>
+      {/* Position */}
+      <ComboboxField
+        label={tLabels("position")}
+        name={`position`}
+        options={positionOptions}
+        placeholder={tPlaceholders("position")}
+        searchPlaceholder={tCommon("combobox.searchEntity", {
+          entity: tEntities("position").toLowerCase(),
+        })}
+        emptyMessage={tCommon("combobox.noEntityFound", {
+          entity: tEntities("position").toLowerCase(),
+        })}
+        value={filters.positionId || null}
+        onChange={(value) => updateFilter("positionId", value)}
+      />
+
       {/* Nationality */}
       <ComboboxField
         label={tLabels("nation")}
@@ -43,6 +67,22 @@ export default function PlayerFilterContent({
         })}
         value={filters.nationId || null}
         onChange={(value) => updateFilter("nationId", value)}
+      />
+
+      {/* Club Team */}
+      <ComboboxField
+        label={tLabels("club")}
+        name={`club_team`}
+        options={clubTeamOptions}
+        placeholder={tPlaceholders("club")}
+        searchPlaceholder={tCommon("combobox.searchEntity", {
+          entity: tEntities("club").toLowerCase(),
+        })}
+        emptyMessage={tCommon("combobox.noEntityFound", {
+          entity: tEntities("club").toLowerCase(),
+        })}
+        value={filters.clubTeamId || null}
+        onChange={(value) => updateFilter("clubTeamId", value)}
       />
     </>
   );

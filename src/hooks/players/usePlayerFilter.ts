@@ -9,7 +9,9 @@ import { playersQuerySchema } from "@/lib/validations/players.schema";
 const DEFAULT_FILTER: PlayerFilter = {
   search: "",
 
+  positionId: undefined,
   nationId: undefined,
+
   clubTeamId: undefined,
 
   page: 1,

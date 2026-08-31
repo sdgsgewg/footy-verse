@@ -48,12 +48,11 @@ export const playersQuerySchema = listQuerySchema.extend({
 export const groupedPlayersQuerySchema = baseQuerySchema
   .merge(sortingQuerySchema)
   .extend({
+    positionId: z.string().optional(),
     nationId: z.string().optional(),
 
     clubTeamId: z.string().optional(),
     nationalTeamId: z.string().optional(),
-
-    positionId: z.string().optional(),
 
     sortBy: playerSortBySchema.default("shortName"),
   });

@@ -18,9 +18,9 @@ import { PlayerFilter } from "@/types/player";
 export async function GET(request: Request) {
   try {
     const query = getCrudQuery<PlayerFilter>(request, [
-      "nationId",
-      "clubTeamId",
       "positionId",
+      "clubTeamId",
+      "nationId",
     ]);
 
     const data = await getPlayersService(query);
