@@ -65,7 +65,7 @@ function getPlayerClubTeamCareersBaseQuery() {
       )
     ),
 
-    player_career:player_careers!inner (
+    player_career:player_careers!player_club_team_careers_player_career_id_fkey!inner (
       id,
       player_id,
       joined_at,

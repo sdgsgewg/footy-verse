@@ -401,7 +401,13 @@ export function getCurrentNationality(
   );
 
   if (!playerNationality) {
-    throw new Error("Player must have a main nationality.");
+    // throw new Error("Player must have a main nationality.");
+
+    return {
+      id: "",
+      imageUrl: "",
+      name: "",
+    };
   }
 
   const { nationality } = playerNationality;
