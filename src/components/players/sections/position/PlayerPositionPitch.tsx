@@ -9,7 +9,7 @@ interface Props {
 
 const PlayerPositionPitch = ({ mainPosition, otherPositions }: Props) => {
   return (
-    <section className="flex flex-col min-w-0 border-l">
+    <section className="flex flex-col border-l">
       <SubsectionHeader title="Positions" />
 
       <div className="flex flex-1 flex-row gap-4 py-4 px-6">

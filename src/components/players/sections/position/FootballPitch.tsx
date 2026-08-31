@@ -36,7 +36,7 @@ const FootballPitch = ({ mainPosition, otherPositions }: Props) => {
     );
 
   return (
-    <div className="w-full max-w-sm xl:h-full flex-1 flex flex-col items-center mx-auto">
+    <div className="w-full max-w-xs xl:h-full flex-1 flex flex-col items-center mx-auto">
       <div
         className="
           relative w-full xl:max-w-2xs aspect-3/4 xl:aspect-auto xl:flex-1 overflow-hidden
