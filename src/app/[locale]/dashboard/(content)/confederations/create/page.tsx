@@ -3,7 +3,7 @@
 import ConfederationForm from "@/components/forms/confederations/ConfederationForm";
 import FormPageLayout from "@/components/layout/dashboard/FormPageLayout";
 import { ROUTES } from "@/constants/routes";
-import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
+import { useCrudPageTitle } from "@/hooks/crud/useCrudPageTitle";
 import { useConfederationSubmit } from "@/hooks/dashboard/confederations";
 import { useRouter } from "@/navigation";
 

@@ -13,7 +13,7 @@ import {
 import { useNationalTeams } from "@/hooks/national-teams";
 import NationalTeamTable from "@/components/nationalities/table/NationalTeamTable";
 import NationalTeamForm from "@/components/forms/national-teams/NationalTeamForm";
-import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
+import { useCrudPageTitle } from "@/hooks/crud/useCrudPageTitle";
 import { useRouter } from "@/navigation";
 import { ROUTES } from "@/constants/routes";
 

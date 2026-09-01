@@ -3,7 +3,7 @@
 import NationalityForm from "@/components/forms/nationalities/NationalityForm";
 import FormPageLayout from "@/components/layout/dashboard/FormPageLayout";
 import { ROUTES } from "@/constants/routes";
-import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
+import { useCrudPageTitle } from "@/hooks/crud/useCrudPageTitle";
 import { useNationalitySubmit } from "@/hooks/dashboard/nationalities";
 import { useRouter } from "@/navigation";
 

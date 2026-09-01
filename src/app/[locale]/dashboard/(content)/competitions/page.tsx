@@ -2,7 +2,7 @@
 
 import ConnectionErrorAlert from "@/components/feedback/ConnectionErrorAlert";
 import { CrudListPage } from "@/components/templates/crud";
-import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
+import { useCrudPageTitle } from "@/hooks/crud/useCrudPageTitle";
 import { useFilterSync } from "@/hooks/filter";
 import {
   useCompetitionActions,

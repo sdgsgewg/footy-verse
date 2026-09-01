@@ -9,7 +9,7 @@ import {
   useNationalitySubmit,
 } from "@/hooks/dashboard/nationalities";
 import NationalityForm from "@/components/forms/nationalities/NationalityForm";
-import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
+import { useCrudPageTitle } from "@/hooks/crud/useCrudPageTitle";
 import { useRouter } from "@/navigation";
 import { ROUTES } from "@/constants/routes";
 

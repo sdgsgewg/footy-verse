@@ -11,7 +11,7 @@ import { ClubListItem } from "@/types/club/responses";
 import useClubFilter from "@/hooks/clubs/useClubFilter";
 import { createSortHandler } from "@/lib/utils/crud";
 import { useFilterSync } from "@/hooks/filter";
-import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
+import { useCrudPageTitle } from "@/hooks/crud/useCrudPageTitle";
 import {
   ClubImageLabel,
   NationalityImageLabel,

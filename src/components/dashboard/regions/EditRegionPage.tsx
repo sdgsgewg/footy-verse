@@ -3,7 +3,7 @@
 import EntityLoading from "@/components/feedback/loading/EntityLoading";
 import ErrorState from "@/components/feedback/ErrorState";
 import FormPageLayout from "@/components/layout/dashboard/FormPageLayout";
-import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
+import { useCrudPageTitle } from "@/hooks/crud/useCrudPageTitle";
 import { RegionLookupResponse } from "@/types/region";
 import { useRegionEdit, useRegionSubmit } from "@/hooks/dashboard/regions";
 import RegionForm from "@/components/forms/regions/RegionForm";

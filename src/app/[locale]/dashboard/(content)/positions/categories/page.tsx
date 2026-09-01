@@ -15,7 +15,7 @@ import {
   usePositionCategorySubmit,
 } from "@/hooks/dashboard/position-categories";
 import { PositionCategoryListItem } from "@/types/position-category";
-import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
+import { useCrudPageTitle } from "@/hooks/crud/useCrudPageTitle";
 
 export default function Page() {
   const t = useTranslations("dashboard.positionCategories");

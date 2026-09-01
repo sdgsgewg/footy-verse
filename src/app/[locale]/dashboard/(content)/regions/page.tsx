@@ -7,7 +7,7 @@ import { CrudListPage } from "@/components/templates/crud";
 import { DataColumn } from "@/types/table";
 import { createSortHandler } from "@/lib/utils/crud";
 import { useFilterSync } from "@/hooks/filter";
-import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
+import { useCrudPageTitle } from "@/hooks/crud/useCrudPageTitle";
 import useRegionFilter from "@/hooks/dashboard/regions/useRegionFilter";
 import { useRegionActions, useRegions } from "@/hooks/dashboard/regions";
 import { RegionListItem } from "@/types/region";

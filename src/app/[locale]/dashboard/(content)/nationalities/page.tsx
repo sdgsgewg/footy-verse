@@ -11,7 +11,7 @@ import useNationalityFilter from "@/hooks/nationalities/useNationalityFilter";
 import { useNationalities } from "@/hooks/nationalities";
 import { useNationalityActions } from "@/hooks/dashboard/nationalities";
 import { NationalityFilter, NationalityListItem } from "@/types/nationality";
-import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
+import { useCrudPageTitle } from "@/hooks/crud/useCrudPageTitle";
 import {
   ConfederationImageLabel,
   NationalityImageLabel,

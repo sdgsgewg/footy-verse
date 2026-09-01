@@ -8,7 +8,7 @@ import { usePlayerClubTeamCareerSubmit } from "@/hooks/dashboard/player-club-tea
 import PlayerClubTeamCareerForm from "@/components/forms/player-club-team-careers/PlayerClubTeamCareerForm";
 import TableFormLayout from "@/components/layout/dashboard/TableFormLayout";
 import { usePlayerClubTeamCareers } from "@/hooks/dashboard/player-club-team-careers";
-import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
+import { useCrudPageTitle } from "@/hooks/crud/useCrudPageTitle";
 import { PlayerClubTeamCareerHistoryTable } from "@/components/players/table";
 import { useRouter } from "@/navigation";
 import { ROUTES } from "@/constants/routes";

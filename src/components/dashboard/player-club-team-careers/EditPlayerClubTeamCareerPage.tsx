@@ -13,7 +13,7 @@ import { usePlayerDetail } from "@/hooks/dashboard/players";
 import TableFormLayout from "@/components/layout/dashboard/TableFormLayout";
 import { PlayerClubTeamCareerLookupResponse } from "@/types/player-club-team-career";
 import PlayerClubTeamCareerHistoryTable from "@/components/players/table/PlayerClubTeamCareerHistoryTable";
-import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
+import { useCrudPageTitle } from "@/hooks/crud/useCrudPageTitle";
 import { useRouter } from "@/navigation";
 import { ROUTES } from "@/constants/routes";
 

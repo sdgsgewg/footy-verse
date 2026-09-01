@@ -12,7 +12,7 @@ import {
 import EditPlayerNationalTeamCareerForm from "@/components/forms/player-national-team-careers/edit/EditPlayerNationalTeamCareerForm";
 import TableFormLayout from "@/components/layout/dashboard/TableFormLayout";
 import { PlayerNationalTeamCareerLookupResponse } from "@/types/player-national-team-career";
-import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
+import { useCrudPageTitle } from "@/hooks/crud/useCrudPageTitle";
 import { PlayerNationalTeamCareerHistoryTable } from "@/components/players/table";
 import { useRouter } from "@/navigation";
 import { ROUTES } from "@/constants/routes";

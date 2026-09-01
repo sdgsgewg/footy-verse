@@ -8,7 +8,7 @@ import { useClubTeams } from "@/hooks/club-teams";
 import { useClubTeamSubmit } from "@/hooks/dashboard/club-teams";
 import TableFormLayout from "@/components/layout/dashboard/TableFormLayout";
 import ClubTeamForm from "@/components/forms/club-teams/ClubTeamForm";
-import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
+import { useCrudPageTitle } from "@/hooks/crud/useCrudPageTitle";
 import { ClubTeamTable } from "@/components/clubs/table";
 import { useRouter } from "@/navigation";
 import { ROUTES } from "@/constants/routes";

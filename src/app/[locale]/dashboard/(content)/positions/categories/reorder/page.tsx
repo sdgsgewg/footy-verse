@@ -1,7 +1,7 @@
 "use client";
 
 import FormPageLayout from "@/components/layout/dashboard/FormPageLayout";
-import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
+import { useCrudPageTitle } from "@/hooks/crud/useCrudPageTitle";
 import { useRouter } from "@/navigation";
 import { ROUTES } from "@/constants/routes";
 import { useReorderPositionCategoriesSubmit } from "@/hooks/dashboard/position-categories";

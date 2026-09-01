@@ -3,7 +3,7 @@
 import EntityLoading from "@/components/feedback/loading/EntityLoading";
 import ErrorState from "@/components/feedback/ErrorState";
 import FormPageLayout from "@/components/layout/dashboard/FormPageLayout";
-import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
+import { useCrudPageTitle } from "@/hooks/crud/useCrudPageTitle";
 import { ConfederationLookupResponse } from "@/types/confederation";
 import {
   useConfederationEdit,

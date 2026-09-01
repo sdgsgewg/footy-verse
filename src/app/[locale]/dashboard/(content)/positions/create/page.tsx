@@ -3,7 +3,7 @@
 import PositionForm from "@/components/forms/positions/PositionForm";
 import FormPageLayout from "@/components/layout/dashboard/FormPageLayout";
 import { ENTITY_CONFIG } from "@/config/entities";
-import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
+import { useCrudPageTitle } from "@/hooks/crud/useCrudPageTitle";
 import { usePositionSubmit } from "@/hooks/dashboard/positions";
 import { useRouter } from "@/navigation";
 

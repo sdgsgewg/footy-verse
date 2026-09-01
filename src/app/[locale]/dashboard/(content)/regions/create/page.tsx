@@ -3,7 +3,7 @@
 import RegionForm from "@/components/forms/regions/RegionForm";
 import FormPageLayout from "@/components/layout/dashboard/FormPageLayout";
 import { ENTITY_CONFIG } from "@/config/entities";
-import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
+import { useCrudPageTitle } from "@/hooks/crud/useCrudPageTitle";
 import { useRegionSubmit } from "@/hooks/dashboard/regions";
 import { useRouter } from "@/navigation";
 

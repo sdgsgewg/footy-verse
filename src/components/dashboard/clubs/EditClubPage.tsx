@@ -6,7 +6,7 @@ import ClubForm from "@/components/forms/clubs/ClubForm";
 import { useClubEdit, useClubSubmit } from "@/hooks/dashboard/clubs";
 import { ClubLookupResponse } from "@/types/club";
 import FormPageLayout from "@/components/layout/dashboard/FormPageLayout";
-import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
+import { useCrudPageTitle } from "@/hooks/crud/useCrudPageTitle";
 import { useRouter } from "@/navigation";
 import { ROUTES } from "@/constants/routes";
 

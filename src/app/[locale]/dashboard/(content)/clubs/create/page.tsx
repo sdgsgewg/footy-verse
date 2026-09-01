@@ -3,7 +3,7 @@
 import ClubForm from "@/components/forms/clubs/ClubForm";
 import FormPageLayout from "@/components/layout/dashboard/FormPageLayout";
 import { ROUTES } from "@/constants/routes";
-import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
+import { useCrudPageTitle } from "@/hooks/crud/useCrudPageTitle";
 import { useClubSubmit } from "@/hooks/dashboard/clubs";
 import { useRouter } from "@/navigation";
 

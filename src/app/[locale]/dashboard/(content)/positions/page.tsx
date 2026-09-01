@@ -10,7 +10,7 @@ import { useFilterSync } from "@/hooks/filter";
 import usePositionFilter from "@/hooks/positions/usePositionFilter";
 import { PositionFilter, PositionListItem } from "@/types/position";
 import { usePositionActions, usePositions } from "@/hooks/dashboard/positions";
-import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
+import { useCrudPageTitle } from "@/hooks/crud/useCrudPageTitle";
 import PositionFilterContent from "@/components/dashboard/positions/PositionFilterContent";
 import { useCrudFilterDialog } from "@/hooks/crud/useCrudFilterDialog";
 

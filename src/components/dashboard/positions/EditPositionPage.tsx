@@ -9,7 +9,7 @@ import {
   usePositionSubmit,
 } from "@/hooks/dashboard/positions";
 import PositionForm from "@/components/forms/positions/PositionForm";
-import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
+import { useCrudPageTitle } from "@/hooks/crud/useCrudPageTitle";
 import { useRouter } from "@/navigation";
 import { ENTITY_CONFIG } from "@/config/entities";
 

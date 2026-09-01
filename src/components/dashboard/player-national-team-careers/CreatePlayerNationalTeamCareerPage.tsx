@@ -10,7 +10,7 @@ import {
 } from "@/hooks/dashboard/player-national-teams";
 import CreatePlayerNationalTeamCareerForm from "@/components/forms/player-national-team-careers/CreatePlayerNationalTeamCareerForm";
 import TableFormLayout from "@/components/layout/dashboard/TableFormLayout";
-import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
+import { useCrudPageTitle } from "@/hooks/crud/useCrudPageTitle";
 import { PlayerNationalTeamCareerHistoryTable } from "@/components/players/table";
 import { useRouter } from "@/navigation";
 import { ROUTES } from "@/constants/routes";

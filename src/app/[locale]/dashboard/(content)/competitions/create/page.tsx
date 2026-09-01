@@ -3,7 +3,7 @@
 import CompetitionForm from "@/components/forms/competitions/CompetitionForm";
 import FormPageLayout from "@/components/layout/dashboard/FormPageLayout";
 import { ROUTES } from "@/constants/routes";
-import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
+import { useCrudPageTitle } from "@/hooks/crud/useCrudPageTitle";
 import { useCompetitionSubmit } from "@/hooks/dashboard/competitions";
 import { useRouter } from "@/navigation";
 

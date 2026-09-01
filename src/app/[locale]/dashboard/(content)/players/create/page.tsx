@@ -3,7 +3,7 @@
 import PlayerForm from "@/components/forms/players/PlayerForm";
 import { usePlayerSubmit } from "@/hooks/dashboard/players";
 import FormPageLayout from "@/components/layout/dashboard/FormPageLayout";
-import { useCrudPageTitle } from "@/hooks/common/useCrudPageTitle";
+import { useCrudPageTitle } from "@/hooks/crud/useCrudPageTitle";
 import { useRouter } from "@/navigation";
 import { ROUTES } from "@/constants/routes";
 
