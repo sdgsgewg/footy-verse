@@ -11,7 +11,6 @@ import {
   DbClubListRow,
 } from "@/types/club";
 import { requireEntity } from "./helpers/require-entity";
-import { ensureUniqueSlug } from "./helpers/slug";
 import { ENTITY_CONFIG } from "@/config/entities";
 import { deleteEntityImage, prepareUpdatedImage } from "./helpers/image";
 import {
@@ -27,6 +26,7 @@ import { slugify } from "@/utils/string";
 import { createEntityActivityLog } from "./activity-logs.repo";
 import { ActivityLogAction } from "@/enums/ActivityLogAction";
 import { getChangedFields } from "./helpers/get-changed-field";
+import { ensureUniqueFieldsRepo } from "./helpers/uniqueness";
 
 async function getSupabase() {
   return createClient();
@@ -197,6 +197,30 @@ export async function getClubLookupRepo(
   return data;
 }
 
+export async function ensureClubUniqueRepo({
+  name,
+  ignoreId,
+}: {
+  name: string;
+  ignoreId?: string;
+}): Promise<string> {
+  const slug = slugify(name);
+
+  await ensureUniqueFieldsRepo({
+    table: getClubTable(),
+    fields: [
+      {
+        field: "slug",
+        value: slug,
+        message: "Club name already exists",
+      },
+    ],
+    ignoreId,
+  });
+
+  return slug;
+}
+
 /**
  *
  * @param clubId
@@ -227,8 +251,7 @@ export async function createClubRepo(
 ): Promise<ClubDetailResponse> {
   const supabase = await getSupabase();
 
-  const slug = await ensureUniqueSlug({
-    table: getClubTable(),
+  const slug = await ensureClubUniqueRepo({
     name: club.name,
   });
 
@@ -272,7 +295,10 @@ export async function updateClubRepo(
 
   const oldClub = await requireEntity(getClubEditRepo, id, getClubLabel());
 
-  const slug = slugify(club.name);
+  const slug = await ensureClubUniqueRepo({
+    name: club.name,
+    ignoreId: id,
+  });
 
   const finalImage = await prepareUpdatedImage({
     oldName: oldClub.name,

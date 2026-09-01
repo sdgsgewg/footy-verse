@@ -1,6 +1,7 @@
 import {
   createClubRepo,
   deleteClubRepo,
+  ensureClubUniqueRepo,
   getClubDetailRepo,
   getClubEditRepo,
   getClubLookupRepo,
@@ -49,6 +50,28 @@ export async function updateClubService(id: string, input: unknown) {
   const parsed = updateClubSchema.parse(input);
 
   return updateClubRepo(parsedId, parsed);
+}
+
+export async function precheckCreateClubService(input: unknown) {
+  const parsed = createClubSchema.parse(input);
+
+  await ensureClubUniqueRepo({
+    name: parsed.name,
+  });
+
+  return parsed;
+}
+
+export async function precheckUpdateClubService(id: string, input: unknown) {
+  const parsedId = idSchema.parse(id);
+  const parsed = updateClubSchema.parse(input);
+
+  await ensureClubUniqueRepo({
+    name: parsed.name,
+    ignoreId: parsedId,
+  });
+
+  return parsed;
 }
 
 export async function deleteClubService(id: string) {

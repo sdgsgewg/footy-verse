@@ -2,6 +2,7 @@ import {
   deleteClubService,
   getClubDetailService,
   getClubEditService,
+  precheckUpdateClubService,
   updateClubService,
 } from "@/lib/services/clubs.service";
 import { tryDeleteImage, uploadImage } from "@/lib/services/storage.service";
@@ -48,7 +49,10 @@ export async function PUT(request: Request, context: ClubRouteContext) {
 
     const formData = await request.formData();
 
-    const body = getClubInputFromFormData(formData);
+    const body = await precheckUpdateClubService(
+      clubId,
+      getClubInputFromFormData(formData),
+    );
 
     let image = currentClub.image;
 

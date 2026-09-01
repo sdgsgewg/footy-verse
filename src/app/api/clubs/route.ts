@@ -1,6 +1,7 @@
 import {
   createClubService,
   getClubsService,
+  precheckCreateClubService,
 } from "@/lib/services/clubs.service";
 import { tryDeleteImage, uploadImage } from "@/lib/services/storage.service";
 import { STORAGE_BUCKETS } from "@/lib/storage";
@@ -32,15 +33,17 @@ export async function POST(request: Request) {
 
     const formData = await request.formData();
 
-    const body = getClubInputFromFormData(formData);
+    const body = await precheckCreateClubService(
+      getClubInputFromFormData(formData),
+    );
+
+    let image = "";
 
     const file = formData.get("image");
 
-    if (!(file instanceof File) || file.size === 0) {
-      return errorResponse(new Error("Club image is required"));
+    if (file instanceof File && file.size > 0) {
+      image = await uploadImage(file, body.name, STORAGE_BUCKETS.CLUBS);
     }
-
-    const image = await uploadImage(file, body.name, STORAGE_BUCKETS.CLUBS);
 
     body.image = image;
 
