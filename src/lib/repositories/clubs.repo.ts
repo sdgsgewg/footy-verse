@@ -22,7 +22,7 @@ import { ClubTeamCreateInput } from "@/types/club-team";
 import { SquadType } from "@/enums/SquadType";
 import { ClubListResponse } from "@/types/club/responses";
 import { createPaginatedResponse } from "../pagination";
-import { slugify } from "@/utils/string";
+import { slugify } from "@/lib/utils/slugify";
 import { createEntityActivityLog } from "./activity-logs.repo";
 import { ActivityLogAction } from "@/enums/ActivityLogAction";
 import { getChangedFields } from "./helpers/get-changed-field";

@@ -18,7 +18,7 @@ import {
   mapPositionEditResponse,
   mapPositionListItem,
 } from "../positions/mapper";
-import { slugify } from "@/utils/string";
+import { slugify } from "@/lib/utils/slugify";
 import { createEntityActivityLog } from "./activity-logs.repo";
 import { ActivityLogAction } from "@/enums/ActivityLogAction";
 import { getChangedFields } from "./helpers/get-changed-field";

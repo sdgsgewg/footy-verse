@@ -10,7 +10,7 @@ import {
 import { ENTITY_CONFIG } from "@/config/entities";
 import { requireEntity } from "./helpers/require-entity";
 import { deleteEntityImage, prepareUpdatedImage } from "./helpers/image";
-import { slugify } from "@/utils/string";
+import { slugify } from "@/lib/utils/slugify";
 import {
   DbPlayerDetailRow,
   DbPlayerListRow,

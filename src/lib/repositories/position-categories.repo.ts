@@ -21,7 +21,7 @@ import { ActivityLogAction } from "@/enums/ActivityLogAction";
 import { getChangedFields } from "./helpers/get-changed-field";
 import { Option } from "@/types/option";
 import { mapEntityOption } from "../entities/mapper";
-import { slugify } from "@/utils/string";
+import { slugify } from "@/lib/utils/slugify";
 import { ensureUniqueFieldsRepo } from "./helpers/uniqueness";
 
 async function getSupabase() {
