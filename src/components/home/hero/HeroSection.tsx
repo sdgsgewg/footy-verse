@@ -1,7 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import HeroSearch from "./HeroSearch";
+import HeroSearch from "./search/HeroSearch";
 import HeroStatistics from "./HeroStatistics";
 
 const HeroSection = () => {

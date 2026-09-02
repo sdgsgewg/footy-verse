@@ -24,3 +24,13 @@ export interface GlobalSearchResponse {
   total: number;
   groups: SearchResultGroup[];
 }
+
+export interface SearchSuggestionGroup {
+  type: SearchEntityType;
+  results: SearchResult[];
+}
+
+export interface SearchSuggestionsResponse {
+  query: string;
+  groups: SearchSuggestionGroup[];
+}
