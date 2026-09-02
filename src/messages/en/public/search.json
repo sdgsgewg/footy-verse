@@ -1,0 +1,21 @@
+{
+  "title": "Search FootyVerse",
+  "description": "Search players, clubs, nations, competitions, and more.",
+  "empty": {
+    "title": "Search the football database",
+    "description": "Enter a player, club, nation, or competition to get started."
+  },
+  "resultsCount": "{count} results found",
+  "error": {
+    "title": "Something went wrong",
+    "description": "We couldn't complete your search. Please try again."
+  },
+  "noResults": {
+    "title": "No results found",
+    "description": "We couldn't find anything matching \"{query}\"."
+  },
+  "input": {
+    "placeholder": "Search players, clubs, nations, competitions...",
+    "button": "Search"
+  }
+}

@@ -1,8 +1,29 @@
 {
-  "title": "FootyVerse",
-  "subtitle": "FootyVerse",
-  "actions": {
-    "getStarted": "Mulai Sekarang",
-    "learnMore": "Pelajari Lebih Lanjut"
+  "hero": {
+    "badge": "Basis Data Sepak Bola",
+    "title": "Jelajahi Dunia",
+    "titleHighlight": "Sepak Bola",
+    "description": "Temukan pemain, klub, negara, kompetisi, dan berbagai informasi sepak bola lainnya dalam satu basis data yang lengkap.",
+
+    "search": {
+      "placeholder": "Cari pemain, klub, negara, kompetisi...",
+      "hint": "Coba cari pemain, klub, negara, atau kompetisi",
+      "button": "Cari"
+    },
+
+    "statistics": {
+      "players": {
+        "label": "Pemain"
+      },
+      "clubs": {
+        "label": "Klub"
+      },
+      "nations": {
+        "label": "Negara"
+      },
+      "competitions": {
+        "label": "Kompetisi"
+      }
+    }
   }
 }

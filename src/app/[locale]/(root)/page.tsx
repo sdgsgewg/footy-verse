@@ -1,11 +1,16 @@
 "use client";
 
+import { Section } from "@/components/home/Section";
+import { homeSections } from "@/constants/sections";
+
 export default function Home() {
   return (
-    <div className="flex flex-col min-h-screen">
-      <section className="relative py-20 lg:py-32 overflow-hidden">
-        <h1>Home</h1>
-      </section>
+    <div className="flex min-h-screen flex-col">
+      {homeSections.map(({ name, element }, index) => (
+        <Section key={name} sectionName={name} isOdd={index % 2 !== 0}>
+          {element}
+        </Section>
+      ))}
     </div>
   );
 }

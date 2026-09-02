@@ -32,6 +32,9 @@ import { DbPlayerClubTeamCareerRow } from "@/types/player-club-team-career";
 import { createEntityActivityLog } from "./activity-logs.repo";
 import { ActivityLogAction } from "@/enums/ActivityLogAction";
 import { getChangedFields } from "./helpers/get-changed-field";
+import { SearchResult } from "@/types/search";
+import { DbEntitySearchRow } from "@/types/entity";
+import { mapEntitySearchResult } from "../entities/mapper";
 
 async function getSupabase() {
   return createClient();
@@ -130,7 +133,7 @@ function getPlayersBaseQuery({
       )
     ),
 
-       ${clubTeamFilterJoin}
+    ${clubTeamFilterJoin}
 
     player_careers (
       id,
@@ -378,7 +381,7 @@ export async function getGroupedPlayersRepo(
 
   // Search
   if (params.search) {
-    query = query.ilike("name", `%${params.search}%`);
+    query = query.ilike("short_name", `%${params.search}%`);
   }
 
   // Position
@@ -395,9 +398,13 @@ export async function getGroupedPlayersRepo(
 
   // Sort
 
-  query = query.order(params.sortBy, {
+  const sortColumn = sortColumnMap[params.sortBy];
+
+  query = query.order(sortColumn, {
     ascending: params.sortOrder === "asc",
   });
+
+  // Execute
 
   const { data, error } = await query.overrideTypes<DbPlayerListRow[]>();
 
@@ -410,6 +417,44 @@ export async function getGroupedPlayersRepo(
   }
 
   return mapGroupedPlayers(data);
+}
+
+/**
+ *
+ * @param search
+ * @param limit
+ * @returns SearchResult[]
+ */
+export async function searchPlayersRepo(
+  search: string,
+  limit = 5,
+): Promise<SearchResult[]> {
+  const supabase = await getSupabase();
+
+  const { data, error } = await supabase
+    .from(getPlayerTable())
+    .select(
+      `
+      id,
+      name:short_name,
+      slug,
+      image
+    `,
+    )
+    .ilike("short_name", `%${search}%`)
+    .order("short_name", {
+      ascending: true,
+    })
+    .limit(limit)
+    .overrideTypes<DbEntitySearchRow[]>();
+
+  if (error) throw error;
+
+  if (!data || data.length === 0) return [];
+
+  return data.map((data) =>
+    mapEntitySearchResult(data, "player", STORAGE_BUCKETS.PLAYERS),
+  );
 }
 
 function getPlayerDetailBaseQuery() {

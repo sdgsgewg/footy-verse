@@ -30,7 +30,9 @@ import { createEntityActivityLog } from "./activity-logs.repo";
 import { ActivityLogAction } from "@/enums/ActivityLogAction";
 import { getChangedFields } from "./helpers/get-changed-field";
 import { ensureUniqueFieldsRepo } from "./helpers/uniqueness";
-import { mapEntityOption } from "../entities/mapper";
+import { mapEntityOption, mapEntitySearchResult } from "../entities/mapper";
+import { SearchResult } from "@/types/search";
+import { DbEntitySearchRow } from "@/types/entity";
 
 async function getSupabase() {
   return createClient();
@@ -112,6 +114,44 @@ export async function getNationalitiesRepo(
     page: params.page,
     limit: params.limit,
   });
+}
+
+/**
+ *
+ * @param search
+ * @param limit
+ * @returns SearchResult[]
+ */
+export async function searchNationalitiesRepo(
+  search: string,
+  limit = 5,
+): Promise<SearchResult[]> {
+  const supabase = await getSupabase();
+
+  const { data, error } = await supabase
+    .from(getNationalityTable())
+    .select(
+      `
+      id,
+      name,
+      slug,
+      image
+    `,
+    )
+    .ilike("name", `%${search}%`)
+    .order("name", {
+      ascending: true,
+    })
+    .limit(limit)
+    .overrideTypes<DbEntitySearchRow[]>();
+
+  if (error) throw error;
+
+  if (!data || data.length === 0) return [];
+
+  return data.map((data) =>
+    mapEntitySearchResult(data, "nationality", STORAGE_BUCKETS.NATIONALITIES),
+  );
 }
 
 /**

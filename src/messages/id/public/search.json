@@ -1,0 +1,21 @@
+{
+  "title": "Cari di FootyVerse",
+  "description": "Cari pemain, klub, negara, kompetisi, dan lainnya.",
+  "empty": {
+    "title": "Cari di database sepak bola",
+    "description": "Masukkan nama pemain, klub, negara, atau kompetisi untuk memulai."
+  },
+  "resultsCount": "Ditemukan {count} hasil",
+  "error": {
+    "title": "Terjadi kesalahan",
+    "description": "Pencarian tidak dapat dilakukan. Silakan coba lagi."
+  },
+  "noResults": {
+    "title": "Tidak ada hasil",
+    "description": "Tidak ditemukan hasil untuk \"{query}\"."
+  },
+  "input": {
+    "placeholder": "Cari pemain, klub, negara, kompetisi...",
+    "button": "Cari"
+  }
+}

@@ -13,6 +13,7 @@ async function getMessages(locale: string) {
 
   const publicMessages = {
     home: (await import(`./messages/${locale}/public/home.json`)).default,
+    search: (await import(`./messages/${locale}/public/search.json`)).default,
     teams: (await import(`./messages/${locale}/public/teams.json`)).default,
   };
 
@@ -27,7 +28,9 @@ async function getMessages(locale: string) {
     ).default,
 
     playerClubTeamCareers: (
-      await import(`./messages/${locale}/dashboard/player-club-team-careers.json`)
+      await import(
+        `./messages/${locale}/dashboard/player-club-team-careers.json`
+      )
     ).default,
 
     playerNationalTeamCareers: (

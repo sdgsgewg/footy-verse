@@ -1,8 +1,29 @@
 {
-  "title": "FootyVerse",
-  "subtitle": "FootyVerse",
-  "actions": {
-    "getStarted": "Get Started",
-    "learnMore": "Learn More"
+  "hero": {
+    "badge": "The Football Database",
+    "title": "Explore the World of",
+    "titleHighlight": "Football",
+    "description": "Discover players, clubs, nations, competitions, and more in one comprehensive football database.",
+
+    "search": {
+      "placeholder": "Search players, clubs, nations, competitions...",
+      "hint": "Try searching for a player, club, nation, or competition",
+      "button": "Search"
+    },
+
+    "statistics": {
+      "players": {
+        "label": "Players"
+      },
+      "clubs": {
+        "label": "Clubs"
+      },
+      "nations": {
+        "label": "Nations"
+      },
+      "competitions": {
+        "label": "Competitions"
+      }
+    }
   }
 }

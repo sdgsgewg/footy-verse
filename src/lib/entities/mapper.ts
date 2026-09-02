@@ -3,6 +3,8 @@ import { Option } from "@/types/option";
 import { getImageUrl } from "../images/image-url";
 import { Entity } from "@/config/entities";
 import { StorageBucket } from "../storage";
+import { DbEntitySearchRow } from "@/types/entity";
+import { SearchEntityType, SearchResult } from "@/types/search";
 
 export function mapEntityOption(
   data: DbOptionListRow,
@@ -16,5 +18,23 @@ export function mapEntityOption(
     value: id,
     imageUrl:
       image && storageBucket && getImageUrl(entityKey, storageBucket, image),
+  };
+}
+
+export function mapEntitySearchResult(
+  data: DbEntitySearchRow,
+  searchEntityType: SearchEntityType,
+  storageBucket?: StorageBucket,
+): SearchResult {
+  const { image } = data;
+
+  return {
+    ...data,
+    type: searchEntityType,
+    imageUrl:
+      image &&
+      storageBucket &&
+      getImageUrl(searchEntityType, storageBucket, image),
+    subtitle: null,
   };
 }

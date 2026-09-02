@@ -12,7 +12,7 @@ const SectionHeader = ({ title, onAdd }: Props) => {
   const tCommonActions = useTranslations("common.actions");
 
   return (
-    <div className="flex items-center justify-between bg-foreground px-4 py-2 uppercase mb-1">
+    <div className="flex items-center justify-between bg-foreground/80 px-4 py-2 uppercase mb-1">
       <p className="text-start text-primary-foreground text-xl font-bold">
         {title}
       </p>
