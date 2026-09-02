@@ -2,7 +2,6 @@
 
 import TeamSection from "@/components/public/teams/TeamSection";
 import PageHeader from "@/components/shared/PageHeader";
-import PublicPageWrapper from "@/components/wrappers/PublicPageWrapper";
 import { ROUTES } from "@/constants/routes";
 import { useClubs } from "@/hooks/clubs";
 import { useNationalities } from "@/hooks/nationalities";
@@ -11,7 +10,9 @@ import { TeamItem } from "@/types/team";
 import { useTranslations } from "next-intl";
 
 export default function TeamsPage() {
-  const t = useTranslations("public.teams");
+  const tTeams = useTranslations("public.teams");
+  const tClubs = useTranslations("public.clubs");
+  const tNationalities = useTranslations("public.nationalities");
 
   const router = useRouter();
 
@@ -22,53 +23,53 @@ export default function TeamsPage() {
     id: club.id,
     name: club.name,
     imageUrl: club.imageUrl,
-    href: `${ROUTES.TEAMS.CLUBS}/${club.slug}`,
+    href: `${ROUTES.CLUBS}/${club.slug}`,
     subtitle: "",
   }));
 
-  const modifiedNationalTeamList: TeamItem[] = nationalities.map((nation) => ({
+  const modifiedNationalityList: TeamItem[] = nationalities.map((nation) => ({
     id: nation.id,
     name: nation.name,
     imageUrl: nation.imageUrl,
-    href: `${ROUTES.TEAMS.NATIONALITIES}/${nation.slug}`,
+    href: `${ROUTES.NATIONALITIES}/${nation.slug}`,
     subtitle: "",
   }));
 
   return (
-    <PublicPageWrapper>
-      <PageHeader title={t("title")} description={t("subtitle")} />
+    <>
+      <PageHeader title={tTeams("title")} description={tTeams("subtitle")} />
 
       <div className="space-y-14">
         <TeamSection
-          title={t("clubs.title")}
-          description={t("clubs.description")}
+          title={tClubs("title")}
+          description={tClubs("description")}
           teams={modifiedClubList}
           loading={isClubLoading}
           empty={{
-            title: t("clubs.empty.title"),
-            description: t("clubs.empty.description"),
+            title: tClubs("empty.title"),
+            description: tClubs("empty.description"),
           }}
           showMore={{
             visible: modifiedClubList.length >= 10,
-            onClick: () => router.push(ROUTES.TEAMS.CLUBS),
+            onClick: () => router.push(ROUTES.CLUBS),
           }}
         />
 
         <TeamSection
-          title={t("nationalTeams.title")}
-          description={t("nationalTeams.description")}
-          teams={modifiedNationalTeamList}
+          title={tNationalities("title")}
+          description={tNationalities("description")}
+          teams={modifiedNationalityList}
           loading={isNationalTeamLoading}
           empty={{
-            title: t("nationalTeams.empty.title"),
-            description: t("nationalTeams.empty.description"),
+            title: tNationalities("empty.title"),
+            description: tNationalities("empty.description"),
           }}
           showMore={{
-            visible: modifiedNationalTeamList.length >= 10,
-            onClick: () => router.push(ROUTES.TEAMS.NATIONALITIES),
+            visible: modifiedNationalityList.length >= 10,
+            onClick: () => router.push(ROUTES.NATIONALITIES),
           }}
         />
       </div>
-    </PublicPageWrapper>
+    </>
   );
 }

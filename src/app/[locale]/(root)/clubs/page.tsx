@@ -1,11 +1,80 @@
-import React from 'react'
+"use client";
 
-const Page = () => {
+import EntityDataSection from "@/components/public/entities/EntityDataSection";
+import { ActiveFiltersBar, ClubFilters } from "@/components/public/clubs";
+import PageHeader from "@/components/shared/PageHeader";
+import { PaginationSection } from "@/components/shared/pagination";
+import { ROUTES } from "@/constants/routes";
+import { useClubs, useClubFilter } from "@/hooks/clubs";
+import { useFilterSync } from "@/hooks/filter";
+import { useTranslations } from "next-intl";
+import { EntityItem } from "@/types/entity";
+
+export default function Page() {
+  const t = useTranslations("public.clubs");
+
+  const {
+    filters,
+    debouncedFilters,
+    updateFilter,
+    goToPage,
+    syncUrl,
+    clearFilters,
+  } = useClubFilter();
+
+  const isSearching = filters.search !== debouncedFilters.search;
+
+  const { clubs, totalPages, loading } = useClubs({
+    ...debouncedFilters,
+    search: debouncedFilters.search || undefined,
+  });
+
+  const modifiedClubList: EntityItem[] = clubs.map((club) => ({
+    id: club.id,
+    name: club.name,
+    imageUrl: club.imageUrl,
+    href: `${ROUTES.CLUBS}/${club.slug}`,
+    subtitle: "",
+  }));
+
+  // Sync URL on filter
+  useFilterSync(debouncedFilters, syncUrl);
+
   return (
-    <div>
-      
-    </div>
-  )
-}
+    <>
+      <PageHeader title={t("title")} description={t("description")} />
 
-export default Page
+      {/* Search and Filter */}
+      <div className="flex flex-col gap-4">
+        <ClubFilters
+          filters={filters}
+          updateFilter={updateFilter}
+          isSearching={isSearching}
+        />
+
+        <ActiveFiltersBar
+          filters={filters}
+          updateFilter={updateFilter}
+          clearFilters={clearFilters}
+        />
+      </div>
+
+      <EntityDataSection
+        items={modifiedClubList}
+        isLoading={loading}
+        empty={{
+          title: t("empty.title"),
+          description: t("empty.description"),
+        }}
+        showAllData
+      />
+
+      <PaginationSection
+        page={filters.page}
+        totalPages={totalPages}
+        onPageChange={goToPage}
+        isLoading={loading}
+      />
+    </>
+  );
+}

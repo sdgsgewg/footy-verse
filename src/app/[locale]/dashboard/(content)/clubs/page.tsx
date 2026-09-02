@@ -1,14 +1,13 @@
 "use client";
 
 import ConnectionErrorAlert from "@/components/feedback/ConnectionErrorAlert";
-import { useClubs } from "@/hooks/clubs";
+import { useClubFilter, useClubs } from "@/hooks/clubs";
 import { isLikelyConnectionError } from "@/lib/utils/connection-error";
 import { useTranslations } from "next-intl";
 import { CrudListPage } from "@/components/templates/crud";
 import { useClubActions } from "@/hooks/dashboard/clubs";
 import { DataColumn } from "@/types/table";
 import { ClubListItem } from "@/types/club/responses";
-import useClubFilter from "@/hooks/clubs/useClubFilter";
 import { createSortHandler } from "@/lib/utils/crud";
 import { useFilterSync } from "@/hooks/filter";
 import { useCrudPageTitle } from "@/hooks/crud/useCrudPageTitle";

@@ -9,7 +9,6 @@ import NationalityDetailPageLayout from "../layout/detail-page/NationalityDetail
 import NationalityFilter from "./filter/NationalityFilter";
 import NationalTeamSummary from "../dashboard/national-teams/summary/NationalTeamSummary";
 
-import { ROUTES } from "@/constants/routes";
 import { TeamType } from "@/enums/TeamType";
 import { AgeGroup } from "@/enums/AgeGroup";
 
@@ -83,7 +82,7 @@ const NationalityDetailPage = ({ nationalityLookup }: Props) => {
     return <ErrorState onRetry={() => void refetchNationality()} />;
   }
 
-  const { name, slug } = nationality;
+  const { name } = nationality;
 
   const isTeamLoading = isNationalTeamsLoading || isNationalTeamLoading;
 
@@ -107,7 +106,6 @@ const NationalityDetailPage = ({ nationalityLookup }: Props) => {
         isLoading={isPlayersLoading}
         error={playersError}
         onRetry={() => void refetchPlayers()}
-        baseRoute={`${ROUTES.TEAMS.NATIONALITIES}/${slug}`}
       />
     </>
   );

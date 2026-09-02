@@ -5,7 +5,6 @@ import ErrorState from "@/components/feedback/ErrorState";
 import ClubDetailPageLayout from "@/components/layout/detail-page/ClubDetailPageLayout";
 import { useClubDetail } from "@/hooks/dashboard/clubs";
 import { ClubLookupResponse } from "@/types/club";
-import { ROUTES } from "@/constants/routes";
 import { useClubTeams } from "@/hooks/club-teams";
 import { TeamType } from "@/enums/TeamType";
 import { useGroupedPlayers } from "@/hooks/players";
@@ -80,7 +79,7 @@ const ClubDetailPage = ({ clubLookup }: Props) => {
     return <ErrorState onRetry={() => void refetchClub()} />;
   }
 
-  const { name, slug } = club;
+  const { name } = club;
 
   const isTeamLoading = isClubTeamsLoading || isClubTeamLoading;
 
@@ -105,7 +104,6 @@ const ClubDetailPage = ({ clubLookup }: Props) => {
         isLoading={isPlayersLoading}
         error={playersError}
         onRetry={() => void refetchPlayers()}
-        baseRoute={`${ROUTES.TEAMS.CLUBS}/${slug}`}
       />
     </>
   );

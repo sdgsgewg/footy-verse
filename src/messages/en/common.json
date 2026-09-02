@@ -96,7 +96,8 @@
     "apply": "Apply",
     "reset": "Reset",
     "retry": "Retry",
-    "back": "Back"
+    "back": "Back",
+    "showMore": "Show more"
   },
 
   "states": {
@@ -106,6 +107,11 @@
     "loadOlderData": "Load Older Data...",
     "loading": "Loading...",
     "loadingEntity": "Loading {entity}...",
+
+    "empty": {
+      "title": "No data found",
+      "description": "There are currently no data to display"
+    },
 
     "notFoundEntity": "{entity} Not Found",
 

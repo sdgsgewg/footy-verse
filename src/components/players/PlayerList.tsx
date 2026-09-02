@@ -2,22 +2,18 @@ import { GroupedPlayerListItem, PlayerListItem } from "@/types/player";
 import { useRouter } from "@/navigation";
 import { TeamType } from "@/enums/TeamType";
 import { PlayerCard, PlayerCardWrapper } from "./cards";
+import { ROUTES } from "@/constants/routes";
 
 interface Props {
   teamType: TeamType;
   groupedPlayers: GroupedPlayerListItem[];
-  baseRoute: string;
 }
 
-export default function PlayerList({
-  teamType,
-  groupedPlayers,
-  baseRoute,
-}: Props) {
+export default function PlayerList({ teamType, groupedPlayers }: Props) {
   const router = useRouter();
 
   const handleViewPlayer = (player: PlayerListItem) => {
-    router.push(`${baseRoute}/players/${player.slug}`);
+    router.push(`${ROUTES.PLAYERS}/${player.slug}`);
   };
 
   return (

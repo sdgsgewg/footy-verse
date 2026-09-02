@@ -10,23 +10,5 @@
   "empty": {
     "title": "No teams found",
     "description": "There are currently no teams to display"
-  },
-
-  "clubs": {
-    "title": "Clubs",
-    "description": "Browse professional football clubs.",
-    "empty": {
-      "title": "No clubs found",
-      "description": "There are currently no clubs to display"
-    }
-  },
-
-  "nationalTeams": {
-    "title": "National Teams",
-    "description": "Browse national football teams.",
-    "empty": {
-      "title": "No national teams found",
-      "description": "There are currently no national teams to display"
-    }
   }
 }

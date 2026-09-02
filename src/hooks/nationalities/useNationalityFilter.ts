@@ -18,7 +18,7 @@ const DEFAULT_FILTER: NationalityFilter = {
   sortOrder: "asc",
 };
 
-export default function useNationalityFilter() {
+export function useNationalityFilter() {
   const searchParams = useSearchParams();
 
   const initialFilter = useMemo(

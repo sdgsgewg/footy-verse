@@ -96,7 +96,8 @@
     "apply": "Terapkan",
     "reset": "Atur Ulang",
     "retry": "Coba Lagi",
-    "back": "Kembali"
+    "back": "Kembali",
+    "showMore": "Tampilkan lebih banyak"
   },
 
   "states": {
@@ -106,6 +107,11 @@
     "loadOlderData": "Muat Data Lama...",
     "loading": "Memuat...",
     "loadingEntity": "Memuat {entity}...",
+
+    "empty": {
+      "title": "Tidak ada data yang ditemukan",
+      "description": "Saat ini belum ada data yang dapat ditampilkan"
+    },
 
     "notFoundEntity": "{entity} Tidak Ditemukan",
 

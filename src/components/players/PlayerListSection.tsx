@@ -18,8 +18,6 @@ interface Props {
   error?: Error | null;
 
   onRetry?: () => void;
-
-  baseRoute: string;
 }
 
 export default function PlayerListSection({
@@ -28,7 +26,6 @@ export default function PlayerListSection({
   isLoading,
   error,
   onRetry,
-  baseRoute,
 }: Props) {
   if (isLoading) {
     return <PlayerListSkeleton />;
@@ -48,11 +45,5 @@ export default function PlayerListSection({
     );
   }
 
-  return (
-    <PlayerList
-      teamType={teamType}
-      groupedPlayers={groupedPlayers}
-      baseRoute={baseRoute}
-    />
-  );
+  return <PlayerList teamType={teamType} groupedPlayers={groupedPlayers} />;
 }

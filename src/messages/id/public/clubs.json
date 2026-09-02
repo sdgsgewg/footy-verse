@@ -1,0 +1,9 @@
+{
+  "title": "Klub",
+  "description": "Jelajahi klub sepak bola profesional.",
+
+  "empty": {
+    "title": "Tidak ada klub yang ditemukan",
+    "description": "Saat ini belum ada klub yang dapat ditampilkan"
+  }
+}

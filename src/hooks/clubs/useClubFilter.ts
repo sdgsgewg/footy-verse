@@ -18,7 +18,7 @@ const DEFAULT_FILTER: ClubFilter = {
   sortOrder: "asc",
 };
 
-export default function useClubFilter() {
+export function useClubFilter() {
   const searchParams = useSearchParams();
 
   const initialFilter = useMemo(
