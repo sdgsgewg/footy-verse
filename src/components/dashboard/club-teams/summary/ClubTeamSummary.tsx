@@ -15,6 +15,7 @@ interface Props {
 
 const ClubTeamSummary = ({ summary }: Props) => {
   const t = useTranslations();
+  const tCommon = useTranslations("common");
 
   const { name, squadType, ageGroup, club, squadSize, totalMarketValue } =
     summary;
@@ -36,23 +37,23 @@ const ClubTeamSummary = ({ summary }: Props) => {
         />
       }
       information={
-        <div className="grid grid-cols-3 sm:grid-cols-2 xl:grid-cols-3 gap-x-10 gap-y-6">
+        <div className="grid grid-cols-3 sm:grid-cols-3 gap-x-10 gap-y-6">
           <RecordData
-            label="Squad Type"
+            label={tCommon("labels.squadType")}
             content={{
               text: getSquadTypeLabel(squadType as SquadType, t),
             }}
           />
 
           <RecordData
-            label="Age Group"
+            label={tCommon("labels.ageGroup")}
             content={{
               text: getAgeGroupLabel(ageGroup as AgeGroup, t),
             }}
           />
 
           <RecordData
-            label="Squad Size"
+            label={tCommon("labels.squadSize")}
             content={{
               text: squadSize,
             }}
@@ -63,7 +64,7 @@ const ClubTeamSummary = ({ summary }: Props) => {
       footer={
         <MarketValueCard
           value={totalMarketValue}
-          subtitle="Total market value"
+          subtitle={`Total ${tCommon("labels.marketValue")}`}
         />
       }
     />

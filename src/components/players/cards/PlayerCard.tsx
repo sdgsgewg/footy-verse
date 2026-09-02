@@ -63,13 +63,13 @@ export default function PlayerCard({ teamType, player, onNavigate }: Props) {
               {firstName}
             </p>
 
-            <p className="text-2xl font-bold uppercase text-primary">
+            <p className="text-2xl font-bold uppercase text-card-foreground">
               {lastName}
             </p>
           </div>
 
           {modifiedShirtNumber && (
-            <span className="text-5xl font-bold leading-none text-primary">
+            <span className="text-5xl font-bold leading-none text-card-foreground">
               {modifiedShirtNumber}
             </span>
           )}

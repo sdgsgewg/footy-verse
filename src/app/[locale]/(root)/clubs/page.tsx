@@ -13,6 +13,9 @@ import { EntityItem } from "@/types/entity";
 export default function Page() {
   const t = useTranslations("public.clubs");
 
+  const tCommonStates = useTranslations("common.states");
+  const tEntities = useTranslations("entities");
+
   const {
     filters,
     debouncedFilters,
@@ -63,8 +66,12 @@ export default function Page() {
         items={modifiedClubList}
         isLoading={loading}
         empty={{
-          title: t("empty.title"),
-          description: t("empty.description"),
+          title: tCommonStates("empty.title", {
+            entity: tEntities("club").toLocaleLowerCase(),
+          }),
+          description: tCommonStates("empty.description", {
+            entity: tEntities("club").toLocaleLowerCase(),
+          }),
         }}
         showAllData
       />

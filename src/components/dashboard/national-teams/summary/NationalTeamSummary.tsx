@@ -1,13 +1,11 @@
-import ConfederationCard from "@/components/nationalities/summary/ConfederationCard";
+import ConfederationCard from "@/components/dashboard/nationalities/summary/ConfederationCard";
 import ImageWrapper from "@/components/shared/ImageWrapper";
 import EntitySummaryLayout from "@/components/shared/summary/EntitySummaryLayout";
 import MarketValueCard from "@/components/shared/summary/MarketValueCard";
 import RecordData from "@/components/shared/summary/RecordData";
 import { AgeGroup } from "@/enums/AgeGroup";
 import { Gender } from "@/enums/Gender";
-import { NationalTeamType } from "@/enums/NationalTeamType";
 import { getAgeGroupLabel, getGenderLabel } from "@/lib/constants/labels";
-import { getNationalTeamTypeLabel } from "@/lib/national-teams/labels";
 import { NationalTeamDetailResponse } from "@/types/national-team";
 import { useTranslations } from "next-intl";
 
@@ -17,16 +15,10 @@ interface Props {
 
 const NationalTeamSummary = ({ summary }: Props) => {
   const t = useTranslations();
+  const tCommon = useTranslations("common");
 
-  const {
-    name,
-    gender,
-    ageGroup,
-    teamType,
-    nation,
-    squadSize,
-    totalMarketValue,
-  } = summary;
+  const { name, gender, ageGroup, nation, squadSize, totalMarketValue } =
+    summary;
 
   const { confederation } = nation;
 
@@ -47,30 +39,23 @@ const NationalTeamSummary = ({ summary }: Props) => {
         />
       }
       information={
-        <div className="grid grid-cols-3 sm:grid-cols-2 xl:grid-cols-3 gap-x-10 gap-y-6">
+        <div className="grid grid-cols-3 sm:grid-cols-3 gap-x-10 gap-y-6">
           <RecordData
-            label="Gender"
+            label={tCommon("labels.gender")}
             content={{
               text: getGenderLabel(gender as Gender, t),
             }}
           />
 
           <RecordData
-            label="Age Group"
+            label={tCommon("labels.ageGroup")}
             content={{
               text: getAgeGroupLabel(ageGroup as AgeGroup, t),
             }}
           />
 
           <RecordData
-            label="Team Type"
-            content={{
-              text: getNationalTeamTypeLabel(teamType as NationalTeamType, t),
-            }}
-          />
-
-          <RecordData
-            label="Squad Size"
+            label={tCommon("labels.squadSize")}
             content={{
               text: squadSize,
             }}
@@ -83,7 +68,7 @@ const NationalTeamSummary = ({ summary }: Props) => {
       footer={
         <MarketValueCard
           value={totalMarketValue}
-          subtitle="Total market value"
+          subtitle={`Total ${tCommon("labels.marketValue")}`}
         />
       }
     />

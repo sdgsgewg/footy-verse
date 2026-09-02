@@ -61,6 +61,24 @@
     }
   },
 
+  "labels": {
+    "name": "Name",
+    "nationality": "Nationality",
+    "gender": "Gender",
+    "age": "Age",
+    "ageGroup": "Age Group",
+    "position": "Position",
+    "squadType": "Squad Type",
+    "squadSize": "Squad Size",
+    "teamType": "Team Type",
+    "marketValue": "Market Value",
+    "status": "Status",
+    "type": "Type",
+    "season": "Season",
+    "startDate": "Start Date",
+    "endDate": "End Date"
+  },
+
   "options": {
     "ageGroup": {
       "senior": "Senior",
@@ -109,8 +127,8 @@
     "loadingEntity": "Loading {entity}...",
 
     "empty": {
-      "title": "No data found",
-      "description": "There are currently no data to display"
+      "title": "No {entity} found",
+      "description": "There are currently no {entity} to display"
     },
 
     "notFoundEntity": "{entity} Not Found",

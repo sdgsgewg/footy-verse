@@ -14,6 +14,9 @@ export default function TeamsPage() {
   const tClubs = useTranslations("public.clubs");
   const tNationalities = useTranslations("public.nationalities");
 
+  const tCommonStates = useTranslations("common.states");
+  const tEntities = useTranslations("entities");
+
   const router = useRouter();
 
   const { clubs, loading: isClubLoading } = useClubs();
@@ -46,8 +49,12 @@ export default function TeamsPage() {
           teams={modifiedClubList}
           loading={isClubLoading}
           empty={{
-            title: tClubs("empty.title"),
-            description: tClubs("empty.description"),
+            title: tCommonStates("empty.title", {
+              entity: tEntities("club").toLocaleLowerCase(),
+            }),
+            description: tCommonStates("empty.description", {
+              entity: tEntities("club").toLocaleLowerCase(),
+            }),
           }}
           showMore={{
             visible: modifiedClubList.length >= 10,
@@ -61,8 +68,12 @@ export default function TeamsPage() {
           teams={modifiedNationalityList}
           loading={isNationalTeamLoading}
           empty={{
-            title: tNationalities("empty.title"),
-            description: tNationalities("empty.description"),
+            title: tCommonStates("empty.title", {
+              entity: tEntities("nationalTeam").toLocaleLowerCase(),
+            }),
+            description: tCommonStates("empty.description", {
+              entity: tEntities("nationalTeam").toLocaleLowerCase(),
+            }),
           }}
           showMore={{
             visible: modifiedNationalityList.length >= 10,

@@ -6,7 +6,7 @@ import { AgeGroup } from "@/enums/AgeGroup";
 import { NationalTeamListItem } from "@/types/national-team";
 import { useNationalTeamActions } from "@/hooks/dashboard/national-teams";
 import { DataColumn } from "@/types/table";
-import { DataTable } from "../../shared/tables/DataTable";
+import { DataTable } from "../../../shared/tables/DataTable";
 import { Gender } from "@/enums/Gender";
 import { getNationalTeamTypeLabel } from "@/lib/national-teams/labels";
 import { NationalTeamType } from "@/enums/NationalTeamType";

@@ -2,8 +2,15 @@
   "title": "Clubs",
   "description": "Browse professional football clubs.",
 
-  "empty": {
-    "title": "No clubs found",
-    "description": "There are currently no clubs to display"
+  "detail": {
+    "filter": {
+      "labels": {
+        "clubTeam": "Club Teams"
+      },
+
+      "placeholders": {
+        "clubTeam": "Select club team"
+      }
+    }
   }
 }

@@ -57,6 +57,24 @@
     }
   },
 
+  "labels": {
+    "name": "Nama",
+    "nationality": "Kebangsaan",
+    "gender": "Jenis Kelamin",
+    "age": "Umur",
+    "ageGroup": "Kelompok Usia",
+    "position": "Posisi",
+    "squadType": "Tipe Skuad",
+    "squadSize": "Jumlah Skuad",
+    "teamType": "Tipe Tim",
+    "marketValue": "Nilai Pasar",
+    "status": "Status",
+    "type": "Tipe",
+    "season": "Musim",
+    "startDate": "Tanggal Mulai",
+    "endDate": "Tanggal Akhir"
+  },
+
   "validation": {
     "required": "{field} is required."
   },
@@ -109,8 +127,8 @@
     "loadingEntity": "Memuat {entity}...",
 
     "empty": {
-      "title": "Tidak ada data yang ditemukan",
-      "description": "Saat ini belum ada data yang dapat ditampilkan"
+      "title": "Tidak ada {entity} yang ditemukan",
+      "description": "Saat ini belum ada {entity} yang dapat ditampilkan"
     },
 
     "notFoundEntity": "{entity} Tidak Ditemukan",

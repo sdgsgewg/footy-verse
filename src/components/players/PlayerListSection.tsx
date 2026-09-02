@@ -8,6 +8,7 @@ import PlayerListSkeleton from "./PlayerListSkeleton";
 import type { GroupedPlayerListItem } from "@/types/player";
 
 import type { TeamType } from "@/enums/TeamType";
+import { useTranslations } from "next-intl";
 
 interface Props {
   teamType: TeamType;
@@ -27,6 +28,11 @@ export default function PlayerListSection({
   error,
   onRetry,
 }: Props) {
+  const tCommonStates = useTranslations("common.states");
+  const tEntities = useTranslations("entities");
+
+  const modifiedEntity = tEntities("player").toLocaleLowerCase();
+
   if (isLoading) {
     return <PlayerListSkeleton />;
   }
@@ -39,8 +45,12 @@ export default function PlayerListSection({
     return (
       <EmptyState
         icon={Users}
-        title="No players found"
-        description="There are no players registered for this team."
+        title={tCommonStates("empty.title", {
+          entity: modifiedEntity,
+        })}
+        description={tCommonStates("empty.description", {
+          entity: modifiedEntity,
+        })}
       />
     );
   }

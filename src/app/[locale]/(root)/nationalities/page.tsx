@@ -16,6 +16,9 @@ import { useTranslations } from "next-intl";
 export default function Page() {
   const t = useTranslations("public.nationalities");
 
+  const tCommonStates = useTranslations("common.states");
+  const tEntities = useTranslations("entities");
+
   const {
     filters,
     debouncedFilters,
@@ -66,8 +69,12 @@ export default function Page() {
         items={modifiedNationalityList}
         isLoading={loading}
         empty={{
-          title: t("empty.title"),
-          description: t("empty.description"),
+          title: tCommonStates("empty.title", {
+            entity: tEntities("nationalTeam").toLocaleLowerCase(),
+          }),
+          description: tCommonStates("empty.description", {
+            entity: tEntities("nationalTeam").toLocaleLowerCase(),
+          }),
         }}
         showAllData
       />

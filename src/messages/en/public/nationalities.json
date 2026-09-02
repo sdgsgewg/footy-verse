@@ -2,8 +2,15 @@
   "title": "National Teams",
   "description": "Browse national football teams.",
 
-  "empty": {
-    "title": "No national teams found",
-    "description": "There are currently no national teams to display"
+  "detail": {
+    "filter": {
+      "labels": {
+        "nationalTeam": "National Teams"
+      },
+
+      "placeholders": {
+        "nationalTeam": "Select national team"
+      }
+    }
   }
 }

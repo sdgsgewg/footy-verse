@@ -6,13 +6,13 @@ import ClubDetailPageLayout from "@/components/layout/detail-page/ClubDetailPage
 import { useClubDetail } from "@/hooks/dashboard/clubs";
 import { ClubLookupResponse } from "@/types/club";
 import { useClubTeams } from "@/hooks/club-teams";
-import { ClubTeamTable } from "@/components/clubs/table";
+import { ClubTeamTable } from "@/components/dashboard/clubs/table";
 import SectionHeader from "@/components/players/sections/SectionHeader";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/navigation";
 import { useParams } from "next/navigation";
 import { ROUTES } from "@/constants/routes";
-import ClubSummary from "@/components/clubs/summary/ClubSummary";
+import ClubSummary from "@/components/dashboard/clubs/summary/ClubSummary";
 
 interface Props {
   clubLookup: ClubLookupResponse;

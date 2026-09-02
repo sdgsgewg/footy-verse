@@ -11,8 +11,8 @@ import { useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
 import { useRouter } from "@/navigation";
 import { ROUTES } from "@/constants/routes";
-import { NationalTeamTable } from "@/components/nationalities/table";
-import NationalitySummary from "@/components/nationalities/summary/NationalitySummary";
+import { NationalTeamTable } from "@/components/dashboard/nationalities/table";
+import NationalitySummary from "@/components/dashboard/nationalities/summary/NationalitySummary";
 
 interface Props {
   nationalityLookup: NationalityLookupResponse;

@@ -13,7 +13,7 @@ import { useClubTeams } from "@/hooks/club-teams";
 import TableFormLayout from "@/components/layout/dashboard/TableFormLayout";
 import ClubTeamForm from "@/components/forms/club-teams/ClubTeamForm";
 import { useCrudPageTitle } from "@/hooks/crud/useCrudPageTitle";
-import { ClubTeamTable } from "@/components/clubs/table";
+import { ClubTeamTable } from "@/components/dashboard/clubs/table";
 import { useRouter } from "@/navigation";
 import { ROUTES } from "@/constants/routes";
 
