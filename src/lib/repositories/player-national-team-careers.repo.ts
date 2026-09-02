@@ -78,11 +78,7 @@ export async function getPlayerNationalTeamCareersRepo(
   const query = supabase
     .from(getTable())
     .select(getPlayerNationalTeamCareersBaseQuery())
-    .eq("player_career.player_id", playerId)
-    .order("joined_at", {
-      referencedTable: "player_career",
-      ascending: false,
-    });
+    .eq("player_career.player_id", playerId);
 
   const { data, error } =
     await query.overrideTypes<DbPlayerNationalTeamCareerListRow[]>();
@@ -90,7 +86,14 @@ export async function getPlayerNationalTeamCareersRepo(
   if (error) throw error;
   if (!data || data.length === 0) return [];
 
-  return data.map(mapPlayerNationalTeamCareerListItem);
+  const sortedData = [...data].sort((a, b) => {
+    const dateA = a.player_career?.joined_at ?? "";
+    const dateB = b.player_career?.joined_at ?? "";
+
+    return dateB.localeCompare(dateA);
+  });
+
+  return sortedData.map(mapPlayerNationalTeamCareerListItem);
 }
 
 function getPlayerNationalTeamCareerDetailBaseQuery() {
