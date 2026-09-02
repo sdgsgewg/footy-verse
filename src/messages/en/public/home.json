@@ -3,7 +3,7 @@
     "badge": "The Football Database",
     "title": "Explore the World of",
     "titleHighlight": "Football",
-    "description": "Discover players, clubs, nations, competitions, and more in one comprehensive football database.",
+    "subtitle": "Discover players, clubs, nations, competitions, and more in one comprehensive football database.",
 
     "search": {
       "placeholder": "Search players, clubs, nations, competitions...",

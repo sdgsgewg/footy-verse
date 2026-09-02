@@ -108,8 +108,8 @@ export const Section: React.FC<SectionProps> = ({
   return (
     <section
       className={cn(
-        "relative overflow-hidden py-20",
-        isHero && "lg:py-28",
+        "relative overflow-hidden py-16",
+        isHero && "lg:py-20",
         isOdd ? "bg-muted/50" : "bg-background",
       )}
     >

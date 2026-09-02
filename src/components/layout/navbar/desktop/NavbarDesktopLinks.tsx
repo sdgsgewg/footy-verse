@@ -1,4 +1,4 @@
-import { useNavbarLinks } from "@/hooks/useNavbarLinks";
+import { useNavLinks } from "@/hooks/useNavLinks";
 import { cn } from "@/lib/utils";
 import { Link } from "@/navigation";
 import { isActivePath } from "@/lib/utils/navigation";
@@ -8,7 +8,7 @@ interface NavbarDesktopLinksProps {
 }
 
 const NavbarDesktopLinks = ({ pathname }: NavbarDesktopLinksProps) => {
-  const { navLinks } = useNavbarLinks();
+  const { navLinks } = useNavLinks();
 
   return (
     <div className="hidden md:flex items-center space-x-4 lg:space-x-6 mx-6">

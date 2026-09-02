@@ -1,18 +1,18 @@
 import Copyright from "./Copyright";
+import FooterLinks from "./FooterLinks";
+import FooterLogo from "./FooterLogo";
 
 const Footer = () => {
   return (
-    <footer className="w-full">
-      <div className="flex flex-col items-center justify-center bg-dark pt-24 pb-12">
-        <div className="container">
-          <div className="flex flex-wrap"></div>
+    <footer className="border-t bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
+      <div className="container mx-auto py-8 px-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <FooterLogo />
 
-          <div className="w-full pt-10 border-t border-slate-700">
-            <div className="flex items-center justify-center mb-5"></div>
-
-            <Copyright />
-          </div>
+          <FooterLinks />
         </div>
+
+        <Copyright />
       </div>
     </footer>
   );

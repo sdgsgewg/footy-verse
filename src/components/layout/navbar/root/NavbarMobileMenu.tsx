@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import NavbarMobileAuth from "../mobile/NavbarMobileAuth";
-import { useNavbarLinks } from "@/hooks/useNavbarLinks";
+import { useNavLinks } from "@/hooks/useNavLinks";
 
 interface NavbarMobileMenuProps {
   open: boolean;
@@ -16,7 +16,7 @@ const NavbarMobileMenu = ({
   pathname,
   onClose,
 }: NavbarMobileMenuProps) => {
-  const { navLinks } = useNavbarLinks();
+  const { navLinks } = useNavLinks();
 
   const isActive = (path: string) =>
     pathname === path || pathname.startsWith(`${path}/`);
