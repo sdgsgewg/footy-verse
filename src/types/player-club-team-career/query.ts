@@ -39,5 +39,5 @@ export type DbPlayerClubTeamCareerRow = {
 // Club Team
 
 export type DbPlayerClubTeamCareerWithPlayerCareerRow = {
-  player_career: DbPlayerCareerWithPlayerRow;
+  player_career: Pick<PlayerCareer, "left_at"> & DbPlayerCareerWithPlayerRow;
 };

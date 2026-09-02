@@ -5,10 +5,6 @@ import {
   NationalTeamQuery,
 } from "@/types/national-team";
 import { apiClient } from "./client";
-import {
-  createNationalTeamSchema,
-  updateNationalTeamSchema,
-} from "../validations/national-teams.schema";
 
 const baseRoute = "/nationalities";
 
@@ -75,9 +71,7 @@ export const createNationalTeam = async (
   nationId: string,
   payload: unknown,
 ) => {
-  const parsed = createNationalTeamSchema.parse(payload); // validation
-
-  await apiClient.post(`${baseRoute}/${nationId}/teams`, parsed);
+  await apiClient.post(`${baseRoute}/${nationId}/teams`, payload);
 };
 
 /**
@@ -91,9 +85,7 @@ export const updateNationalTeam = async (
   teamId: string,
   payload: unknown,
 ) => {
-  const parsed = updateNationalTeamSchema.parse(payload); // validation
-
-  await apiClient.put(`${baseRoute}/${nationId}/teams/${teamId}`, parsed);
+  await apiClient.put(`${baseRoute}/${nationId}/teams/${teamId}`, payload);
 };
 
 /**

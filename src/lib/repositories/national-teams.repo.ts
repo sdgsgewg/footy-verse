@@ -107,6 +107,8 @@ function getNationalTeamDetailBaseQuery() {
 
     player_national_team_careers (
       player_career:player_careers (
+        left_at,
+
         player:players (
           id,
           market_value

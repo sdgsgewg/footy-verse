@@ -47,9 +47,14 @@ export function mapClubTeamDetailResponse(
   const { id, squad_type, age_group, club, player_club_team_careers } =
     clubTeam;
 
-  const squadSize = player_club_team_careers.length;
+  // Get players that still play here currently
+  const filteredPlayerClubTeamCareers = player_club_team_careers.filter(
+    (pctc) => pctc.player_career.left_at === null,
+  );
 
-  const marketValues = player_club_team_careers.map(
+  const squadSize = filteredPlayerClubTeamCareers.length;
+
+  const marketValues = filteredPlayerClubTeamCareers.map(
     (pcc) => pcc.player_career.player.market_value,
   );
 

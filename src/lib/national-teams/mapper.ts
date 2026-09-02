@@ -59,9 +59,14 @@ export function mapNationalTeamDetailResponse(
     player_national_team_careers,
   } = nationalTeam;
 
-  const squadSize = player_national_team_careers.length;
+  // Get players that still play here currently
+  const filteredPlayerNationalTeamCareers = player_national_team_careers.filter(
+    (pntc) => pntc.player_career.left_at === null,
+  );
 
-  const marketValues = player_national_team_careers.map(
+  const squadSize = filteredPlayerNationalTeamCareers.length;
+
+  const marketValues = filteredPlayerNationalTeamCareers.map(
     (pntc) => pntc.player_career.player.market_value,
   );
 
