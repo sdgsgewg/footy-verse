@@ -7,9 +7,9 @@ import {
 } from "@/components/public/nationalities";
 import PageHeader from "@/components/shared/PageHeader";
 import { PaginationSection } from "@/components/shared/pagination";
-import { ROUTES } from "@/constants/routes";
 import { useFilterSync } from "@/hooks/filter";
 import { useNationalities, useNationalityFilter } from "@/hooks/nationalities";
+import { mapNationalityToEntityItem } from "@/lib/entities/mapper";
 import { EntityItem } from "@/types/entity";
 import { useTranslations } from "next-intl";
 
@@ -35,13 +35,9 @@ export default function Page() {
     search: debouncedFilters.search || undefined,
   });
 
-  const modifiedNationalityList: EntityItem[] = nationalities.map((nation) => ({
-    id: nation.id,
-    name: nation.name,
-    imageUrl: nation.imageUrl,
-    href: `${ROUTES.NATIONALITIES}/${nation.slug}`,
-    subtitle: "",
-  }));
+  const modifiedNationalityList: EntityItem[] = nationalities.map(
+    mapNationalityToEntityItem,
+  );
 
   // Sync URL on filter
   useFilterSync(debouncedFilters, syncUrl);

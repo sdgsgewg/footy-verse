@@ -15,6 +15,8 @@ import { Option } from "@/types/option";
 import Image from "next/image";
 import ErrorMessage from "./ErrorMessage";
 import { cn } from "@/lib/utils";
+import { Loader2 } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 interface SelectFieldProps {
   label?: string;
@@ -28,6 +30,7 @@ interface SelectFieldProps {
   allLabel?: string;
 
   required?: boolean;
+  loading?: boolean;
   disabled?: boolean;
 
   className?: string;
@@ -46,11 +49,14 @@ const SelectField: React.FC<SelectFieldProps> = ({
   allLabel,
 
   disabled = false,
+  loading = false,
   required = false,
 
   className,
   error,
 }) => {
+  const tCommonStates = useTranslations("common.states");
+
   const errorId = error ? `${name}-error` : undefined;
 
   return (
@@ -62,11 +68,21 @@ const SelectField: React.FC<SelectFieldProps> = ({
         aria-invalid={!!error}
         aria-describedby={errorId}
         value={value || undefined}
-        disabled={disabled}
+        disabled={disabled || loading}
         onValueChange={onChange}
       >
         <SelectTrigger className="w-full rounded-xl">
-          <SelectValue placeholder={placeholder} />
+          {loading ? (
+            <div className="flex items-center gap-2">
+              <Loader2 className="size-4 shrink-0 animate-spin opacity-50" />
+
+              <span className="truncate text-muted-foreground">
+                {tCommonStates("loading")}
+              </span>
+            </div>
+          ) : (
+            <SelectValue placeholder={placeholder} />
+          )}
         </SelectTrigger>
 
         <SelectContent

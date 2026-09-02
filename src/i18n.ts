@@ -15,6 +15,7 @@ async function getMessages(locale: string) {
     home: (await import(`./messages/${locale}/public/home.json`)).default,
     search: (await import(`./messages/${locale}/public/search.json`)).default,
     teams: (await import(`./messages/${locale}/public/teams.json`)).default,
+    players: (await import(`./messages/${locale}/public/players.json`)).default,
     clubs: (await import(`./messages/${locale}/public/clubs.json`)).default,
     nationalities: (
       await import(`./messages/${locale}/public/nationalities.json`)

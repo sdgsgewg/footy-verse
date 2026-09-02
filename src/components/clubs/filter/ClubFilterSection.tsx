@@ -15,7 +15,7 @@ interface Props {
   ) => void;
 }
 
-const ClubFilter = ({ clubTeams, filters, updateFilter }: Props) => {
+const ClubFilterSection = ({ clubTeams, filters, updateFilter }: Props) => {
   const tLabels = useTranslations("public.clubs.detail.filter.labels");
   const tPlaceholders = useTranslations(
     "public.clubs.detail.filter.placeholders",
@@ -38,4 +38,4 @@ const ClubFilter = ({ clubTeams, filters, updateFilter }: Props) => {
   );
 };
 
-export default ClubFilter;
+export default ClubFilterSection;

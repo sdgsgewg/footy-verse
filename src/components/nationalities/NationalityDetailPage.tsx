@@ -6,7 +6,7 @@ import EntityLoading from "@/components/feedback/loading/EntityLoading";
 import ErrorState from "@/components/feedback/ErrorState";
 
 import NationalityDetailPageLayout from "../layout/detail-page/NationalityDetailPageLayout";
-import NationalityFilter from "./filter/NationalityFilter";
+import NationalityFilterSection from "./filter/NationalityFilterSection";
 import NationalTeamSummary from "../dashboard/national-teams/summary/NationalTeamSummary";
 
 import { TeamType } from "@/enums/TeamType";
@@ -94,7 +94,7 @@ const NationalityDetailPage = ({ nationalityLookup }: Props) => {
 
   const content = (
     <>
-      <NationalityFilter
+      <NationalityFilterSection
         nationalTeams={nationalTeams}
         filters={filters}
         updateFilter={updateFilter}

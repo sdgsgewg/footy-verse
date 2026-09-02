@@ -17,7 +17,11 @@ interface Props {
   ) => void;
 }
 
-const NationalityFilter = ({ nationalTeams, filters, updateFilter }: Props) => {
+const NationalityFilterSection = ({
+  nationalTeams,
+  filters,
+  updateFilter,
+}: Props) => {
   const tLabels = useTranslations("public.nationalities.detail.filter.labels");
   const tPlaceholders = useTranslations(
     "public.nationalities.detail.filter.placeholders",
@@ -27,6 +31,7 @@ const NationalityFilter = ({ nationalTeams, filters, updateFilter }: Props) => {
 
   return (
     <div className="w-full">
+      {/* National Team */}
       <SelectField
         label={tLabels("nationalTeam")}
         name="national_team"
@@ -40,4 +45,4 @@ const NationalityFilter = ({ nationalTeams, filters, updateFilter }: Props) => {
   );
 };
 
-export default NationalityFilter;
+export default NationalityFilterSection;

@@ -10,7 +10,7 @@ import { TeamType } from "@/enums/TeamType";
 import { useGroupedPlayers } from "@/hooks/players";
 import { useEffect } from "react";
 import { SquadType } from "@/enums/SquadType";
-import ClubFilter from "./filter/ClubFilter";
+import ClubFilterSection from "./filter/ClubFilterSection";
 import { useClubTeamDetail } from "@/hooks/dashboard/club-teams";
 import ClubTeamSummary from "../dashboard/club-teams/summary/ClubTeamSummary";
 import useGroupedPlayerFilter from "@/hooks/players/useGroupedPlayerFilter";
@@ -92,7 +92,7 @@ const ClubDetailPage = ({ clubLookup }: Props) => {
   // Player List in grid style
   const content = (
     <>
-      <ClubFilter
+      <ClubFilterSection
         clubTeams={clubTeams}
         filters={filters}
         updateFilter={updateFilter}

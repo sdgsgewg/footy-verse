@@ -35,7 +35,7 @@ export default function EntityDataSection({
   const tCommonActions = useTranslations("common.actions");
   const tCommonStates = useTranslations("common.states");
 
-  const modifiedTeams = showAllData ? items : items.slice(0, 10);
+  const modifiedItems = showAllData ? items : items.slice(0, 10);
 
   if (isLoading) {
     return (
@@ -61,8 +61,8 @@ export default function EntityDataSection({
     <section className="space-y-6">
       {/* Grid */}
       <EntityCardWrapper>
-        {modifiedTeams.map((team) => (
-          <EntityCard key={team.id} team={team} />
+        {modifiedItems.map((item) => (
+          <EntityCard key={item.id} entity={item} />
         ))}
       </EntityCardWrapper>
 

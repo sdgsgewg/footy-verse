@@ -1,14 +1,14 @@
 "use client";
 
 import EntityDataSection from "@/components/public/entities/EntityDataSection";
-import { ActiveFiltersBar, ClubFilters } from "@/components/public/clubs";
+import { ClubActiveFiltersBar, ClubFilters } from "@/components/public/clubs";
 import PageHeader from "@/components/shared/PageHeader";
 import { PaginationSection } from "@/components/shared/pagination";
-import { ROUTES } from "@/constants/routes";
 import { useClubs, useClubFilter } from "@/hooks/clubs";
 import { useFilterSync } from "@/hooks/filter";
 import { useTranslations } from "next-intl";
 import { EntityItem } from "@/types/entity";
+import { mapClubToEntityItem } from "@/lib/entities/mapper";
 
 export default function Page() {
   const t = useTranslations("public.clubs");
@@ -32,13 +32,7 @@ export default function Page() {
     search: debouncedFilters.search || undefined,
   });
 
-  const modifiedClubList: EntityItem[] = clubs.map((club) => ({
-    id: club.id,
-    name: club.name,
-    imageUrl: club.imageUrl,
-    href: `${ROUTES.CLUBS}/${club.slug}`,
-    subtitle: "",
-  }));
+  const modifiedClubList: EntityItem[] = clubs.map(mapClubToEntityItem);
 
   // Sync URL on filter
   useFilterSync(debouncedFilters, syncUrl);
@@ -55,7 +49,7 @@ export default function Page() {
           isSearching={isSearching}
         />
 
-        <ActiveFiltersBar
+        <ClubActiveFiltersBar
           filters={filters}
           updateFilter={updateFilter}
           clearFilters={clearFilters}

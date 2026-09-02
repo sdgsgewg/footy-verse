@@ -1,2 +1,2 @@
-export { default as ActiveFiltersBar } from "./ActiveFiltersBar";
+export { default as ClubActiveFiltersBar } from "./ClubActiveFiltersBar";
 export { default as ClubFilters } from "./ClubFilters";

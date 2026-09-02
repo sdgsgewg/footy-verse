@@ -1,10 +1,7 @@
 "use client";
 
 import { ComboboxField } from "@/components/forms/fields";
-import { useClubTeams } from "@/hooks/club-teams";
-import { usePositionOptions } from "@/hooks/dashboard/positions";
-import { useNationalityOptions } from "@/hooks/nationalities";
-import { getClubTeamOptions } from "@/lib/club-teams/options";
+import { usePlayerFilterOptions } from "@/hooks/players";
 import { PlayerFilter } from "@/types/player";
 import { useTranslations } from "next-intl";
 
@@ -28,13 +25,8 @@ export default function PlayerFilterContent({
   const tEntities = useTranslations("entities");
   const tCommon = useTranslations("common");
 
-  const { positionOptions, loading: positionLoading } = usePositionOptions();
-
-  const { nationalityOptions, loading: nationalityLoading } =
-    useNationalityOptions();
-
-  const { clubTeams, loading: clubTeamLoading } = useClubTeams();
-  const clubTeamOptions = getClubTeamOptions(clubTeams);
+  const { positionOptions, nationalityOptions, clubTeamOptions, loading } =
+    usePlayerFilterOptions();
 
   return (
     <>
@@ -44,7 +36,7 @@ export default function PlayerFilterContent({
         name={`position`}
         options={positionOptions}
         placeholder={tPlaceholders("position")}
-        loading={positionLoading}
+        loading={loading.position}
         searchPlaceholder={tCommon("combobox.searchEntity", {
           entity: tEntities("position").toLowerCase(),
         })}
@@ -61,7 +53,7 @@ export default function PlayerFilterContent({
         name={`nation`}
         options={nationalityOptions}
         placeholder={tPlaceholders("nation")}
-        loading={nationalityLoading}
+        loading={loading.nationality}
         searchPlaceholder={tCommon("combobox.searchEntity", {
           entity: tEntities("nationality").toLowerCase(),
         })}
@@ -78,7 +70,7 @@ export default function PlayerFilterContent({
         name={`club_team`}
         options={clubTeamOptions}
         placeholder={tPlaceholders("club")}
-        loading={clubTeamLoading}
+        loading={loading.clubTeam}
         searchPlaceholder={tCommon("combobox.searchEntity", {
           entity: tEntities("club").toLowerCase(),
         })}

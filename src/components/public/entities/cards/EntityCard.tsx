@@ -3,33 +3,51 @@ import { useRouter } from "@/navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import ImageWrapper from "@/components/shared/ImageWrapper";
 import { EntityItem } from "@/types/entity";
+import { cn } from "@/lib/utils";
 
 interface Props {
-  team: EntityItem;
+  entity: EntityItem;
 }
 
-export default function EntityCard({ team }: Props) {
+export default function EntityCard({ entity }: Props) {
   const router = useRouter();
 
-  const navigateToTeamDetailPage = () => {
-    router.push(team.href ? team.href : "");
+  const { name, imageUrl, href, subtitle, type } = entity;
+
+  const navigateToEntityDetailPage = () => {
+    router.push(href ?? "");
   };
+
+  const isPlayer = type === "player";
+
+  const isNationality = type === "nationality";
 
   return (
     <Card
-      onClick={navigateToTeamDetailPage}
+      onClick={navigateToEntityDetailPage}
       className="group flex transition-all hover:-translate-y-1 hover:shadow-lg cursor-pointer"
     >
       <CardContent className="flex flex-col items-center text-center gap-4">
-        <div className="relative h-20 w-20 overflow-hidden rounded-full border bg-muted p-2">
-          {team.imageUrl ? (
+        <div
+          className={cn(
+            isNationality ? "h-20 w-26 rounded-sm" : "h-20 w-20 rounded-full",
+            "relative overflow-hidden border bg-muted p-2",
+          )}
+        >
+          {imageUrl ? (
             <ImageWrapper
-              src={team.imageUrl}
-              alt={team.name}
+              src={imageUrl}
+              alt={name}
               className={{
                 container: "h-full w-full",
-                image:
-                  "object-contain transition-transform duration-500 group-hover:scale-105",
+                image: cn(
+                  isPlayer
+                    ? "object-cover rounded-full"
+                    : isNationality
+                      ? "object-cover rounded-sm"
+                      : "object-contain",
+                  "transition-transform duration-500 group-hover:scale-105",
+                ),
               }}
             />
           ) : (
@@ -40,12 +58,10 @@ export default function EntityCard({ team }: Props) {
         </div>
 
         <div>
-          <h3 className="font-semibold truncate">{team.name}</h3>
+          <h3 className="font-semibold truncate">{name}</h3>
 
-          {team.subtitle && (
-            <p className="mt-1 text-sm text-muted-foreground">
-              {team.subtitle}
-            </p>
+          {subtitle && (
+            <p className="mt-1 text-sm text-muted-foreground">{subtitle}</p>
           )}
         </div>
 
