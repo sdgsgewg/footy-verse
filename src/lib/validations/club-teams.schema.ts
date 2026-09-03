@@ -4,7 +4,10 @@ import { ageGroupSchema, squadTypeSchema } from "./enums.schema";
 
 export const clubTeamMutationSchema = z.object({
   squad_type: z.union([squadTypeSchema, z.literal("")]),
-  age_group: z.union([ageGroupSchema, z.literal("")]),
+  age_group: z
+    .union([ageGroupSchema, z.literal("")])
+    .nullable()
+    .optional(),
   club_id: idSchema.optional(),
 });
 

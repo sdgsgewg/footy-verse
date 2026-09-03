@@ -80,7 +80,6 @@ const ClubTeamForm = ({ mode, clubTeam, loading = false, onSubmit }: Props) => {
           value={form.age_group || ""}
           onChange={(value) => updateField("age_group", value as AgeGroup)}
           error={errors.age_group}
-          required
         />
       </FormContentWrapper>
     </FormWrapper>
