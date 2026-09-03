@@ -11,6 +11,7 @@ import {
 import { usePlayers } from "@/hooks/dashboard/players";
 import { PlayerCard, PlayerCardSkeleton } from "@/components/players/cards";
 import { TeamType } from "@/enums/TeamType";
+import { ROUTES } from "@/constants/routes";
 
 const FeaturedPlayersSection = () => {
   const t = useTranslations("public.home.featuredPlayers");
@@ -54,6 +55,8 @@ const FeaturedPlayersSection = () => {
     title: t("title"),
     subtitle: t("subtitle"),
     children: getContent(),
+    ctaText: t("viewAll"),
+    onClickCTA: () => router.push(`${ROUTES.PLAYERS}`),
   };
 
   return <CenteredContentSection {...data} />;

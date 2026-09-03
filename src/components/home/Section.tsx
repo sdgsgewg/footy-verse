@@ -61,10 +61,10 @@ export const CenteredContentSection: React.FC<CenteredContentSectionProps> = ({
 
       {ctaText && (
         <div
-          className="flex flex-row gap-1 text-tx-primary-accent text-base font-semibold mt-8 sm:mt-16 cursor-pointer hover:underline"
+          className="flex items-center justify-center gap-1 text-primary text-base font-semibold mt-8 sm:mt-16 cursor-pointer hover:underline"
           onClick={onClickCTA}
         >
-          <Link />
+          <Link size={16} />
           <p>{ctaText}</p>
         </div>
       )}

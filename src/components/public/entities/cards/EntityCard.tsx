@@ -18,8 +18,6 @@ export default function EntityCard({ entity }: Props) {
     router.push(href ?? "");
   };
 
-  const isPlayer = type === "player";
-
   const isNationality = type === "nationality";
 
   const getImageClassName = () => {

@@ -90,18 +90,14 @@ const ComboboxField: React.FC<ComboboxFieldProps> = ({
             className="h-10 w-full justify-between rounded-xl font-normal"
           >
             <div className="flex items-center gap-2 overflow-hidden">
-              {loading ? (
-                <Loader2 className="h-4 w-4 shrink-0 animate-spin opacity-50" />
-              ) : (
-                selectedOption?.imageUrl && (
-                  <Image
-                    src={selectedOption.imageUrl}
-                    alt={selectedOption.label}
-                    width={20}
-                    height={20}
-                    className="shrink-0 rounded-full object-cover"
-                  />
-                )
+              {selectedOption?.imageUrl && (
+                <Image
+                  src={selectedOption.imageUrl}
+                  alt={selectedOption.label}
+                  width={20}
+                  height={20}
+                  className="shrink-0 rounded-full object-cover"
+                />
               )}
 
               <span className="truncate">
