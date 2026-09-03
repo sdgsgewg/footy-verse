@@ -49,5 +49,11 @@
         "description": "Temukan liga dan kompetisi sepak bola."
       }
     }
+  },
+
+  "featuredPlayers": {
+    "title": "Pemain Pilihan",
+    "subtitle": "Temukan beberapa pemain sepak bola ternama dari seluruh dunia.",
+    "viewAll": "Lihat Semua Pemain"
   }
 }

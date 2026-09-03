@@ -49,5 +49,11 @@
         "description": "Discover leagues and football competitions."
       }
     }
+  },
+
+  "featuredPlayers": {
+    "title": "Featured Players",
+    "subtitle": "Discover some of the world's most notable football players.",
+    "viewAll": "View All Players"
   }
 }

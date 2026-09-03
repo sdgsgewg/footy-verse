@@ -1,5 +1,4 @@
-import { HeroSection } from "@/components/home";
-import QuickNavigation from "@/components/home/quick-navigation/QuickNavigationSection";
+import { FeaturedPlayersSection, HeroSection, QuickNavigationSection } from "@/components/home";
 
 interface Section {
   name: string;
@@ -8,7 +7,8 @@ interface Section {
 
 export const homeSections: Section[] = [
   { name: "hero", element: <HeroSection /> },
-  { name: "quickNavigation", element: <QuickNavigation /> },
+  { name: "quickNavigation", element: <QuickNavigationSection /> },
+  { name: "featuredPlayers", element: <FeaturedPlayersSection /> },
 ] as const;
 
 export type HomeSectionName = (typeof homeSections)[number]["name"];
