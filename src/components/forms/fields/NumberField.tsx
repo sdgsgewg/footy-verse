@@ -16,6 +16,7 @@ interface NumberFieldProps {
 
   required?: boolean;
   readOnly?: boolean;
+  disabled?: boolean;
 
   thousandSeparator?: string | boolean;
   decimalScale?: number;
@@ -33,6 +34,7 @@ export default function NumberField({
   placeholder,
   required,
   readOnly,
+  disabled,
   thousandSeparator = ",",
   decimalScale,
   allowNegative = false,
@@ -53,6 +55,7 @@ export default function NumberField({
         value={value ?? ""}
         placeholder={placeholder}
         readOnly={readOnly}
+        disabled={disabled}
         thousandSeparator={thousandSeparator}
         decimalScale={decimalScale}
         allowNegative={allowNegative}

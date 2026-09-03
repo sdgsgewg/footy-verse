@@ -54,6 +54,22 @@ const PlayerTransferSection = ({ form, setForm, errors }: Props) => {
   const { clubTeams, loading: clubTeamLoading } = useClubTeams();
   const clubTeamOptions = getClubTeamOptions(clubTeams);
 
+  const fromClubTeamOptions = clubTeamOptions.filter(
+    (option) => option.value !== to_club_team_id,
+  );
+
+  const transferTypesWithZeroFee = [
+    TransferType.LOAN_RETURN,
+    TransferType.FREE,
+    TransferType.RELEASED,
+    TransferType.YOUTH_PROMOTION,
+    TransferType.RETIRED,
+  ];
+
+  const getAutofillTransferFee = (value: TransferType) => {
+    return transferTypesWithZeroFee.includes(value) ? 0 : null;
+  };
+
   return (
     <FormSection title={tForm("title")}>
       <>
@@ -61,7 +77,7 @@ const PlayerTransferSection = ({ form, setForm, errors }: Props) => {
         <ComboboxField
           label={tLabels("fromClub")}
           name={`from_club_team`}
-          options={clubTeamOptions}
+          options={fromClubTeamOptions}
           placeholder={tPlaceholders("fromClub") || ""}
           loading={clubTeamLoading}
           searchPlaceholder={tCommon("combobox.searchEntity", {
@@ -123,9 +139,11 @@ const PlayerTransferSection = ({ form, setForm, errors }: Props) => {
           onChange={(value) =>
             setForm((prev) => ({
               ...prev,
+
               transfer: {
                 ...prev.transfer,
                 transfer_type: value as TransferType,
+                transfer_fee: getAutofillTransferFee(value as TransferType),
               },
             }))
           }
@@ -139,6 +157,9 @@ const PlayerTransferSection = ({ form, setForm, errors }: Props) => {
           name="transfer_fee"
           placeholder={tPlaceholders("transferFee")}
           value={transfer_fee}
+          disabled={transferTypesWithZeroFee.includes(
+            transfer_type as TransferType,
+          )}
           onChange={(value) =>
             setForm((prev) => ({
               ...prev,
