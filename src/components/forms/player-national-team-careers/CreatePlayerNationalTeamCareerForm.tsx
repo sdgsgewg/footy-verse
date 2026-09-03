@@ -36,7 +36,7 @@ const CreatePlayerNationalTeamCareerForm = ({
   const tCommon = useTranslations("common");
   const tEntities = useTranslations("entities");
 
-  const { form, setForm, canSubmit, buildPayload } =
+  const { form, setForm, isDirty, canSubmit, buildPayload } =
     useCreatePlayerNationalTeamCareerForm();
 
   const { nationalTeams } = useNationalTeams();
@@ -47,7 +47,7 @@ const CreatePlayerNationalTeamCareerForm = ({
   };
 
   return (
-    <FormWrapper>
+    <FormWrapper isDirty={isDirty}>
       <FormHeader
         loading={loading}
         isCreate
@@ -69,126 +69,157 @@ const CreatePlayerNationalTeamCareerForm = ({
               left_at: "",
             },
 
-            shirt_numbers: [],
+            shirt_numbers: [
+              {
+                shirt_number: null,
+                start_date: "",
+                end_date: "",
+              },
+            ],
           })}
           onChange={(items) => setForm(items)}
-          renderItem={(careerItem, careerIndex, updateCareerItem) => (
-            <>
-              {/* National Team */}
-              <ComboboxField
-                label={tLabels("career.nation")}
-                name={`nationality-${careerIndex}`}
-                options={nationalTeamOptions}
-                placeholder={tPlaceholders("career.nation") || ""}
-                searchPlaceholder={tCommon("combobox.searchEntity", {
-                  entity: tEntities("nationality").toLowerCase(),
-                })}
-                emptyMessage={tCommon("combobox.noEntityFound", {
-                  entity: tEntities("nationality").toLowerCase(),
-                })}
-                value={careerItem.national_team_id}
-                onChange={(v) =>
-                  updateCareerItem(careerIndex, "national_team_id", v as string)
-                }
-                required
-              />
+          renderItem={(
+            careerItem,
+            careerIndex,
+            updateCareerItem,
+            updateCareerItemMultiple,
+          ) => {
+            const handleJoinedAtChange = (value: string) => {
+              updateCareerItemMultiple(careerIndex, {
+                career: {
+                  ...careerItem.career,
+                  joined_at: value,
+                },
 
-              {/* Joined Date */}
-              <DateField
-                label={tLabels("career.joinedAt")}
-                name={`joined-at-${careerIndex}`}
-                placeholder={tPlaceholders("career.joinedAt") || ""}
-                value={careerItem.career.joined_at}
-                onChange={(v) =>
-                  updateCareerItem(careerIndex, "career", {
-                    ...careerItem.career,
-                    joined_at: v,
-                  })
-                }
-                required
-              />
+                shirt_numbers: careerItem.shirt_numbers.map(
+                  (shirtNumber, index) =>
+                    index === 0
+                      ? {
+                          ...shirtNumber,
+                          start_date: value,
+                        }
+                      : shirtNumber,
+                ),
+              });
+            };
 
-              {/* Left Date */}
-              <DateField
-                label={tLabels("career.leftAt")}
-                name={`left-at-${careerIndex}`}
-                placeholder={tPlaceholders("career.leftAt") || ""}
-                value={careerItem.career.left_at ?? ""}
-                onChange={(v) =>
-                  updateCareerItem(careerIndex, "career", {
-                    ...careerItem.career,
-                    left_at: v,
-                  })
-                }
-              />
-
-              {/* Shirt Number Section */}
-              <div className="mt-6 border-t pt-6">
-                <DynamicFormSection<ShirtNumber>
-                  title={tForm("shirtNumbers.title")}
-                  noData={tForm("shirtNumbers.noData")}
-                  items={careerItem.shirt_numbers ?? []}
-                  minItems={1}
-                  createItem={() => ({
-                    shirt_number: 1,
-                    start_date: "",
-                    end_date: "",
+            return (
+              <>
+                {/* National Team */}
+                <ComboboxField
+                  label={tLabels("career.nation")}
+                  name={`nationality-${careerIndex}`}
+                  options={nationalTeamOptions}
+                  placeholder={tPlaceholders("career.nation") || ""}
+                  searchPlaceholder={tCommon("combobox.searchEntity", {
+                    entity: tEntities("nationality").toLowerCase(),
                   })}
-                  onChange={(newShirtNumbers) =>
+                  emptyMessage={tCommon("combobox.noEntityFound", {
+                    entity: tEntities("nationality").toLowerCase(),
+                  })}
+                  value={careerItem.national_team_id}
+                  onChange={(v) =>
                     updateCareerItem(
                       careerIndex,
-                      "shirt_numbers",
-                      newShirtNumbers,
+                      "national_team_id",
+                      v as string,
                     )
                   }
-                  renderItem={(shirtItem, shirtIndex, updateShirtItem) => (
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                      {/* Shirt Number */}
-                      <NumberField
-                        label={tLabels("shirtNumbers.shirtNumber")}
-                        name={`shirt-number-${careerIndex}-${shirtIndex}`}
-                        placeholder={
-                          tPlaceholders("shirtNumbers.shirtNumber") || ""
-                        }
-                        value={shirtItem.shirt_number}
-                        onChange={(v) =>
-                          updateShirtItem(shirtIndex, "shirt_number", v ?? 1)
-                        }
-                        required
-                      />
-
-                      {/* Start Date */}
-                      <DateField
-                        label={tLabels("shirtNumbers.startDate")}
-                        name={`start-date-${careerIndex}-${shirtIndex}`}
-                        placeholder={
-                          tPlaceholders("shirtNumbers.startDate") || ""
-                        }
-                        value={shirtItem.start_date}
-                        onChange={(v) =>
-                          updateShirtItem(shirtIndex, "start_date", v)
-                        }
-                        required
-                      />
-
-                      {/* End Date */}
-                      <DateField
-                        label={tLabels("shirtNumbers.endDate")}
-                        name={`end-date-${careerIndex}-${shirtIndex}`}
-                        placeholder={
-                          tPlaceholders("shirtNumbers.endDate") || ""
-                        }
-                        value={shirtItem.end_date ?? ""}
-                        onChange={(v) =>
-                          updateShirtItem(shirtIndex, "end_date", v)
-                        }
-                      />
-                    </div>
-                  )}
+                  required
                 />
-              </div>
-            </>
-          )}
+
+                {/* Joined Date */}
+                <DateField
+                  label={tLabels("career.joinedAt")}
+                  name={`joined-at-${careerIndex}`}
+                  placeholder={tPlaceholders("career.joinedAt") || ""}
+                  value={careerItem.career.joined_at}
+                  onChange={handleJoinedAtChange}
+                  required
+                />
+
+                {/* Left Date */}
+                <DateField
+                  label={tLabels("career.leftAt")}
+                  name={`left-at-${careerIndex}`}
+                  placeholder={tPlaceholders("career.leftAt") || ""}
+                  value={careerItem.career.left_at ?? ""}
+                  onChange={(v) =>
+                    updateCareerItem(careerIndex, "career", {
+                      ...careerItem.career,
+                      left_at: v,
+                    })
+                  }
+                />
+
+                {/* Shirt Number Section */}
+                <div className="mt-6 border-t pt-6">
+                  <DynamicFormSection<ShirtNumber>
+                    title={tForm("shirtNumbers.title")}
+                    noData={tForm("shirtNumbers.noData")}
+                    items={careerItem.shirt_numbers ?? []}
+                    minItems={1}
+                    createItem={() => ({
+                      shirt_number: 1,
+                      start_date: "",
+                      end_date: "",
+                    })}
+                    onChange={(newShirtNumbers) =>
+                      updateCareerItem(
+                        careerIndex,
+                        "shirt_numbers",
+                        newShirtNumbers,
+                      )
+                    }
+                    renderItem={(shirtItem, shirtIndex, updateShirtItem) => (
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        {/* Shirt Number */}
+                        <NumberField
+                          label={tLabels("shirtNumbers.shirtNumber")}
+                          name={`shirt-number-${careerIndex}-${shirtIndex}`}
+                          placeholder={
+                            tPlaceholders("shirtNumbers.shirtNumber") || ""
+                          }
+                          value={shirtItem.shirt_number}
+                          onChange={(v) =>
+                            updateShirtItem(shirtIndex, "shirt_number", v ?? 1)
+                          }
+                          required
+                        />
+
+                        {/* Start Date */}
+                        <DateField
+                          label={tLabels("shirtNumbers.startDate")}
+                          name={`start-date-${careerIndex}-${shirtIndex}`}
+                          placeholder={
+                            tPlaceholders("shirtNumbers.startDate") || ""
+                          }
+                          value={shirtItem.start_date}
+                          onChange={(v) =>
+                            updateShirtItem(shirtIndex, "start_date", v)
+                          }
+                          required
+                        />
+
+                        {/* End Date */}
+                        <DateField
+                          label={tLabels("shirtNumbers.endDate")}
+                          name={`end-date-${careerIndex}-${shirtIndex}`}
+                          placeholder={
+                            tPlaceholders("shirtNumbers.endDate") || ""
+                          }
+                          value={shirtItem.end_date ?? ""}
+                          onChange={(v) =>
+                            updateShirtItem(shirtIndex, "end_date", v)
+                          }
+                        />
+                      </div>
+                    )}
+                  />
+                </div>
+              </>
+            );
+          }}
         />
       </FormContentWrapper>
     </FormWrapper>

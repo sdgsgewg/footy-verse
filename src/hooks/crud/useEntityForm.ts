@@ -7,33 +7,33 @@ import { getZodFormErrors } from "@/lib/forms/errors";
 
 type FormField<TForm> = keyof TForm & string;
 
-interface UseEntityFormOptions<
-  TForm extends Record<string, unknown>,
-  TErrorField extends string = string,
-> {
+interface UseEntityFormOptions<TForm, TErrorField extends string = string> {
   initialValue: TForm;
 
   schema: z.ZodTypeAny;
 
-  dirtyFields: readonly FormField<TForm>[];
+  checkDirty?: boolean;
+
+  dirtyFields?: readonly FormField<TForm>[];
 
   requiredFields?: readonly FormField<TForm>[];
 
   additionalDirty?: boolean; // support additional field check (ex: imageFile) that is not included in the main fields
 
+  isDirty?: (form: TForm, initialForm: TForm) => boolean;
+
   isFilled?: (form: TForm) => boolean; // to support nested form check for 'canSubmit' function
 }
 
-export function useEntityForm<
-  TForm extends Record<string, unknown>,
-  TErrorField extends string = string,
->({
+export function useEntityForm<TForm, TErrorField extends string = string>({
   initialValue,
   schema,
+  checkDirty = true,
   dirtyFields,
   requiredFields = [],
   additionalDirty = false,
   isFilled: customIsFilled,
+  isDirty: customIsDirty,
 }: UseEntityFormOptions<TForm, TErrorField>) {
   const [form, setForm] = useState<TForm>(initialValue);
 
@@ -71,12 +71,21 @@ export function useEntityForm<
   };
 
   const isDirty = useMemo(() => {
+    if (customIsDirty) {
+      return customIsDirty(form, initialForm);
+    }
+
+    if (!dirtyFields) {
+      return false;
+    }
+
     const fieldsChanged = dirtyFields.some(
-      (field) => form[field] !== initialForm[field],
+      (field) =>
+        JSON.stringify(form[field]) !== JSON.stringify(initialForm[field]),
     );
 
     return fieldsChanged || additionalDirty;
-  }, [form, initialForm, dirtyFields, additionalDirty]);
+  }, [form, initialForm, dirtyFields, additionalDirty, customIsDirty]);
 
   const isFilled = useMemo(() => {
     if (customIsFilled) {
@@ -94,7 +103,7 @@ export function useEntityForm<
     });
   }, [form, requiredFields, customIsFilled]);
 
-  const canSubmit = isFilled && isDirty;
+  const canSubmit = isFilled && (!checkDirty || isDirty);
 
   const validate = () => {
     const result = schema.safeParse(form);

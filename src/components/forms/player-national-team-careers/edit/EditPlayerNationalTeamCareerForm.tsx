@@ -22,7 +22,7 @@ const EditPlayerNationalTeamCareerForm = ({
   loading = false,
   onSubmit,
 }: Props) => {
-  const { form, setForm, canSubmit, buildPayload } =
+  const { form, setForm, isDirty, canSubmit, buildPayload } =
     useEditPlayerNationalTeamCareerForm(playerNationalTeamCareer);
 
   const handleSubmit = () => {
@@ -30,7 +30,7 @@ const EditPlayerNationalTeamCareerForm = ({
   };
 
   return (
-    <FormWrapper>
+    <FormWrapper isDirty={isDirty}>
       <FormHeader
         loading={loading}
         isCreate={false}

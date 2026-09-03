@@ -1,13 +1,15 @@
 "use client";
 
+import { useMemo } from "react";
 import {
   PlayerNationalTeamCareerEditResponse,
   PlayerNationalTeamCareerUpdateInput,
 } from "@/types/player-national-team-career";
-import { useMemo, useState } from "react";
+import { useEntityForm } from "@/hooks/crud";
+import { playerNationalTeamCareerMutationSchema } from "@/lib/validations/player-national-team-careers.schema";
 
-const emptyUpdatePlayerNationalTeamCareerForm: PlayerNationalTeamCareerUpdateInput =
-  {
+const createEmptyUpdatePlayerNationalTeamCareerForm =
+  (): PlayerNationalTeamCareerUpdateInput => ({
     national_team_id: "",
 
     career: {
@@ -16,7 +18,7 @@ const emptyUpdatePlayerNationalTeamCareerForm: PlayerNationalTeamCareerUpdateInp
     },
 
     shirt_numbers: [],
-  };
+  });
 
 function mapPlayerNationalTeamCareer(
   playerNationalTeamCareer: PlayerNationalTeamCareerEditResponse,
@@ -48,48 +50,46 @@ export function useEditPlayerNationalTeamCareerForm(
     () =>
       playerNationalTeamCareer
         ? mapPlayerNationalTeamCareer(playerNationalTeamCareer)
-        : emptyUpdatePlayerNationalTeamCareerForm,
+        : createEmptyUpdatePlayerNationalTeamCareerForm(),
     [playerNationalTeamCareer],
   );
 
-  const [form, setForm] = useState(initialValue);
+  const { form, setForm, initialForm, isDirty, canSubmit, resetForm } =
+    useEntityForm<PlayerNationalTeamCareerUpdateInput>({
+      initialValue,
 
-  const initialForm = initialValue;
+      // Sesuaikan dengan schema update kamu
+      schema: playerNationalTeamCareerMutationSchema,
+
+      dirtyFields: ["national_team_id", "career", "shirt_numbers"],
+
+      isFilled: (form) => {
+        const isCareerValid = form.career.joined_at.trim().length > 0;
+
+        const areShirtNumbersValid =
+          form.shirt_numbers.length > 0 &&
+          form.shirt_numbers.every((item) => {
+            return (
+              item.shirt_number !== null &&
+              item.shirt_number > 0 &&
+              item.start_date.trim().length > 0
+            );
+          });
+
+        return (
+          form.national_team_id.trim().length > 0 &&
+          isCareerValid &&
+          areShirtNumbersValid
+        );
+      },
+    });
 
   const isEditing = playerNationalTeamCareer != null;
 
-  const isCareerValid = form.career.joined_at.trim().length > 0;
-
-  const areShirtNumbersValid = form.shirt_numbers.every((item) => {
-    return (
-      item.shirt_number !== null &&
-      item.shirt_number > 0 &&
-      item.start_date.trim().length > 0
-    );
-  });
-
-  const canSubmit = useMemo(() => {
-    const isFilled =
-      form.national_team_id.trim().length > 0 &&
-      isCareerValid &&
-      areShirtNumbersValid;
-
-    if (!isFilled) {
-      return false;
-    }
-
-    return (
-      form.national_team_id !== initialForm.national_team_id ||
-      JSON.stringify(form.career) !== JSON.stringify(initialForm.career) ||
-      JSON.stringify(form.shirt_numbers) !==
-        JSON.stringify(initialForm.shirt_numbers)
-    );
-  }, [form, isCareerValid, areShirtNumbersValid, initialForm]);
-
-  const buildPayload = () => {
+  const buildPayload = (): PlayerNationalTeamCareerUpdateInput => {
     const { national_team_id, player_career_id, career, shirt_numbers } = form;
 
-    const payload: PlayerNationalTeamCareerUpdateInput = {
+    return {
       national_team_id,
       player_career_id,
 
@@ -103,20 +103,18 @@ export function useEditPlayerNationalTeamCareerForm(
         end_date: item.end_date || null,
       })),
     };
-
-    return payload;
-  };
-
-  const resetForm = () => {
-    setForm(initialValue);
   };
 
   return {
     form,
     setForm,
+
     initialForm,
+
     isEditing,
+    isDirty,
     canSubmit,
+
     buildPayload,
     resetForm,
   };

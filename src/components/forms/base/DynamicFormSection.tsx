@@ -21,6 +21,7 @@ interface DynamicFormSectionProps<T> {
     item: T,
     index: number,
     updateItem: <K extends keyof T>(index: number, key: K, value: T[K]) => void,
+    updateItemMultiple: (index: number, updates: Partial<T>) => void,
   ) => React.ReactNode;
 }
 
@@ -63,6 +64,17 @@ export default function DynamicFormSection<T>({
     onChange(newItems);
   };
 
+  const updateItemMultiple = (index: number, updates: Partial<T>) => {
+    const newItems = [...items];
+
+    newItems[index] = {
+      ...newItems[index],
+      ...updates,
+    };
+
+    onChange(newItems);
+  };
+
   useEffect(() => {
     if (items.length < minItems) {
       onChange(
@@ -92,7 +104,7 @@ export default function DynamicFormSection<T>({
 
       {items.map((item, index) => (
         <div key={index} className="rounded-xl border p-4 space-y-4">
-          {renderItem(item, index, updateItem)}
+          {renderItem(item, index, updateItem, updateItemMultiple)}
 
           {items.length > minItems && (
             <div className="flex justify-end">

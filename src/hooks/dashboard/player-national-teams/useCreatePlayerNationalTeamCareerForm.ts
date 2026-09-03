@@ -1,83 +1,89 @@
 "use client";
 
+import { useEntityForm } from "@/hooks/crud";
+import { playerNationalTeamCareerMutationSchema } from "@/lib/validations/player-national-team-careers.schema";
 import { PlayerNationalTeamCareerCreateInput } from "@/types/player-national-team-career";
-import { useMemo, useState } from "react";
 
-const emptyPlayerNationalTeamCareerForm: PlayerNationalTeamCareerCreateInput = [
-  {
-    national_team_id: "",
+const createEmptyPlayerNationalTeamCareerForm =
+  (): PlayerNationalTeamCareerCreateInput => [
+    {
+      national_team_id: "",
 
-    career: {
-      joined_at: "",
-      left_at: "",
+      career: {
+        joined_at: "",
+        left_at: "",
+      },
+
+      shirt_numbers: [],
     },
-
-    shirt_numbers: [],
-  },
-];
+  ];
 
 export function useCreatePlayerNationalTeamCareerForm() {
-  const [form, setForm] = useState<PlayerNationalTeamCareerCreateInput>(
-    emptyPlayerNationalTeamCareerForm,
-  );
+  const { form, setForm, isDirty, canSubmit, resetForm } =
+    useEntityForm<PlayerNationalTeamCareerCreateInput>({
+      initialValue: createEmptyPlayerNationalTeamCareerForm(),
 
-  const canSubmit = useMemo(() => {
-    const isFilled =
-      form &&
-      form.every((item) => {
-        const isCareerValid = item.career.joined_at.trim().length > 0;
+      schema: playerNationalTeamCareerMutationSchema,
 
-        const areShirtNumbersValid = item.shirt_numbers.every((item) => {
+      checkDirty: false,
+
+      isDirty: (form) =>
+        form.some(
+          (item) =>
+            item.national_team_id.trim() !== "" ||
+            item.career.joined_at.trim() !== "" ||
+            item.career.left_at?.trim() !== "" ||
+            item.shirt_numbers.some(
+              (shirt) =>
+                shirt.shirt_number !== null ||
+                shirt.start_date.trim() !== "" ||
+                shirt.end_date?.trim() !== "",
+            ),
+        ),
+
+      isFilled: (form) => {
+        return form.every((item) => {
+          const isCareerValid = item.career.joined_at.trim().length > 0;
+
+          const areShirtNumbersValid = item.shirt_numbers.every(
+            (shirtNumber) => {
+              return (
+                shirtNumber.shirt_number !== null &&
+                shirtNumber.shirt_number > 0 &&
+                shirtNumber.start_date.trim().length > 0
+              );
+            },
+          );
+
           return (
-            item.shirt_number !== null &&
-            item.shirt_number > 0 &&
-            item.start_date.trim().length > 0
+            item.national_team_id.trim().length > 0 &&
+            isCareerValid &&
+            areShirtNumbersValid
           );
         });
-
-        return (
-          item.national_team_id.trim().length > 0 &&
-          isCareerValid &&
-          areShirtNumbersValid
-        );
-      });
-
-    if (!isFilled) {
-      return false;
-    }
-
-    return true;
-  }, [form]);
-
-  const buildPayload = () => {
-    const payload: PlayerNationalTeamCareerCreateInput = form.map((form) => {
-      const { national_team_id, career, shirt_numbers } = form;
-
-      return {
-        national_team_id: national_team_id,
-
-        career: {
-          joined_at: career.joined_at,
-          left_at: career.left_at ?? null,
-        },
-
-        shirt_numbers: shirt_numbers.map((item) => ({
-          ...item,
-          end_date: item.end_date || null,
-        })),
-      };
+      },
     });
 
-    return payload;
-  };
+  const buildPayload = (): PlayerNationalTeamCareerCreateInput => {
+    return form.map((item) => ({
+      national_team_id: item.national_team_id,
 
-  const resetForm = () => {
-    setForm(emptyPlayerNationalTeamCareerForm);
+      career: {
+        joined_at: item.career.joined_at,
+        left_at: item.career.left_at || null,
+      },
+
+      shirt_numbers: item.shirt_numbers.map((shirtNumber) => ({
+        ...shirtNumber,
+        end_date: shirtNumber.end_date || null,
+      })),
+    }));
   };
 
   return {
     form,
     setForm,
+    isDirty,
     canSubmit,
     buildPayload,
     resetForm,
