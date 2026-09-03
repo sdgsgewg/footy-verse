@@ -4,11 +4,8 @@ import ConnectionErrorAlert from "@/components/feedback/ConnectionErrorAlert";
 import { CrudListPage } from "@/components/templates/crud";
 import { useCrudPageTitle } from "@/hooks/crud/useCrudPageTitle";
 import { useFilterSync } from "@/hooks/filter";
-import {
-  useCompetitionActions,
-  useCompetitions,
-} from "@/hooks/dashboard/competitions";
-import useCompetitionFilter from "@/hooks/dashboard/competitions/useCompetitionFilter";
+import { useCompetitionActions } from "@/hooks/dashboard/competitions";
+import { useCompetitionFilter, useCompetitions } from "@/hooks/competitions";
 import { isLikelyConnectionError } from "@/lib/utils/connection-error";
 import { createSortHandler } from "@/lib/utils/crud";
 import { CompetitionFilter } from "@/types/competition";

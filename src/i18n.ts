@@ -20,6 +20,9 @@ async function getMessages(locale: string) {
     nationalities: (
       await import(`./messages/${locale}/public/nationalities.json`)
     ).default,
+    competitions: (
+      await import(`./messages/${locale}/public/competitions.json`)
+    ).default,
   };
 
   const dashboardMessages = {

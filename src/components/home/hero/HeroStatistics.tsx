@@ -3,7 +3,7 @@ import Statistic from "./Statistic";
 import { usePlayers } from "@/hooks/dashboard/players";
 import { useClubs } from "@/hooks/clubs";
 import { useNationalities } from "@/hooks/nationalities";
-import { useCompetitions } from "@/hooks/dashboard/competitions";
+import { useCompetitions } from "@/hooks/competitions";
 import { useTranslations } from "next-intl";
 
 const HeroStatistics = () => {

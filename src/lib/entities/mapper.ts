@@ -9,6 +9,7 @@ import { ClubListItem } from "@/types/club";
 import { ROUTES } from "@/constants/routes";
 import { NationalityListItem } from "@/types/nationality";
 import { PlayerListItem } from "@/types/player";
+import { CompetitionListItem } from "@/types/competition";
 
 export function mapEntityOption(
   data: DbOptionListRow,
@@ -44,12 +45,14 @@ export function mapEntitySearchResult(
 }
 
 export function mapClubToEntityItem(club: ClubListItem): EntityItem {
+  const { id, name, slug, imageUrl } = club;
+
   return {
-    id: club.id,
-    name: club.name,
+    id,
+    name,
     type: "club",
-    imageUrl: club.imageUrl,
-    href: `${ROUTES.CLUBS}/${club.slug}`,
+    imageUrl,
+    href: `${ROUTES.CLUBS}/${slug}`,
     subtitle: "",
   };
 }
@@ -57,23 +60,42 @@ export function mapClubToEntityItem(club: ClubListItem): EntityItem {
 export function mapNationalityToEntityItem(
   nationality: NationalityListItem,
 ): EntityItem {
+  const { id, name, slug, imageUrl } = nationality;
+
   return {
-    id: nationality.id,
-    name: nationality.name,
+    id,
+    name,
     type: "nationality",
-    imageUrl: nationality.imageUrl,
-    href: `${ROUTES.NATIONALITIES}/${nationality.slug}`,
+    imageUrl,
+    href: `${ROUTES.NATIONALITIES}/${slug}`,
     subtitle: "",
   };
 }
 
 export function mapPlayerToEntityItem(player: PlayerListItem): EntityItem {
+  const { id, shortName, slug, imageUrl } = player;
+
   return {
-    id: player.id,
-    name: player.shortName,
+    id,
+    name: shortName,
     type: "player",
-    imageUrl: player.imageUrl,
-    href: `${ROUTES.PLAYERS}/${player.slug}`,
+    imageUrl,
+    href: `${ROUTES.PLAYERS}/${slug}`,
+    subtitle: "",
+  };
+}
+
+export function mapCompetitionToEntityItem(
+  competition: CompetitionListItem,
+): EntityItem {
+  const { id, name, slug, imageUrl } = competition;
+
+  return {
+    id,
+    name,
+    type: "competition",
+    imageUrl,
+    href: `${ROUTES.COMPETITIONS}/${slug}`,
     subtitle: "",
   };
 }

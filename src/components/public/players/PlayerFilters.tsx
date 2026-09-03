@@ -1,8 +1,8 @@
 import { useTranslations } from "next-intl";
-import ComboboxField from "@/components/forms/fields/ComboboxField";
 import { SearchFilter } from "@/components/shared/filter";
 import { PlayerFilter } from "@/types/player";
 import { usePlayerFilterOptions } from "@/hooks/players";
+import { ComboboxField } from "@/components/forms/fields";
 
 interface PlayerFiltersProps {
   filters: PlayerFilter;

@@ -22,6 +22,23 @@ export default function EntityCard({ entity }: Props) {
 
   const isNationality = type === "nationality";
 
+  const getImageClassName = () => {
+    switch (type) {
+      case "player":
+        return "object-cover rounded-full";
+        break;
+      case "nationality":
+        return "object-cover rounded-sm";
+        break;
+      case "competition":
+        return "object-contain rounded-full";
+        break;
+      default:
+        return "object-contain";
+        break;
+    }
+  };
+
   return (
     <Card
       onClick={navigateToEntityDetailPage}
@@ -41,11 +58,7 @@ export default function EntityCard({ entity }: Props) {
               className={{
                 container: "h-full w-full",
                 image: cn(
-                  isPlayer
-                    ? "object-cover rounded-full"
-                    : isNationality
-                      ? "object-cover rounded-sm"
-                      : "object-contain",
+                  getImageClassName(),
                   "transition-transform duration-500 group-hover:scale-105",
                 ),
               }}

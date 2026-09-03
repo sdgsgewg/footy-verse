@@ -3,10 +3,8 @@
 import { SelectField } from "@/components/forms/fields";
 import { Gender } from "@/enums/Gender";
 import { ParticipantType } from "@/enums/ParticipantType";
-import { useCompetitionCategoryOptions } from "@/hooks/dashboard/competition-categories";
-import { useCompetitionScopeOptions } from "@/hooks/dashboard/competition-scopes/useCompetitionScopeOptions";
-import { getParticipantTypeOptions } from "@/lib/competitions/options";
-import { getGenderOptions } from "@/lib/constants/options";
+import { useCompetitionFilterOptions } from "@/hooks/competitions";
+
 import { CompetitionFilter } from "@/types/competition";
 import { useTranslations } from "next-intl";
 
@@ -22,20 +20,18 @@ export default function CompetitionFilterContent({
   filters,
   updateFilter,
 }: CompetitionFilterContentProps) {
-  const t = useTranslations();
-
   const tLabels = useTranslations("dashboard.competitions.form.labels");
   const tPlaceholders = useTranslations(
     "dashboard.competitions.form.placeholders",
   );
 
-  const { competitionCategoryOptions } = useCompetitionCategoryOptions();
-
-  const { competitionScopeOptions } = useCompetitionScopeOptions();
-
-  const genderOptions = getGenderOptions(t);
-
-  const participantTypeOptions = getParticipantTypeOptions(t);
+  const {
+    competitionCategoryOptions,
+    competitionScopeOptions,
+    participantTypeOptions,
+    genderOptions,
+    loading,
+  } = useCompetitionFilterOptions();
 
   return (
     <>
@@ -44,6 +40,7 @@ export default function CompetitionFilterContent({
         label={tLabels("classification.category")}
         name={`competition_category`}
         placeholder={tPlaceholders("classification.category")}
+        loading={loading.competitionCategory}
         options={competitionCategoryOptions}
         value={filters.categoryId || ""}
         onChange={(value) => updateFilter("categoryId", value)}
@@ -54,6 +51,7 @@ export default function CompetitionFilterContent({
         label={tLabels("scopeAndLocation.scope")}
         name={`competition_scope`}
         placeholder={tPlaceholders("scopeAndLocation.scope")}
+        loading={loading.competitionScope}
         options={competitionScopeOptions}
         value={filters.scopeId || ""}
         onChange={(value) => updateFilter("scopeId", value)}

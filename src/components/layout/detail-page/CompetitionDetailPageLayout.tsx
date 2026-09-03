@@ -15,7 +15,7 @@ const CompetitionDetailPageLayout = ({
 }: Props) => {
   const summary = <CompetitionSummary competition={competition} />;
 
-  const content = <>Content</>;
+  const content = <></>;
 
   return (
     <DetailPageLayout

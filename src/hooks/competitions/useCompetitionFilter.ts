@@ -22,7 +22,7 @@ const DEFAULT_FILTER: CompetitionFilter = {
   sortOrder: "asc",
 };
 
-export default function useCompetitionFilter() {
+export function useCompetitionFilter() {
   const searchParams = useSearchParams();
 
   const initialFilter = useMemo(
