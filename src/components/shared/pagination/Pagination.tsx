@@ -41,7 +41,7 @@ export default function Pagination({
         {items.map((item, index) => (
           <PaginationItem key={`${item}-${index}`}>
             {item === "..." ? (
-              <PaginationEllipsis />
+              <PaginationEllipsis className="text-muted-foreground" />
             ) : (
               <PaginationLink
                 href="#"
