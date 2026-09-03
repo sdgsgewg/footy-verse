@@ -35,8 +35,8 @@ export function getCurrentClubTeamRecentPlayerCareer(
     .filter((career) => career.player_club_team_career !== null)
     .toSorted(
       (a, b) =>
-        new Date(b.left_at ?? b.joined_at).getDate() -
-        new Date(a.left_at ?? a.joined_at).getDate(),
+        new Date(b.left_at ?? b.joined_at).getTime() -
+        new Date(a.left_at ?? a.joined_at).getTime(),
     );
 
   if (clubCareers.length === 0) {
@@ -130,6 +130,28 @@ export function getCurrentClubTeamCareer(
   return recentPlayerCareer.player_club_team_career;
 }
 
+function getCurrentShirtNumberFromCareer(
+  shirtNumbers: DbPlayerCareerRow["player_shirt_numbers"],
+): number | undefined {
+  if (shirtNumbers.length === 0) {
+    return undefined;
+  }
+
+  const current = shirtNumbers.find((psn) => psn.end_date === null);
+
+  if (current) {
+    return current.shirt_number;
+  }
+
+  const latest = [...shirtNumbers].sort(
+    (a, b) =>
+      new Date(b.end_date ?? b.start_date).getTime() -
+      new Date(a.end_date ?? a.start_date).getTime(),
+  )[0];
+
+  return latest?.shirt_number;
+}
+
 /**
  *
  * @param careers
@@ -146,19 +168,7 @@ export function getCurrentClubTeamShirtNumber(
 
   if (!currentCareer) return undefined;
 
-  const current = currentCareer.player_shirt_numbers.find(
-    (psn) => psn.end_date === null,
-  );
-
-  if (current) {
-    return current.shirt_number;
-  }
-
-  return [...currentCareer.player_shirt_numbers].sort(
-    (a, b) =>
-      new Date(b.end_date ?? b.start_date).getTime() -
-      new Date(a.end_date ?? a.start_date).getTime(),
-  )[0].shirt_number;
+  return getCurrentShirtNumberFromCareer(currentCareer.player_shirt_numbers);
 }
 
 /**
@@ -212,19 +222,7 @@ function getCurrentNationalTeamShirtNumber(
 
   if (!currentCareer) return undefined;
 
-  const current = currentCareer.player_shirt_numbers.find(
-    (psn) => psn.end_date === null,
-  );
-
-  if (current) {
-    return current.shirt_number;
-  }
-
-  return [...currentCareer.player_shirt_numbers].sort(
-    (a, b) =>
-      new Date(b.end_date ?? b.start_date).getTime() -
-      new Date(a.end_date ?? a.start_date).getTime(),
-  )[0].shirt_number;
+  return getCurrentShirtNumberFromCareer(currentCareer.player_shirt_numbers);
 }
 
 /**
