@@ -1,41 +1,39 @@
-import { Flag, Goal, Map, Network, Shield, Trophy, Users } from "lucide-react";
-
 import { ENTITY_CONFIG } from "@/config/entities";
 
 export const DASHBOARD_CONTENT_ITEMS = [
   {
-    key: "players",
+    key: ENTITY_CONFIG["player"]["table"],
     href: ENTITY_CONFIG["player"]["dashboardRoute"],
-    icon: Users,
+    icon: ENTITY_CONFIG["player"]["icon"],
   },
   {
-    key: "clubs",
+    key: ENTITY_CONFIG["club"]["table"],
     href: ENTITY_CONFIG["club"]["dashboardRoute"],
-    icon: Shield,
+    icon: ENTITY_CONFIG["club"]["icon"],
   },
   {
-    key: "nationalities",
+    key: ENTITY_CONFIG["nationality"]["table"],
     href: ENTITY_CONFIG["nationality"]["dashboardRoute"],
-    icon: Flag,
+    icon: ENTITY_CONFIG["nationality"]["icon"],
   },
   {
-    key: "positions",
+    key: ENTITY_CONFIG["position"]["table"],
     href: ENTITY_CONFIG["position"]["dashboardRoute"],
-    icon: Goal,
+    icon: ENTITY_CONFIG["position"]["icon"],
   },
   {
-    key: "regions",
+    key: ENTITY_CONFIG["region"]["table"],
     href: ENTITY_CONFIG["region"]["dashboardRoute"],
-    icon: Map,
+    icon: ENTITY_CONFIG["region"]["icon"],
   },
   {
-    key: "confederations",
+    key: ENTITY_CONFIG["confederation"]["table"],
     href: ENTITY_CONFIG["confederation"]["dashboardRoute"],
-    icon: Network,
+    icon: ENTITY_CONFIG["confederation"]["icon"],
   },
   {
-    key: "competitions",
+    key: ENTITY_CONFIG["competition"]["table"],
     href: ENTITY_CONFIG["competition"]["dashboardRoute"],
-    icon: Trophy,
+    icon: ENTITY_CONFIG["competition"]["icon"],
   },
 ] as const;
