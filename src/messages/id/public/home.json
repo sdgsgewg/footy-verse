@@ -25,5 +25,29 @@
         "label": "Kompetisi"
       }
     }
+  },
+
+  "quickNavigation": {
+    "title": "Jelajahi FootyVerse",
+    "subtitle": "Jelajahi data sepak bola berdasarkan pemain, klub, negara, dan kompetisi.",
+
+    "navigation": {
+      "players": {
+        "title": "Pemain",
+        "description": "Jelajahi pemain sepak bola dari seluruh dunia."
+      },
+      "clubs": {
+        "title": "Klub",
+        "description": "Jelajahi klub sepak bola dari seluruh dunia."
+      },
+      "nations": {
+        "title": "Negara",
+        "description": "Jelajahi tim nasional dan negara sepak bola."
+      },
+      "competitions": {
+        "title": "Kompetisi",
+        "description": "Temukan liga dan kompetisi sepak bola."
+      }
+    }
   }
 }

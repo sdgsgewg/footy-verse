@@ -15,6 +15,7 @@ import z from "zod";
 interface EntityConfig {
   table: string;
   label: string;
+  publicRoute?: string;
   dashboardRoute?: string;
   icon?: LucideIcon;
   storageBucket?: string;
@@ -25,6 +26,7 @@ export const ENTITY_CONFIG = {
   club: {
     table: "clubs",
     label: "Club",
+    publicRoute: ROUTES.CLUBS,
     dashboardRoute: ROUTES.DASHBOARD.CONTENT.CLUBS.BASE,
     icon: Shield,
     storageBucket: STORAGE_BUCKETS.CLUBS,
@@ -40,6 +42,7 @@ export const ENTITY_CONFIG = {
   nationality: {
     table: "nationalities",
     label: "Nationality",
+    publicRoute: ROUTES.NATIONALITIES,
     dashboardRoute: ROUTES.DASHBOARD.CONTENT.NATIONALITIES.BASE,
     icon: Flag,
     storageBucket: STORAGE_BUCKETS.NATIONALITIES,
@@ -70,6 +73,7 @@ export const ENTITY_CONFIG = {
   player: {
     table: "players",
     label: "Player",
+    publicRoute: ROUTES.PLAYERS,
     dashboardRoute: ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE,
     icon: Users,
     storageBucket: STORAGE_BUCKETS.PLAYERS,
@@ -157,6 +161,7 @@ export const ENTITY_CONFIG = {
   competition: {
     table: "competitions",
     label: "Competition",
+    publicRoute: ROUTES.COMPETITIONS,
     dashboardRoute: ROUTES.DASHBOARD.CONTENT.COMPETITIONS.BASE,
     icon: Trophy,
     storageBucket: STORAGE_BUCKETS.COMPETITIONS,

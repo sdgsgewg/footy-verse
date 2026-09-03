@@ -25,5 +25,29 @@
         "label": "Competitions"
       }
     }
+  },
+
+  "quickNavigation": {
+    "title": "Explore FootyVerse",
+    "subtitle": "Browse football data by players, clubs, nations, and, competitions.",
+
+    "navigation": {
+      "players": {
+        "title": "Players",
+        "description": "Explore football players from around the world."
+      },
+      "clubs": {
+        "title": "Clubs",
+        "description": "Browse football clubs from around the world."
+      },
+      "nations": {
+        "title": "Nations",
+        "description": "Explore national teams and football nations."
+      },
+      "competitions": {
+        "title": "Competitions",
+        "description": "Discover leagues and football competitions."
+      }
+    }
   }
 }

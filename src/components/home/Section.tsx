@@ -29,7 +29,7 @@ interface ISectionProps {
 export interface CenteredContentSectionProps extends ISectionProps {
   title: string;
   subtitle: string | React.ReactNode;
-  cta?: string;
+  ctaText?: string;
   onClickCTA?: () => void;
 }
 
@@ -46,7 +46,7 @@ interface SectionProps extends ISectionProps {
 export const CenteredContentSection: React.FC<CenteredContentSectionProps> = ({
   title,
   subtitle,
-  cta,
+  ctaText,
   onClickCTA,
   children,
 }) => {
@@ -59,13 +59,13 @@ export const CenteredContentSection: React.FC<CenteredContentSectionProps> = ({
 
       {children}
 
-      {cta && (
+      {ctaText && (
         <div
           className="flex flex-row gap-1 text-tx-primary-accent text-base font-semibold mt-8 sm:mt-16 cursor-pointer hover:underline"
           onClick={onClickCTA}
         >
           <Link />
-          <p>{cta}</p>
+          <p>{ctaText}</p>
         </div>
       )}
     </div>
