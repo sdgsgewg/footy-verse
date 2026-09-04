@@ -60,7 +60,7 @@ function getPlayerClubTeamCareersBaseQuery() {
 
       club: clubs (
         id,
-        name,
+        short_name,
         image
       )
     ),
@@ -116,7 +116,7 @@ function getPlayerClubTeamCareerDetailBaseQuery() {
 
       club: clubs (
         id,
-        name,
+        short_name,
         image
       )
     ),
@@ -153,7 +153,7 @@ function getPlayerClubTeamCareerDetailBaseQuery() {
 
           club:clubs!club_teams_club_id_fkey (
             id,
-            name,
+            short_name,
             image
           )
         ),
@@ -165,7 +165,7 @@ function getPlayerClubTeamCareerDetailBaseQuery() {
 
           club:clubs!club_teams_club_id_fkey (
             id,
-            name,
+            short_name,
             image
           )
         )

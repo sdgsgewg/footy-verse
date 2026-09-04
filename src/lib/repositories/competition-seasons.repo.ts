@@ -50,7 +50,7 @@ function getCompetitionSeasonsBaseQuery() {
 
       club: clubs (
         id,
-        name,
+        short_name,
         image
       )
     ),
@@ -122,7 +122,7 @@ function getCompetitionSeasonDetailBaseQuery() {
 
       club: clubs (
         id,
-        name,
+        short_name,
         image
       )
     ),

@@ -36,7 +36,7 @@ function getPlayerClubTeamShirtNumbersBaseQuery() {
 
           club:clubs!club_teams_club_id_fkey (
             id,
-            name,
+            short_name,
             image
           )
         )

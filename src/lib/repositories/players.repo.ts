@@ -198,59 +198,6 @@ function getPlayersBaseQuery({
   `;
 }
 
-async function getPlayerIdsByClubTeam(clubTeamId: string): Promise<string[]> {
-  const supabase = await getSupabase();
-
-  const { data, error } = await supabase
-    .from("player_club_team_careers")
-    .select(
-      `
-      player_career:player_careers!player_club_team_careers_player_career_id_fkey (
-        left_at,
-        player_id
-      )
-    `,
-    )
-    .eq("club_team_id", clubTeamId)
-    .is("player_career.left_at", null)
-    .overrideTypes<DbPlayerClubTeamCareerRow[]>();
-
-  if (error) {
-    throw error;
-  }
-
-  return (data ?? [])
-    .map((item) => item.player_career?.player_id)
-    .filter((playerId): playerId is string => Boolean(playerId));
-}
-
-async function getPlayerIdsByNationalTeam(
-  nationalTeamId: string,
-): Promise<string[]> {
-  const supabase = await getSupabase();
-
-  const { data, error } = await supabase
-    .from("player_national_team_careers")
-    .select(
-      `
-      player_career:player_careers!player_national_team_careers_player_career_id_fkey (
-        player_id
-      )
-    `,
-    )
-    .eq("national_team_id", nationalTeamId)
-    .is("player_career.left_at", null)
-    .overrideTypes<DbPlayerNationalTeamCareerRow[]>();
-
-  if (error) {
-    throw error;
-  }
-
-  return (data ?? [])
-    .map((item) => item.player_career?.player_id)
-    .filter((playerId): playerId is string => Boolean(playerId));
-}
-
 const sortColumnMap = {
   shortName: "short_name",
   dob: "dob",
@@ -331,6 +278,59 @@ export async function getPlayersRepo(
     page: params.page,
     limit: params.limit,
   });
+}
+
+async function getPlayerIdsByClubTeam(clubTeamId: string): Promise<string[]> {
+  const supabase = await getSupabase();
+
+  const { data, error } = await supabase
+    .from("player_club_team_careers")
+    .select(
+      `
+      player_career:player_careers!player_club_team_careers_player_career_id_fkey (
+        left_at,
+        player_id
+      )
+    `,
+    )
+    .eq("club_team_id", clubTeamId)
+    .is("player_career.left_at", null)
+    .overrideTypes<DbPlayerClubTeamCareerRow[]>();
+
+  if (error) {
+    throw error;
+  }
+
+  return (data ?? [])
+    .map((item) => item.player_career?.player_id)
+    .filter((playerId): playerId is string => Boolean(playerId));
+}
+
+async function getPlayerIdsByNationalTeam(
+  nationalTeamId: string,
+): Promise<string[]> {
+  const supabase = await getSupabase();
+
+  const { data, error } = await supabase
+    .from("player_national_team_careers")
+    .select(
+      `
+      player_career:player_careers!player_national_team_careers_player_career_id_fkey (
+        player_id
+      )
+    `,
+    )
+    .eq("national_team_id", nationalTeamId)
+    .is("player_career.left_at", null)
+    .overrideTypes<DbPlayerNationalTeamCareerRow[]>();
+
+  if (error) {
+    throw error;
+  }
+
+  return (data ?? [])
+    .map((item) => item.player_career?.player_id)
+    .filter((playerId): playerId is string => Boolean(playerId));
 }
 
 /**
