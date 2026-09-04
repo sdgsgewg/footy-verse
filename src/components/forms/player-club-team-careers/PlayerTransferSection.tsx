@@ -24,6 +24,7 @@ interface Props {
 }
 
 const PlayerTransferSection = ({ form, setForm, errors }: Props) => {
+  const t = useTranslations();
   const tForm = useTranslations(
     "dashboard.playerClubTeamCareers.form.transfer",
   );
@@ -32,9 +33,6 @@ const PlayerTransferSection = ({ form, setForm, errors }: Props) => {
   );
   const tPlaceholders = useTranslations(
     "dashboard.playerClubTeamCareers.form.placeholders.transfer",
-  );
-  const tTransferType = useTranslations(
-    "dashboard.playerClubTeamCareers.form.options.transferType",
   );
 
   const tEntities = useTranslations("entities");
@@ -49,7 +47,7 @@ const PlayerTransferSection = ({ form, setForm, errors }: Props) => {
     transfer_date,
   } = transfer;
 
-  const transferTypeOptions: Option[] = getTransferTypeOptions(tTransferType);
+  const transferTypeOptions: Option[] = getTransferTypeOptions(t);
 
   const { clubTeams, loading: clubTeamLoading } = useClubTeams();
   const clubTeamOptions = getClubTeamOptions(clubTeams);
