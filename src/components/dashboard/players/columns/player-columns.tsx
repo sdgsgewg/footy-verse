@@ -3,6 +3,7 @@ import {
   NationalityImageLabel,
   PlayerImageLabel,
 } from "@/components/shared/tables/cells";
+import { formatEuroValue } from "@/lib/formatters/currency";
 import { PlayerListItem } from "@/types/player";
 import { DataColumn } from "@/types/table";
 
@@ -99,7 +100,7 @@ export function createPlayerColumns(
       label: labels.marketValue,
       sortable: true,
 
-      render: (player) => player.marketValue,
+      render: (player) => formatEuroValue(player.marketValue),
     },
   };
 

@@ -1,6 +1,6 @@
 import PlayerProfile from "./profile/PlayerProfile";
 import { PlayerDetailResponse } from "@/types/player";
-import { PlayerPositionPitch } from "./position";
+import { PlayerPosition } from "./position";
 import SectionHeader from "./SectionHeader";
 
 interface Props {
@@ -12,10 +12,10 @@ const PlayerData = ({ player }: Props) => {
     <section className="overflow-hidden border border-accent">
       <SectionHeader title="Player Data" />
 
-      <div className="grid grid-cols-1 items-stretch xl:grid-cols-2">
+      <div className="grid grid-cols-1 xl:grid-cols-2">
         <PlayerProfile player={player} />
 
-        <PlayerPositionPitch
+        <PlayerPosition
           mainPosition={player.profile.mainPosition}
           otherPositions={player.profile.otherPositions}
         />

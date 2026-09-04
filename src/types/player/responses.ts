@@ -32,7 +32,7 @@ export interface PlayerListItem {
 
   currentNationality: NationalityResponse;
 
-  marketValue: string;
+  marketValue: number;
 }
 
 export type PlayerListResponse = PaginatedResponse<PlayerListItem>;

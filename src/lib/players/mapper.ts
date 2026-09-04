@@ -46,8 +46,6 @@ export function mapPlayerListItem(player: DbPlayerListRow): PlayerListItem {
 
   const currentClubTeam = getCurrentClubTeam(player);
 
-  const marketValue = formatEuroValue(market_value);
-
   return {
     ...player,
     imageUrl: getImageUrl("player", STORAGE_BUCKETS.PLAYERS, player.image),
@@ -57,7 +55,7 @@ export function mapPlayerListItem(player: DbPlayerListRow): PlayerListItem {
     mainPosition,
     currentNationality,
     currentClubTeam: currentClubTeam ?? null,
-    marketValue,
+    marketValue: market_value,
   };
 }
 

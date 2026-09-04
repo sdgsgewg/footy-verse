@@ -1,6 +1,10 @@
 import { PositionResponse } from "@/types/position";
-import FootballPitch from "./FootballPitch";
-import SubsectionHeader from "../SubsectionHeader";
+import PositionMarker from "./PositionMarker";
+import FootballPitchBase from "@/components/shared/FootballPitchBase";
+import {
+  getPositionCoordinate,
+  getPositionLabel,
+} from "@/lib/positions/positionMetadata";
 
 interface Props {
   mainPosition: PositionResponse;
@@ -8,35 +12,76 @@ interface Props {
 }
 
 const PlayerPositionPitch = ({ mainPosition, otherPositions }: Props) => {
+  const mainCoordinate = getPositionCoordinate(mainPosition.name);
+
+  const otherPositionMarkers = otherPositions
+    .map((position) => {
+      const coordinate = getPositionCoordinate(position.name);
+
+      if (!coordinate) {
+        return null;
+      }
+
+      return {
+        id: position.id,
+        name: position.name,
+        ...coordinate,
+      };
+    })
+    .filter(
+      (
+        position,
+      ): position is {
+        id: string;
+        name: string;
+        x: number;
+        y: number;
+      } => position !== null,
+    );
+
   return (
-    <section className="flex flex-col border-l">
-      <SubsectionHeader title="Positions" />
+    <div className="w-full flex flex-col gap-4">
+      <div className="w-full max-w-xs xl:max-w-3xs mx-auto">
+        <FootballPitchBase>
+          {/* Other positions */}
+          {otherPositionMarkers.map((position) => (
+            <PositionMarker
+              key={position.id}
+              label={getPositionLabel(position.name)}
+              title={position.name}
+              x={position.x}
+              y={position.y}
+            />
+          ))}
 
-      <div className="flex flex-1 flex-row gap-4 py-4 px-6">
-        <div className="flex flex-col justify-center gap-6 text-sm">
-          <div className="space-y-1">
-            <p>Main Position:</p>
-            <p className="font-semibold">{mainPosition.name}</p>
-          </div>
-
-          {otherPositions && otherPositions.length > 0 && (
-            <div className="space-y-1">
-              <p>Other Positions:</p>
-              {otherPositions.map((position) => (
-                <div key={position.id}>
-                  <p className="font-semibold">{position.name}</p>
-                </div>
-              ))}
-            </div>
+          {/* Main position */}
+          {mainCoordinate && (
+            <PositionMarker
+              label={getPositionLabel(mainPosition.name)}
+              title={mainPosition.name}
+              x={mainCoordinate.x}
+              y={mainCoordinate.y}
+              isMain
+            />
           )}
+        </FootballPitchBase>
+      </div>
+
+      {/* Legend */}
+      <div className="flex flex-wrap justify-center gap-x-5 gap-y-2 text-sm text-muted-foreground">
+        <div className="flex items-center gap-2">
+          <span className="size-3 rounded-full bg-primary" />
+          Main position
         </div>
 
-        <FootballPitch
-          mainPosition={mainPosition}
-          otherPositions={otherPositions}
-        />
+        {otherPositionMarkers.length > 0 && (
+          <div className="flex items-center gap-2">
+            <span className="size-3 rounded-full border-2 border-primary bg-background" />
+            Other positions
+          </div>
+        )}
       </div>
-    </section>
+    </div>
   );
 };
 

@@ -17,7 +17,7 @@ const PositionMarker = ({ label, title, x, y, isMain = false }: Props) => {
         "font-bold shadow-md transition-transform",
         "hover:scale-110",
         isMain
-          ? "size-12 xl:size-10 border-2 border-primary-foreground bg-primary text-primary-foreground"
+          ? "size-11 xl:size-10 border-2 border-primary-foreground bg-primary text-primary-foreground"
           : "size-9 xl:size-8 border-2 border-primary bg-background text-primary",
       )}
       style={{
