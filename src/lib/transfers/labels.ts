@@ -13,20 +13,23 @@ export const getTransferTypeLabel = (
   type: TransferType,
   t: Translate,
 ): string => {
+  const translationKeyPrefix =
+    "dashboard.playerClubTeamCareers.form.options.transferType";
+
   switch (type) {
     case TransferType.TRANSFER:
-      return t("transfer");
+      return t(`${translationKeyPrefix}.transfer`);
     case TransferType.LOAN:
-      return t("loan");
+      return t(`${translationKeyPrefix}.loan`);
     case TransferType.LOAN_RETURN:
-      return t("loanReturn");
+      return t(`${translationKeyPrefix}.loanReturn`);
     case TransferType.FREE:
-      return t("free");
+      return t(`${translationKeyPrefix}.free`);
     case TransferType.RELEASED:
-      return t("released");
+      return t(`${translationKeyPrefix}.released`);
     case TransferType.YOUTH_PROMOTION:
-      return t("youthPromotion");
+      return t(`${translationKeyPrefix}.youthPromotion`);
     case TransferType.RETIRED:
-      return t("retired");
+      return t(`${translationKeyPrefix}.retired`);
   }
 };

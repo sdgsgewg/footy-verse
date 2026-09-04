@@ -55,5 +55,11 @@
     "title": "Pemain Pilihan",
     "subtitle": "Temukan beberapa pemain sepak bola ternama dari seluruh dunia.",
     "viewAll": "Lihat Semua Pemain"
+  },
+
+  "latestTransfers": {
+    "title": "Transfer Terbaru",
+    "subtitle": "Ikuti perkembangan transfer pemain terbaru dari seluruh dunia.",
+    "viewAll": "Lihat Semua Transfer"
   }
 }

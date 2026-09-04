@@ -15,10 +15,8 @@ interface Props {
 }
 
 const PlayerTransferHistoryTable = ({ playerTransfers, loading }: Props) => {
+  const t = useTranslations();
   const tColumn = useTranslations("dashboard.playerTransfers.table.columns");
-  const tTransferType = useTranslations(
-    "dashboard.playerClubTeamCareers.form.options.transferType",
-  );
 
   const locale = useLocale();
 
@@ -69,10 +67,7 @@ const PlayerTransferHistoryTable = ({ playerTransfers, loading }: Props) => {
       key: "transferType",
       label: tColumn("type"),
       render: (transfer) =>
-        getTransferTypeLabel(
-          transfer.transferType as TransferType,
-          tTransferType,
-        ),
+        getTransferTypeLabel(transfer.transferType as TransferType, t),
     },
   ];
 

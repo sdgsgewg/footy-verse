@@ -1,6 +1,6 @@
 "use client";
 
-import { Section } from "@/components/home/Section";
+import { Section } from "@/components/public/home/Section";
 import { homeSections } from "@/constants/sections";
 
 export default function Home() {

@@ -1,4 +1,6 @@
 import {
+  AllPlayerTransferListItem,
+  DbAllPlayerTransferListRow,
   DbPlayerTransferDetailRow,
   DbPlayerTransferListRow,
   PlayerTransferDetailResponse,
@@ -10,6 +12,45 @@ import { DbPlayerTransferRow } from "@/types/player-transfer";
 import { mapSeasonResponse } from "../seasons/mapper";
 import { mapClubTeamResponse } from "../club-teams/mapper";
 import { formatEuroValue } from "../formatters/currency";
+import { getImageUrl } from "../images/image-url";
+import { STORAGE_BUCKETS } from "../storage";
+
+export function mapAllPlayerTransferListItem(
+  playerTransfer: DbAllPlayerTransferListRow,
+): AllPlayerTransferListItem {
+  const {
+    id,
+
+    transfer_type,
+    transfer_fee,
+    transfer_date,
+
+    player_club_team_career,
+    from_club_team,
+    to_club_team,
+  } = playerTransfer;
+
+  const { player } = player_club_team_career.player_career;
+
+  return {
+    id,
+
+    player: {
+      id: player.id,
+      slug: player.slug,
+      shortName: player.short_name,
+      imageUrl: getImageUrl("player", STORAGE_BUCKETS.PLAYERS, player.image),
+    },
+
+    transferType: transfer_type,
+    transferFee: formatEuroValue(transfer_fee),
+    transferDate: transfer_date,
+
+    season: mapSeasonResponse(transfer_date),
+    fromClubTeam: mapClubTeamResponse(from_club_team),
+    toClubTeam: mapClubTeamResponse(to_club_team),
+  };
+}
 
 export function mapPlayerTransferListItem(
   playerTransfer: DbPlayerTransferListRow,

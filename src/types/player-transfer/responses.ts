@@ -2,6 +2,27 @@ import { ClubTeamResponse } from "../club-team";
 
 // API Response DTO
 
+// All Players Transfer List
+
+export interface AllPlayerTransferListItem {
+  id: string;
+
+  player: {
+    id: string;
+    slug: string;
+    shortName: string;
+    imageUrl: string;
+  };
+
+  transferType: string;
+  transferFee: string;
+  transferDate: string;
+  season: string;
+
+  fromClubTeam: ClubTeamResponse;
+  toClubTeam: ClubTeamResponse;
+}
+
 // Player Transfer List
 
 export interface PlayerTransferListItem {

@@ -5,8 +5,15 @@ export const playerTransferKeys = {
 
   lists: () => [...playerTransferKeys.all, "list"] as const,
 
-  list: (playerId: string, params?: PlayerTransferQuery) =>
-    [...playerTransferKeys.lists(), playerId, params] as const,
+  // Semua transfer
+  list: (params?: PlayerTransferQuery) =>
+    [...playerTransferKeys.lists(), "all", params] as const,
+
+  // Transfer milik player tertentu
+  playerLists: () => [...playerTransferKeys.all, "player-list"] as const,
+
+  playerList: (playerId: string, params?: PlayerTransferQuery) =>
+    [...playerTransferKeys.playerLists(), playerId, params] as const,
 
   details: () => [...playerTransferKeys.all, "detail"] as const,
 

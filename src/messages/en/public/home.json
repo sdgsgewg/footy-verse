@@ -55,5 +55,11 @@
     "title": "Featured Players",
     "subtitle": "Discover some of the world's most notable football players.",
     "viewAll": "View All Players"
+  },
+
+  "latestTransfers": {
+    "title": "Latest Transfers",
+    "subtitle": "Stay up to date with the latest player transfers around the world.",
+    "viewAll": "View All Transfers"
   }
 }

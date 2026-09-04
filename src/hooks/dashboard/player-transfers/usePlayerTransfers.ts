@@ -16,7 +16,7 @@ export function usePlayerTransfers({
   enabled = true,
 }: UsePlayerTransfersOptions) {
   const query = useQuery({
-    queryKey: playerTransferKeys.list(playerId ?? "", params),
+    queryKey: playerTransferKeys.playerList(playerId ?? "", params),
     queryFn: () => fetchPlayerTransfers(playerId!, params),
     enabled: enabled && !!playerId,
     ...queryConfig,
