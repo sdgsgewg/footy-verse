@@ -14,13 +14,14 @@ const createEmptyClubForm = (): UpsertClubInput => ({
   image: null,
   imageUrl: null,
 
-  name: "",
+  full_name: "",
+  short_name: "",
 
   nation_id: "",
 });
 
 function mapClub(club: ClubEditResponse): UpsertClubInput {
-  const { id, image, name, nationId } = club;
+  const { id, image, fullName, shortName, nationId } = club;
 
   return {
     id,
@@ -28,7 +29,9 @@ function mapClub(club: ClubEditResponse): UpsertClubInput {
     image,
     imageUrl: getImageUrl("club", STORAGE_BUCKETS.CLUBS, image),
 
-    name,
+    full_name: fullName,
+    short_name: shortName,
+
     nation_id: nationId,
   };
 }
@@ -59,9 +62,9 @@ export function useClubForm(club?: ClubEditResponse) {
     initialValue,
     schema: clubMutationSchema,
 
-    dirtyFields: ["name", "nation_id", "image"],
+    dirtyFields: ["full_name", "short_name", "nation_id", "image"],
 
-    requiredFields: ["name", "nation_id"],
+    requiredFields: ["full_name", "short_name", "nation_id"],
 
     additionalDirty: imageFile !== null,
   });
@@ -74,7 +77,8 @@ export function useClubForm(club?: ClubEditResponse) {
   const buildPayload = () => {
     return buildFormData({
       values: {
-        name: form.name,
+        full_name: form.full_name,
+        short_name: form.short_name,
         nation_id: form.nation_id,
       },
       existingImage: form.image,

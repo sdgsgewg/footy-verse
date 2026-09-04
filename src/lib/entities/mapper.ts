@@ -45,11 +45,11 @@ export function mapEntitySearchResult(
 }
 
 export function mapClubToEntityItem(club: ClubListItem): EntityItem {
-  const { id, name, slug, imageUrl } = club;
+  const { id, shortName, slug, imageUrl } = club;
 
   return {
     id,
-    name,
+    name: shortName,
     type: "club",
     imageUrl,
     href: `${ROUTES.CLUBS}/${slug}`,

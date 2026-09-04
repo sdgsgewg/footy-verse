@@ -59,7 +59,7 @@ export async function PUT(request: Request, context: ClubRouteContext) {
     const file = formData.get("image");
 
     if (file instanceof File && file.size > 0) {
-      image = await uploadImage(file, body.name, STORAGE_BUCKETS.CLUBS);
+      image = await uploadImage(file, body.short_name, STORAGE_BUCKETS.CLUBS);
     }
 
     body.image = image;

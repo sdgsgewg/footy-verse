@@ -69,12 +69,12 @@ export default function ClubsManagementPage() {
 
   const columns: DataColumn<ClubListItem>[] = [
     {
-      key: "name",
+      key: "shortName",
       label: tColumns("name"),
       className: "min-w-[300px]",
 
       render: (club) => (
-        <ClubImageLabel imageUrl={club.imageUrl} label={club.name} />
+        <ClubImageLabel imageUrl={club.imageUrl} label={club.shortName} />
       ),
 
       sortable: true,

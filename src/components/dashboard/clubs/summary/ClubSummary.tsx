@@ -9,15 +9,15 @@ interface Props {
 }
 
 const ClubSummary = ({ summary }: Props) => {
-  const { name, imageUrl, nation } = summary;
+  const { fullName, shortName, imageUrl, nation } = summary;
 
   return (
     <EntitySummaryLayout
-      title={<h1 className="text-4xl font-bold">{name}</h1>}
+      title={<h1 className="text-4xl font-bold">{shortName}</h1>}
       image={
         <ImageWrapper
           src={imageUrl ?? IMAGES.COMMON.DEFAULT}
-          alt={name}
+          alt={fullName}
           clickable
           hoverOverlay
           aspectRatio="square"

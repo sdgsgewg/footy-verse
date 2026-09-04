@@ -54,6 +54,22 @@
         "change": "Ubah Gambar",
         "supportedFormats": "Format yang didukung: {formats}"
       }
+    },
+
+    "labels": {
+      "image": "Gambar",
+
+      "name": "Nama",
+      "fullName": "Nama Lengkap",
+      "shortName": "Nama Singkat"
+    },
+
+    "placeholders": {
+      "image": "Unggah gambar",
+
+      "name": "Masukkan nama",
+      "fullName": "Masukkan nama lengkap",
+      "shortName": "Masukkan nama singkat"
     }
   },
 

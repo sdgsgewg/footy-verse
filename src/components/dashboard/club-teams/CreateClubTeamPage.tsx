@@ -44,7 +44,7 @@ export default function CreateClubTeamPage({ clubLookup }: Props) {
 
   return (
     <TableFormLayout
-      title={getTitle("create", "clubTeam", `${club.name}`)}
+      title={getTitle("create", "clubTeam", `${club.shortName}`)}
       columns={2}
       tableTitle="Club Teams"
       table={<ClubTeamTable clubLookup={clubLookup} clubTeams={clubTeams} />}

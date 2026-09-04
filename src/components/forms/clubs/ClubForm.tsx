@@ -21,6 +21,9 @@ const ClubForm = ({ mode, club, loading = false, onSubmit }: Props) => {
   const tLabels = useTranslations("dashboard.clubs.form.labels");
   const tPlaceholders = useTranslations("dashboard.clubs.form.placeholders");
 
+  const tCommonLabels = useTranslations("common.form.labels");
+  const tCommonPlaceholders = useTranslations("common.form.placeholders");
+
   const tEntities = useTranslations("entities");
   const tCommon = useTranslations("common");
 
@@ -52,7 +55,7 @@ const ClubForm = ({ mode, club, loading = false, onSubmit }: Props) => {
       <>
         {/* Image */}
         <ImageField
-          label={tLabels("image")}
+          label={tCommonLabels("image")}
           name="image"
           value={(form.previewUrl ?? form.imageUrl) as string}
           onChange={updateImage}
@@ -66,14 +69,25 @@ const ClubForm = ({ mode, club, loading = false, onSubmit }: Props) => {
   const RightSideContent = () => {
     return (
       <>
-        {/* Name */}
+        {/* Full Name */}
         <TextField
-          label={tLabels("name")}
-          name="name"
-          placeholder={tPlaceholders("name") || ""}
-          value={(form.name as string) ?? ""}
-          onChange={(value) => updateField("name", value)}
-          error={errors.name}
+          label={tCommonLabels("fullName")}
+          name="full_name"
+          placeholder={tCommonPlaceholders("fullName") || ""}
+          value={(form.full_name as string) ?? ""}
+          onChange={(value) => updateField("full_name", value)}
+          error={errors.full_name}
+          required
+        />
+
+        {/* Short Name */}
+        <TextField
+          label={tCommonLabels("shortName")}
+          name="short_name"
+          placeholder={tCommonPlaceholders("shortName") || ""}
+          value={(form.short_name as string) ?? ""}
+          onChange={(value) => updateField("short_name", value)}
+          error={errors.short_name}
           required
         />
 

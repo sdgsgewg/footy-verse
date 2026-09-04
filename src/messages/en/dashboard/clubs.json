@@ -1,14 +1,10 @@
 {
   "form": {
     "labels": {
-      "image": "Image",
-      "name": "Name",
       "nation": "Nation"
     },
 
     "placeholders": {
-      "image": "Upload image",
-      "name": "Enter name",
       "nation": "Select a nation"
     }
   },

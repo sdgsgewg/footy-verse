@@ -53,7 +53,7 @@ function getClubsBaseQuery(options?: { isNationFiltered?: boolean }) {
   return `
     id,
     image,
-    name,
+    short_name,
     slug,
 
     nation:nationalities!clubs_nation_id_fkey${nationJoin} (
@@ -63,6 +63,10 @@ function getClubsBaseQuery(options?: { isNationFiltered?: boolean }) {
     )
   `;
 }
+
+const sortColumnMap = {
+  shortName: "short_name",
+} as const;
 
 /**
  *
@@ -86,7 +90,7 @@ export async function getClubsRepo(
 
   // Filter
   if (params.search) {
-    query = query.ilike("name", `%${params.search}%`);
+    query = query.ilike("short_name", `%${params.search}%`);
   }
 
   if (params.nationId) {
@@ -95,7 +99,9 @@ export async function getClubsRepo(
 
   // Sort
 
-  query = query.order(params.sortBy, {
+  const sortColumn = sortColumnMap[params.sortBy];
+
+  query = query.order(sortColumn, {
     ascending: params.sortOrder === "asc",
   });
 
@@ -293,7 +299,7 @@ export async function createClubRepo(
   const supabase = await getSupabase();
 
   const slug = await ensureClubUniqueRepo({
-    name: club.name,
+    name: club.short_name,
   });
 
   const { data: insertedClub, error } = await supabase
@@ -316,7 +322,7 @@ export async function createClubRepo(
     action: ActivityLogAction.CREATE,
     entity: "club",
     entityId: result.id,
-    name: result.name,
+    name: club.short_name,
   });
 
   return result;
@@ -337,13 +343,13 @@ export async function updateClubRepo(
   const oldClub = await requireEntity(getClubEditRepo, id, getClubLabel());
 
   const slug = await ensureClubUniqueRepo({
-    name: club.name,
+    name: club.short_name,
     ignoreId: id,
   });
 
   const finalImage = await prepareUpdatedImage({
-    oldName: oldClub.name,
-    newName: club.name,
+    oldName: oldClub.shortName,
+    newName: club.short_name,
     oldImage: oldClub.image,
     newImage: club.image ?? "",
     bucket: STORAGE_BUCKETS.CLUBS,
@@ -352,8 +358,7 @@ export async function updateClubRepo(
   const { error } = await supabase
     .from(getClubTable())
     .update({
-      name: club.name,
-      nation_id: club.nation_id,
+      ...club,
       image: finalImage,
       slug,
       updated_at: new Date().toISOString(),
@@ -365,12 +370,14 @@ export async function updateClubRepo(
   if (error) throw error;
 
   const result = await getClubEditRepo(id);
+
   if (!result) {
     throw new Error("Failed to retrieve updated club");
   }
 
   const changes = getChangedFields(oldClub, result, [
-    "name",
+    "fullName",
+    "shortName",
     "image",
     "nationId",
   ] as const);
@@ -379,7 +386,7 @@ export async function updateClubRepo(
     action: ActivityLogAction.UPDATE,
     entity: "club",
     entityId: result.id,
-    name: result.name,
+    name: result.shortName,
     metadata: {
       changes,
     },
@@ -407,6 +414,6 @@ export async function deleteClubRepo(id: string): Promise<void> {
     action: ActivityLogAction.DELETE,
     entity: "club",
     entityId: id,
-    name: club.name,
+    name: club.shortName,
   });
 }

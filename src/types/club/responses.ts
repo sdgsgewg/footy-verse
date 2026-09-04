@@ -8,7 +8,7 @@ import { NationalityResponse } from "../nationality";
 export interface ClubListItem {
   id: string;
   imageUrl: string;
-  name: string;
+  shortName: string;
   slug: string;
 
   nation: NationalityResponse | null;
@@ -23,7 +23,8 @@ export type ClubListResponse = PaginatedResponse<ClubListItem>;
 export interface ClubEditResponse {
   id: string;
   image: string | null;
-  name: string;
+  fullName: string;
+  shortName: string;
   nationId: string;
 }
 
@@ -32,7 +33,8 @@ export interface ClubEditResponse {
 export interface ClubDetailResponse {
   id: string;
   imageUrl: string;
-  name: string;
+  fullName: string;
+  shortName: string;
   slug: string;
 
   nation: NationalityResponse | null;
@@ -43,13 +45,13 @@ export interface ClubDetailResponse {
 export interface ClubResponse {
   id: string;
   imageUrl: string;
-  name: string;
+  shortName: string;
 }
 
 export interface ClubWithNationalityResponse {
   id: string;
   imageUrl: string;
-  name: string;
+  shortName: string;
 
   nation: NationalityResponse;
 }

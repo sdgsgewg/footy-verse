@@ -13,14 +13,14 @@ export function formatClubName(
 
   switch (squad_type) {
     case SquadType.FIRST_TEAM:
-      return club.name;
+      return club.short_name;
     case SquadType.B_TEAM:
-      return `${club.name} B`;
+      return `${club.short_name} B`;
     case SquadType.ACADEMY:
-      return `${club.name} ${age_group}`;
+      return `${club.short_name} ${age_group}`;
     case SquadType.RESERVE:
-      return `${club.name} Reserve`;
+      return `${club.short_name} Reserve`;
     default:
-      return club.name;
+      return club.short_name;
   }
 }

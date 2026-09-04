@@ -79,7 +79,7 @@ const ClubDetailPage = ({ clubLookup }: Props) => {
     return <ErrorState onRetry={() => void refetchClub()} />;
   }
 
-  const { name } = club;
+  const { shortName } = club;
 
   const isTeamLoading = isClubTeamsLoading || isClubTeamLoading;
 
@@ -109,7 +109,11 @@ const ClubDetailPage = ({ clubLookup }: Props) => {
   );
 
   return (
-    <ClubDetailPageLayout title={name} summary={summary} content={content} />
+    <ClubDetailPageLayout
+      title={shortName}
+      summary={summary}
+      content={content}
+    />
   );
 };
 

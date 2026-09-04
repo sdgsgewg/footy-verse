@@ -58,6 +58,22 @@
         "change": "Change Image",
         "supportedFormats": "Supported formats: {formats}"
       }
+    },
+
+    "labels": {
+      "image": "Image",
+
+      "name": "Name",
+      "fullName": "Full Name",
+      "shortName": "Short Name"
+    },
+
+    "placeholders": {
+      "image": "Upload image",
+
+      "name": "Name",
+      "fullName": "Enter full name",
+      "shortName": "Enter short name"
     }
   },
 

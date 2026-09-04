@@ -18,7 +18,7 @@ export const genderSchema = z.enum([Gender.MEN, Gender.WOMEN]);
 
 // Club
 
-export const clubSortBySchema = z.enum(["name", "nation", "created_at"]);
+export const clubSortBySchema = z.enum(["shortName"]);
 
 // Club Team
 

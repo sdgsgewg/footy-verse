@@ -74,11 +74,11 @@ const ClubDetailPage = ({ clubLookup, returnTo }: Props) => {
     </>
   );
 
-  const { name } = club;
+  const { shortName } = club;
 
   return (
     <ClubDetailPageLayout
-      title={name}
+      title={shortName}
       summary={summary}
       content={content}
       returnTo={returnTo}

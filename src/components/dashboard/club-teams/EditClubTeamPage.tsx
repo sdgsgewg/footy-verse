@@ -64,7 +64,7 @@ const EditClubTeamPage = ({ clubLookup, clubTeamLookup }: Props) => {
 
   return (
     <TableFormLayout
-      title={getTitle("edit", "clubTeam", `${club.name}`)}
+      title={getTitle("edit", "clubTeam", `${club.shortName}`)}
       columns={2}
       tableTitle="Club Teams"
       table={<ClubTeamTable clubLookup={clubLookup} clubTeams={clubTeams} />}

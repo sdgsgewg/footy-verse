@@ -30,8 +30,12 @@ interface Props {
 
 const PlayerForm = ({ mode, player, loading = false, onSubmit }: Props) => {
   const t = useTranslations("dashboard.players");
+
   const tLabels = useTranslations("dashboard.players.form.labels");
   const tPlaceholders = useTranslations("dashboard.players.form.placeholders");
+
+  const tCommonLabels = useTranslations("common.form.labels");
+  const tCommonPlaceholders = useTranslations("common.form.placeholders");
 
   const tPrefFoot = useTranslations(
     "dashboard.players.form.options.preferredFoot",
@@ -77,7 +81,7 @@ const PlayerForm = ({ mode, player, loading = false, onSubmit }: Props) => {
         <div className="lg:grid-cols-6 space-y-5">
           {/* Image */}
           <ImageField
-            label={tLabels("image")}
+            label={tCommonLabels("image")}
             name="image"
             value={(form.previewUrl ?? form.imageUrl) as string}
             onChange={updateImage}
@@ -86,9 +90,9 @@ const PlayerForm = ({ mode, player, loading = false, onSubmit }: Props) => {
 
           {/* Full Name */}
           <TextField
-            label={tLabels("fullName")}
+            label={tCommonLabels("fullName")}
             name="full_name"
-            placeholder={tPlaceholders("fullName") || ""}
+            placeholder={tCommonPlaceholders("fullName") || ""}
             value={(form.full_name as string) ?? ""}
             onChange={(value) => updateField("full_name", value)}
             error={errors.full_name}
@@ -97,9 +101,9 @@ const PlayerForm = ({ mode, player, loading = false, onSubmit }: Props) => {
 
           {/* Short Name */}
           <TextField
-            label={tLabels("shortName")}
+            label={tCommonLabels("shortName")}
             name="short_name"
-            placeholder={tPlaceholders("shortName") || ""}
+            placeholder={tCommonPlaceholders("shortName") || ""}
             value={(form.short_name as string) ?? ""}
             onChange={(value) => updateField("short_name", value)}
             error={errors.short_name}

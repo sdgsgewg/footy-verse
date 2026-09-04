@@ -14,7 +14,7 @@ const DEFAULT_FILTER: ClubFilter = {
   page: 1,
   limit: 20,
 
-  sortBy: "name",
+  sortBy: "shortName",
   sortOrder: "asc",
 };
 

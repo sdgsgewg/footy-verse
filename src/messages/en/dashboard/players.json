@@ -9,9 +9,6 @@
     },
 
     "labels": {
-      "image": "Image",
-      "fullName": "Full Name",
-      "shortName": "Short Name",
       "dob": "Date of Birth",
       "pob": "Place of Birth",
       "height": "Height (cm)",
@@ -24,9 +21,6 @@
     },
 
     "placeholders": {
-      "image": "Choose Image",
-      "fullName": "Input full name",
-      "shortName": "Input short name",
       "dob": "Select date of birth",
       "pob": "Input place of birth",
       "height": "Input height",

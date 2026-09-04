@@ -24,7 +24,7 @@ export default function TeamsPage() {
 
   const modifiedClubList: TeamItem[] = clubs.map((club) => ({
     id: club.id,
-    name: club.name,
+    name: club.shortName,
     imageUrl: club.imageUrl,
     href: `${ROUTES.CLUBS}/${club.slug}`,
     subtitle: "",

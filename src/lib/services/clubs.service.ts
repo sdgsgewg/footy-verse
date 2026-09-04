@@ -56,7 +56,7 @@ export async function precheckCreateClubService(input: unknown) {
   const parsed = createClubSchema.parse(input);
 
   await ensureClubUniqueRepo({
-    name: parsed.name,
+    name: parsed.short_name,
   });
 
   return parsed;
@@ -67,7 +67,7 @@ export async function precheckUpdateClubService(id: string, input: unknown) {
   const parsed = updateClubSchema.parse(input);
 
   await ensureClubUniqueRepo({
-    name: parsed.name,
+    name: parsed.short_name,
     ignoreId: parsedId,
   });
 

@@ -15,24 +15,25 @@ import { getModifiedNation } from "./formatter";
 import { mapNationalityResponse } from "../nationalities/mapper";
 
 export function mapClubListItem(club: DbClubListRow): ClubListItem {
-  const { id, image, name, slug, nation } = club;
+  const { id, image, short_name, slug, nation } = club;
 
   return {
     id,
     imageUrl: getImageUrl("club", STORAGE_BUCKETS.CLUBS, image),
-    name,
+    shortName: short_name,
     slug,
     nation: getModifiedNation(nation),
   };
 }
 
 export function mapClubEditResponse(club: DbClubDetailRow): ClubEditResponse {
-  const { id, image, name, nation_id } = club;
+  const { id, image, short_name, full_name, nation_id } = club;
 
   return {
     id,
     image,
-    name,
+    shortName: short_name,
+    fullName: full_name,
     nationId: nation_id,
   };
 }
@@ -40,12 +41,13 @@ export function mapClubEditResponse(club: DbClubDetailRow): ClubEditResponse {
 export function mapClubDetailResponse(
   club: DbClubDetailRow,
 ): ClubDetailResponse {
-  const { id, image, name, slug, nation } = club;
+  const { id, image, full_name, short_name, slug, nation } = club;
 
   return {
     id,
     imageUrl: getImageUrl("club", STORAGE_BUCKETS.CLUBS, image),
-    name,
+    fullName: full_name,
+    shortName: short_name,
     slug,
     nation: getModifiedNation(nation),
   };
@@ -54,24 +56,24 @@ export function mapClubDetailResponse(
 // Helper
 
 export function mapClubResponse(club: DbClubRow): ClubResponse {
-  const { id, image, name } = club;
+  const { id, image, short_name } = club;
 
   return {
     id,
     imageUrl: getImageUrl("club", STORAGE_BUCKETS.CLUBS, image),
-    name,
+    shortName: short_name,
   };
 }
 
 export function mapClubWithNationalityResponse(
   club: DbClubWithNationalityRow,
 ): ClubWithNationalityResponse {
-  const { id, image, name, nationality } = club;
+  const { id, image, short_name, nationality } = club;
 
   return {
     id,
     imageUrl: getImageUrl("club", STORAGE_BUCKETS.CLUBS, image),
-    name,
+    shortName: short_name,
 
     nation: mapNationalityResponse(nationality),
   };

@@ -1,14 +1,10 @@
 {
   "form": {
     "labels": {
-      "image": "Gambar",
-      "name": "Nama",
       "nation": "Asal Negara"
     },
 
     "placeholders": {
-      "image": "Unggah Gambar",
-      "name": "Masukkan nama",
       "nation": "Pilih asal negara"
     }
   },

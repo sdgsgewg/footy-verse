@@ -5,7 +5,10 @@ import { Club } from "./database";
 
 // Club List
 
-export type DbClubListRow = Pick<Club, "id" | "image" | "name" | "slug"> & {
+export type DbClubListRow = Pick<
+  Club,
+  "id" | "image" | "short_name" | "slug"
+> & {
   nation: NationalitySummary | null;
 };
 
@@ -17,8 +20,11 @@ export type DbClubDetailRow = Club & {
 
 // Helper
 
-export type DbClubRow = Pick<Club, "id" | "name" | "image">;
+export type DbClubRow = Pick<Club, "id" | "short_name" | "image">;
 
-export type DbClubWithNationalityRow = Pick<Club, "id" | "name" | "image"> & {
+export type DbClubWithNationalityRow = Pick<
+  Club,
+  "id" | "short_name" | "image"
+> & {
   nationality: DbNationalityRow;
 };

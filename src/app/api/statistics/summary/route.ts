@@ -7,8 +7,6 @@ export async function GET() {
 
     return successResponse(data);
   } catch (error: unknown) {
-    console.error(error);
-
     return errorResponse(error);
   }
 }
