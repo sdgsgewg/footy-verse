@@ -2,10 +2,8 @@
 
 import { Flag, Shield, Trophy, Users } from "lucide-react";
 
-import { usePlayers } from "@/hooks/dashboard/players";
-import { useClubs } from "@/hooks/clubs";
-import { useNationalities } from "@/hooks/nationalities";
-import { useCompetitions } from "@/hooks/competitions";
+import { useHomeStatistics } from "@/hooks/statistics";
+
 import {
   DashboardHeader,
   DashboardStats,
@@ -15,55 +13,45 @@ import {
 } from "@/components/dashboard/home";
 
 export default function DashboardHomePage() {
-  const { total: totalPlayers, loading: isPlayersLoading } = usePlayers();
+  const { data, isLoading } = useHomeStatistics();
 
-  const { total: totalClubs, loading: isClubsLoading } = useClubs();
-
-  const { total: totalNationalities, loading: isNationalitiesLoading } =
-    useNationalities();
-
-  const { total: totalCompetitions, loading: isCompetitionsLoading } =
-    useCompetitions();
-
-  const isStatsLoading =
-    isPlayersLoading ||
-    isClubsLoading ||
-    isNationalitiesLoading ||
-    isCompetitionsLoading;
+  const players = data?.players ?? 0;
+  const clubs = data?.clubs ?? 0;
+  const nationalities = data?.nationalities ?? 0;
+  const competitions = data?.competitions ?? 0;
 
   const stats = [
     {
       title: "Total Players",
-      value: totalPlayers,
+      value: players,
       description: "Players in the database",
       icon: Users,
-      isLoading: isPlayersLoading,
+      isLoading,
     },
     {
       title: "Total Clubs",
-      value: totalClubs,
+      value: clubs,
       description: "Registered clubs",
       icon: Shield,
-      isLoading: isClubsLoading,
+      isLoading,
     },
     {
       title: "Nationalities",
-      value: totalNationalities,
+      value: nationalities,
       description: "Available nationalities",
       icon: Flag,
-      isLoading: isNationalitiesLoading,
+      isLoading,
     },
     {
       title: "Competitions",
-      value: totalCompetitions,
+      value: competitions,
       description: "Available competitions",
       icon: Trophy,
-      isLoading: isCompetitionsLoading,
+      isLoading,
     },
   ];
 
-  const totalRecords =
-    totalPlayers + totalClubs + totalNationalities + totalCompetitions;
+  const totalRecords = players + clubs + nationalities + competitions;
 
   return (
     <div className="space-y-8">
@@ -77,7 +65,7 @@ export default function DashboardHomePage() {
         <QuickActions />
       </section>
 
-      <SystemOverview totalRecords={totalRecords} isLoading={isStatsLoading} />
+      <SystemOverview totalRecords={totalRecords} isLoading={isLoading} />
     </div>
   );
 }

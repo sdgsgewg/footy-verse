@@ -5,3 +5,5 @@ export * from "./nationalityKeys";
 export * from "./nationalTeamKeys";
 
 export * from "./searchKeys";
+
+export * from "./statisticKeys";

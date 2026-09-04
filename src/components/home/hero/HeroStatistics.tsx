@@ -1,48 +1,36 @@
 import React from "react";
 import Statistic from "./Statistic";
-import { usePlayers } from "@/hooks/dashboard/players";
-import { useClubs } from "@/hooks/clubs";
-import { useNationalities } from "@/hooks/nationalities";
-import { useCompetitions } from "@/hooks/competitions";
 import { useTranslations } from "next-intl";
+import { useHomeStatistics } from "@/hooks/statistics";
 
 const HeroStatistics = () => {
   const t = useTranslations("public.home.hero");
-
-  const { total: totalPlayers, loading: isLoadingPlayers } = usePlayers();
-
-  const { total: totalClubs, loading: isLoadingClubs } = useClubs();
-
-  const { total: totalNationalities, loading: isLoadingNationalities } =
-    useNationalities();
-
-  const { total: totalCompetitions, loading: isLoadingCompetitions } =
-    useCompetitions();
+  const { data, isLoading } = useHomeStatistics();
 
   return (
     <div className="mt-16 grid w-full max-w-3xl grid-cols-2 divide-x divide-y overflow-hidden rounded-xl border bg-card/60 backdrop-blur sm:grid-cols-4 sm:divide-y-0">
       <Statistic
-        value={totalPlayers.toString()}
+        value={data?.players?.toLocaleString() ?? "0"}
         label={t("statistics.players.label")}
-        isLoading={isLoadingPlayers}
+        isLoading={isLoading}
       />
 
       <Statistic
-        value={totalClubs.toString()}
+        value={data?.clubs?.toLocaleString() ?? "0"}
         label={t("statistics.clubs.label")}
-        isLoading={isLoadingClubs}
+        isLoading={isLoading}
       />
 
       <Statistic
-        value={totalNationalities.toString()}
-        label={t("statistics.nations.label")}
-        isLoading={isLoadingNationalities}
+        value={data?.nationalities?.toLocaleString() ?? "0"}
+        label={t("statistics.nationalities.label")}
+        isLoading={isLoading}
       />
 
       <Statistic
-        value={totalCompetitions.toString()}
+        value={data?.competitions?.toLocaleString() ?? "0"}
         label={t("statistics.competitions.label")}
-        isLoading={isLoadingCompetitions}
+        isLoading={isLoading}
       />
     </div>
   );
