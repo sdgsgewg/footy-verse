@@ -13,7 +13,6 @@ import {
 } from "@/types/nationality";
 import { requireEntity } from "./helpers/require-entity";
 import { ENTITY_CONFIG } from "@/config/entities";
-import { deleteEntityImage, prepareUpdatedImage } from "./helpers/image";
 import {
   mapNationalityDetailResponse,
   mapNationalityEditResponse,
@@ -371,21 +370,10 @@ export async function updateNationalityRepo(
     ignoreId: id,
   });
 
-  const { image: newImage, ...rest } = nationality;
-
-  const finalImage = await prepareUpdatedImage({
-    oldName: oldNationality.name,
-    newName: nationality.name,
-    oldImage: oldNationality.image,
-    newImage: newImage ?? "",
-    bucket: STORAGE_BUCKETS.NATIONALITIES,
-  });
-
   const { error } = await supabase
     .from(getNationalityTable())
     .update({
-      ...rest,
-      image: finalImage,
+      ...nationality,
       slug,
       updated_at: new Date().toISOString(),
     })
@@ -396,6 +384,7 @@ export async function updateNationalityRepo(
   if (error) throw error;
 
   const result = await getNationalityEditRepo(id);
+
   if (!result) {
     throw new Error("Failed to retrieve updated nationality");
   }
@@ -428,8 +417,6 @@ export async function deleteNationalityRepo(id: string): Promise<void> {
     id,
     getNationalityLabel(),
   );
-
-  await deleteEntityImage(nationality.image, STORAGE_BUCKETS.NATIONALITIES);
 
   const { error } = await supabase
     .from(getNationalityTable())

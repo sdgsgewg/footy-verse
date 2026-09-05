@@ -19,9 +19,11 @@ import {
   withUpdatedImage,
   withUploadedImage,
 } from "../storage/image";
-import { STORAGE_BUCKETS } from "../storage";
 import { NotFoundError } from "../errors/http-error";
 import { tryDeleteImage } from "./storage.service";
+import { ENTITY_CONFIG } from "@/config/entities";
+
+const STORAGE_BUCKET = ENTITY_CONFIG["club"]["storageBucket"];
 
 export async function getClubsService(query: unknown) {
   const parsed = clubsQuerySchema.parse(query);
@@ -58,14 +60,14 @@ export async function createClubService(input: unknown, formData: FormData) {
     formData,
     "image",
     parsed.short_name,
-    STORAGE_BUCKETS.CLUBS,
+    STORAGE_BUCKET,
   );
 
   parsed.image = image;
 
   return withUploadedImage({
     image,
-    bucketName: STORAGE_BUCKETS.CLUBS,
+    bucketName: STORAGE_BUCKET,
     operation: () => createClubRepo(parsed),
   });
 }
@@ -93,7 +95,7 @@ export async function updateClubService(
     formData,
     "image",
     parsed.short_name,
-    STORAGE_BUCKETS.CLUBS,
+    STORAGE_BUCKET,
   );
 
   return withUpdatedImage({
@@ -101,7 +103,7 @@ export async function updateClubService(
     newImage: uploadedImage,
     shouldRename: currentClub.shortName !== parsed.short_name,
     newName: parsed.short_name,
-    bucketName: STORAGE_BUCKETS.CLUBS,
+    bucketName: STORAGE_BUCKET,
 
     operation: (finalImage) => {
       return updateClubRepo(parsedId, {
@@ -123,5 +125,5 @@ export async function deleteClubService(id: string) {
 
   await deleteClubRepo(parsedId);
 
-  await tryDeleteImage(club.image, STORAGE_BUCKETS.CLUBS);
+  await tryDeleteImage(club.image, STORAGE_BUCKET);
 }

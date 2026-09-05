@@ -15,6 +15,16 @@ import {
   updateNationalitySchema,
 } from "@/lib/validations/nationalities.schema";
 import { idSchema, slugSchema } from "../validations/primitives.schema";
+import {
+  uploadImageFromFormData,
+  withUpdatedImage,
+  withUploadedImage,
+} from "../storage/image";
+import { ENTITY_CONFIG } from "@/config/entities";
+import { NotFoundError } from "../errors/http-error";
+import { tryDeleteImage } from "./storage.service";
+
+const STORAGE_BUCKET = ENTITY_CONFIG["nationality"]["storageBucket"];
 
 export async function getNationalitiesService(query: unknown) {
   const parsed = nationalitiesQuerySchema.parse(query);
@@ -44,25 +54,10 @@ export async function getNationalityLookupService(slug: string) {
   return getNationalityLookupRepo(parsedSlug);
 }
 
-export async function createNationalityService(input: unknown) {
-  const parsed = createNationalitySchema.parse(input);
-
-  return createNationalityRepo(parsed);
-}
-
-export async function updateNationalityService(id: string, input: unknown) {
-  const parsedId = idSchema.parse(id);
-  const parsed = updateNationalitySchema.parse(input);
-
-  return updateNationalityRepo(parsedId, parsed);
-}
-
-/**
- * Runs the same validated duplicate check before a route uploads an image.
- * Mutation repositories repeat the check immediately before writing because
- * only the database constraint can close a concurrent-request race.
- */
-export async function precheckCreateNationalityService(input: unknown) {
+export async function createNationalityService(
+  input: unknown,
+  formData: FormData,
+) {
   const parsed = createNationalitySchema.parse(input);
 
   await ensureNationalityUniqueRepo({
@@ -70,12 +65,26 @@ export async function precheckCreateNationalityService(input: unknown) {
     fifaCode: parsed.fifa_code,
   });
 
-  return parsed;
+  const image = await uploadImageFromFormData(
+    formData,
+    "image",
+    parsed.name,
+    STORAGE_BUCKET,
+  );
+
+  parsed.image = image;
+
+  return withUploadedImage({
+    image,
+    bucketName: STORAGE_BUCKET,
+    operation: () => createNationalityRepo(parsed),
+  });
 }
 
-export async function precheckUpdateNationalityService(
+export async function updateNationalityService(
   id: string,
   input: unknown,
+  formData: FormData,
 ) {
   const parsedId = idSchema.parse(id);
   const parsed = updateNationalitySchema.parse(input);
@@ -86,11 +95,45 @@ export async function precheckUpdateNationalityService(
     ignoreId: parsedId,
   });
 
-  return parsed;
+  const currentNationality = await getNationalityEditRepo(parsedId);
+
+  if (!currentNationality) {
+    throw new NotFoundError("Nationality not found");
+  }
+
+  const uploadedImage = await uploadImageFromFormData(
+    formData,
+    "image",
+    parsed.name,
+    STORAGE_BUCKET,
+  );
+
+  return withUpdatedImage({
+    oldImage: currentNationality.image,
+    newImage: uploadedImage,
+    shouldRename: currentNationality.name !== parsed.name,
+    newName: parsed.name,
+    bucketName: STORAGE_BUCKET,
+
+    operation: (finalImage) => {
+      return updateNationalityRepo(parsedId, {
+        ...parsed,
+        image: finalImage,
+      });
+    },
+  });
 }
 
 export async function deleteNationalityService(id: string) {
   const parsedId = idSchema.parse(id);
 
+  const nationality = await getNationalityEditRepo(parsedId);
+
+  if (!nationality) {
+    throw new NotFoundError("Nationality not found");
+  }
+
   await deleteNationalityRepo(parsedId);
+
+  await tryDeleteImage(nationality.image, STORAGE_BUCKET);
 }

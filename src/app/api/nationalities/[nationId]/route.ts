@@ -9,12 +9,8 @@ import { getNationalityInputFromFormData } from "@/lib/nationalities/form-data";
 import {
   deleteNationalityService,
   getNationalityDetailService,
-  getNationalityEditService,
-  precheckUpdateNationalityService,
   updateNationalityService,
 } from "@/lib/services/nationalities.service";
-import { tryDeleteImage, uploadImage } from "@/lib/services/storage.service";
-import { STORAGE_BUCKETS } from "@/lib/storage";
 
 type NationalityRouteContext = {
   params: Promise<{ nationId: string }>;
@@ -41,40 +37,15 @@ export async function PUT(request: Request, context: NationalityRouteContext) {
 
     const { nationId } = await context.params;
 
-    const currentNationality = await getNationalityEditService(nationId);
-
-    if (!currentNationality) {
-      return errorResponse(new NotFoundError("Nationality not found"));
-    }
-
     const formData = await request.formData();
 
-    const body = await precheckUpdateNationalityService(
+    const data = await updateNationalityService(
       nationId,
       getNationalityInputFromFormData(formData),
+      formData,
     );
 
-    let image = currentNationality.image;
-
-    const file = formData.get("image");
-
-    if (file instanceof File && file.size > 0) {
-      image = await uploadImage(file, body.name, STORAGE_BUCKETS.NATIONALITIES);
-    }
-
-    body.image = image;
-
-    try {
-      const data = await updateNationalityService(nationId, body);
-
-      return successResponse(data);
-    } catch (error) {
-      if (image && image !== currentNationality.image) {
-        await tryDeleteImage(image, STORAGE_BUCKETS.NATIONALITIES);
-      }
-
-      throw error;
-    }
+    return successResponse(data);
   } catch (error: unknown) {
     return errorResponse(error);
   }
@@ -89,15 +60,8 @@ export async function DELETE(
 
     const { nationId } = await context.params;
 
-    const nationality = await getNationalityEditService(nationId);
-
-    if (!nationality) {
-      return errorResponse(new NotFoundError("Nationality not found"));
-    }
-
     await deleteNationalityService(nationId);
 
-    // return successResponse(null);
     return noContentResponse();
   } catch (error: unknown) {
     return errorResponse(error);

@@ -9,11 +9,7 @@ import { getNationalityInputFromFormData } from "@/lib/nationalities/form-data";
 import {
   createNationalityService,
   getNationalitiesService,
-  precheckCreateNationalityService,
 } from "@/lib/services/nationalities.service";
-import { tryDeleteImage } from "@/lib/services/storage.service";
-import { STORAGE_BUCKETS } from "@/lib/storage";
-import { uploadImageFromFormData } from "@/lib/storage/image";
 import { NationalityQuery } from "@/types/nationality";
 
 export async function GET(request: Request) {
@@ -34,31 +30,15 @@ export async function POST(request: Request) {
 
     const formData = await request.formData();
 
-    const body = await precheckCreateNationalityService(
+    const data = await createNationalityService(
       getNationalityInputFromFormData(formData),
-    );
-
-    const image = await uploadImageFromFormData(
       formData,
-      "image",
-      body.name,
-      STORAGE_BUCKETS.NATIONALITIES,
     );
 
-    body.image = image;
-
-    try {
-      const data = await createNationalityService(body);
-
-      return createdResponse({
-        success: true,
-        data,
-      });
-    } catch (error) {
-      await tryDeleteImage(image, STORAGE_BUCKETS.NATIONALITIES);
-
-      throw error;
-    }
+    return createdResponse({
+      success: true,
+      data,
+    });
   } catch (error: unknown) {
     return errorResponse(error);
   }

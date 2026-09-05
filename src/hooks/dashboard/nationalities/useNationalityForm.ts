@@ -62,6 +62,7 @@ export function useNationalityForm(nationality?: NationalityEditResponse) {
     canSubmit,
     validate,
     clearFieldError,
+    setFieldError,
   } = useEntityForm({
     initialValue,
     schema: nationalityMutationSchema,
@@ -74,7 +75,13 @@ export function useNationalityForm(nationality?: NationalityEditResponse) {
   });
 
   const updateImage = (file: File) => {
-    setImage(file);
+    const result = setImage(file);
+
+    if (!result.success) {
+      setFieldError("image", result.error ?? "Invalid image.");
+      return;
+    }
+
     clearFieldError("image");
   };
 
