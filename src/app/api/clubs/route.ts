@@ -1,10 +1,7 @@
 import {
   createClubService,
   getClubsService,
-  precheckCreateClubService,
 } from "@/lib/services/clubs.service";
-import { tryDeleteImage, uploadImage } from "@/lib/services/storage.service";
-import { STORAGE_BUCKETS } from "@/lib/storage";
 import {
   createdResponse,
   errorResponse,
@@ -33,32 +30,15 @@ export async function POST(request: Request) {
 
     const formData = await request.formData();
 
-    const body = await precheckCreateClubService(
+    const data = await createClubService(
       getClubInputFromFormData(formData),
+      formData,
     );
 
-    let image = "";
-
-    const file = formData.get("image");
-
-    if (file instanceof File && file.size > 0) {
-      image = await uploadImage(file, body.short_name, STORAGE_BUCKETS.CLUBS);
-    }
-
-    body.image = image;
-
-    try {
-      const data = await createClubService(body);
-
-      return createdResponse({
-        success: true,
-        data,
-      });
-    } catch (error) {
-      await tryDeleteImage(image, STORAGE_BUCKETS.CLUBS);
-
-      throw error;
-    }
+    return createdResponse({
+      success: true,
+      data,
+    });
   } catch (error) {
     return errorResponse(error);
   }

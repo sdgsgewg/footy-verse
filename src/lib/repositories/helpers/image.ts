@@ -1,4 +1,4 @@
-import { renameImage, tryDeleteImage } from "@/lib/services/storage.service";
+import { tryDeleteImage } from "@/lib/services/storage.service";
 import { StorageBucket } from "@/lib/storage";
 
 type PrepareUpdatedImageParams = {
@@ -26,11 +26,11 @@ export async function prepareUpdatedImage({
   newImage,
   bucket,
 }: PrepareUpdatedImageParams): Promise<string | null> {
-  let finalImage = newImage;
+  const finalImage = newImage;
 
   // Name changed but image unchanged → rename storage object.
   if (oldName !== newName && oldImage && oldImage === newImage) {
-    finalImage = await renameImage(oldImage, newName, bucket);
+    // finalImage = await renameImage(oldImage, newName, bucket);
   }
 
   // Image replaced → delete old image before updating DB.

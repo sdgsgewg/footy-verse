@@ -16,6 +16,7 @@ import {
 
 import { tryDeleteImage, uploadImage } from "@/lib/services/storage.service";
 import { STORAGE_BUCKETS } from "@/lib/storage";
+import { validateImageFile } from "@/lib/validations/image.schema";
 
 type ConfederationRouteContext = {
   params: Promise<{ id: string }>;
@@ -63,9 +64,9 @@ export async function PUT(
 
     let image = currentConfederation.image;
 
-    const file = formData.get("image");
+    const file = validateImageFile(formData.get("image"));
 
-    if (file instanceof File && file.size > 0) {
+    if (file) {
       image = await uploadImage(
         file,
         body.name,

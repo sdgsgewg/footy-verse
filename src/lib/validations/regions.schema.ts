@@ -2,9 +2,10 @@ import { z } from "zod";
 import { idSchema, nullableIdSchema, slugSchema } from "./primitives.schema";
 import { baseQuerySchema, sortingQuerySchema } from "./query.schema";
 import { regionSortBySchema, regionTypeSchema } from "./enums.schema";
+import { imageSchema } from "./primitives.schema";
 
 export const regionMutationSchema = z.object({
-  image: z.string().nullable().optional(),
+  image: imageSchema,
   name: z.string().min(1).max(255),
   region_type: regionTypeSchema,
   parent_region_id: nullableIdSchema,

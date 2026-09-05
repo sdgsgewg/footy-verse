@@ -12,7 +12,6 @@ import {
 } from "@/types/club";
 import { requireEntity } from "./helpers/require-entity";
 import { ENTITY_CONFIG } from "@/config/entities";
-import { deleteEntityImage, prepareUpdatedImage } from "./helpers/image";
 import {
   mapClubDetailResponse,
   mapClubEditResponse,
@@ -347,19 +346,10 @@ export async function updateClubRepo(
     ignoreId: id,
   });
 
-  const finalImage = await prepareUpdatedImage({
-    oldName: oldClub.shortName,
-    newName: club.short_name,
-    oldImage: oldClub.image,
-    newImage: club.image ?? "",
-    bucket: STORAGE_BUCKETS.CLUBS,
-  });
-
   const { error } = await supabase
     .from(getClubTable())
     .update({
       ...club,
-      image: finalImage,
       slug,
       updated_at: new Date().toISOString(),
     })
@@ -404,11 +394,11 @@ export async function deleteClubRepo(id: string): Promise<void> {
 
   const club = await requireEntity(getClubEditRepo, id, getClubLabel());
 
-  await deleteEntityImage(club.image, STORAGE_BUCKETS.CLUBS);
-
   const { error } = await supabase.from(getClubTable()).delete().eq("id", id);
 
-  if (error) throw error;
+  if (error) {
+    throw error;
+  }
 
   await createEntityActivityLog({
     action: ActivityLogAction.DELETE,

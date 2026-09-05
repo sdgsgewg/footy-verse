@@ -1,12 +1,8 @@
 import {
   deleteClubService,
   getClubDetailService,
-  getClubEditService,
-  precheckUpdateClubService,
   updateClubService,
 } from "@/lib/services/clubs.service";
-import { tryDeleteImage, uploadImage } from "@/lib/services/storage.service";
-import { STORAGE_BUCKETS } from "@/lib/storage";
 import {
   errorResponse,
   noContentResponse,
@@ -41,40 +37,15 @@ export async function PUT(request: Request, context: ClubRouteContext) {
 
     const { clubId } = await context.params;
 
-    const currentClub = await getClubEditService(clubId);
-
-    if (!currentClub) {
-      return errorResponse(new NotFoundError("Club not found"));
-    }
-
     const formData = await request.formData();
 
-    const body = await precheckUpdateClubService(
+    const data = await updateClubService(
       clubId,
       getClubInputFromFormData(formData),
+      formData,
     );
 
-    let image = currentClub.image;
-
-    const file = formData.get("image");
-
-    if (file instanceof File && file.size > 0) {
-      image = await uploadImage(file, body.short_name, STORAGE_BUCKETS.CLUBS);
-    }
-
-    body.image = image;
-
-    try {
-      const data = await updateClubService(clubId, body);
-
-      return successResponse(data);
-    } catch (error) {
-      if (image && image !== currentClub.image) {
-        await tryDeleteImage(image, STORAGE_BUCKETS.CLUBS);
-      }
-
-      throw error;
-    }
+    return successResponse(data);
   } catch (error) {
     return errorResponse(error);
   }
@@ -85,12 +56,6 @@ export async function DELETE(_request: Request, context: ClubRouteContext) {
     await authorizeManageContent();
 
     const { clubId } = await context.params;
-
-    const club = await getClubDetailService(clubId);
-
-    if (!club) {
-      return errorResponse(new NotFoundError("Club not found"));
-    }
 
     await deleteClubService(clubId);
 

@@ -1,6 +1,13 @@
 import { createClient as createSupabaseClient } from "@supabase/supabase-js";
 import { createClient as createServerClient } from "@/utils/supabase/server";
 import { slugify } from "@/lib/utils/slugify";
+import { StorageBucket } from "../storage";
+
+const IMAGE_EXTENSIONS: Record<string, string> = {
+  "image/jpeg": "jpg",
+  "image/png": "png",
+  "image/webp": "webp",
+};
 
 async function createStorageClient() {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -21,20 +28,24 @@ async function createStorageClient() {
 export async function uploadImage(
   file: File,
   baseName: string,
-  bucketName: string,
+  bucketName: StorageBucket,
 ) {
   const supabase = await createStorageClient();
 
   const slug = slugify(baseName);
 
-  const extension = file.name.split(".").pop() || "png";
+  const extension = IMAGE_EXTENSIONS[file.type];
+
+  if (!extension) {
+    throw new Error("Unsupported image type.");
+  }
 
   const fileName = `${slug}-${Date.now()}-${crypto.randomUUID()}.${extension}`;
-  const filePath = fileName;
 
   const { error } = await supabase.storage
     .from(bucketName)
-    .upload(filePath, file, {
+    .upload(fileName, file, {
+      contentType: file.type,
       upsert: false,
     });
 
@@ -42,7 +53,7 @@ export async function uploadImage(
     throw new Error(error.message);
   }
 
-  return filePath;
+  return fileName;
 }
 
 function getStoragePath(filePathOrUrl: string, bucketName: string) {
@@ -107,17 +118,22 @@ export async function tryDeleteImage(
 export async function renameImage(
   oldPath: string,
   newName: string,
-  bucketName: string,
+  bucketName: StorageBucket,
 ) {
   const supabase = await createStorageClient();
+
   const oldStoragePath = getStoragePath(oldPath, bucketName);
 
   if (!oldStoragePath) {
-    return oldPath;
+    return {
+      oldPath,
+      newPath: oldPath,
+    };
   }
 
   const slug = slugify(newName);
   const extension = oldStoragePath.split(".").pop() || "png";
+
   const newFileName = `${slug}-${Date.now()}-${crypto.randomUUID()}.${extension}`;
 
   const { error } = await supabase.storage
@@ -128,5 +144,39 @@ export async function renameImage(
     throw new Error(error.message);
   }
 
-  return newFileName;
+  return {
+    oldPath,
+    newPath: newFileName,
+  };
+}
+
+export async function tryRenameImage(
+  oldPath: string,
+  newPath: string,
+  bucketName: StorageBucket,
+) {
+  try {
+    const supabase = await createStorageClient();
+
+    const oldStoragePath = getStoragePath(oldPath, bucketName);
+    const newStoragePath = getStoragePath(newPath, bucketName);
+
+    if (!oldStoragePath || !newStoragePath) {
+      return;
+    }
+
+    const { error } = await supabase.storage
+      .from(bucketName)
+      .move(newStoragePath, oldStoragePath);
+
+    if (error) {
+      throw new Error(error.message);
+    }
+  } catch (error) {
+    console.warn("Failed to rollback image rename", {
+      oldPath,
+      newPath,
+      error,
+    });
+  }
 }

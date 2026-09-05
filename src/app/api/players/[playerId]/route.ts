@@ -10,6 +10,7 @@ import {
 } from "@/lib/services/players.service";
 import { tryDeleteImage, uploadImage } from "@/lib/services/storage.service";
 import { STORAGE_BUCKETS } from "@/lib/storage";
+import { validateImageFile } from "@/lib/validations/image.schema";
 import { NextResponse } from "next/server";
 
 type PlayerRouteContext = {
@@ -49,9 +50,9 @@ export async function PUT(request: Request, context: PlayerRouteContext) {
 
     let image = currentPlayer.image;
 
-    const file = formData.get("image");
+    const file = validateImageFile(formData.get("image"));
 
-    if (file instanceof File && file.size > 0) {
+    if (file) {
       image = await uploadImage(file, body.short_name, STORAGE_BUCKETS.PLAYERS);
     }
 

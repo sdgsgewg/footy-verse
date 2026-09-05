@@ -42,6 +42,13 @@ export function useEntityForm<TForm, TErrorField extends string = string>({
 
   const [errors, setErrors] = useState<FormErrors<TErrorField>>({});
 
+  const setFieldError = (field: TErrorField, message: string) => {
+    setErrors((prev) => ({
+      ...prev,
+      [field]: message,
+    }));
+  };
+
   const clearError = (field: string) => {
     setErrors((prev) => {
       const key = field as TErrorField;
@@ -151,6 +158,7 @@ export function useEntityForm<TForm, TErrorField extends string = string>({
 
     updateField,
     clearFieldError,
+    setFieldError,
 
     validate,
     resetForm,

@@ -11,8 +11,9 @@ import {
   getNationalitiesService,
   precheckCreateNationalityService,
 } from "@/lib/services/nationalities.service";
-import { tryDeleteImage, uploadImage } from "@/lib/services/storage.service";
+import { tryDeleteImage } from "@/lib/services/storage.service";
 import { STORAGE_BUCKETS } from "@/lib/storage";
+import { uploadImageFromFormData } from "@/lib/storage/image";
 import { NationalityQuery } from "@/types/nationality";
 
 export async function GET(request: Request) {
@@ -37,13 +38,12 @@ export async function POST(request: Request) {
       getNationalityInputFromFormData(formData),
     );
 
-    let image = "";
-
-    const file = formData.get("image");
-
-    if (file instanceof File && file.size > 0) {
-      image = await uploadImage(file, body.name, STORAGE_BUCKETS.NATIONALITIES);
-    }
+    const image = await uploadImageFromFormData(
+      formData,
+      "image",
+      body.name,
+      STORAGE_BUCKETS.NATIONALITIES,
+    );
 
     body.image = image;
 

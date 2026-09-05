@@ -8,9 +8,10 @@ import {
   listQuerySchema,
   sortingQuerySchema,
 } from "./query.schema";
+import { imageSchema } from "./primitives.schema";
 
 export const playerMutationSchema = z.object({
-  image: z.string().nullable().optional(),
+  image: imageSchema,
   full_name: z.string().min(1).max(255),
   short_name: z.string().min(1).max(255),
   dob: z.string(),

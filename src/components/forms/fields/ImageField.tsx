@@ -119,7 +119,7 @@ export default function ImageField({
             hidden
             name={name}
             type="file"
-            accept="image/*"
+            accept="image/jpeg,image/png,image/webp"
             aria-invalid={!!error}
             aria-describedby={[errorId, helpId].filter(Boolean).join(" ")}
             onChange={handleFileChange}

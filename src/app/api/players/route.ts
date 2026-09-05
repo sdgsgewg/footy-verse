@@ -12,6 +12,7 @@ import {
 } from "@/lib/services/players.service";
 import { tryDeleteImage, uploadImage } from "@/lib/services/storage.service";
 import { STORAGE_BUCKETS } from "@/lib/storage";
+import { validateImageFile } from "@/lib/validations/image.schema";
 import { PlayerFilter } from "@/types/player";
 
 export async function GET(request: Request) {
@@ -38,12 +39,12 @@ export async function POST(request: Request) {
 
     const body = getPlayerInputFromFormData(formData);
 
-    let image = "";
+    const file = validateImageFile(formData.get("image"));
 
-    const file = formData.get("image");
+    let image: string | null = null;
 
-    if (file instanceof File && file.size > 0) {
-      image = await uploadImage(file, body.short_name, STORAGE_BUCKETS.PLAYERS);
+    if (file) {
+      image = await uploadImage(file, body.short_name, STORAGE_BUCKETS.CLUBS);
     }
 
     body.image = image;

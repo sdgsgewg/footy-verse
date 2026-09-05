@@ -1,7 +1,8 @@
 import { z } from "zod";
-import { idSchema, imageSchema, slugSchema } from "./primitives.schema";
+import { idSchema, slugSchema } from "./primitives.schema";
 import { listQuerySchema } from "./query.schema";
 import { nationalitySortBySchema } from "./enums.schema";
+import { imageSchema } from "./primitives.schema";
 
 export const nationalityMutationSchema = z.object({
   image: imageSchema,

@@ -58,6 +58,7 @@ export function useClubForm(club?: ClubEditResponse) {
     canSubmit,
     validate,
     clearFieldError,
+    setFieldError,
   } = useEntityForm({
     initialValue,
     schema: clubMutationSchema,
@@ -70,7 +71,13 @@ export function useClubForm(club?: ClubEditResponse) {
   });
 
   const updateImage = (file: File) => {
-    setImage(file);
+    const result = setImage(file);
+
+    if (!result.success) {
+      setFieldError("image", result.error ?? "Invalid image.");
+      return;
+    }
+
     clearFieldError("image");
   };
 
