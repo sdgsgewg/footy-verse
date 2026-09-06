@@ -15,6 +15,16 @@ import {
   getCompetitionsRepo,
   updateCompetitionRepo,
 } from "../repositories/competitions.repo";
+import { ENTITY_CONFIG } from "@/config/entities";
+import {
+  uploadImageFromFormData,
+  withUpdatedImage,
+  withUploadedImage,
+} from "../storage/image";
+import { NotFoundError } from "../errors/http-error";
+import { tryDeleteImage } from "./storage.service";
+
+const STORAGE_BUCKET = ENTITY_CONFIG["competition"]["storageBucket"];
 
 export async function getCompetitionsService(
   query: unknown,
@@ -42,32 +52,36 @@ export async function getCompetitionLookupService(slug: string) {
   return getCompetitionLookupRepo(parsedSlug);
 }
 
-export async function createCompetitionService(input: unknown) {
-  const parsed = createCompetitionSchema.parse(input);
-
-  return createCompetitionRepo(parsed);
-}
-
-export async function updateCompetitionService(id: string, input: unknown) {
-  const parsedId = idSchema.parse(id);
-  const parsed = updateCompetitionSchema.parse(input);
-
-  return updateCompetitionRepo(parsedId, parsed);
-}
-
-export async function precheckCreateCompetitionService(input: unknown) {
+export async function createCompetitionService(
+  input: unknown,
+  formData: FormData,
+) {
   const parsed = createCompetitionSchema.parse(input);
 
   await ensureCompetitionUniqueRepo({
-    name: parsed.name,
+    name: parsed.short_name,
   });
 
-  return parsed;
+  const image = await uploadImageFromFormData(
+    formData,
+    "image",
+    parsed.short_name,
+    STORAGE_BUCKET,
+  );
+
+  parsed.image = image;
+
+  return withUploadedImage({
+    image,
+    bucketName: STORAGE_BUCKET,
+    operation: () => createCompetitionRepo(parsed),
+  });
 }
 
-export async function precheckUpdateCompetitionService(
+export async function updateCompetitionService(
   id: string,
   input: unknown,
+  formData: FormData,
 ) {
   const parsedId = idSchema.parse(id);
   const parsed = updateCompetitionSchema.parse(input);
@@ -77,11 +91,45 @@ export async function precheckUpdateCompetitionService(
     ignoreId: parsedId,
   });
 
-  return parsed;
+  const currentcomp = await getCompetitionEditRepo(parsedId);
+
+  if (!currentcomp) {
+    throw new NotFoundError("Competition not found");
+  }
+
+  const uploadedImage = await uploadImageFromFormData(
+    formData,
+    "image",
+    parsed.short_name,
+    STORAGE_BUCKET,
+  );
+
+  return withUpdatedImage({
+    oldImage: currentcomp.image,
+    newImage: uploadedImage,
+    shouldRename: currentcomp.shortName !== parsed.short_name,
+    newName: parsed.short_name,
+    bucketName: STORAGE_BUCKET,
+
+    operation: (finalImage) => {
+      return updateCompetitionRepo(parsedId, {
+        ...parsed,
+        image: finalImage,
+      });
+    },
+  });
 }
 
 export async function deleteCompetitionService(id: string) {
   const parsedId = idSchema.parse(id);
 
+  const competition = await getCompetitionEditRepo(parsedId);
+
+  if (!competition) {
+    throw new NotFoundError("Competition not found");
+  }
+
   await deleteCompetitionRepo(parsedId);
+
+  await tryDeleteImage(competition.image, STORAGE_BUCKET);
 }

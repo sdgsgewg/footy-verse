@@ -9,13 +9,8 @@ import { NotFoundError } from "@/lib/errors/http-error";
 import {
   deleteCompetitionService,
   getCompetitionDetailService,
-  getCompetitionEditService,
-  precheckUpdateCompetitionService,
   updateCompetitionService,
 } from "@/lib/services/competitions.service";
-
-import { tryDeleteImage, uploadImage } from "@/lib/services/storage.service";
-import { STORAGE_BUCKETS } from "@/lib/storage";
 
 type CompetitionRouteContext = {
   params: Promise<{ competitionId: string }>;
@@ -42,40 +37,15 @@ export async function PUT(request: Request, context: CompetitionRouteContext) {
 
     const { competitionId } = await context.params;
 
-    const currentCompetition = await getCompetitionEditService(competitionId);
-
-    if (!currentCompetition) {
-      return errorResponse(new NotFoundError("Competition not found"));
-    }
-
     const formData = await request.formData();
 
-    const body = await precheckUpdateCompetitionService(
+    const data = await updateCompetitionService(
       competitionId,
       getCompetitionInputFromFormData(formData),
+      formData,
     );
 
-    let image = currentCompetition.image;
-
-    const file = formData.get("image");
-
-    if (file instanceof File && file.size > 0) {
-      image = await uploadImage(file, body.name, STORAGE_BUCKETS.COMPETITIONS);
-    }
-
-    body.image = image;
-
-    try {
-      const data = await updateCompetitionService(competitionId, body);
-
-      return successResponse(data);
-    } catch (error) {
-      if (image && image !== currentCompetition.image) {
-        await tryDeleteImage(image, STORAGE_BUCKETS.COMPETITIONS);
-      }
-
-      throw error;
-    }
+    return successResponse(data);
   } catch (error: unknown) {
     return errorResponse(error);
   }
@@ -89,12 +59,6 @@ export async function DELETE(
     await authorizeManageContent();
 
     const { competitionId } = await context.params;
-
-    const competition = await getCompetitionEditService(competitionId);
-
-    if (!competition) {
-      return errorResponse(new NotFoundError("Competition not found"));
-    }
 
     await deleteCompetitionService(competitionId);
 

@@ -102,6 +102,7 @@ export function useCompetitionForm(competition?: CompetitionEditResponse) {
     canSubmit,
     validate,
     clearFieldError,
+    setFieldError,
   } = useEntityForm({
     initialValue,
     schema: competitionMutationSchema,
@@ -137,7 +138,13 @@ export function useCompetitionForm(competition?: CompetitionEditResponse) {
   });
 
   const updateImage = (file: File) => {
-    setImage(file);
+    const result = setImage(file);
+
+    if (!result.success) {
+      setFieldError("image", result.error ?? "Invalid image.");
+      return;
+    }
+
     clearFieldError("image");
   };
 

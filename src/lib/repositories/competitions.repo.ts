@@ -2,7 +2,6 @@ import { createClient } from "@/utils/supabase/server";
 import { STORAGE_BUCKETS } from "../storage";
 import { requireEntity } from "./helpers/require-entity";
 import { ENTITY_CONFIG } from "@/config/entities";
-import { deleteEntityImage, prepareUpdatedImage } from "./helpers/image";
 import { slugify } from "@/lib/utils/slugify";
 import {
   CompetitionCreateInput,
@@ -382,26 +381,15 @@ export async function updateCompetitionRepo(
     getLabel(),
   );
 
-  const { image: newImage, ...rest } = competition;
-
   const slug = ensureCompetitionUniqueRepo({
     name: competition.name,
     ignoreId: id,
   });
 
-  const finalImage = await prepareUpdatedImage({
-    oldName: oldCompetition.name,
-    newName: competition.name,
-    oldImage: oldCompetition.image,
-    newImage: newImage ?? "",
-    bucket: STORAGE_BUCKETS.COMPETITIONS,
-  });
-
   const { error } = await supabase
     .from(getTable())
     .update({
-      ...rest,
-      image: finalImage,
+      ...competition,
       slug,
       updated_at: new Date().toISOString(),
     })
@@ -454,8 +442,6 @@ export async function deleteCompetitionRepo(id: string): Promise<void> {
     id,
     getLabel(),
   );
-
-  await deleteEntityImage(competition.image, STORAGE_BUCKETS.COMPETITIONS);
 
   const { error } = await supabase.from(getTable()).delete().eq("id", id);
 

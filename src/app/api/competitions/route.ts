@@ -9,11 +9,7 @@ import { getCompetitionInputFromFormData } from "@/lib/competitions/form-data";
 import {
   createCompetitionService,
   getCompetitionsService,
-  precheckCreateCompetitionService,
 } from "@/lib/services/competitions.service";
-
-import { tryDeleteImage, uploadImage } from "@/lib/services/storage.service";
-import { STORAGE_BUCKETS } from "@/lib/storage";
 import { CompetitionQuery } from "@/types/competition";
 
 export async function GET(request: Request) {
@@ -39,32 +35,15 @@ export async function POST(request: Request) {
 
     const formData = await request.formData();
 
-    const body = await precheckCreateCompetitionService(
+    const data = await createCompetitionService(
       getCompetitionInputFromFormData(formData),
+      formData,
     );
 
-    let image = "";
-
-    const file = formData.get("image");
-
-    if (file instanceof File && file.size > 0) {
-      image = await uploadImage(file, body.name, STORAGE_BUCKETS.COMPETITIONS);
-    }
-
-    body.image = image;
-
-    try {
-      const data = await createCompetitionService(body);
-
-      return createdResponse({
-        success: true,
-        data,
-      });
-    } catch (error) {
-      await tryDeleteImage(image, STORAGE_BUCKETS.COMPETITIONS);
-
-      throw error;
-    }
+    return createdResponse({
+      success: true,
+      data,
+    });
   } catch (error: unknown) {
     return errorResponse(error);
   }
