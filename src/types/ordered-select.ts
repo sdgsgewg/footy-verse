@@ -17,6 +17,7 @@ export interface OrderedSelectFieldProps<T extends OrderedEntity> {
 
   instruction: string;
 
+  loading?: boolean;
   disabled?: boolean;
   required?: boolean;
 

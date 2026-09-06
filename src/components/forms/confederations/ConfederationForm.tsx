@@ -42,7 +42,7 @@ const ConfederationForm = ({
 
   const isCreate = mode === "create";
 
-  const { regionOptions } = useRegionOptions();
+  const { regionOptions, loading: isRegionLoading } = useRegionOptions();
 
   const handleSubmit = () => {
     if (!validate()) {
@@ -98,6 +98,7 @@ const ConfederationForm = ({
           label={tLabels("region")}
           name={`region_id`}
           placeholder={tPlaceholders("region")}
+          loading={isRegionLoading}
           options={regionOptions}
           value={form.region_id || ""}
           onChange={(value) => updateField("region_id", value)}

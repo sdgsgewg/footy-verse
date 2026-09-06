@@ -19,7 +19,14 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 
-import { Check, ChevronDown, ListOrdered, Plus, RotateCcw } from "lucide-react";
+import {
+  Check,
+  ChevronDown,
+  ListOrdered,
+  Loader2,
+  Plus,
+  RotateCcw,
+} from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 
@@ -62,6 +69,7 @@ const OrderedSelectField = <T extends OrderedEntity>({
   value,
   getId,
   createValue,
+  loading = false,
   disabled = false,
   required = true,
   className,
@@ -71,6 +79,7 @@ const OrderedSelectField = <T extends OrderedEntity>({
   const [open, setOpen] = React.useState(false);
 
   const tActions = useTranslations("common.actions");
+  const tCommonStates = useTranslations("common.states");
 
   const errorId = error ? `${name}-error` : undefined;
 
@@ -161,7 +170,7 @@ const OrderedSelectField = <T extends OrderedEntity>({
             type="button"
             size="xs"
             variant="ghost"
-            disabled={disabled}
+            disabled={disabled || loading}
             onClick={clear}
           >
             <RotateCcw className="size-3" />
@@ -181,7 +190,7 @@ const OrderedSelectField = <T extends OrderedEntity>({
             <Button
               type="button"
               variant="outline"
-              disabled={disabled || availableOptions.length === 0}
+              disabled={disabled || loading || availableOptions.length === 0}
               aria-invalid={!!error}
               aria-describedby={errorId}
               className={cn(
@@ -189,11 +198,25 @@ const OrderedSelectField = <T extends OrderedEntity>({
                 error && "border-destructive",
               )}
             >
-              <span className="truncate">
-                {availableOptions.length === 0 ? "All selected" : placeholder}
-              </span>
+              {loading ? (
+                <div className="flex items-center gap-2">
+                  <Loader2 className="size-4 shrink-0 animate-spin opacity-50" />
 
-              <ChevronDown className="size-4" />
+                  <span className="truncate text-muted-foreground">
+                    {tCommonStates("loading")}
+                  </span>
+                </div>
+              ) : (
+                <>
+                  <span className="truncate">
+                    {availableOptions.length === 0
+                      ? "All selected"
+                      : placeholder}
+                  </span>
+
+                  <ChevronDown className="size-4 shrink-0" />
+                </>
+              )}
             </Button>
           </PopoverTrigger>
 
@@ -237,15 +260,18 @@ const OrderedSelectField = <T extends OrderedEntity>({
         </Popover>
 
         {selectedItems.length === 0 ? (
-          <div
-            className={cn(
-              "mt-3 flex min-h-24 flex-col items-center justify-center gap-2 rounded-lg border border-dashed p-4",
-              error && "border-destructive",
-            )}
-          >
-            <ListOrdered className="size-5" />
-            <span className="text-sm text-center">{instruction}</span>
-          </div>
+          !loading && (
+            <div
+              className={cn(
+                "mt-3 flex min-h-24 flex-col items-center justify-center gap-2 rounded-lg border border-dashed p-4",
+                error && "border-destructive",
+              )}
+            >
+              <ListOrdered className="size-5" />
+
+              <span className="text-center text-sm">{instruction}</span>
+            </div>
+          )
         ) : (
           <DndContext
             sensors={sensors}

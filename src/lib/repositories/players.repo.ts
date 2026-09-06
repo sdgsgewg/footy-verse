@@ -1,6 +1,4 @@
 import { createClient } from "@/utils/supabase/server";
-import { STORAGE_BUCKETS } from "@/lib/storage";
-
 import {
   mapGroupedPlayers,
   mapPlayerDetailResponse,
@@ -9,7 +7,6 @@ import {
 } from "../players/mapper";
 import { ENTITY_CONFIG } from "@/config/entities";
 import { requireEntity } from "./helpers/require-entity";
-import { deleteEntityImage, prepareUpdatedImage } from "./helpers/image";
 import { slugify } from "@/lib/utils/slugify";
 import {
   DbPlayerDetailRow,
@@ -453,7 +450,11 @@ export async function searchPlayersRepo(
   if (!data || data.length === 0) return [];
 
   return data.map((data) =>
-    mapEntitySearchResult(data, "player", STORAGE_BUCKETS.PLAYERS),
+    mapEntitySearchResult(
+      data,
+      "player",
+      ENTITY_CONFIG["player"]["storageBucket"],
+    ),
   );
 }
 
@@ -726,23 +727,13 @@ export async function updatePlayerRepo(
 
   const slug = slugify(player.short_name);
 
-  const finalImage = await prepareUpdatedImage({
-    oldName: oldPlayer.shortName,
-    newName: player.short_name,
-    oldImage: oldPlayer.shortName,
-    newImage: player.image ?? "",
-    bucket: STORAGE_BUCKETS.PLAYERS,
-  });
-
-  const { market_value, positions, nationalities, ...rest } = player;
+  const { positions, nationalities, ...rest } = player;
 
   const { error: playerError } = await supabase
     .from(getPlayerTable())
     .update({
       ...rest,
-      image: finalImage,
       slug,
-      market_value: market_value,
       updated_at: new Date().toISOString(),
     })
     .eq("id", id);
@@ -770,6 +761,7 @@ export async function updatePlayerRepo(
   insertPlayerNationalities(id, nationalities);
 
   const result = await getPlayerEditRepo(id);
+
   if (!result) {
     throw new Error("Failed to retrieve updated player");
   }
@@ -809,8 +801,6 @@ export async function deletePlayerRepo(id: string): Promise<void> {
   const supabase = await getSupabase();
 
   const player = await requireEntity(getPlayerEditRepo, id, getPlayerLabel());
-
-  await deleteEntityImage(player.image, STORAGE_BUCKETS.PLAYERS);
 
   const { error: deletePosError } = await supabase
     .from(getPlayerPositionTable())

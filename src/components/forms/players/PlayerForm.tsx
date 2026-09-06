@@ -56,9 +56,10 @@ const PlayerForm = ({ mode, player, loading = false, onSubmit }: Props) => {
 
   const preferredFootOptions = getPreferredFootOptions(tPrefFoot);
 
-  const { positionOptions } = usePositionOptions();
+  const { positionOptions, loading: isPositionLoading } = usePositionOptions();
 
-  const { nationalityOptions } = useNationalityOptions();
+  const { nationalityOptions, loading: isNationalityLoading } =
+    useNationalityOptions();
 
   const handleSubmit = () => {
     if (!validate()) {
@@ -188,6 +189,7 @@ const PlayerForm = ({ mode, player, loading = false, onSubmit }: Props) => {
             label={tLabels("positions")}
             name="positions"
             placeholder={tPlaceholders("positions")}
+            loading={isPositionLoading}
             instruction={t("form.positions.instruction")}
             options={positionOptions}
             value={form.positions}
@@ -206,6 +208,7 @@ const PlayerForm = ({ mode, player, loading = false, onSubmit }: Props) => {
             label={tLabels("nationalities")}
             name="nationalities"
             placeholder={tPlaceholders("nationalities")}
+            loading={isNationalityLoading}
             instruction={t("form.nationalities.instruction")}
             options={nationalityOptions}
             value={form.nationalities}

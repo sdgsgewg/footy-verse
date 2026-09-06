@@ -2,7 +2,6 @@ import { createClient } from "@/utils/supabase/server";
 import { STORAGE_BUCKETS } from "../storage";
 import { requireEntity } from "./helpers/require-entity";
 import { ENTITY_CONFIG } from "@/config/entities";
-import { deleteEntityImage, prepareUpdatedImage } from "./helpers/image";
 import { slugify } from "@/lib/utils/slugify";
 import {
   DbRegionListRow,

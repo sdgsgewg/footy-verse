@@ -10,9 +10,6 @@ import {
   createPlayerService,
   getPlayersService,
 } from "@/lib/services/players.service";
-import { tryDeleteImage, uploadImage } from "@/lib/services/storage.service";
-import { STORAGE_BUCKETS } from "@/lib/storage";
-import { validateImageFile } from "@/lib/validations/image.schema";
 import { PlayerFilter } from "@/types/player";
 
 export async function GET(request: Request) {
@@ -37,30 +34,15 @@ export async function POST(request: Request) {
 
     const formData = await request.formData();
 
-    const body = getPlayerInputFromFormData(formData);
+    const data = await createPlayerService(
+      getPlayerInputFromFormData(formData),
+      formData,
+    );
 
-    const file = validateImageFile(formData.get("image"));
-
-    let image: string | null = null;
-
-    if (file) {
-      image = await uploadImage(file, body.short_name, STORAGE_BUCKETS.CLUBS);
-    }
-
-    body.image = image;
-
-    try {
-      const data = await createPlayerService(body);
-
-      return createdResponse({
-        success: true,
-        data,
-      });
-    } catch (error) {
-      await tryDeleteImage(image, STORAGE_BUCKETS.PLAYERS);
-
-      throw error;
-    }
+    return createdResponse({
+      success: true,
+      data,
+    });
   } catch (error: unknown) {
     return errorResponse(error);
   }

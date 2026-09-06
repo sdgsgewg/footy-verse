@@ -84,6 +84,7 @@ export function usePlayerForm(player?: PlayerEditResponse) {
     canSubmit,
     validate,
     clearFieldError,
+    setFieldError,
   } = useEntityForm({
     initialValue,
     schema: playerMutationSchema,
@@ -117,7 +118,13 @@ export function usePlayerForm(player?: PlayerEditResponse) {
   });
 
   const updateImage = (file: File) => {
-    setImage(file);
+    const result = setImage(file);
+
+    if (!result.success) {
+      setFieldError("image", result.error ?? "Invalid image.");
+      return;
+    }
+
     clearFieldError("image");
   };
 

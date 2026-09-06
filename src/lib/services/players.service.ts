@@ -16,6 +16,16 @@ import {
 } from "@/lib/validations/players.schema";
 import { idSchema, slugSchema } from "../validations/primitives.schema";
 import { GroupedPlayerListItem, PlayerListResponse } from "@/types/player";
+import { ENTITY_CONFIG } from "@/config/entities";
+import { NotFoundError } from "../errors/http-error";
+import { tryDeleteImage } from "./storage.service";
+import {
+  uploadImageFromFormData,
+  withUpdatedImage,
+  withUploadedImage,
+} from "../storage/image";
+
+const STORAGE_BUCKET = ENTITY_CONFIG["player"]["storageBucket"];
 
 export async function getPlayersService(
   query: unknown,
@@ -51,21 +61,72 @@ export async function getPlayerLookupService(slug: string) {
   return getPlayerLookupRepo(parsedSlug);
 }
 
-export async function createPlayerService(input: unknown) {
+export async function createPlayerService(input: unknown, formData: FormData) {
   const parsed = createPlayerSchema.parse(input);
 
-  return createPlayerRepo(parsed);
+  const image = await uploadImageFromFormData(
+    formData,
+    "image",
+    parsed.short_name,
+    STORAGE_BUCKET,
+  );
+
+  parsed.image = image;
+
+  return withUploadedImage({
+    image,
+    bucketName: STORAGE_BUCKET,
+    operation: () => createPlayerRepo(parsed),
+  });
 }
 
-export async function updatePlayerService(id: string, input: unknown) {
+export async function updatePlayerService(
+  id: string,
+  input: unknown,
+  formData: FormData,
+) {
   const parsedId = idSchema.parse(id);
   const parsed = updatePlayerSchema.parse(input);
 
-  return updatePlayerRepo(parsedId, parsed);
+  const currentPlayer = await getPlayerEditRepo(parsedId);
+
+  if (!currentPlayer) {
+    throw new NotFoundError("Player not found");
+  }
+
+  const uploadedImage = await uploadImageFromFormData(
+    formData,
+    "image",
+    parsed.short_name,
+    STORAGE_BUCKET,
+  );
+
+  return withUpdatedImage({
+    oldImage: currentPlayer.image,
+    newImage: uploadedImage,
+    shouldRename: currentPlayer.shortName !== parsed.short_name,
+    newName: parsed.short_name,
+    bucketName: STORAGE_BUCKET,
+
+    operation: (finalImage) => {
+      return updatePlayerRepo(parsedId, {
+        ...parsed,
+        image: finalImage,
+      });
+    },
+  });
 }
 
 export async function deletePlayerService(id: string) {
   const parsedId = idSchema.parse(id);
 
+  const player = await getPlayerEditRepo(parsedId);
+
+  if (!player) {
+    throw new NotFoundError("Player not found");
+  }
+
   await deletePlayerRepo(parsedId);
+
+  await tryDeleteImage(player.image, STORAGE_BUCKET);
 }
