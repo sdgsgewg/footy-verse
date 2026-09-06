@@ -3,10 +3,10 @@
 import { useMemo } from "react";
 import { ClubEditResponse, UpsertClubInput } from "@/types/club";
 import { getImageUrl } from "@/lib/images/image-url";
-import { STORAGE_BUCKETS } from "@/lib/storage";
 import { buildFormData } from "@/lib/forms/buildFormData";
 import { clubMutationSchema } from "@/lib/validations/clubs.schema";
 import { useEntityForm, useImageField } from "@/hooks/crud";
+import { ENTITY_CONFIG } from "@/config/entities";
 
 const createEmptyClubForm = (): UpsertClubInput => ({
   id: "",
@@ -27,7 +27,11 @@ function mapClub(club: ClubEditResponse): UpsertClubInput {
     id,
 
     image,
-    imageUrl: getImageUrl("club", STORAGE_BUCKETS.CLUBS, image),
+    imageUrl: getImageUrl(
+      "club",
+      ENTITY_CONFIG["club"]["storageBucket"],
+      image,
+    ),
 
     full_name: fullName,
     short_name: shortName,

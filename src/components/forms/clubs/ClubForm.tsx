@@ -40,7 +40,8 @@ const ClubForm = ({ mode, club, loading = false, onSubmit }: Props) => {
 
   const isCreate = mode === "create";
 
-  const { nationalityOptions } = useNationalityOptions();
+  const { nationalityOptions, loading: isNationalityLoading } =
+    useNationalityOptions();
 
   const handleSubmit = () => {
     if (!validate()) {
@@ -97,6 +98,7 @@ const ClubForm = ({ mode, club, loading = false, onSubmit }: Props) => {
           name={`nationality`}
           options={nationalityOptions}
           placeholder={tPlaceholders("nation")}
+          loading={isNationalityLoading}
           searchPlaceholder={tCommon("combobox.searchEntity", {
             entity: tEntities("nationality").toLowerCase(),
           })}

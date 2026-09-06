@@ -133,6 +133,7 @@ export const ENTITY_CONFIG = {
     label: "Region",
     dashboardRoute: ROUTES.DASHBOARD.CONTENT.REGIONS.BASE,
     icon: Map,
+    storageBucket: STORAGE_BUCKETS.REGIONS,
     activityType: "REGION",
   },
 
@@ -141,6 +142,7 @@ export const ENTITY_CONFIG = {
     label: "Confederation",
     dashboardRoute: ROUTES.DASHBOARD.CONTENT.CONFEDERATIONS.BASE,
     icon: Network,
+    storageBucket: STORAGE_BUCKETS.CONFEDERATIONS,
     activityType: "CONFEDERATION",
   },
 

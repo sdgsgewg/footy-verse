@@ -259,21 +259,10 @@ export async function updateRegionRepo(
     ignoreId: id,
   });
 
-  const finalImage = await prepareUpdatedImage({
-    oldName: oldRegion.name,
-    newName: region.name,
-    oldImage: oldRegion.image,
-    newImage: region.image ?? "",
-    bucket: STORAGE_BUCKETS.REGIONS,
-  });
-
-  const { ...rest } = region;
-
   const { error } = await supabase
     .from(getTable())
     .update({
-      ...rest,
-      image: finalImage,
+      ...region,
       slug,
       updated_at: new Date().toISOString(),
     })
@@ -313,8 +302,6 @@ export async function deleteRegionRepo(id: string): Promise<void> {
   const supabase = await getSupabase();
 
   const region = await requireEntity(getRegionEditRepo, id, getLabel());
-
-  await deleteEntityImage(region.image, STORAGE_BUCKETS.REGIONS);
 
   const { error } = await supabase.from(getTable()).delete().eq("id", id);
 

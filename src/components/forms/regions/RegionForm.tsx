@@ -40,7 +40,7 @@ const RegionForm = ({ mode, region, loading = false, onSubmit }: Props) => {
 
   const isCreate = mode === "create";
 
-  const { regionOptions } = useRegionOptions();
+  const { regionOptions, loading: isRegionLoading } = useRegionOptions();
 
   const regionTypeOptions = getRegionTypeOptions(tRegionType);
 
@@ -98,6 +98,7 @@ const RegionForm = ({ mode, region, loading = false, onSubmit }: Props) => {
           label={tLabels("parentRegion")}
           name={`parent_region_id`}
           placeholder={tPlaceholders("parentRegion")}
+          loading={isRegionLoading}
           options={regionOptions}
           value={form.parent_region_id || ""}
           onChange={(value) => updateField("parent_region_id", value)}

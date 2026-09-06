@@ -41,7 +41,7 @@ const NationalityForm = ({
 
   const isCreate = mode === "create";
 
-  const { confederationOptions } = useConfederationOptions();
+  const { confederationOptions, loading: isConfederationLoading } = useConfederationOptions();
 
   const handleSubmit = () => {
     if (!validate()) {
@@ -96,6 +96,7 @@ const NationalityForm = ({
           label={tLabels("confederation")}
           name={`confederation`}
           placeholder={tPlaceholders("confederation")}
+          loading={isConfederationLoading}
           options={confederationOptions}
           value={form.confederation_id || ""}
           onChange={(value) => updateField("confederation_id", value)}

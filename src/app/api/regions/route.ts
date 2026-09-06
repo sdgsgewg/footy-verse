@@ -9,10 +9,7 @@ import { getRegionInputFromFormData } from "@/lib/regions/form-data";
 import {
   createRegionService,
   getRegionsService,
-  precheckCreateRegionService,
 } from "@/lib/services/regions.service";
-import { tryDeleteImage, uploadImage } from "@/lib/services/storage.service";
-import { STORAGE_BUCKETS } from "@/lib/storage";
 import { RegionQuery } from "@/types/region";
 
 export async function GET(request: Request) {
@@ -33,32 +30,15 @@ export async function POST(request: Request) {
 
     const formData = await request.formData();
 
-    const body = await precheckCreateRegionService(
+    const data = await createRegionService(
       getRegionInputFromFormData(formData),
+      formData,
     );
 
-    let image = "";
-
-    const file = formData.get("image");
-
-    if (file instanceof File && file.size > 0) {
-      image = await uploadImage(file, body.name, STORAGE_BUCKETS.REGIONS);
-    }
-
-    body.image = image;
-
-    try {
-      const data = await createRegionService(body);
-
-      return createdResponse({
-        success: true,
-        data,
-      });
-    } catch (error) {
-      await tryDeleteImage(image, STORAGE_BUCKETS.REGIONS);
-
-      throw error;
-    }
+    return createdResponse({
+      success: true,
+      data,
+    });
   } catch (error: unknown) {
     return errorResponse(error);
   }

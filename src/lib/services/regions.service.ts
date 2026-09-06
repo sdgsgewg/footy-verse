@@ -15,6 +15,16 @@ import {
   updateRegionRepo,
 } from "../repositories/regions.repo";
 import { idSchema, slugSchema } from "../validations/primitives.schema";
+import { ENTITY_CONFIG } from "@/config/entities";
+import { NotFoundError } from "../errors/http-error";
+import { tryDeleteImage } from "./storage.service";
+import {
+  uploadImageFromFormData,
+  withUpdatedImage,
+  withUploadedImage,
+} from "../storage/image";
+
+const STORAGE_BUCKET = ENTITY_CONFIG["region"]["storageBucket"];
 
 export async function getRegionsService(query: unknown) {
   const parsed = regionsQuerySchema.parse(query);
@@ -44,30 +54,34 @@ export async function getRegionLookupService(slug: string) {
   return getRegionLookupRepo(parsedSlug);
 }
 
-export async function createRegionService(input: unknown) {
-  const parsed = createRegionSchema.parse(input);
-
-  return createRegionRepo(parsed);
-}
-
-export async function updateRegionService(id: string, input: unknown) {
-  const parsedId = idSchema.parse(id);
-  const parsed = updateRegionSchema.parse(input);
-
-  return updateRegionRepo(parsedId, parsed);
-}
-
-export async function precheckCreateRegionService(input: unknown) {
+export async function createRegionService(input: unknown, formData: FormData) {
   const parsed = createRegionSchema.parse(input);
 
   await ensureRegionUniqueRepo({
     name: parsed.name,
   });
 
-  return parsed;
+  const image = await uploadImageFromFormData(
+    formData,
+    "image",
+    parsed.name,
+    STORAGE_BUCKET,
+  );
+
+  parsed.image = image;
+
+  return withUploadedImage({
+    image,
+    bucketName: STORAGE_BUCKET,
+    operation: () => createRegionRepo(parsed),
+  });
 }
 
-export async function precheckUpdateRegionService(id: string, input: unknown) {
+export async function updateRegionService(
+  id: string,
+  input: unknown,
+  formData: FormData,
+) {
   const parsedId = idSchema.parse(id);
   const parsed = updateRegionSchema.parse(input);
 
@@ -76,11 +90,45 @@ export async function precheckUpdateRegionService(id: string, input: unknown) {
     ignoreId: parsedId,
   });
 
-  return parsed;
+  const currentRegion = await getRegionEditRepo(parsedId);
+
+  if (!currentRegion) {
+    throw new NotFoundError("Region not found");
+  }
+
+  const uploadedImage = await uploadImageFromFormData(
+    formData,
+    "image",
+    parsed.name,
+    STORAGE_BUCKET,
+  );
+
+  return withUpdatedImage({
+    oldImage: currentRegion.image,
+    newImage: uploadedImage,
+    shouldRename: currentRegion.name !== parsed.name,
+    newName: parsed.name,
+    bucketName: STORAGE_BUCKET,
+
+    operation: (finalImage) => {
+      return updateRegionRepo(parsedId, {
+        ...parsed,
+        image: finalImage,
+      });
+    },
+  });
 }
 
 export async function deleteRegionService(id: string) {
   const parsedId = idSchema.parse(id);
 
+  const region = await getRegionEditRepo(parsedId);
+
+  if (!region) {
+    throw new NotFoundError("Region not found");
+  }
+
   await deleteRegionRepo(parsedId);
+
+  await tryDeleteImage(region.image, STORAGE_BUCKET);
 }

@@ -9,12 +9,8 @@ import { getRegionInputFromFormData } from "@/lib/regions/form-data";
 import {
   deleteRegionService,
   getRegionDetailService,
-  getRegionEditService,
-  precheckUpdateRegionService,
   updateRegionService,
 } from "@/lib/services/regions.service";
-import { tryDeleteImage, uploadImage } from "@/lib/services/storage.service";
-import { STORAGE_BUCKETS } from "@/lib/storage";
 
 type RegionRouteContext = {
   params: Promise<{ id: string }>;
@@ -41,40 +37,15 @@ export async function PUT(request: Request, context: RegionRouteContext) {
 
     const { id } = await context.params;
 
-    const currentRegion = await getRegionEditService(id);
-
-    if (!currentRegion) {
-      return errorResponse(new NotFoundError("Region not found"));
-    }
-
     const formData = await request.formData();
 
-    const body = await precheckUpdateRegionService(
+    const data = await updateRegionService(
       id,
       getRegionInputFromFormData(formData),
+      formData,
     );
 
-    let image = currentRegion.image;
-
-    const file = formData.get("image");
-
-    if (file instanceof File && file.size > 0) {
-      image = await uploadImage(file, body.name, STORAGE_BUCKETS.REGIONS);
-    }
-
-    body.image = image;
-
-    try {
-      const data = await updateRegionService(id, body);
-
-      return successResponse(data);
-    } catch (error) {
-      if (image && image !== currentRegion.image) {
-        await tryDeleteImage(image, STORAGE_BUCKETS.REGIONS);
-      }
-
-      throw error;
-    }
+    return successResponse(data);
   } catch (error: unknown) {
     return errorResponse(error);
   }
@@ -85,12 +56,6 @@ export async function DELETE(_request: Request, context: RegionRouteContext) {
     await authorizeManageContent();
 
     const { id } = await context.params;
-
-    const region = await getRegionEditService(id);
-
-    if (!region) {
-      return errorResponse(new NotFoundError("Region not found"));
-    }
 
     await deleteRegionService(id);
 

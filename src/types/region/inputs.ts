@@ -1,5 +1,4 @@
 import z from "zod";
-import { ImagePayload } from "../image";
 import {
   createRegionSchema,
   regionMutationSchema,
@@ -19,4 +18,5 @@ export type RegionUpdateInput = z.infer<typeof updateRegionSchema>;
 
 export type UpsertRegionInput = z.infer<typeof regionMutationSchema> & {
   id?: string;
-} & ImagePayload;
+  imageUrl: string | null; // public URL untuk preview
+};

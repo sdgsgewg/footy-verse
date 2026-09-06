@@ -1,30 +1,23 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { getImageUrl } from "@/lib/images/image-url";
-import { STORAGE_BUCKETS } from "@/lib/storage";
-import {
-  RegionEditResponse,
-  RegionFormField,
-  UpsertRegionInput,
-} from "@/types/region";
+import { RegionEditResponse, UpsertRegionInput } from "@/types/region";
 import { buildFormData } from "@/lib/forms/buildFormData";
-import { FormErrors } from "@/types/form";
 import { regionMutationSchema } from "@/lib/validations/regions.schema";
-import { getZodFormErrors } from "@/lib/forms/errors";
+import { ENTITY_CONFIG } from "@/config/entities";
+import { useEntityForm, useImageField } from "@/hooks/crud";
 
-const emptyRegionForm: UpsertRegionInput = {
+const createEmptyRegionForm = (): UpsertRegionInput => ({
   id: "",
 
   image: null,
   imageUrl: null,
-  imageFile: null,
-  previewUrl: null,
 
   name: "",
   region_type: "",
   parent_region_id: null,
-};
+});
 
 function mapRegion(region: RegionEditResponse): UpsertRegionInput {
   const { id, image, name, regionType, parentRegionId } = region;
@@ -33,9 +26,11 @@ function mapRegion(region: RegionEditResponse): UpsertRegionInput {
     id,
 
     image,
-    imageUrl: getImageUrl("region", STORAGE_BUCKETS.REGIONS, image),
-    imageFile: null,
-    previewUrl: null,
+    imageUrl: getImageUrl(
+      "region",
+      ENTITY_CONFIG["region"]["storageBucket"],
+      image,
+    ),
 
     name,
     region_type: regionType,
@@ -45,85 +40,48 @@ function mapRegion(region: RegionEditResponse): UpsertRegionInput {
 
 export function useRegionForm(region?: RegionEditResponse) {
   const initialValue = useMemo(
-    () => (region ? mapRegion(region) : emptyRegionForm),
+    () => (region ? mapRegion(region) : createEmptyRegionForm()),
     [region],
   );
 
-  const [form, setForm] = useState(initialValue);
-  const [errors, setErrors] = useState<FormErrors<RegionFormField>>({});
+  const {
+    imageFile,
+    previewUrl,
+    updateImage: setImage,
+  } = useImageField({
+    initialPreviewUrl: initialValue.imageUrl,
+  });
 
-  const initialForm = initialValue;
+  const {
+    form,
+    updateField,
+    errors,
+    isDirty,
+    canSubmit,
+    validate,
+    clearFieldError,
+    setFieldError,
+  } = useEntityForm({
+    initialValue,
+    schema: regionMutationSchema,
 
-  const clearFieldError = (field: RegionFormField) => {
-    setErrors((prev) => {
-      if (!prev[field]) {
-        return prev;
-      }
+    dirtyFields: ["name", "region_type", "parent_region_id", "image"],
 
-      const next = { ...prev };
-      delete next[field];
+    requiredFields: ["name", "region_type"],
 
-      return next;
-    });
-  };
-
-  const updateField = <K extends keyof UpsertRegionInput>(
-    field: K,
-    value: UpsertRegionInput[K],
-  ) => {
-    setForm((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
-
-    if (
-      field === "name" ||
-      field === "region_type" ||
-      field === "parent_region_id"
-    ) {
-      clearFieldError(field);
-    }
-  };
+    additionalDirty: imageFile !== null,
+  });
 
   const updateImage = (file: File) => {
-    setForm((prev) => ({
-      ...prev,
-      imageFile: file,
-      previewUrl: URL.createObjectURL(file),
-    }));
+    const result = setImage(file);
+
+    if (!result.success) {
+      setFieldError("image", result.error ?? "Invalid image.");
+      return;
+    }
 
     clearFieldError("image");
   };
-
-  const validate = () => {
-    const result = regionMutationSchema.safeParse(form);
-
-    if (result.success) {
-      setErrors({});
-      return true;
-    }
-
-    setErrors(getZodFormErrors<RegionFormField>(result.error));
-
-    return false;
-  };
-
-  const isDirty = useMemo(
-    () =>
-      form.name !== initialForm.name ||
-      form.region_type !== initialForm.region_type ||
-      form.parent_region_id !== initialForm.parent_region_id ||
-      form.image !== initialForm.image ||
-      form.imageFile != null,
-    [form, initialForm],
-  );
-
-  const canSubmit = useMemo(() => {
-    const isFilled =
-      form.name.trim().length > 0 && form.region_type.trim().length > 0;
-
-    return isFilled && isDirty;
-  }, [form, isDirty]);
 
   const buildPayload = () => {
     return buildFormData({
@@ -133,14 +91,19 @@ export function useRegionForm(region?: RegionEditResponse) {
         parent_region_id: form.parent_region_id,
       },
       existingImage: form.image,
-      imageFile: form.imageFile,
+      imageFile,
     });
   };
 
   return {
-    form,
-    isDirty,
+    form: {
+      ...form,
 
+      imageFile,
+      previewUrl,
+    },
+
+    isDirty,
     errors,
 
     updateField,
