@@ -1,5 +1,4 @@
 import { createClient } from "@/utils/supabase/server";
-import { STORAGE_BUCKETS } from "../storage";
 import {
   ClubCreateInput,
   ClubDetailResponse,
@@ -142,13 +141,13 @@ export async function searchClubsRepo(
     .select(
       `
       id,
-      name,
+      name:short_name,
       slug,
       image
     `,
     )
-    .ilike("name", `%${search}%`)
-    .order("name", {
+    .ilike("short_name", `%${search}%`)
+    .order("short_name", {
       ascending: true,
     })
     .limit(limit)
@@ -159,7 +158,7 @@ export async function searchClubsRepo(
   if (!data || data.length === 0) return [];
 
   return data.map((data) =>
-    mapEntitySearchResult(data, "club", STORAGE_BUCKETS.CLUBS),
+    mapEntitySearchResult(data, "club", ENTITY_CONFIG["club"]["storageBucket"]),
   );
 }
 
