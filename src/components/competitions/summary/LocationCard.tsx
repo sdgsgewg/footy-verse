@@ -1,6 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { IMAGES } from "@/constants/images";
-import RecordData from "../../shared/summary/RecordData";
 import ImageWrapper from "@/components/shared/ImageWrapper";
 import { LocationResponse } from "@/types/competition";
 

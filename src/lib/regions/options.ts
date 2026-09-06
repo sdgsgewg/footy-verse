@@ -1,5 +1,4 @@
 import { RegionType } from "@/enums/RegionType";
-import { RegionListItem } from "@/types/region";
 import { Option } from "@/types/option";
 import { getRegionTypeLabel } from "./labels";
 

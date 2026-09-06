@@ -1,6 +1,5 @@
 import { NationalityResponse } from "@/types/nationality";
 import RecordRow from "./RecordRow";
-import Image from "next/image";
 import ImageWrapper from "@/components/shared/ImageWrapper";
 
 interface PlayerNationalitiesRecordDataProps {

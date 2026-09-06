@@ -687,7 +687,7 @@ export async function findPlayerDuplicateCandidatesRepo({
         position_id
       ),
       player_nationalities (
-        nationality_id
+        nation_id
       )
     `,
     )

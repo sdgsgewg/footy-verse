@@ -1,6 +1,5 @@
 import { ClubTeamResponse } from "@/types/club-team";
 import RecordRow from "./RecordRow";
-import Image from "next/image";
 import ImageWrapper from "@/components/shared/ImageWrapper";
 
 interface PlayerCurrentClubRecordDataProps {

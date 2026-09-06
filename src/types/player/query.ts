@@ -74,7 +74,7 @@ export interface PlayerDuplicateCandidate {
     position_id: string;
   }[];
   player_nationalities: {
-    nationality_id: string;
+    nation_id: string;
   }[];
 }
 

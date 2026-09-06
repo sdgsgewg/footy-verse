@@ -38,7 +38,7 @@ export function isDuplicatePlayer(
   );
 
   const existingNationalityIds = existing.player_nationalities.map(
-    (nationality) => nationality.nationality_id,
+    (nationality) => nationality.nation_id,
   );
 
   return (
