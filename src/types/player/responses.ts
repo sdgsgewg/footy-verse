@@ -48,6 +48,7 @@ export interface GroupedPlayerListItem {
 
 export interface PlayerEditResponse {
   id: string;
+  slug: string;
   fullName: string;
   shortName: string;
   image: string | null;

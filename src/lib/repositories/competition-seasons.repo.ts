@@ -16,7 +16,7 @@ import {
   mapCompetitionSeasonEditResponse,
   mapCompetitionSeasonListItem,
 } from "../competition-seasons/mapper";
-import { slugify } from "@/lib/utils/slugify";
+import { slugify } from "@/lib/utils/slug";
 import { requireEntity } from "./helpers/require-entity";
 
 async function getSupabase() {

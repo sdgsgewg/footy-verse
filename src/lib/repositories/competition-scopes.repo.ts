@@ -2,7 +2,7 @@ import { createClient } from "@/utils/supabase/server";
 import { requireEntity } from "./helpers/require-entity";
 import { ENTITY_CONFIG } from "@/config/entities";
 
-import { slugify } from "@/lib/utils/slugify";
+import { slugify } from "@/lib/utils/slug";
 import {
   CompetitionScopeCreateInput,
   CompetitionScopeDetailResponse,

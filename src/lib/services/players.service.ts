@@ -7,6 +7,7 @@ import {
   updatePlayerRepo,
   getPlayerLookupRepo,
   getGroupedPlayersRepo,
+  findPlayerDuplicateCandidatesRepo,
 } from "@/lib/repositories/players.repo";
 import {
   playersQuerySchema,
@@ -17,13 +18,14 @@ import {
 import { idSchema, slugSchema } from "../validations/primitives.schema";
 import { GroupedPlayerListItem, PlayerListResponse } from "@/types/player";
 import { ENTITY_CONFIG } from "@/config/entities";
-import { NotFoundError } from "../errors/http-error";
+import { ConflictError, NotFoundError } from "../errors/http-error";
 import { tryDeleteImage } from "./storage.service";
 import {
   uploadImageFromFormData,
   withUpdatedImage,
   withUploadedImage,
 } from "../storage/image";
+import { isDuplicatePlayer } from "../players/player.util";
 
 const STORAGE_BUCKET = ENTITY_CONFIG["player"]["storageBucket"];
 
@@ -64,6 +66,20 @@ export async function getPlayerLookupService(slug: string) {
 export async function createPlayerService(input: unknown, formData: FormData) {
   const parsed = createPlayerSchema.parse(input);
 
+  const candidates = await findPlayerDuplicateCandidatesRepo({
+    fullName: parsed.full_name,
+    shortName: parsed.short_name,
+    dob: parsed.dob,
+  });
+
+  const duplicate = candidates.find((candidate) =>
+    isDuplicatePlayer(parsed, candidate),
+  );
+
+  if (duplicate) {
+    throw new ConflictError("Player already exists.");
+  }
+
   const image = await uploadImageFromFormData(
     formData,
     "image",
@@ -92,6 +108,21 @@ export async function updatePlayerService(
 
   if (!currentPlayer) {
     throw new NotFoundError("Player not found");
+  }
+
+  const candidates = await findPlayerDuplicateCandidatesRepo({
+    fullName: parsed.full_name,
+    shortName: parsed.short_name,
+    dob: parsed.dob,
+    excludeId: parsedId,
+  });
+
+  const duplicate = candidates.find((candidate) =>
+    isDuplicatePlayer(parsed, candidate),
+  );
+
+  if (duplicate) {
+    throw new ConflictError("Player already exists.");
   }
 
   const uploadedImage = await uploadImageFromFormData(

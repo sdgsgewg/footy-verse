@@ -65,6 +65,19 @@ export type DbPlayerDetailRow = Player & {
 
 // Helper
 
+export interface PlayerDuplicateCandidate {
+  id: string;
+  full_name: string;
+  short_name: string;
+  dob: string;
+  player_positions: {
+    position_id: string;
+  }[];
+  player_nationalities: {
+    nationality_id: string;
+  }[];
+}
+
 // National Team
 
 export type DbPlayerRow = Pick<Player, "id" | "market_value">;

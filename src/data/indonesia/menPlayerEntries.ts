@@ -1,4 +1,4 @@
-import { slugify } from "@/lib/utils/slugify";
+import { slugify } from "@/lib/utils/slug";
 import { CLUBS } from "@/constants/clubs";
 import { NATIONALITIES } from "@/constants/nationalities";
 import { POSITIONS } from "@/constants/positions";

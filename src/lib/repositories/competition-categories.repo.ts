@@ -15,7 +15,7 @@ import {
   mapCompetitionCategoryEditResponse,
   mapCompetitionCategoryListItem,
 } from "../competition-categories/mapper";
-import { slugify } from "@/lib/utils/slugify";
+import { slugify } from "@/lib/utils/slug";
 import { createEntityActivityLog } from "./activity-logs.repo";
 import { ActivityLogAction } from "@/enums/ActivityLogAction";
 import { getChangedFields } from "./helpers/get-changed-field";

@@ -7,7 +7,7 @@ import {
 } from "../players/mapper";
 import { ENTITY_CONFIG } from "@/config/entities";
 import { requireEntity } from "./helpers/require-entity";
-import { slugify } from "@/lib/utils/slugify";
+import { createSlugCandidate, slugify } from "@/lib/utils/slug";
 import {
   DbPlayerDetailRow,
   DbPlayerListRow,
@@ -15,6 +15,7 @@ import {
   GroupedPlayerListItem,
   PlayerCreateInput,
   PlayerDetailResponse,
+  PlayerDuplicateCandidate,
   PlayerEditResponse,
   PlayerFilter,
   PlayerListResponse,
@@ -32,6 +33,7 @@ import { getChangedFields } from "./helpers/get-changed-field";
 import { SearchResult } from "@/types/search";
 import { DbEntitySearchRow } from "@/types/entity";
 import { mapEntitySearchResult } from "../entities/mapper";
+import { isUniqueViolation } from "../utils/supabase-error";
 
 async function getSupabase() {
   return createClient();
@@ -660,6 +662,52 @@ async function insertPlayerNationalities(
   if (playerNationalityError) throw playerNationalityError;
 }
 
+export async function findPlayerDuplicateCandidatesRepo({
+  fullName,
+  shortName,
+  dob,
+  excludeId,
+}: {
+  fullName: string;
+  shortName: string;
+  dob: string;
+  excludeId?: string;
+}): Promise<PlayerDuplicateCandidate[]> {
+  const supabase = await getSupabase();
+
+  let query = supabase
+    .from(getPlayerTable())
+    .select(
+      `
+      id,
+      full_name,
+      short_name,
+      dob,
+      player_positions (
+        position_id
+      ),
+      player_nationalities (
+        nationality_id
+      )
+    `,
+    )
+    .eq("full_name", fullName)
+    .eq("short_name", shortName)
+    .eq("dob", dob);
+
+  if (excludeId) {
+    query = query.neq("id", excludeId);
+  }
+
+  const { data, error } = await query;
+
+  if (error) {
+    throw error;
+  }
+
+  return data ?? [];
+}
+
 /**
  *
  * @param player
@@ -670,29 +718,46 @@ export async function createPlayerRepo(
 ): Promise<PlayerEditResponse> {
   const supabase = await getSupabase();
 
-  const slug = slugify(player.short_name ?? "");
+  const { positions, nationalities, ...rest } = player;
 
-  const { market_value, positions, nationalities, ...rest } = player;
+  const baseSlug = slugify(player.short_name ?? "");
 
-  const { data: insertedPlayer, error: playerError } = await supabase
-    .from(getPlayerTable())
-    .insert({
-      ...rest,
-      slug,
-      market_value: market_value,
-    })
-    .select("id")
-    .single();
+  let insertedPlayer: { id: string } | null = null;
 
-  if (playerError) throw playerError;
+  for (let attempt = 0; attempt < 100; attempt++) {
+    const slug = createSlugCandidate(baseSlug, attempt);
 
-  //  Insert player positions (table player_positions)
-  insertPlayerPositions(insertedPlayer.id, positions);
+    const { data, error } = await supabase
+      .from(getPlayerTable())
+      .insert({
+        ...rest,
+        slug,
+      })
+      .select("id")
+      .single();
 
-  //  Insert player nationalities (table player_nationalities)
-  insertPlayerNationalities(insertedPlayer.id, nationalities);
+    if (!error) {
+      insertedPlayer = data;
+      break;
+    }
+
+    if (isUniqueViolation(error, "players_slug_unique")) {
+      continue;
+    }
+
+    throw error;
+  }
+
+  if (!insertedPlayer) {
+    throw new Error("Failed to create player with a unique slug.");
+  }
+
+  await insertPlayerPositions(insertedPlayer.id, positions);
+
+  await insertPlayerNationalities(insertedPlayer.id, nationalities);
 
   const result = await getPlayerEditRepo(insertedPlayer.id);
+
   if (!result) {
     throw new Error("Failed to retrieve created player");
   }
@@ -725,40 +790,70 @@ export async function updatePlayerRepo(
     getPlayerLabel(),
   );
 
-  const slug = slugify(player.short_name);
-
   const { positions, nationalities, ...rest } = player;
 
-  const { error: playerError } = await supabase
-    .from(getPlayerTable())
-    .update({
-      ...rest,
-      slug,
-      updated_at: new Date().toISOString(),
-    })
-    .eq("id", id);
+  const shortNameChanged = oldPlayer.shortName !== player.short_name;
 
-  if (playerError) throw playerError;
+  const baseSlug = slugify(player.short_name);
 
-  // Positions: Delete existing positions and insert new ones
+  let updated = false;
 
+  for (let attempt = 0; attempt < 100; attempt++) {
+    const slug = shortNameChanged
+      ? createSlugCandidate(baseSlug, attempt)
+      : oldPlayer.slug;
+
+    const { error: playerError } = await supabase
+      .from(getPlayerTable())
+      .update({
+        ...rest,
+        slug,
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", id);
+
+    if (!playerError) {
+      updated = true;
+      break;
+    }
+
+    if (
+      shortNameChanged &&
+      isUniqueViolation(playerError, "players_slug_unique")
+    ) {
+      continue;
+    }
+
+    throw playerError;
+  }
+
+  if (!updated) {
+    throw new Error("Failed to update player with a unique slug.");
+  }
+
+  // Positions
   const { error: deletePosError } = await supabase
     .from(getPlayerPositionTable())
     .delete()
     .eq("player_id", id);
-  if (deletePosError) throw deletePosError;
 
-  insertPlayerPositions(id, positions);
+  if (deletePosError) {
+    throw deletePosError;
+  }
 
-  // Nationalities: Delete existing nationalities and insert new ones
+  await insertPlayerPositions(id, positions);
 
+  // Nationalities
   const { error: deleteNationalityError } = await supabase
     .from(getPlayerNationalityTable())
     .delete()
     .eq("player_id", id);
-  if (deleteNationalityError) throw deleteNationalityError;
 
-  insertPlayerNationalities(id, nationalities);
+  if (deleteNationalityError) {
+    throw deleteNationalityError;
+  }
+
+  await insertPlayerNationalities(id, nationalities);
 
   const result = await getPlayerEditRepo(id);
 
