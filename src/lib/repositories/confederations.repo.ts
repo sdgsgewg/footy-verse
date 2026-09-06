@@ -2,7 +2,6 @@ import { createClient } from "@/utils/supabase/server";
 import { STORAGE_BUCKETS } from "../storage";
 import { requireEntity } from "./helpers/require-entity";
 import { ENTITY_CONFIG } from "@/config/entities";
-import { deleteEntityImage, prepareUpdatedImage } from "./helpers/image";
 import { slugify } from "@/lib/utils/slugify";
 import {
   ConfederationCreateInput,
@@ -281,21 +280,10 @@ export async function updateConfederationRepo(
     ignoreId: id,
   });
 
-  const { image: newImage, ...rest } = confederation;
-
-  const finalImage = await prepareUpdatedImage({
-    oldName: oldConfederation.name,
-    newName: confederation.name,
-    oldImage: oldConfederation.image,
-    newImage: newImage ?? "",
-    bucket: STORAGE_BUCKETS.CONFEDERATIONS,
-  });
-
   const { error } = await supabase
     .from(getTable())
     .update({
-      ...rest,
-      image: finalImage,
+      ...confederation,
       slug,
       updated_at: new Date().toISOString(),
     })
@@ -342,8 +330,6 @@ export async function deleteConfederationRepo(id: string): Promise<void> {
     id,
     getLabel(),
   );
-
-  await deleteEntityImage(confederation.image, STORAGE_BUCKETS.CONFEDERATIONS);
 
   const { error } = await supabase.from(getTable()).delete().eq("id", id);
 

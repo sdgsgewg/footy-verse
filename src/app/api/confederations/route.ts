@@ -9,11 +9,7 @@ import { getConfederationInputFromFormData } from "@/lib/confederations/form-dat
 import {
   createConfederationService,
   getConfederationsService,
-  precheckCreateConfederationService,
 } from "@/lib/services/confederations.service";
-
-import { tryDeleteImage, uploadImage } from "@/lib/services/storage.service";
-import { STORAGE_BUCKETS } from "@/lib/storage";
 import { ConfederationQuery } from "@/types/confederation";
 
 export async function GET(request: Request) {
@@ -34,36 +30,15 @@ export async function POST(request: Request) {
 
     const formData = await request.formData();
 
-    const body = await precheckCreateConfederationService(
+    const data = await createConfederationService(
       getConfederationInputFromFormData(formData),
+      formData,
     );
 
-    let image = "";
-
-    const file = formData.get("image");
-
-    if (file instanceof File && file.size > 0) {
-      image = await uploadImage(
-        file,
-        body.name,
-        STORAGE_BUCKETS.CONFEDERATIONS,
-      );
-    }
-
-    body.image = image;
-
-    try {
-      const data = await createConfederationService(body);
-
-      return createdResponse({
-        success: true,
-        data,
-      });
-    } catch (error) {
-      await tryDeleteImage(image, STORAGE_BUCKETS.CONFEDERATIONS);
-
-      throw error;
-    }
+    return createdResponse({
+      success: true,
+      data,
+    });
   } catch (error: unknown) {
     return errorResponse(error);
   }
