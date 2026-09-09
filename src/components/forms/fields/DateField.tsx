@@ -91,7 +91,7 @@ export default function DateField({
 
   return (
     <div className="flex flex-col gap-2">
-      <Label label={label} required={required} readOnly={readOnly} />
+      <Label label={label} name={name} required={required} readOnly={readOnly} />
 
       <Popover
         open={open}
@@ -101,7 +101,7 @@ export default function DateField({
           }
         }}
       >
-        <PopoverTrigger asChild>
+        <PopoverTrigger id={name} asChild>
           <Button
             id={name}
             name={name}

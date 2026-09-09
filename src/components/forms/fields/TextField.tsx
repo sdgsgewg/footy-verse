@@ -37,9 +37,15 @@ export default function TextField({
 
   return (
     <div className="flex flex-col gap-2">
-      <Label label={label} required={required} readOnly={readOnly} />
+      <Label
+        label={label}
+        name={name}
+        required={required}
+        readOnly={readOnly}
+      />
 
       <Input
+        id={name}
         type="text"
         name={name}
         aria-invalid={!!error}

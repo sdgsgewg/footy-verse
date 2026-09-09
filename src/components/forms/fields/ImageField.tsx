@@ -64,7 +64,11 @@ export default function ImageField({
 
   return (
     <div className="space-y-3">
-      <Label label={label} required={required} readOnly={readOnly} />
+      <Label
+        label={label}
+        required={required}
+        readOnly={readOnly}
+      />
 
       <Card
         onClick={handleChooseFile}

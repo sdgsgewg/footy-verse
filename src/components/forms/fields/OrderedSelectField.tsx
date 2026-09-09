@@ -163,7 +163,7 @@ const OrderedSelectField = <T extends OrderedEntity>({
   return (
     <div className={cn("flex flex-col gap-2", className)}>
       <div className="flex items-center justify-between">
-        <Label label={label} required={required} />
+        <Label label={label} name={name} required={required} />
 
         {selectedItems.length > 0 && (
           <Button
@@ -188,6 +188,7 @@ const OrderedSelectField = <T extends OrderedEntity>({
         <Popover open={open} onOpenChange={setOpen}>
           <PopoverTrigger asChild>
             <Button
+              id={name}
               type="button"
               variant="outline"
               disabled={disabled || loading || availableOptions.length === 0}

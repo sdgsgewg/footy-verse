@@ -75,10 +75,10 @@ const ComboboxField: React.FC<ComboboxFieldProps> = ({
 
   return (
     <div className={cn("flex flex-col gap-2", className)}>
-      {label && <Label label={label} required={required} />}
+      {label && <Label label={label} name={name} required={required} />}
 
       <Popover open={open} onOpenChange={setOpen}>
-        <PopoverTrigger asChild>
+        <PopoverTrigger id={name} asChild>
           <Button
             type="button"
             variant="outline"

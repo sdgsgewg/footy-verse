@@ -45,9 +45,10 @@ export default function NumberField({
 
   return (
     <div className="flex flex-col gap-2">
-      <Label label={label} required={required} readOnly={readOnly} />
+      <Label label={label} name={name} required={required} readOnly={readOnly} />
 
       <NumericFormat
+        id={name}
         customInput={Input}
         name={name}
         aria-invalid={!!error}

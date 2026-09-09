@@ -61,7 +61,7 @@ const SelectField: React.FC<SelectFieldProps> = ({
 
   return (
     <div className={cn("flex flex-col gap-2", className)}>
-      {label && <Label label={label} required={required} />}
+      {label && <Label label={label} name={name} required={required} />}
 
       <Select
         name={name}
@@ -71,7 +71,7 @@ const SelectField: React.FC<SelectFieldProps> = ({
         disabled={disabled || loading}
         onValueChange={onChange}
       >
-        <SelectTrigger className="w-full rounded-xl">
+        <SelectTrigger id={name} className="w-full rounded-xl">
           {loading ? (
             <div className="flex items-center gap-2">
               <Loader2 className="size-4 shrink-0 animate-spin opacity-50" />
