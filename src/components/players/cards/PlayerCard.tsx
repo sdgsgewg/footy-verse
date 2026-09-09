@@ -83,7 +83,7 @@ export default function PlayerCard({ teamType, player, onNavigate }: Props) {
           </p>
 
           {playerOrigin && (
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
               <Image
                 src={playerOrigin.imageUrl}
                 alt={playerOrigin.name}
@@ -91,7 +91,7 @@ export default function PlayerCard({ teamType, player, onNavigate }: Props) {
                 height={20}
                 className={
                   isClubPlayer
-                    ? "h-4 w-6 object-cover rounded-sm"
+                    ? "h-4 w-6 object-cover rounded-sm shadow-sm"
                     : "h-5 w-5 object-contain"
                 }
               />
