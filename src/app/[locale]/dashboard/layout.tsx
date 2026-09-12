@@ -12,18 +12,18 @@ export default function DashboardLayout({
   const pathname = usePathname();
 
   return (
-    <div className="min-h-screen overflow-hidden bg-background">
+    <div className="flex h-screen flex-col overflow-hidden bg-background">
       {/* Fixed Navbar */}
       <Navbar />
 
       {/* Body */}
-      <div className="flex h-[calc(100vh-4rem)]">
+      <div className="flex min-h-0 flex-1">
         {/* Fixed Sidebar */}
         <Sidebar pathname={pathname} />
 
         {/* Scrollable Content */}
-        <main className="flex-1 overflow-auto">
-          <div className="w-full p-6 space-y-6">{children}</div>
+        <main className="min-h-0 flex-1 overflow-y-auto">
+          <div className="w-full space-y-6 p-6">{children}</div>
         </main>
       </div>
     </div>

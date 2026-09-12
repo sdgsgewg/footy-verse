@@ -1,12 +1,12 @@
 "use client";
 
 import * as React from "react";
+import type { AnyFieldApi } from "@tanstack/react-form";
 import { Check, ChevronDown, Loader2 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import Label from "./Label";
-
 import { Button } from "@/components/ui/button";
+
 import {
   Popover,
   PopoverContent,
@@ -21,82 +21,93 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
+
+import { Field, FieldError, FieldLabel } from "@/components/ui/field";
+
 import { Option } from "@/types/option";
-import Image from "next/image";
-import ErrorMessage from "./ErrorMessage";
 import { useTranslations } from "next-intl";
+import { Entity } from "@/config/entities";
+import { ComboboxFieldImage } from "@/components/shared/fields";
 
 interface ComboboxFieldProps {
-  label?: string;
-  name: string;
+  field: AnyFieldApi;
+  entityKey: Entity;
 
-  value: string | null | undefined;
+  label?: string;
+
   options: Option[];
-  onChange: (value: string) => void;
 
   placeholder?: string;
-  searchPlaceholder?: string;
-  emptyMessage?: string;
 
   disabled?: boolean;
   loading?: boolean;
   required?: boolean;
 
   className?: string;
-  error?: string;
 }
 
 const ComboboxField: React.FC<ComboboxFieldProps> = ({
+  field,
+  entityKey,
   label,
-  name,
 
-  value,
   options,
-  onChange,
 
   placeholder = "Select option",
-  searchPlaceholder = "Search...",
-  emptyMessage = "No data found.",
 
   disabled = false,
   loading = false,
   required = false,
 
   className,
-  error,
 }) => {
+  const tCommon = useTranslations("common");
+  const tEntities = useTranslations("entities");
   const tCommonStates = useTranslations("common.states");
+
+  const searchPlaceholder = tCommon("combobox.searchEntity", {
+    entity: tEntities(entityKey).toLowerCase(),
+  });
+
+  const emptyMessage = tCommon("combobox.noEntityFound", {
+    entity: tEntities(entityKey).toLowerCase(),
+  });
 
   const [open, setOpen] = React.useState(false);
 
+  const value = field.state.value as string | null | undefined;
+
   const selectedOption = options.find((item) => item.value === value);
 
-  const errorId = error ? `${name}-error` : undefined;
+  const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
 
   return (
-    <div className={cn("flex flex-col gap-2", className)}>
-      {label && <Label label={label} name={name} required={required} />}
+    <Field data-invalid={isInvalid} className={cn(className)}>
+      {label && (
+        <FieldLabel htmlFor={field.name}>
+          {label}
+          {required && <span className="text-destructive">*</span>}
+        </FieldLabel>
+      )}
 
       <Popover open={open} onOpenChange={setOpen}>
-        <PopoverTrigger id={name} asChild>
+        <PopoverTrigger asChild>
           <Button
+            id={field.name}
             type="button"
             variant="outline"
             role="combobox"
             aria-expanded={open}
-            aria-invalid={!!error}
-            aria-describedby={errorId}
+            aria-invalid={isInvalid}
             disabled={disabled || loading}
             className="h-10 w-full justify-between rounded-xl font-normal"
           >
             <div className="flex items-center gap-2 overflow-hidden">
               {selectedOption?.imageUrl && (
-                <Image
+                <ComboboxFieldImage
                   src={selectedOption.imageUrl}
                   alt={selectedOption.label}
-                  width={20}
-                  height={20}
-                  className="shrink-0 rounded-full object-cover"
+                  entityKey={entityKey}
                 />
               )}
 
@@ -118,7 +129,6 @@ const ComboboxField: React.FC<ComboboxFieldProps> = ({
         <PopoverContent
           align="start"
           className="w-[--radix-popover-trigger-width] p-0"
-          onWheel={(e) => e.stopPropagation()}
         >
           <Command>
             <CommandInput placeholder={searchPlaceholder} />
@@ -132,7 +142,8 @@ const ComboboxField: React.FC<ComboboxFieldProps> = ({
                     key={option.value}
                     value={option.label}
                     onSelect={() => {
-                      onChange(option.value);
+                      field.handleChange(option.value);
+                      field.handleBlur();
                       setOpen(false);
                     }}
                   >
@@ -145,12 +156,10 @@ const ComboboxField: React.FC<ComboboxFieldProps> = ({
 
                     <div className="flex items-center gap-2">
                       {option.imageUrl && (
-                        <Image
+                        <ComboboxFieldImage
                           src={option.imageUrl}
                           alt={option.label}
-                          width={20}
-                          height={20}
-                          className="rounded-full object-cover shrink-0"
+                          entityKey={entityKey}
                         />
                       )}
 
@@ -164,8 +173,8 @@ const ComboboxField: React.FC<ComboboxFieldProps> = ({
         </PopoverContent>
       </Popover>
 
-      {error && <ErrorMessage id={errorId} message={error} />}
-    </div>
+      {isInvalid && <FieldError errors={field.state.meta.errors} />}
+    </Field>
   );
 };
 

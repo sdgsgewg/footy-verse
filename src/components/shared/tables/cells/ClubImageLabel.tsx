@@ -14,7 +14,7 @@ const ClubImageLabel = ({ imageUrl, label }: Props) => {
         alt: label,
         aspectRatio: "none",
         className: {
-          container: "w-8 h-8",
+          container: "w-7 h-7",
           image: "object-contain",
         },
       }}

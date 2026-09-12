@@ -4,7 +4,7 @@ import { idSchema } from "./primitives.schema";
 import { careerTypeSchema } from "./enums.schema";
 
 export const playerCareerMutationSchema = z.object({
-  joined_at: z.string(),
+  joined_at: z.string().min(1),
   left_at: nullableDate.optional(),
 });
 

@@ -10,7 +10,7 @@ import { isLikelyConnectionError } from "@/lib/utils/connection-error";
 import { createSortHandler } from "@/lib/utils/crud";
 import { CompetitionFilter } from "@/types/competition";
 import { useTranslations } from "next-intl";
-import CompetitionFilterContent from "@/components/dashboard/competitions/CompetitionFilterContent";
+import { CompetitionFilterContent } from "@/components/competitions/filter";
 import { useCrudFilterDialog } from "@/hooks/crud/useCrudFilterDialog";
 import { createCompetitionColumns } from "@/components/dashboard/competitions/columns/competition-columns";
 
@@ -112,6 +112,7 @@ export default function PlayersManagementPage() {
           <CompetitionFilterContent
             filters={draftFilters}
             updateFilter={updateDraftFilter}
+            showLabel
           />
         ),
         open: filterOpen,

@@ -3,22 +3,29 @@
 import ConnectionErrorAlert from "@/components/feedback/ConnectionErrorAlert";
 import { isLikelyConnectionError } from "@/lib/utils/connection-error";
 import { useTranslations } from "next-intl";
+
 import { CrudFormTablePage } from "@/components/templates/crud";
+
 import { DataColumn } from "@/types/table";
+import { PositionCategoryListItem } from "@/types/position-category";
+
 import { createSortHandler } from "@/lib/utils/crud";
 import { useFilterSync } from "@/hooks/filter";
+
 import usePositionCategoryFilter from "@/hooks/position-categories/usePositionCategoryFilter";
+
 import {
   usePositionCategories,
   usePositionCategoryActions,
   usePositionCategoryForm,
   usePositionCategorySubmit,
 } from "@/hooks/dashboard/position-categories";
-import { PositionCategoryListItem } from "@/types/position-category";
+
 import { useCrudPageTitle } from "@/hooks/crud/useCrudPageTitle";
 
+import PositionCategoryForm from "@/components/forms/position-categories/PositionCategoryForm";
+
 export default function Page() {
-  const t = useTranslations("dashboard.positionCategories");
   const tCommon = useTranslations("common");
   const tColumn = useTranslations("dashboard.positionCategories.columns");
 
@@ -38,19 +45,19 @@ export default function Page() {
       search: debouncedFilters.search || undefined,
     });
 
-  const {
-    form,
-    setForm,
-    isEditing,
-    canSubmit,
-    handleEdit,
-    buildPayload,
-    resetForm,
-  } = usePositionCategoryForm();
-
   const { handleReorder, handleDelete } = usePositionCategoryActions();
 
   const { isSubmitting, getButtonText, submit } = usePositionCategorySubmit();
+
+  const { form, isEditing, handleEdit, resetForm } = usePositionCategoryForm({
+    onSubmit: (payload) => {
+      submit({
+        id: form.getFieldValue("id"),
+        payload,
+        onSuccess: resetForm,
+      });
+    },
+  });
 
   const columns: DataColumn<PositionCategoryListItem>[] = [
     {
@@ -81,31 +88,15 @@ export default function Page() {
           <ConnectionErrorAlert retrying={retrying} onRetry={retryLoad} />
         ) : undefined
       }
-      form={{
-        formFields: [
-          {
-            name: "name",
-            label: t("form.labels.name"),
-            placeholder: t("form.placeholders.name"),
-            type: "text",
-            required: true,
-          },
-        ],
-        form,
-        setForm,
-        canSubmit,
-        onSubmit: () => {
-          submit({
-            id: isEditing ? form.id : undefined,
-            payload: buildPayload(),
-            onSuccess: resetForm,
-          });
-        },
-        isEditing,
-        isSubmitting,
-        buttonText: getButtonText(isEditing),
-        resetForm,
-      }}
+      form={
+        <PositionCategoryForm
+          form={form}
+          loading={isSubmitting}
+          isEditing={isEditing}
+          buttonText={getButtonText(isEditing)}
+          resetForm={resetForm}
+        />
+      }
       actions={{
         onReorder: handleReorder,
         onEdit: handleEdit,

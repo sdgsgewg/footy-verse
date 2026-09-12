@@ -3,7 +3,7 @@ import { z } from "zod";
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
 
-export const imageSchema = z
+export const imageFileSchema = z
   .instanceof(File)
   .refine((file) => ACCEPTED_IMAGE_TYPES.includes(file.type), {
     message: "Only .jpg, .png, and .webp formats are supported.",
@@ -19,5 +19,5 @@ export function validateImageFile(
     return null;
   }
 
-  return imageSchema.parse(file);
+  return imageFileSchema.parse(file);
 }

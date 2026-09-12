@@ -1,17 +1,17 @@
 "use client";
 
-import { useTranslations } from "next-intl";
 import FormHeader from "../base/FormHeader";
 import FormWrapper from "../base/FormWrapper";
 import FormContentWrapper from "../base/FormContentWrapper";
 import { SelectField, TextField } from "../fields";
 import { PositionEditResponse, UpsertPositionInput } from "@/types/position";
 import { usePositionForm } from "@/hooks/dashboard/positions";
-import { usePositionCategories } from "@/hooks/dashboard/position-categories";
-import { getPositionCategoryOptions } from "@/lib/position-categories/options";
+import { usePositionCategoryOptions } from "@/hooks/dashboard/position-categories";
+import { FormMode } from "@/types/form";
+import { useCrudFormState, useCrudFormTranslations } from "@/hooks/crud";
 
 interface Props {
-  mode: "create" | "edit";
+  mode: FormMode;
   position?: PositionEditResponse;
 
   loading?: boolean;
@@ -20,64 +20,56 @@ interface Props {
 }
 
 const PositionForm = ({ mode, position, loading = false, onSubmit }: Props) => {
-  const t = useTranslations("dashboard.positions");
+  const { tLabels, tPlaceholders, tCommonLabels, tCommonPlaceholders } =
+    useCrudFormTranslations("position");
 
-  const {
+  const form = usePositionForm({ position, onSubmit });
+
+  const { isDirty, canSubmit } = useCrudFormState({
     form,
-    isDirty,
-    errors,
-    updateField,
-    validate,
-    canSubmit,
-    buildPayload,
-  } = usePositionForm(position);
+  });
 
-  const isCreate = mode === "create";
-
-  const { positionCategories } = usePositionCategories();
-  const categoryOptions = getPositionCategoryOptions(positionCategories);
-
-  const handleSubmit = () => {
-    if (!validate()) {
-      return;
-    }
-
-    onSubmit(buildPayload());
-  };
+  const { positionCategoryOptions, loading: isPositionCategoryLoading } =
+    usePositionCategoryOptions();
 
   return (
     <FormWrapper isDirty={isDirty}>
-      <FormHeader
-        loading={loading}
-        isCreate={isCreate}
-        canSubmit={canSubmit}
-        onSubmit={handleSubmit}
-      />
+      <form
+        onSubmit={(event) => {
+          event.preventDefault();
+          form.handleSubmit();
+        }}
+      >
+        <FormHeader loading={loading} mode={mode} canSubmit={canSubmit} />
 
-      <FormContentWrapper className="space-y-5">
-        {/* Name */}
-        <TextField
-          label={t("form.labels.name")}
-          name="name"
-          placeholder={t("form.placeholders.name") || ""}
-          value={(form.name as string) ?? ""}
-          onChange={(value) => updateField("name", value)}
-          error={errors.name}
-          required
-        />
+        <FormContentWrapper className="space-y-5">
+          {/* Name */}
+          <form.Field name="name">
+            {(field) => (
+              <TextField
+                field={field}
+                label={tCommonLabels("name")}
+                placeholder={tCommonPlaceholders("name")}
+                required
+              />
+            )}
+          </form.Field>
 
-        {/* Category */}
-        <SelectField
-          label={t("form.labels.category")}
-          name={`position_category_id`}
-          placeholder={t("form.placeholders.category")}
-          options={categoryOptions}
-          value={form.position_category_id || ""}
-          onChange={(value) => updateField("position_category_id", value)}
-          error={errors.position_category_id}
-          required
-        />
-      </FormContentWrapper>
+          {/* Category */}
+          <form.Field name="position_category_id">
+            {(field) => (
+              <SelectField
+                field={field}
+                label={tLabels("category")}
+                placeholder={tPlaceholders("category")}
+                loading={isPositionCategoryLoading}
+                options={positionCategoryOptions}
+                required
+              />
+            )}
+          </form.Field>
+        </FormContentWrapper>
+      </form>
     </FormWrapper>
   );
 };

@@ -15,7 +15,7 @@ export function ActionRow<T extends DataRow>({
       {onView && (
         <button
           onClick={() => onView(item)}
-          className="p-2 text-blue-400 hover:bg-blue-400/10 rounded-lg transition-colors"
+          className="p-2 text-blue-400 hover:bg-blue-400/10 rounded-lg transition-colors cursor-pointer"
           title={tCommonActions("view")}
         >
           <View className="w-4 h-4" />
@@ -25,7 +25,7 @@ export function ActionRow<T extends DataRow>({
       {onEdit && (
         <button
           onClick={() => onEdit(item)}
-          className="p-2 text-yellow-500 hover:bg-yellow-500/10 rounded-lg transition-colors"
+          className="p-2 text-yellow-500 hover:bg-yellow-500/10 rounded-lg transition-colors cursor-pointer"
           title={tCommonActions("edit")}
         >
           <Edit2 className="w-4 h-4" />
@@ -35,7 +35,7 @@ export function ActionRow<T extends DataRow>({
       {onDelete && (
         <button
           onClick={() => onDelete(item)}
-          className="p-2 text-red-500 hover:bg-red-500/10 rounded-lg transition-colors"
+          className="p-2 text-red-500 hover:bg-red-500/10 rounded-lg transition-colors cursor-pointer"
           title={tCommonActions("delete")}
         >
           <Trash2 className="w-4 h-4" />

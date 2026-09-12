@@ -2,15 +2,16 @@
 
 import { useMemo } from "react";
 import { getImageUrl } from "@/lib/images/image-url";
-import { RegionEditResponse, UpsertRegionInput } from "@/types/region";
-import { buildFormData } from "@/lib/forms/buildFormData";
-import { regionMutationSchema } from "@/lib/validations/regions.schema";
+import {
+  regionFormSchema,
+  RegionFormValues,
+} from "@/lib/validations/regions/region-form.schema";
+import { RegionEditResponse } from "@/types/region";
 import { ENTITY_CONFIG } from "@/config/entities";
-import { useEntityForm, useImageField } from "@/hooks/crud";
+import { useForm } from "@tanstack/react-form";
+import { buildFormData } from "@/lib/forms/buildFormData";
 
-const createEmptyRegionForm = (): UpsertRegionInput => ({
-  id: "",
-
+const createEmptyRegionForm = (): RegionFormValues => ({
   image: null,
   imageUrl: null,
 
@@ -19,98 +20,54 @@ const createEmptyRegionForm = (): UpsertRegionInput => ({
   parent_region_id: null,
 });
 
-function mapRegion(region: RegionEditResponse): UpsertRegionInput {
-  const { id, image, name, regionType, parentRegionId } = region;
+function mapRegion(region: RegionEditResponse): RegionFormValues {
+  const { image, name, regionType, parentRegionId } = region;
 
   return {
-    id,
-
-    image,
+    image: null,
     imageUrl: getImageUrl(
       "region",
       ENTITY_CONFIG["region"]["storageBucket"],
       image,
     ),
-
     name,
     region_type: regionType,
     parent_region_id: parentRegionId ?? null,
   };
 }
 
-export function useRegionForm(region?: RegionEditResponse) {
+export function useRegionForm(
+  region: RegionEditResponse | undefined,
+  onSubmit: (payload: FormData) => void,
+) {
   const initialValue = useMemo(
     () => (region ? mapRegion(region) : createEmptyRegionForm()),
     [region],
   );
 
-  const {
-    imageFile,
-    previewUrl,
-    updateImage: setImage,
-  } = useImageField({
-    initialPreviewUrl: initialValue.imageUrl,
-  });
+  const form = useForm({
+    defaultValues: initialValue,
 
-  const {
-    form,
-    updateField,
-    errors,
-    isDirty,
-    canSubmit,
-    validate,
-    clearFieldError,
-    setFieldError,
-  } = useEntityForm({
-    initialValue,
-    schema: regionMutationSchema,
-
-    dirtyFields: ["name", "region_type", "parent_region_id", "image"],
-
-    requiredFields: ["name", "region_type"],
-
-    additionalDirty: imageFile !== null,
-  });
-
-  const updateImage = (file: File) => {
-    const result = setImage(file);
-
-    if (!result.success) {
-      setFieldError("image", result.error ?? "Invalid image.");
-      return;
-    }
-
-    clearFieldError("image");
-  };
-
-  const buildPayload = () => {
-    return buildFormData({
-      values: {
-        name: form.name,
-        region_type: form.region_type,
-        parent_region_id: form.parent_region_id,
-      },
-      existingImage: form.image,
-      imageFile,
-    });
-  };
-
-  return {
-    form: {
-      ...form,
-
-      imageFile,
-      previewUrl,
+    validators: {
+      onMount: regionFormSchema,
+      onChange: regionFormSchema,
+      onSubmit: regionFormSchema,
     },
 
-    isDirty,
-    errors,
+    onSubmit: async ({ value }) => {
+      const payload = buildFormData({
+        values: {
+          name: value.name,
+          region_type: value.region_type,
+          parent_region_id: value.parent_region_id,
+        },
+        existingImage: value.imageUrl,
+        imageFile: value.image,
+      });
 
-    updateField,
-    updateImage,
+      onSubmit(payload);
+    },
+  });
 
-    validate,
-    canSubmit,
-    buildPayload,
-  };
+  return form;
 }

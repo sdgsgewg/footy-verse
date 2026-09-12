@@ -1,11 +1,16 @@
 "use client";
 
+import { useForm } from "@tanstack/react-form";
+import { useMemo } from "react";
 import { AgeGroup } from "@/enums/AgeGroup";
 import { SquadType } from "@/enums/SquadType";
-import { useEntityForm } from "@/hooks/crud";
 import { clubTeamMutationSchema } from "@/lib/validations/club-teams.schema";
 import { ClubTeamEditResponse, UpsertClubTeamInput } from "@/types/club-team";
-import { useMemo } from "react";
+
+interface UseClubTeamFormOptions {
+  clubTeam?: ClubTeamEditResponse;
+  onSubmit: (payload: UpsertClubTeamInput) => void;
+}
 
 const createEmptyClubTeamForm = (): UpsertClubTeamInput => ({
   squad_type: "",
@@ -13,46 +18,41 @@ const createEmptyClubTeamForm = (): UpsertClubTeamInput => ({
 });
 
 function mapClubTeam(clubTeam: ClubTeamEditResponse): UpsertClubTeamInput {
-  const { id, squadType, ageGroup } = clubTeam;
+  const { squadType, ageGroup } = clubTeam;
 
   return {
-    id,
     squad_type: squadType as SquadType,
     age_group: ageGroup as AgeGroup,
   };
 }
 
-export function useClubTeamForm(clubTeam?: ClubTeamEditResponse) {
-  const initialValue = useMemo(
+export function useClubTeamForm({
+  clubTeam,
+  onSubmit,
+}: UseClubTeamFormOptions) {
+  const defaultValues = useMemo(
     () => (clubTeam ? mapClubTeam(clubTeam) : createEmptyClubTeamForm()),
     [clubTeam],
   );
 
-  const { form, updateField, errors, isDirty, canSubmit, validate } =
-    useEntityForm({
-      initialValue,
-      schema: clubTeamMutationSchema,
+  const form = useForm({
+    defaultValues,
 
-      dirtyFields: ["squad_type", "age_group"],
+    validators: {
+      onMount: clubTeamMutationSchema,
+      onChange: clubTeamMutationSchema,
+      onSubmit: clubTeamMutationSchema,
+    },
 
-      requiredFields: ["squad_type", "age_group"],
-    });
+    onSubmit: async ({ value }) => {
+      const payload: UpsertClubTeamInput = {
+        squad_type: value.squad_type,
+        age_group: value.age_group,
+      };
 
-  const buildPayload = () => ({
-    squad_type: form.squad_type,
-    age_group: form.age_group,
+      onSubmit(payload);
+    },
   });
 
-  return {
-    form,
-
-    isDirty,
-    errors,
-
-    updateField,
-
-    validate,
-    canSubmit,
-    buildPayload,
-  };
+  return form;
 }

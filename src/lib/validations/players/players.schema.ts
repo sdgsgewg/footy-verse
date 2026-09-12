@@ -1,17 +1,17 @@
 import { z } from "zod";
-import { playerPositionMutationSchema } from "./player-positions.schema";
-import { idSchema } from "./primitives.schema";
-import { playerSortBySchema, prefFootSchema } from "./enums.schema";
-import { playerNationalityMutationSchema } from "./player-nationalities.schema";
+import { playerPositionMutationSchema } from "../player-positions.schema";
+import { idSchema } from "../primitives.schema";
+import { playerSortBySchema, prefFootSchema } from "../enums.schema";
+import { playerNationalityMutationSchema } from "../player-nationalities.schema";
 import {
   baseQuerySchema,
   listQuerySchema,
   sortingQuerySchema,
-} from "./query.schema";
-import { imageSchema } from "./primitives.schema";
+} from "../query.schema";
+import { imageUrlSchema } from "../primitives.schema";
 
 export const playerMutationSchema = z.object({
-  image: imageSchema,
+  image: imageUrlSchema,
   full_name: z.string().min(1).max(255),
   short_name: z.string().min(1).max(255),
   dob: z.string(),

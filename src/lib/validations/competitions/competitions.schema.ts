@@ -3,18 +3,18 @@ import { z } from "zod";
 import {
   idSchema,
   nullableIdSchema,
-  imageSchema,
+  imageUrlSchema,
   slugSchema,
-} from "./primitives.schema";
+} from "../primitives.schema";
 
-import { listQuerySchema } from "./query.schema";
+import { listQuerySchema } from "../query.schema";
 
 import {
   ageGroupSchema,
   competitionSortBySchema,
   genderSchema,
   participantTypeSchema,
-} from "./enums.schema";
+} from "../enums.schema";
 
 export const competitionMutationSchema = z.object({
   // Basic Information
@@ -45,7 +45,7 @@ export const competitionMutationSchema = z.object({
   region_id: nullableIdSchema,
 
   // Media
-  image: imageSchema,
+  image: imageUrlSchema,
 });
 
 export const createCompetitionSchema = competitionMutationSchema;

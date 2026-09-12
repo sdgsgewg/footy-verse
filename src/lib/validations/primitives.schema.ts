@@ -4,7 +4,7 @@ export const idSchema = z.string().uuid();
 
 export const nullableIdSchema = idSchema.nullable().optional();
 
-export const imageSchema = z.string().nullable().optional();
+export const imageUrlSchema = z.string().nullable().optional();
 
 export const slugSchema = z
   .string()

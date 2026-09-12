@@ -2,7 +2,7 @@ import {
   createRegionSchema,
   regionsQuerySchema,
   updateRegionSchema,
-} from "../validations/regions.schema";
+} from "../validations/regions/regions.schema";
 import {
   createRegionRepo,
   deleteRegionRepo,

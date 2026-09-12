@@ -1,26 +1,16 @@
 "use client";
 
-import { Dispatch, SetStateAction } from "react";
 import { useTranslations } from "next-intl";
 import DynamicFormSection from "../base/DynamicFormSection";
 import NumberField from "../fields/NumberField";
 import DateField from "../fields/DateField";
-import { UpsertPlayerClubTeamCareerInput } from "@/types/player-club-team-career";
-import { FormErrors } from "@/types/form";
-
-type Contract = NonNullable<
-  UpsertPlayerClubTeamCareerInput["contracts"]
->[number];
+import { PlayerClubTeamCareerForm } from "@/hooks/dashboard/player-club-team-careers";
 
 interface Props {
-  form: UpsertPlayerClubTeamCareerInput;
-
-  setForm: Dispatch<SetStateAction<UpsertPlayerClubTeamCareerInput>>;
-
-  errors: FormErrors;
+  form: PlayerClubTeamCareerForm;
 }
 
-const PlayerContractSection = ({ form, setForm, errors }: Props) => {
+const PlayerContractSection = ({ form }: Props) => {
   const tForm = useTranslations(
     "dashboard.playerClubTeamCareers.form.contracts",
   );
@@ -33,72 +23,83 @@ const PlayerContractSection = ({ form, setForm, errors }: Props) => {
     "dashboard.playerClubTeamCareers.form.placeholders.contracts",
   );
 
-  const getContractError = (index: number, field: keyof Contract) => {
-    return errors[`contracts.${index}.${String(field)}`];
+  const parseDateString = (value?: string | null): Date | undefined => {
+    if (!value) return undefined;
+
+    const [year, month, day] = value.split("-").map(Number);
+
+    return new Date(year, month - 1, day);
   };
 
   return (
-    <DynamicFormSection<Contract>
-      title={tForm("title")}
-      noData={tForm("noData")}
-      items={form.contracts ?? []}
-      minItems={0}
-      createItem={() => ({
-        contract_start:
-          (form.contracts?.length ?? 0) === 0 ? form.career.joined_at : "",
-        contract_end: "",
-        salary: null,
-      })}
-      onChange={(items) =>
-        setForm((prev) => ({
-          ...prev,
-          contracts: items,
-        }))
-      }
-      renderItem={(item, index, updateItem) => (
-        <>
-          {/* Contract Start */}
-          <DateField
-            label={tLabels("contractStart")}
-            name={`contract-start-${index}`}
-            placeholder={tPlaceholders("contractStart") || ""}
-            value={item.contract_start}
-            onChange={(v) => updateItem(index, "contract_start", v)}
-            error={getContractError(index, "contract_start")}
-          />
+    <form.Field name="contracts" mode="array">
+      {(field) => (
+        <DynamicFormSection
+          title={tForm("title")}
+          noData={tForm("noData")}
+          itemCount={field.state.value ? field.state.value.length : 0}
+          minItems={0}
+          onAdd={() =>
+            field.pushValue({
+              contract_start:
+                field.state.value?.length === 0
+                  ? form.getFieldValue("career.joined_at")
+                  : "",
+              contract_end: "",
+              salary: null,
+            })
+          }
+          onRemove={(index) => field.removeValue(index)}
+        >
+          {(contractIndex) => (
+            <div className="grid grid-cols-1 gap-4">
+              {/* Contract Start */}
+              <form.Field name={`contracts[${contractIndex}].contract_start`}>
+                {(field) => (
+                  <DateField
+                    field={field}
+                    label={tLabels("contractStart")}
+                    placeholder={tPlaceholders("contractStart") || ""}
+                    required
+                  />
+                )}
+              </form.Field>
 
-          {/* Contract End */}
-          <DateField
-            label={tLabels("contractEnd")}
-            name={`contract-end-${index}`}
-            placeholder={tPlaceholders("contractEnd") || ""}
-            value={item.contract_end ?? ""}
-            onChange={(v) => updateItem(index, "contract_end", v)}
-            error={getContractError(index, "contract_end")}
-            startMonth={
-              item.contract_start
-                ? new Date(
-                    Number(item.contract_start.slice(0, 4)),
-                    Number(item.contract_start.slice(5, 7)) - 1,
-                    Number(item.contract_start.slice(8, 10)),
-                  )
-                : undefined
-            }
-            endMonth={new Date(2100, 11, 31)}
-          />
+              {/* Contract End */}
+              <form.Field name={`contracts[${contractIndex}].contract_start`}>
+                {(contractStartField) => (
+                  <form.Field name={`contracts[${contractIndex}].contract_end`}>
+                    {(contractEndField) => (
+                      <DateField
+                        field={contractEndField}
+                        label={tLabels("contractEnd")}
+                        placeholder={tPlaceholders("contractEnd") || ""}
+                        startMonth={parseDateString(
+                          contractStartField.state.value,
+                        )}
+                        endMonth={new Date(2100, 11, 31)}
+                      />
+                    )}
+                  </form.Field>
+                )}
+              </form.Field>
 
-          {/* Salary */}
-          <NumberField
-            label={tLabels("salary")}
-            name={`salary-${index}`}
-            placeholder={tPlaceholders("salary") || ""}
-            value={item.salary}
-            onChange={(v) => updateItem(index, "salary", v ?? 1)}
-            error={getContractError(index, "salary")}
-          />
-        </>
+              {/* Salary */}
+              <form.Field name={`contracts[${contractIndex}].salary`}>
+                {(field) => (
+                  <NumberField
+                    field={field}
+                    label={tLabels("salary")}
+                    placeholder={tPlaceholders("salary") || ""}
+                    required
+                  />
+                )}
+              </form.Field>
+            </div>
+          )}
+        </DynamicFormSection>
       )}
-    />
+    </form.Field>
   );
 };
 

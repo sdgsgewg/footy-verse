@@ -1,25 +1,34 @@
 "use client";
 
 import ConnectionErrorAlert from "@/components/feedback/ConnectionErrorAlert";
-import { CrudFormTablePage } from "@/components/templates/crud";
-import { useCrudPageTitle } from "@/hooks/crud/useCrudPageTitle";
-import { useFilterSync } from "@/hooks/filter";
-import {
-  useCompetitionScopeActions,
-  useCompetitionScopeData,
-  useCompetitionScopes,
-} from "@/hooks/dashboard/competition-scopes";
-import useCompetitionScopeFilter from "@/hooks/dashboard/competition-scopes/useCompetitionScopeFilter";
 import { isLikelyConnectionError } from "@/lib/utils/connection-error";
-import { createSortHandler } from "@/lib/utils/crud";
-import { CompetitionScopeListItem } from "@/types/competition-scope";
-import { DataColumn } from "@/types/table";
 import { useTranslations } from "next-intl";
 
+import { CrudFormTablePage } from "@/components/templates/crud";
+
+import { DataColumn } from "@/types/table";
+import { CompetitionScopeListItem } from "@/types/competition-scope";
+
+import { createSortHandler } from "@/lib/utils/crud";
+import { useFilterSync } from "@/hooks/filter";
+
+import useCompetitionScopeFilter from "@/hooks/dashboard/competition-scopes/useCompetitionScopeFilter";
+
+import {
+  useCompetitionScopeActions,
+  useCompetitionScopeForm,
+  useCompetitionScopes,
+  useCompetitionScopeSubmit,
+} from "@/hooks/dashboard/competition-scopes";
+
+import { useCrudPageTitle } from "@/hooks/crud/useCrudPageTitle";
+
+import CompetitionScopeForm from "@/components/forms/competition-scopes/CompetitionScopeForm";
+
 export default function Page() {
-  const t = useTranslations("dashboard.competitionScopes");
   const tCommon = useTranslations("common");
   const tColumn = useTranslations("dashboard.competitionScopes.columns");
+
   const { getTitle } = useCrudPageTitle();
 
   const {
@@ -36,19 +45,19 @@ export default function Page() {
       search: debouncedFilters.search || undefined,
     });
 
-  const {
-    isEditing,
-    buttonText,
-    isSubmitting,
-    form,
-    setForm,
-    canSubmit,
-    handleSubmit,
-    handleEdit,
-    resetForm,
-  } = useCompetitionScopeData();
-
   const { handleDelete } = useCompetitionScopeActions();
+
+  const { isSubmitting, getButtonText, submit } = useCompetitionScopeSubmit();
+
+  const { form, isEditing, handleEdit, resetForm } = useCompetitionScopeForm({
+    onSubmit: (payload) => {
+      submit({
+        id: form.getFieldValue("id"),
+        payload,
+        onSuccess: resetForm,
+      });
+    },
+  });
 
   const columns: DataColumn<CompetitionScopeListItem>[] = [
     {
@@ -83,32 +92,15 @@ export default function Page() {
           <ConnectionErrorAlert onRetry={retryLoad} retrying={retrying} />
         ) : undefined
       }
-      form={{
-        formFields: [
-          {
-            name: "name",
-            label: t("form.labels.name"),
-            placeholder: t("form.placeholders.name"),
-            type: "text",
-            required: true,
-          },
-          {
-            name: "description",
-            label: t("form.labels.description"),
-            placeholder: t("form.placeholders.description"),
-            type: "text",
-            required: false,
-          },
-        ],
-        form: form,
-        setForm: setForm,
-        canSubmit: canSubmit,
-        onSubmit: handleSubmit,
-        isEditing: isEditing,
-        isSubmitting: isSubmitting,
-        buttonText: buttonText,
-        resetForm: resetForm,
-      }}
+      form={
+        <CompetitionScopeForm
+          form={form}
+          loading={isSubmitting}
+          isEditing={isEditing}
+          buttonText={getButtonText(isEditing)}
+          resetForm={resetForm}
+        />
+      }
       actions={{
         onEdit: handleEdit,
         onDelete: handleDelete,

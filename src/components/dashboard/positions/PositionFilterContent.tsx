@@ -1,6 +1,6 @@
 "use client";
 
-import { SelectField } from "@/components/forms/fields";
+import { SelectField } from "@/components/shared/fields";
 import { usePositionCategoryOptions } from "@/hooks/dashboard/position-categories";
 import { PositionFilter } from "@/types/position";
 import { useTranslations } from "next-intl";
@@ -22,7 +22,8 @@ export default function PositionFilterContent({
     "dashboard.positions.form.placeholders",
   );
 
-  const { positionCategoryOptions } = usePositionCategoryOptions();
+  const { positionCategoryOptions, loading: isPositionCategoryLoading } =
+    usePositionCategoryOptions();
 
   return (
     <>
@@ -31,9 +32,10 @@ export default function PositionFilterContent({
         label={tLabels("category")}
         name={`category`}
         placeholder={tPlaceholders("category")}
+        loading={isPositionCategoryLoading}
         options={positionCategoryOptions}
         value={filters.categoryId || ""}
-        onChange={(value) => updateFilter("categoryId", value)}
+        onValueChange={(value) => updateFilter("categoryId", value)}
       />
     </>
   );

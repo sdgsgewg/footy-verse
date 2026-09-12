@@ -1,12 +1,15 @@
 "use client";
 
-import { useClubForm } from "@/hooks/dashboard/clubs";
-import { useTranslations } from "next-intl";
 import { ClubEditResponse } from "@/types/club";
-import { ComboboxField, ImageField, TextField } from "../fields";
-import { useNationalityOptions } from "@/hooks/nationalities";
-import { FormHeader, FormWrapper, SideBySideFormContentWrapper } from "../base";
 import { FormMode } from "@/types/form";
+
+import { useClubForm } from "@/hooks/dashboard/clubs";
+import { useNationalityOptions } from "@/hooks/nationalities";
+
+import { ComboboxField, ImageField, TextField } from "../fields";
+
+import { FormHeader, FormWrapper, SideBySideFormContentWrapper } from "../base";
+import { useCrudFormState, useCrudFormTranslations } from "@/hooks/crud";
 
 interface Props {
   mode: FormMode;
@@ -18,51 +21,30 @@ interface Props {
 }
 
 const ClubForm = ({ mode, club, loading = false, onSubmit }: Props) => {
-  const tLabels = useTranslations("dashboard.clubs.form.labels");
-  const tPlaceholders = useTranslations("dashboard.clubs.form.placeholders");
+  const { tLabels, tPlaceholders, tCommonLabels, tCommonPlaceholders } =
+    useCrudFormTranslations("club");
 
-  const tCommonLabels = useTranslations("common.form.labels");
-  const tCommonPlaceholders = useTranslations("common.form.placeholders");
+  const form = useClubForm({ club, onSubmit });
 
-  const tEntities = useTranslations("entities");
-  const tCommon = useTranslations("common");
-
-  const {
-    form,
-    isDirty,
-    errors,
-    updateField,
-    updateImage,
-    validate,
-    canSubmit,
-    buildPayload,
-  } = useClubForm(club);
-
-  const isCreate = mode === "create";
+  const { isDirty, canSubmit } = useCrudFormState({ form });
 
   const { nationalityOptions, loading: isNationalityLoading } =
     useNationalityOptions();
-
-  const handleSubmit = () => {
-    if (!validate()) {
-      return;
-    }
-
-    onSubmit(buildPayload());
-  };
 
   const LeftSideContent = () => {
     return (
       <>
         {/* Image */}
-        <ImageField
-          label={tCommonLabels("image")}
-          name="image"
-          value={(form.previewUrl ?? form.imageUrl) as string}
-          onChange={updateImage}
-          imageClassName="object-contain"
-          error={errors.image}
-        />
+        <form.Field name="image">
+          {(field) => (
+            <ImageField
+              field={field}
+              label={tCommonLabels("image")}
+              existingImageUrl={form.state.values.imageUrl}
+              imageClassName="object-contain"
+            />
+          )}
+        </form.Field>
       </>
     );
   };
@@ -71,62 +53,62 @@ const ClubForm = ({ mode, club, loading = false, onSubmit }: Props) => {
     return (
       <>
         {/* Full Name */}
-        <TextField
-          label={tCommonLabels("fullName")}
-          name="full_name"
-          placeholder={tCommonPlaceholders("fullName") || ""}
-          value={(form.full_name as string) ?? ""}
-          onChange={(value) => updateField("full_name", value)}
-          error={errors.full_name}
-          required
-        />
+        <form.Field name="full_name">
+          {(field) => (
+            <TextField
+              field={field}
+              label={tCommonLabels("fullName")}
+              placeholder={tCommonPlaceholders("fullName")}
+              required
+            />
+          )}
+        </form.Field>
 
         {/* Short Name */}
-        <TextField
-          label={tCommonLabels("shortName")}
-          name="short_name"
-          placeholder={tCommonPlaceholders("shortName") || ""}
-          value={(form.short_name as string) ?? ""}
-          onChange={(value) => updateField("short_name", value)}
-          error={errors.short_name}
-          required
-        />
+        <form.Field name="short_name">
+          {(field) => (
+            <TextField
+              field={field}
+              label={tCommonLabels("shortName")}
+              placeholder={tCommonPlaceholders("shortName")}
+              required
+            />
+          )}
+        </form.Field>
 
         {/* Nation */}
-        <ComboboxField
-          label={tLabels("nation")}
-          name={`nationality`}
-          options={nationalityOptions}
-          placeholder={tPlaceholders("nation")}
-          loading={isNationalityLoading}
-          searchPlaceholder={tCommon("combobox.searchEntity", {
-            entity: tEntities("nationality").toLowerCase(),
-          })}
-          emptyMessage={tCommon("combobox.noEntityFound", {
-            entity: tEntities("nationality").toLowerCase(),
-          })}
-          value={form.nation_id || null}
-          onChange={(value) => updateField("nation_id", value)}
-          error={errors.nation_id}
-          required
-        />
+        <form.Field name="nation_id">
+          {(field) => (
+            <ComboboxField
+              field={field}
+              entityKey="nationality"
+              label={tLabels("nation")}
+              options={nationalityOptions}
+              placeholder={tPlaceholders("nation")}
+              loading={isNationalityLoading}
+              required
+            />
+          )}
+        </form.Field>
       </>
     );
   };
 
   return (
     <FormWrapper isDirty={isDirty}>
-      <FormHeader
-        loading={loading}
-        isCreate={isCreate}
-        canSubmit={canSubmit}
-        onSubmit={handleSubmit}
-      />
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          form.handleSubmit();
+        }}
+      >
+        <FormHeader loading={loading} mode={mode} canSubmit={canSubmit} />
 
-      <SideBySideFormContentWrapper
-        left={LeftSideContent()}
-        right={RightSideContent()}
-      />
+        <SideBySideFormContentWrapper
+          left={LeftSideContent()}
+          right={RightSideContent()}
+        />
+      </form>
     </FormWrapper>
   );
 };

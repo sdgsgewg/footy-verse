@@ -1,87 +1,165 @@
+// import { Button } from "@/components/ui/button";
+// import { Plus, Trash2 } from "lucide-react";
+// import { useTranslations } from "next-intl";
+// import FormSection from "./FormSection";
+// import { useEffect } from "react";
+
+// interface DynamicFormSectionProps<T> {
+//   title: string;
+//   noData: string;
+
+//   items: T[];
+
+//   minItems?: number;
+//   maxItems?: number;
+
+//   createItem: () => T;
+
+//   onChange: (items: T[]) => void;
+
+//   renderItem: (
+//     item: T,
+//     index: number,
+//     updateItem: <K extends keyof T>(index: number, key: K, value: T[K]) => void,
+//     updateItemMultiple: (index: number, updates: Partial<T>) => void,
+//   ) => React.ReactNode;
+// }
+
+// export default function DynamicFormSection<T>({
+//   title,
+//   noData,
+//   items,
+//   minItems = 0,
+//   maxItems,
+//   createItem,
+//   onChange,
+//   renderItem,
+// }: DynamicFormSectionProps<T>) {
+//   const tCommonActions = useTranslations("common.actions");
+
+//   const addItem = () => {
+//     if (maxItems !== undefined && items.length >= maxItems) return;
+
+//     onChange([...items, createItem()]);
+//   };
+
+//   const removeItem = (index: number) => {
+//     if (items.length <= minItems) return;
+
+//     onChange(items.filter((_, i) => i !== index));
+//   };
+
+//   const updateItem = <K extends keyof T>(
+//     index: number,
+//     key: K,
+//     value: T[K],
+//   ) => {
+//     const newItems = [...items];
+
+//     newItems[index] = {
+//       ...newItems[index],
+//       [key]: value,
+//     };
+
+//     onChange(newItems);
+//   };
+
+//   const updateItemMultiple = (index: number, updates: Partial<T>) => {
+//     const newItems = [...items];
+
+//     newItems[index] = {
+//       ...newItems[index],
+//       ...updates,
+//     };
+
+//     onChange(newItems);
+//   };
+
+//   useEffect(() => {
+//     if (items.length < minItems) {
+//       onChange(
+//         Array.from({ length: minItems }, (_, i) => items[i] ?? createItem()),
+//       );
+//     }
+//   }, [items, minItems]);
+
+//   const modifiedTitle =
+//     minItems > 0 ? `${title} (min ${minItems})` : `${title} (optional)`;
+
+//   return (
+//     <FormSection
+//       title={modifiedTitle}
+//       action={
+//         <Button type="button" onClick={addItem}>
+//           <Plus className="mr-2 h-4 w-4" />
+//           {tCommonActions("add")}
+//         </Button>
+//       }
+//     >
+//       {items.length === 0 && (
+//         <div className="rounded-xl border border-dashed p-6 text-center">
+//           {noData}
+//         </div>
+//       )}
+
+//       {items.map((item, index) => (
+//         <div key={index} className="rounded-xl border p-4 space-y-4">
+//           {renderItem(item, index, updateItem, updateItemMultiple)}
+
+//           {items.length > minItems && (
+//             <div className="flex justify-end">
+//               <Button
+//                 type="button"
+//                 variant="destructive"
+//                 disabled={maxItems !== undefined && items.length >= maxItems}
+//                 onClick={() => removeItem(index)}
+//               >
+//                 <Trash2 className="mr-2 h-4 w-4" />
+//                 {tCommonActions("remove")}
+//               </Button>
+//             </div>
+//           )}
+//         </div>
+//       ))}
+//     </FormSection>
+//   );
+// }
+
 import { Button } from "@/components/ui/button";
 import { Plus, Trash2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import FormSection from "./FormSection";
-import { useEffect } from "react";
 
-interface DynamicFormSectionProps<T> {
+interface DynamicFormSectionProps {
   title: string;
   noData: string;
 
-  items: T[];
+  itemCount: number;
 
   minItems?: number;
   maxItems?: number;
 
-  createItem: () => T;
+  onAdd: () => void;
+  onRemove: (index: number) => void;
 
-  onChange: (items: T[]) => void;
-
-  renderItem: (
-    item: T,
-    index: number,
-    updateItem: <K extends keyof T>(index: number, key: K, value: T[K]) => void,
-    updateItemMultiple: (index: number, updates: Partial<T>) => void,
-  ) => React.ReactNode;
+  children: (index: number) => React.ReactNode;
 }
 
-export default function DynamicFormSection<T>({
+export default function DynamicFormSection({
   title,
   noData,
-  items,
+  itemCount,
   minItems = 0,
   maxItems,
-  createItem,
-  onChange,
-  renderItem,
-}: DynamicFormSectionProps<T>) {
+  onAdd,
+  onRemove,
+  children,
+}: DynamicFormSectionProps) {
   const tCommonActions = useTranslations("common.actions");
 
-  const addItem = () => {
-    if (maxItems !== undefined && items.length >= maxItems) return;
+  const canAdd = maxItems === undefined || itemCount < maxItems;
 
-    onChange([...items, createItem()]);
-  };
-
-  const removeItem = (index: number) => {
-    if (items.length <= minItems) return;
-
-    onChange(items.filter((_, i) => i !== index));
-  };
-
-  const updateItem = <K extends keyof T>(
-    index: number,
-    key: K,
-    value: T[K],
-  ) => {
-    const newItems = [...items];
-
-    newItems[index] = {
-      ...newItems[index],
-      [key]: value,
-    };
-
-    onChange(newItems);
-  };
-
-  const updateItemMultiple = (index: number, updates: Partial<T>) => {
-    const newItems = [...items];
-
-    newItems[index] = {
-      ...newItems[index],
-      ...updates,
-    };
-
-    onChange(newItems);
-  };
-
-  useEffect(() => {
-    if (items.length < minItems) {
-      onChange(
-        Array.from({ length: minItems }, (_, i) => items[i] ?? createItem()),
-      );
-    }
-  }, [items, minItems]);
+  const canRemove = itemCount > minItems;
 
   const modifiedTitle =
     minItems > 0 ? `${title} (min ${minItems})` : `${title} (optional)`;
@@ -90,37 +168,38 @@ export default function DynamicFormSection<T>({
     <FormSection
       title={modifiedTitle}
       action={
-        <Button type="button" onClick={addItem}>
+        <Button type="button" onClick={onAdd} disabled={!canAdd}>
           <Plus className="mr-2 h-4 w-4" />
           {tCommonActions("add")}
         </Button>
       }
     >
-      {items.length === 0 && (
+      {itemCount === 0 && (
         <div className="rounded-xl border border-dashed p-6 text-center">
           {noData}
         </div>
       )}
 
-      {items.map((item, index) => (
-        <div key={index} className="rounded-xl border p-4 space-y-4">
-          {renderItem(item, index, updateItem, updateItemMultiple)}
+      <div className="space-y-4">
+        {Array.from({ length: itemCount }, (_, index) => (
+          <div key={index} className="rounded-xl border p-4 space-y-4">
+            {children(index)}
 
-          {items.length > minItems && (
-            <div className="flex justify-end">
-              <Button
-                type="button"
-                variant="destructive"
-                disabled={maxItems !== undefined && items.length >= maxItems}
-                onClick={() => removeItem(index)}
-              >
-                <Trash2 className="mr-2 h-4 w-4" />
-                {tCommonActions("remove")}
-              </Button>
-            </div>
-          )}
-        </div>
-      ))}
+            {canRemove && (
+              <div className="flex justify-end">
+                <Button
+                  type="button"
+                  variant="destructive"
+                  onClick={() => onRemove(index)}
+                >
+                  <Trash2 className="mr-2 h-4 w-4" />
+                  {tCommonActions("remove")}
+                </Button>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
     </FormSection>
   );
 }

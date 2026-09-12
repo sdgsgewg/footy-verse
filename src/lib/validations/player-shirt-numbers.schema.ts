@@ -6,7 +6,7 @@ import { playerShirtNumberSortBySchema, sortOrderSchema } from "./enums.schema";
 export const playerShirtNumberMutationSchema = z.object({
   player_career_id: idSchema.optional(),
   shirt_number: z.number().positive().min(1).max(99).nullable(),
-  start_date: z.string(),
+  start_date: z.string().min(1),
   end_date: nullableDate.optional(),
 });
 

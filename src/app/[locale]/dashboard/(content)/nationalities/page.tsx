@@ -15,7 +15,7 @@ import {
   ConfederationImageLabel,
   NationalityImageLabel,
 } from "@/components/shared/tables/cells";
-import NationalityFilterContent from "@/components/dashboard/nationalities/NationalityFilterContent";
+import NationalityFilterContent from "@/components/nationalities/filter/NationalityFilterContent";
 import { useCrudFilterDialog } from "@/hooks/crud/useCrudFilterDialog";
 
 export default function NationalitiesManagementPage() {
@@ -138,6 +138,7 @@ export default function NationalitiesManagementPage() {
           <NationalityFilterContent
             filters={draftFilters}
             updateFilter={updateDraftFilter}
+            showLabel
           />
         ),
         open: filterOpen,

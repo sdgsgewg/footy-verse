@@ -12,7 +12,7 @@ import { createSortHandler } from "@/lib/utils/crud";
 import { useTranslations } from "next-intl";
 import { useCrudFilterDialog } from "@/hooks/crud/useCrudFilterDialog";
 import { PlayerFilter } from "@/types/player";
-import PlayerFilterContent from "@/components/dashboard/players/PlayerFilterContent";
+import PlayerFilterContent from "@/components/players/filter/PlayerFilterContent";
 
 export default function PlayersManagementPage() {
   const tCommon = useTranslations("common");
@@ -110,6 +110,7 @@ export default function PlayersManagementPage() {
           <PlayerFilterContent
             filters={draftFilters}
             updateFilter={updateDraftFilter}
+            showLabel
           />
         ),
         open: filterOpen,

@@ -65,7 +65,9 @@
 
       "name": "Name",
       "fullName": "Full Name",
-      "shortName": "Short Name"
+      "shortName": "Short Name",
+
+      "description": "Description"
     },
 
     "placeholders": {
@@ -73,7 +75,9 @@
 
       "name": "Name",
       "fullName": "Enter full name",
-      "shortName": "Enter short name"
+      "shortName": "Enter short name",
+
+      "description": "Enter description"
     }
   },
 

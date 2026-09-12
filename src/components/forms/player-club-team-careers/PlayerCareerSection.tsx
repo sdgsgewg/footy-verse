@@ -1,115 +1,88 @@
 "use client";
 
-import { Dispatch, SetStateAction } from "react";
 import { useTranslations } from "next-intl";
 import FormSection from "../base/FormSection";
 import ComboboxField from "../fields/ComboboxField";
 import DateField from "../fields/DateField";
-import { UpsertPlayerClubTeamCareerInput } from "@/types/player-club-team-career";
 import { useClubTeams } from "@/hooks/club-teams";
 import { getClubTeamOptions } from "@/lib/club-teams/options";
-import { FormErrors } from "@/types/form";
+import { PlayerClubTeamCareerForm } from "@/hooks/dashboard/player-club-team-careers";
 
 interface Props {
-  form: UpsertPlayerClubTeamCareerInput;
-
-  setForm: Dispatch<SetStateAction<UpsertPlayerClubTeamCareerInput>>;
-
-  errors: FormErrors;
+  form: PlayerClubTeamCareerForm;
 }
 
-const PlayerClubTeamCareerSection = ({ form, setForm, errors }: Props) => {
+const PlayerClubTeamCareerSection = ({ form }: Props) => {
   const tForm = useTranslations("dashboard.playerClubTeamCareers.form.career");
+
   const tLabels = useTranslations(
     "dashboard.playerClubTeamCareers.form.labels.career",
   );
+
   const tPlaceholders = useTranslations(
     "dashboard.playerClubTeamCareers.form.placeholders.career",
   );
 
-  const tEntities = useTranslations("entities");
-  const tCommon = useTranslations("common");
-
-  const { club_team_id } = form;
-  const { joined_at, left_at } = form.career;
-
-  const { clubTeams, loading: clubTeamLoading } = useClubTeams();
+  const { clubTeams, loading: isClubTeamLoading } = useClubTeams();
   const clubTeamOptions = getClubTeamOptions(clubTeams);
 
   return (
     <FormSection title={tForm("title")}>
       {/* Club Team */}
-      <ComboboxField
-        label={tLabels("club")}
-        name="club"
-        options={clubTeamOptions}
-        value={club_team_id}
-        placeholder={tPlaceholders("club")}
-        loading={clubTeamLoading}
-        searchPlaceholder={tCommon("combobox.searchEntity", {
-          entity: tEntities("club").toLowerCase(),
-        })}
-        emptyMessage={tCommon("combobox.noEntityFound", {
-          entity: tEntities("club").toLowerCase(),
-        })}
-        onChange={(value) =>
-          setForm((prev) => ({
-            ...prev,
-            club_team_id: value,
-
-            transfer: {
-              ...prev.transfer,
-              to_club_team_id: value,
-            },
-          }))
-        }
-        error={errors.club_team_id}
-        required
-      />
+      <form.Field
+        name="club_team_id"
+        listeners={{
+          onChange: ({ value }) => {
+            form.setFieldValue(`transfer.to_club_team_id`, value);
+          },
+        }}
+      >
+        {(field) => (
+          <ComboboxField
+            field={field}
+            entityKey="club"
+            label={tLabels("club")}
+            options={clubTeamOptions}
+            placeholder={tPlaceholders("club")}
+            loading={isClubTeamLoading}
+            required
+          />
+        )}
+      </form.Field>
 
       {/* Join Date */}
-      <DateField
-        label={tLabels("joinedAt")}
-        name={`joined_at`}
-        placeholder={tPlaceholders("joinedAt") || ""}
-        value={joined_at}
-        onChange={(value) =>
-          setForm((prev) => ({
-            ...prev,
+      <form.Field
+        name="career.joined_at"
+        listeners={{
+          onChange: ({ value }) => {
+            const transfer = form.getFieldValue(`transfer`);
 
-            career: {
-              ...prev.career,
-              joined_at: value,
-            },
-
-            transfer: {
-              ...prev.transfer,
-              transfer_date: value,
-            },
-          }))
-        }
-        error={errors["career.joined_at"]}
-        required
-      />
+            if (!transfer.transfer_date) {
+              form.setFieldValue(`transfer.transfer_date`, value);
+            }
+          },
+        }}
+      >
+        {(field) => (
+          <DateField
+            field={field}
+            label={tLabels("joinedAt")}
+            placeholder={tPlaceholders("joinedAt") || ""}
+            required
+          />
+        )}
+      </form.Field>
 
       {/* Left Date */}
-      <DateField
-        label={tLabels("leftAt")}
-        name={`left_at`}
-        placeholder={tPlaceholders("leftAt") || ""}
-        value={left_at ?? ""}
-        onChange={(value) =>
-          setForm((prev) => ({
-            ...prev,
-
-            career: {
-              ...prev.career,
-              left_at: value,
-            },
-          }))
-        }
-        error={errors["career.left_at"]}
-      />
+      <form.Field name="career.left_at">
+        {(field) => (
+          <DateField
+            field={field}
+            label={tLabels("leftAt")}
+            placeholder={tPlaceholders("leftAt") || ""}
+          />
+        )}
+      </form.Field>
     </FormSection>
   );
 };

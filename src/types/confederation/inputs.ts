@@ -4,7 +4,7 @@ import {
   confederationsQuerySchema,
   createConfederationSchema,
   updateConfederationSchema,
-} from "@/lib/validations/confederations.schema";
+} from "@/lib/validations/confederations/confederations.schema";
 
 // Repo Request (from zod)
 

@@ -1,12 +1,17 @@
 "use client";
 
-import { useNationalityForm } from "@/hooks/dashboard/nationalities";
 import { useTranslations } from "next-intl";
-import { ImageField, SelectField, TextField } from "../fields";
+
 import { NationalityEditResponse } from "@/types/nationality";
-import { useConfederationOptions } from "@/hooks/confederations/useConfederationOptions";
-import { FormHeader, FormWrapper, SideBySideFormContentWrapper } from "../base";
 import { FormMode } from "@/types/form";
+
+import { useNationalityForm } from "@/hooks/dashboard/nationalities";
+import { useConfederationOptions } from "@/hooks/confederations/useConfederationOptions";
+
+import { ImageField, SelectField, TextField } from "../fields";
+
+import { FormHeader, FormWrapper, SideBySideFormContentWrapper } from "../base";
+import { useCrudFormState, useCrudFormTranslations } from "@/hooks/crud";
 
 interface Props {
   mode: FormMode;
@@ -24,44 +29,33 @@ const NationalityForm = ({
   onSubmit,
 }: Props) => {
   const tLabels = useTranslations("dashboard.nationalities.form.labels");
+
   const tPlaceholders = useTranslations(
     "dashboard.nationalities.form.placeholders",
   );
 
-  const {
-    form,
-    isDirty,
-    errors,
-    updateField,
-    updateImage,
-    validate,
-    canSubmit,
-    buildPayload,
-  } = useNationalityForm(nationality);
+  const { tCommonLabels, tCommonPlaceholders } = useCrudFormTranslations();
 
-  const isCreate = mode === "create";
+  const form = useNationalityForm(nationality, onSubmit);
 
-  const { confederationOptions, loading: isConfederationLoading } = useConfederationOptions();
+  const { isDirty, canSubmit } = useCrudFormState({ form });
 
-  const handleSubmit = () => {
-    if (!validate()) {
-      return;
-    }
-
-    onSubmit(buildPayload());
-  };
+  const { confederationOptions, loading: isConfederationLoading } =
+    useConfederationOptions();
 
   const LeftSideContent = () => {
     return (
       <>
         {/* Image */}
-        <ImageField
-          label={tLabels("image")}
-          name="image"
-          value={(form.previewUrl ?? form.imageUrl) as string}
-          onChange={updateImage}
-          error={errors.image}
-        />
+        <form.Field name="image">
+          {(field) => (
+            <ImageField
+              field={field}
+              label={tCommonLabels("image")}
+              existingImageUrl={form.state.values.imageUrl}
+            />
+          )}
+        </form.Field>
       </>
     );
   };
@@ -70,56 +64,61 @@ const NationalityForm = ({
     return (
       <>
         {/* Name */}
-        <TextField
-          label={tLabels("name")}
-          name="name"
-          placeholder={tPlaceholders("name") || ""}
-          value={(form.name as string) ?? ""}
-          onChange={(value) => updateField("name", value)}
-          error={errors.name}
-          required
-        />
+        <form.Field name="name">
+          {(field) => (
+            <TextField
+              field={field}
+              label={tCommonLabels("name")}
+              placeholder={tCommonPlaceholders("name")}
+              required
+            />
+          )}
+        </form.Field>
 
         {/* Fifa Code */}
-        <TextField
-          label={tLabels("fifaCode")}
-          name="fifa_code"
-          placeholder={tPlaceholders("fifaCode") || ""}
-          value={(form.fifa_code as string) ?? ""}
-          onChange={(value) => updateField("fifa_code", value)}
-          error={errors.fifa_code}
-          required
-        />
+        <form.Field name="fifa_code">
+          {(field) => (
+            <TextField
+              field={field}
+              label={tLabels("fifaCode")}
+              placeholder={tPlaceholders("fifaCode") || ""}
+              required
+            />
+          )}
+        </form.Field>
 
         {/* Confederation */}
-        <SelectField
-          label={tLabels("confederation")}
-          name={`confederation`}
-          placeholder={tPlaceholders("confederation")}
-          loading={isConfederationLoading}
-          options={confederationOptions}
-          value={form.confederation_id || ""}
-          onChange={(value) => updateField("confederation_id", value)}
-          error={errors.confederation_id}
-          required
-        />
+        <form.Field name="confederation_id">
+          {(field) => (
+            <SelectField
+              field={field}
+              label={tLabels("confederation")}
+              placeholder={tPlaceholders("confederation")}
+              loading={isConfederationLoading}
+              options={confederationOptions}
+              required
+            />
+          )}
+        </form.Field>
       </>
     );
   };
 
   return (
     <FormWrapper isDirty={isDirty}>
-      <FormHeader
-        loading={loading}
-        isCreate={isCreate}
-        canSubmit={canSubmit}
-        onSubmit={handleSubmit}
-      />
+      <form
+        onSubmit={(event) => {
+          event.preventDefault();
+          form.handleSubmit();
+        }}
+      >
+        <FormHeader loading={loading} mode={mode} canSubmit={canSubmit} />
 
-      <SideBySideFormContentWrapper
-        left={LeftSideContent()}
-        right={RightSideContent()}
-      />
+        <SideBySideFormContentWrapper
+          left={LeftSideContent()}
+          right={RightSideContent()}
+        />
+      </form>
     </FormWrapper>
   );
 };

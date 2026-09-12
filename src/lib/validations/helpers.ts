@@ -1,6 +1,6 @@
-import z from "zod";
+import { z } from "zod";
 
-export const nullableDate = z.preprocess(
-  (value) => (value === "" ? null : value),
-  z.string().nullable(),
-);
+export const nullableDate = z
+  .string()
+  .transform((value) => (value === "" ? null : value))
+  .nullable();

@@ -28,6 +28,7 @@ import {
   RotateCcw,
 } from "lucide-react";
 
+import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Button } from "@/components/ui/button";
 
 import {
@@ -47,41 +48,41 @@ import {
 
 import { ScrollArea } from "@/components/ui/scroll-area";
 
-import Label from "./Label";
-
 import { cn } from "@/lib/utils";
-
 import { useTranslations } from "next-intl";
 
 import SortableOrderedItem from "./SortableOrderedItem";
+
 import { OrderedEntity, OrderedItem } from "@/types/ordered";
 import { OrderedSelectFieldProps } from "@/types/ordered-select";
 import { normalizeOrderedValues } from "@/utils/ordered";
+
 import Image from "next/image";
-import ErrorMessage from "./ErrorMessage";
 
 const OrderedSelectField = <T extends OrderedEntity>({
+  field,
   label,
-  name,
   placeholder = "Select...",
   instruction,
   options,
-  value,
   getId,
   createValue,
   loading = false,
   disabled = false,
   required = true,
   className,
-  error,
-  onChange,
 }: OrderedSelectFieldProps<T>) => {
   const [open, setOpen] = React.useState(false);
 
   const tActions = useTranslations("common.actions");
   const tCommonStates = useTranslations("common.states");
 
-  const errorId = error ? `${name}-error` : undefined;
+  const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
+
+  const value = React.useMemo(
+    () => (field.state.value ?? []) as T[],
+    [field.state.value],
+  );
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -124,14 +125,14 @@ const OrderedSelectField = <T extends OrderedEntity>({
     [options, selectedIds],
   );
 
-  const emit = (ids: string[]) => {
-    onChange(ids.map((id, index) => createValue(id, index + 1)));
+  const updateValue = (ids: string[]) => {
+    field.handleChange(ids.map((id, index) => createValue(id, index + 1)));
   };
 
   const add = (id: string) => {
     if (selectedIds.has(id)) return;
 
-    onChange(
+    field.handleChange(
       normalizeOrderedValues([...value, createValue(id, value.length + 1)]),
     );
 
@@ -139,12 +140,14 @@ const OrderedSelectField = <T extends OrderedEntity>({
   };
 
   const remove = (id: string) => {
-    onChange(
+    field.handleChange(
       normalizeOrderedValues(value.filter((item) => getId(item) !== id)),
     );
   };
 
-  const clear = () => onChange([]);
+  const clear = () => {
+    field.handleChange([]);
+  };
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
@@ -157,13 +160,21 @@ const OrderedSelectField = <T extends OrderedEntity>({
 
     if (oldIndex === -1 || newIndex === -1) return;
 
-    emit(arrayMove(selectedItems, oldIndex, newIndex).map((item) => item.id));
+    const reorderedItems = arrayMove(selectedItems, oldIndex, newIndex);
+
+    updateValue(reorderedItems.map((item) => item.id));
   };
 
   return (
-    <div className={cn("flex flex-col gap-2", className)}>
+    <Field
+      data-invalid={isInvalid}
+      className={cn("flex flex-col gap-2", className)}
+    >
       <div className="flex items-center justify-between">
-        <Label label={label} name={name} required={required} />
+        <FieldLabel htmlFor={field.name}>
+          {label}
+          {required && <span className="text-destructive">*</span>}
+        </FieldLabel>
 
         {selectedItems.length > 0 && (
           <Button
@@ -182,22 +193,23 @@ const OrderedSelectField = <T extends OrderedEntity>({
       <div
         className={cn(
           "rounded-xl border bg-card p-3",
-          error && "border-destructive",
+          isInvalid && "border-destructive",
         )}
       >
         <Popover open={open} onOpenChange={setOpen}>
           <PopoverTrigger asChild>
             <Button
-              id={name}
+              id={field.name}
               type="button"
               variant="outline"
               disabled={disabled || loading || availableOptions.length === 0}
-              aria-invalid={!!error}
-              aria-describedby={errorId}
+              aria-invalid={isInvalid}
+              aria-describedby={isInvalid ? `${field.name}-error` : undefined}
               className={cn(
                 "w-full justify-between",
-                error && "border-destructive",
+                isInvalid && "border-destructive",
               )}
+              onBlur={field.handleBlur}
             >
               {loading ? (
                 <div className="flex items-center gap-2">
@@ -244,7 +256,7 @@ const OrderedSelectField = <T extends OrderedEntity>({
                             alt={option.label}
                             width={20}
                             height={20}
-                            className="rounded-full object-cover shrink-0"
+                            className="object-cover rounded-sm shadow-sm shrink-0"
                           />
                         )}
 
@@ -265,7 +277,7 @@ const OrderedSelectField = <T extends OrderedEntity>({
             <div
               className={cn(
                 "mt-3 flex min-h-24 flex-col items-center justify-center gap-2 rounded-lg border border-dashed p-4",
-                error && "border-destructive",
+                isInvalid && "border-destructive",
               )}
             >
               <ListOrdered className="size-5" />
@@ -299,8 +311,13 @@ const OrderedSelectField = <T extends OrderedEntity>({
         )}
       </div>
 
-      {error && <ErrorMessage id={errorId} message={error} />}
-    </div>
+      {isInvalid && (
+        <FieldError
+          id={`${field.name}-error`}
+          errors={field.state.meta.errors}
+        />
+      )}
+    </Field>
   );
 };
 

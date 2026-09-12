@@ -2,18 +2,16 @@
 
 import { useMemo } from "react";
 import { getImageUrl } from "@/lib/images/image-url";
-import { STORAGE_BUCKETS } from "@/lib/storage";
 import {
-  NationalityEditResponse,
-  UpsertNationalityInput,
-} from "@/types/nationality";
+  nationalityFormSchema,
+  NationalityFormValues,
+} from "@/lib/validations/nationalities/nationality-form.schema";
+import { NationalityEditResponse } from "@/types/nationality";
+import { useForm } from "@tanstack/react-form";
 import { buildFormData } from "@/lib/forms/buildFormData";
-import { nationalityMutationSchema } from "@/lib/validations/nationalities.schema";
-import { useEntityForm, useImageField } from "@/hooks/crud";
+import { ENTITY_CONFIG } from "@/config/entities";
 
-const createEmptyNationalityForm = (): UpsertNationalityInput => ({
-  id: "",
-
+const createEmptyNationalityForm = (): NationalityFormValues => ({
   image: null,
   imageUrl: null,
 
@@ -24,95 +22,55 @@ const createEmptyNationalityForm = (): UpsertNationalityInput => ({
 
 function mapNationality(
   nationality: NationalityEditResponse,
-): UpsertNationalityInput {
-  const { id, image, name, fifaCode, confederationId } = nationality;
+): NationalityFormValues {
+  const { image, name, fifaCode, confederationId } = nationality;
 
   return {
-    id,
-
-    image,
-    imageUrl: getImageUrl("nationality", STORAGE_BUCKETS.NATIONALITIES, image),
-
+    image: null,
+    imageUrl: getImageUrl(
+      "nationality",
+      ENTITY_CONFIG["nationality"]["storageBucket"],
+      image,
+    ),
     name,
     fifa_code: fifaCode,
     confederation_id: confederationId ?? "",
   };
 }
 
-export function useNationalityForm(nationality?: NationalityEditResponse) {
+export function useNationalityForm(
+  nationality: NationalityEditResponse | undefined,
+  onSubmit: (payload: FormData) => void,
+) {
   const initialValue = useMemo(
     () =>
       nationality ? mapNationality(nationality) : createEmptyNationalityForm(),
     [nationality],
   );
 
-  const {
-    imageFile,
-    previewUrl,
-    updateImage: setImage,
-  } = useImageField({
-    initialPreviewUrl: initialValue.imageUrl,
-  });
+  const form = useForm({
+    defaultValues: initialValue,
 
-  const {
-    form,
-    updateField,
-    errors,
-    isDirty,
-    canSubmit,
-    validate,
-    clearFieldError,
-    setFieldError,
-  } = useEntityForm({
-    initialValue,
-    schema: nationalityMutationSchema,
-
-    dirtyFields: ["name", "fifa_code", "confederation_id", "image"],
-
-    requiredFields: ["name", "fifa_code", "confederation_id"],
-
-    additionalDirty: imageFile !== null,
-  });
-
-  const updateImage = (file: File) => {
-    const result = setImage(file);
-
-    if (!result.success) {
-      setFieldError("image", result.error ?? "Invalid image.");
-      return;
-    }
-
-    clearFieldError("image");
-  };
-
-  const buildPayload = () => {
-    return buildFormData({
-      values: {
-        name: form.name,
-        fifa_code: form.fifa_code,
-        confederation_id: form.confederation_id,
-      },
-      existingImage: form.image,
-      imageFile,
-    });
-  };
-
-  return {
-    form: {
-      ...form,
-
-      imageFile,
-      previewUrl,
+    validators: {
+      onMount: nationalityFormSchema,
+      onChange: nationalityFormSchema,
+      onSubmit: nationalityFormSchema,
     },
 
-    isDirty,
-    errors,
+    onSubmit: async ({ value }) => {
+      const payload = buildFormData({
+        values: {
+          name: value.name,
+          fifa_code: value.fifa_code,
+          confederation_id: value.confederation_id,
+        },
+        existingImage: value.imageUrl,
+        imageFile: value.image,
+      });
 
-    updateField,
-    updateImage,
+      onSubmit(payload);
+    },
+  });
 
-    validate,
-    canSubmit,
-    buildPayload,
-  };
+  return form;
 }

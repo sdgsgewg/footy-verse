@@ -12,7 +12,7 @@ import {
   clubsQuerySchema,
   createClubSchema,
   updateClubSchema,
-} from "@/lib/validations/clubs.schema";
+} from "@/lib/validations/clubs/clubs.schema";
 import { idSchema, slugSchema } from "../validations/primitives.schema";
 import {
   uploadImageFromFormData,

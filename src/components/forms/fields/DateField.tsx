@@ -1,6 +1,9 @@
 "use client";
 
-import * as React from "react";
+import { useMemo, useState } from "react";
+import type { AnyFieldApi } from "@tanstack/react-form";
+import { CalendarDays } from "lucide-react";
+import { useLocale } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -10,18 +13,14 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-import Label from "./Label";
-import ErrorMessage from "./ErrorMessage";
-import { useLocale } from "next-intl";
-import { CalendarDays } from "lucide-react";
+import { Field, FieldError, FieldLabel } from "@/components/ui/field";
+
+import { cn } from "@/lib/utils";
 
 interface DateFieldProps {
+  field: AnyFieldApi;
+
   label: string;
-  name: string;
-
-  value: string;
-  onChange: (value: string) => void;
-
   placeholder?: string;
 
   startMonth?: Date;
@@ -32,14 +31,11 @@ interface DateFieldProps {
   disabled?: boolean;
 
   className?: string;
-  error?: string;
 }
 
 export default function DateField({
+  field,
   label,
-  name,
-  value,
-  onChange,
   placeholder = "Select date",
   startMonth,
   endMonth,
@@ -47,13 +43,16 @@ export default function DateField({
   readOnly,
   disabled,
   className,
-  error,
 }: DateFieldProps) {
-  const [open, setOpen] = React.useState(false);
+  const locale = useLocale();
 
-  const errorId = error ? `${name}-error` : undefined;
+  const [open, setOpen] = useState(false);
 
-  const date = React.useMemo(() => {
+  const value = field.state.value as string;
+
+  const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
+
+  const date = useMemo(() => {
     if (!value) return undefined;
 
     const [year, month, day] = value.split("-").map(Number);
@@ -63,22 +62,6 @@ export default function DateField({
     return new Date(year, month - 1, day);
   }, [value]);
 
-  const handleSelect = (selectedDate: Date | undefined) => {
-    if (!selectedDate) {
-      onChange("");
-      return;
-    }
-
-    const year = selectedDate.getFullYear();
-    const month = String(selectedDate.getMonth() + 1).padStart(2, "0");
-    const day = String(selectedDate.getDate()).padStart(2, "0");
-
-    onChange(`${year}-${month}-${day}`);
-    setOpen(false);
-  };
-
-  const locale = useLocale();
-
   const formattedDate = date
     ? date.toLocaleDateString(locale, {
         day: "2-digit",
@@ -87,32 +70,55 @@ export default function DateField({
       })
     : "";
 
+  const handleSelect = (selectedDate: Date | undefined) => {
+    if (!selectedDate) {
+      field.handleChange("");
+      setOpen(false);
+      return;
+    }
+
+    const year = selectedDate.getFullYear();
+    const month = String(selectedDate.getMonth() + 1).padStart(2, "0");
+    const day = String(selectedDate.getDate()).padStart(2, "0");
+
+    field.handleChange(`${year}-${month}-${day}`);
+    setOpen(false);
+  };
+
   const isDisabled = disabled || readOnly;
 
   return (
-    <div className="flex flex-col gap-2">
-      <Label label={label} name={name} required={required} readOnly={readOnly} />
+    <Field data-invalid={isInvalid}>
+      <FieldLabel htmlFor={field.name}>
+        {label}
+        {required && <span className="text-destructive">*</span>}
+      </FieldLabel>
 
       <Popover
         open={open}
         onOpenChange={(nextOpen) => {
-          if (!isDisabled) {
-            setOpen(nextOpen);
+          if (isDisabled) return;
+
+          setOpen(nextOpen);
+
+          if (!nextOpen) {
+            field.handleBlur();
           }
         }}
       >
-        <PopoverTrigger id={name} asChild>
+        <PopoverTrigger asChild>
           <Button
-            id={name}
-            name={name}
+            id={field.name}
+            name={field.name}
             type="button"
             variant="outline"
             disabled={isDisabled}
-            aria-invalid={!!error}
-            aria-describedby={errorId}
-            className={`w-full flex items-center justify-between font-normal ${
-              !date ? "text-muted-foreground" : ""
-            } ${className ?? ""}`}
+            aria-invalid={isInvalid}
+            className={cn(
+              "w-full flex items-center justify-between font-normal",
+              !date && "text-muted-foreground",
+              className,
+            )}
           >
             {formattedDate || placeholder}
             <CalendarDays />
@@ -132,7 +138,7 @@ export default function DateField({
         </PopoverContent>
       </Popover>
 
-      {error && <ErrorMessage id={errorId} message={error} />}
-    </div>
+      {isInvalid && <FieldError errors={field.state.meta.errors} />}
+    </Field>
   );
 }

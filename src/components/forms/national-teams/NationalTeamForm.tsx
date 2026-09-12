@@ -5,7 +5,6 @@ import FormWrapper from "../base/FormWrapper";
 import FormHeader from "../base/FormHeader";
 import FormContentWrapper from "../base/FormContentWrapper";
 import { SelectField } from "../fields";
-import { AgeGroup } from "@/enums/AgeGroup";
 import { getAgeGroupOptions, getGenderOptions } from "@/lib/constants/options";
 import {
   NationalTeamEditResponse,
@@ -13,11 +12,11 @@ import {
 } from "@/types/national-team";
 import { useNationalTeamForm } from "@/hooks/dashboard/national-teams";
 import { getNationalTeamTypeOptions } from "@/lib/national-teams/options";
-import { NationalTeamType } from "@/enums/NationalTeamType";
-import { Gender } from "@/enums/Gender";
+import { useCrudFormState } from "@/hooks/crud";
+import { FormMode } from "@/types/form";
 
 interface Props {
-  mode: "create" | "edit";
+  mode: FormMode;
   nationalTeam?: NationalTeamEditResponse;
 
   loading?: boolean;
@@ -32,83 +31,72 @@ const NationalTeamForm = ({
   onSubmit,
 }: Props) => {
   const t = useTranslations("");
+
   const tLabels = useTranslations("dashboard.nationalTeams.form.labels");
+
   const tPlaceholders = useTranslations(
     "dashboard.nationalTeams.form.placeholders",
   );
 
-  const {
-    form,
-    isDirty,
-    errors,
-    updateField,
-    validate,
-    canSubmit,
-    buildPayload,
-  } = useNationalTeamForm(nationalTeam);
+  const form = useNationalTeamForm({ nationalTeam, onSubmit });
+
+  const { isDirty, canSubmit } = useCrudFormState({ form });
 
   const genderOptions = getGenderOptions(t);
   const ageGroupOptions = getAgeGroupOptions(t);
   const teamTypeOptions = getNationalTeamTypeOptions(t);
 
-  const isCreate = mode === "create";
-
-  const handleSubmit = () => {
-    if (!validate()) {
-      return;
-    }
-
-    onSubmit(buildPayload());
-  };
-
   return (
     <FormWrapper isDirty={isDirty}>
-      <FormHeader
-        loading={loading}
-        isCreate={isCreate}
-        canSubmit={canSubmit}
-        onSubmit={handleSubmit}
-      />
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          form.handleSubmit();
+        }}
+      >
+        <FormHeader loading={loading} mode={mode} canSubmit={canSubmit} />
 
-      <FormContentWrapper className="space-y-5">
-        {/* Gender */}
-        <SelectField
-          label={tLabels("gender")}
-          name="gender"
-          placeholder={tPlaceholders("gender")}
-          options={genderOptions}
-          value={form.gender || ""}
-          onChange={(value) => updateField("gender", value as Gender)}
-          error={errors.gender}
-          required
-        />
+        <FormContentWrapper className="space-y-5">
+          {/* Gender */}
+          <form.Field name="gender">
+            {(field) => (
+              <SelectField
+                field={field}
+                label={tLabels("gender")}
+                placeholder={tPlaceholders("gender")}
+                options={genderOptions}
+                required
+              />
+            )}
+          </form.Field>
 
-        {/* Age Group */}
-        <SelectField
-          label={tLabels("ageGroup")}
-          name="age_group"
-          placeholder={tPlaceholders("ageGroup")}
-          options={ageGroupOptions}
-          value={form.age_group || ""}
-          onChange={(value) => updateField("age_group", value as AgeGroup)}
-          error={errors.age_group}
-          required
-        />
+          {/* Age Group */}
+          <form.Field name="age_group">
+            {(field) => (
+              <SelectField
+                field={field}
+                label={tLabels("ageGroup")}
+                placeholder={tPlaceholders("ageGroup")}
+                options={ageGroupOptions}
+                required
+              />
+            )}
+          </form.Field>
 
-        {/* Team type */}
-        <SelectField
-          label={tLabels("teamType")}
-          name="team_type"
-          placeholder={tPlaceholders("teamType")}
-          options={teamTypeOptions}
-          value={form.team_type || ""}
-          onChange={(value) =>
-            updateField("team_type", value as NationalTeamType)
-          }
-          error={errors.team_type}
-          required
-        />
-      </FormContentWrapper>
+          {/* Team type */}
+          <form.Field name="team_type">
+            {(field) => (
+              <SelectField
+                field={field}
+                label={tLabels("teamType")}
+                placeholder={tPlaceholders("teamType")}
+                options={teamTypeOptions}
+                required
+              />
+            )}
+          </form.Field>
+        </FormContentWrapper>
+      </form>
     </FormWrapper>
   );
 };

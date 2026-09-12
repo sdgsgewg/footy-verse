@@ -1,18 +1,6 @@
 {
   "navLabel": "Kategori",
 
-  "form": {
-    "labels": {
-      "name": "Nama",
-      "description": "Deskripsi"
-    },
-
-    "placeholders": {
-      "name": "Masukkan nama",
-      "description": "Masukkan deskripsi"
-    }
-  },
-
   "columns": {
     "name": "Nama",
     "description": "Deskripsi"

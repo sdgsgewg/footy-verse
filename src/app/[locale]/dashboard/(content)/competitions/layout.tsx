@@ -16,7 +16,7 @@ export default function CompetitionPageLayout({
   const tCompetitionScope = useTranslations("dashboard.competitionScopes");
 
   return (
-    <div className="min-h-screen space-y-6 bg-background">
+    <div className="space-y-6">
       <TabsNavigation
         items={[
           {

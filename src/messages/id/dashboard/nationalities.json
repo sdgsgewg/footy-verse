@@ -1,15 +1,11 @@
 {
   "form": {
     "labels": {
-      "image": "Gambar",
-      "name": "Nama",
       "fifaCode": "Kode FIFA",
       "confederation": "Konfederasi"
     },
 
     "placeholders": {
-      "image": "Unggah gambar",
-      "name": "Masukkan nama",
       "fifaCode": "Masukkan kode FIFA (3 huruf kapital)",
       "confederation": "Pilih konfederasi"
     }

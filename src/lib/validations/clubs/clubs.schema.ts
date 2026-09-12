@@ -1,11 +1,11 @@
 import { z } from "zod";
-import { idSchema, slugSchema } from "./primitives.schema";
-import { listQuerySchema } from "./query.schema";
-import { clubSortBySchema } from "./enums.schema";
-import { imageSchema } from "./primitives.schema";
+import { idSchema, slugSchema } from "../primitives.schema";
+import { listQuerySchema } from "../query.schema";
+import { clubSortBySchema } from "../enums.schema";
+import { imageUrlSchema } from "../primitives.schema";
 
 export const clubMutationSchema = z.object({
-  image: imageSchema,
+  image: imageUrlSchema,
   full_name: z.string().min(1).max(255),
   short_name: z.string().min(1).max(255),
   nation_id: idSchema,

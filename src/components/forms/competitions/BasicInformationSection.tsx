@@ -2,29 +2,15 @@
 
 import { useTranslations } from "next-intl";
 import FormSection from "../base/FormSection";
-import { UpsertCompetitionInput } from "@/types/competition";
 import { ImageField, NumberField, TextAreaField, TextField } from "../fields";
-import { FormErrors, FormState } from "@/types/form";
+import { useCrudFormTranslations } from "@/hooks/crud";
+import { CompetitionForm } from "@/hooks/dashboard/competitions";
 
 interface Props {
-  form: FormState<UpsertCompetitionInput>;
-
-  updateField: <K extends keyof UpsertCompetitionInput>(
-    field: K,
-    value: UpsertCompetitionInput[K],
-  ) => void;
-
-  updateImage: (file: File) => void;
-
-  errors: FormErrors<keyof UpsertCompetitionInput & string>;
+  form: CompetitionForm;
 }
 
-const BasicInformationSection = ({
-  form,
-  updateField,
-  updateImage,
-  errors,
-}: Props) => {
+const BasicInformationSection = ({ form }: Props) => {
   const tForm = useTranslations("dashboard.competitions.form.basicInformation");
 
   const tLabels = useTranslations(
@@ -35,67 +21,73 @@ const BasicInformationSection = ({
     "dashboard.competitions.form.placeholders.basicInformation",
   );
 
-  const { name, short_name, description, founded_year } = form;
+  const { tCommonLabels, tCommonPlaceholders } = useCrudFormTranslations();
 
   return (
     <FormSection title={tForm("title")}>
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <div className="lg:grid-cols-6">
+      <div className="flex flex-col gap-5 md:flex-row md:gap-12">
+        <div className="max-w-52 shrink-0">
           {/* Image */}
-          <ImageField
-            label={tLabels("image")}
-            name="image"
-            value={form.previewUrl ?? form.imageUrl ?? ""}
-            onChange={updateImage}
-            imageClassName="object-contain"
-            error={errors.image}
-          />
+          <form.Field name="image">
+            {(field) => (
+              <ImageField
+                field={field}
+                label={tCommonLabels("image")}
+                existingImageUrl={form.state.values.imageUrl}
+                imageClassName="object-contain"
+              />
+            )}
+          </form.Field>
         </div>
 
-        <div className="lg:grid-cols-6 space-y-5">
+        <div className="flex-1 space-y-5">
           {/* Name */}
-          <TextField
-            label={tLabels("name")}
-            name="name"
-            value={name}
-            placeholder={tPlaceholders("name")}
-            onChange={(value) => updateField("name", value)}
-            error={errors.name}
-            required
-          />
+          <form.Field name="name">
+            {(field) => (
+              <TextField
+                field={field}
+                label={tCommonLabels("name")}
+                placeholder={tCommonPlaceholders("name")}
+                required
+              />
+            )}
+          </form.Field>
 
           {/* Short Name */}
-          <TextField
-            label={tLabels("shortName")}
-            name="short_name"
-            value={short_name}
-            placeholder={tPlaceholders("shortName")}
-            onChange={(value) => updateField("short_name", value)}
-            error={errors.short_name}
-            required
-          />
+          <form.Field name="short_name">
+            {(field) => (
+              <TextField
+                field={field}
+                label={tCommonLabels("shortName")}
+                placeholder={tCommonPlaceholders("shortName")}
+                required
+              />
+            )}
+          </form.Field>
 
           {/* Description */}
-          <TextAreaField
-            label={tLabels("description")}
-            name="description"
-            value={description ?? ""}
-            placeholder={tPlaceholders("description")}
-            onChange={(value) => updateField("description", value)}
-            error={errors.description}
-          />
+          <form.Field name="description">
+            {(field) => (
+              <TextAreaField
+                field={field}
+                label={tLabels("description")}
+                placeholder={tPlaceholders("description")}
+              />
+            )}
+          </form.Field>
 
           {/* Founded Year */}
-          <NumberField
-            label={tLabels("foundedYear")}
-            name="founded_year"
-            value={founded_year}
-            placeholder={tPlaceholders("foundedYear")}
-            thousandSeparator={false}
-            decimalScale={0}
-            onChange={(value) => updateField("founded_year", value ?? 0)}
-            error={errors.founded_year}
-          />
+          <form.Field name="founded_year">
+            {(field) => (
+              <NumberField
+                field={field}
+                label={tLabels("foundedYear")}
+                placeholder={tPlaceholders("foundedYear")}
+                thousandSeparator={false}
+                decimalScale={0}
+              />
+            )}
+          </form.Field>
         </div>
       </div>
     </FormSection>
@@ -103,3 +95,4 @@ const BasicInformationSection = ({
 };
 
 export default BasicInformationSection;
+

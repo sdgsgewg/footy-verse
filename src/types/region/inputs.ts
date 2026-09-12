@@ -4,7 +4,7 @@ import {
   regionMutationSchema,
   regionsQuerySchema,
   updateRegionSchema,
-} from "@/lib/validations/regions.schema";
+} from "@/lib/validations/regions/regions.schema";
 
 // Repo Request (from zod)
 

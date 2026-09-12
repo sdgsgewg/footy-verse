@@ -77,7 +77,7 @@ const SortableOrderedItem = ({
               alt={item.label}
               width={20}
               height={20}
-              className="rounded-full object-cover shrink-0"
+              className="object-cover rounded-sm shadow-sm shrink-0"
             />
           )}
 

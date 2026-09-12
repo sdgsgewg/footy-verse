@@ -8,9 +8,11 @@ import FormContentWrapper from "../base/FormContentWrapper";
 import BasicInformationSection from "./BasicInformationSection";
 import CompetitionClassificationSection from "./CompetitionClassificationSection";
 import ScopeAndLocationSection from "./ScopeAndLocationSection";
+import { useCrudFormState } from "@/hooks/crud";
+import { FormMode } from "@/types/form";
 
 interface Props {
-  mode: "create" | "edit";
+  mode: FormMode;
   competition?: CompetitionEditResponse;
 
   loading?: boolean;
@@ -24,64 +26,48 @@ const CompetitionForm = ({
   loading = false,
   onSubmit,
 }: Props) => {
-  const {
-    form,
-    isDirty,
-    errors,
-    updateField,
-    updateImage,
-    validate,
-    canSubmit,
-    buildPayload,
-  } = useCompetitionForm(competition);
+  const form = useCompetitionForm({
+    competition,
+    onSubmit,
+  });
 
-  const isCreate = mode === "create";
+  const { isDirty, canSubmit } = useCrudFormState({ form });
 
   const handleSubmit = () => {
-    if (!validate()) {
-      return;
-    }
-
-    onSubmit(buildPayload());
+    form.handleSubmit();
   };
 
   return (
     <FormWrapper isDirty={isDirty}>
+      {/* <form
+        onSubmit={(event) => {
+          event.preventDefault();
+          form.handleSubmit();
+        }}
+      > */}
       <FormHeader
         loading={loading}
-        isCreate={isCreate}
+        mode={mode}
         canSubmit={canSubmit}
         onSubmit={handleSubmit}
       />
 
       <FormContentWrapper className="space-y-8">
         <div>
-          <BasicInformationSection
-            form={form}
-            updateField={updateField}
-            updateImage={updateImage}
-            errors={errors}
-          />
+          <BasicInformationSection form={form} />
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div className="lg:grid-cols-6">
-            <CompetitionClassificationSection
-              form={form}
-              updateField={updateField}
-              errors={errors}
-            />
+            <CompetitionClassificationSection form={form} />
           </div>
 
           <div className="lg:grid-cols-6">
-            <ScopeAndLocationSection
-              form={form}
-              updateField={updateField}
-              errors={errors}
-            />
+            <ScopeAndLocationSection form={form} />
           </div>
         </div>
       </FormContentWrapper>
+      {/* </form> */}
     </FormWrapper>
   );
 };

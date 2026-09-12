@@ -20,30 +20,28 @@ import {
 } from "@dnd-kit/sortable";
 
 import { ListOrdered } from "lucide-react";
+import { AnyFieldApi } from "@tanstack/react-form";
 
-import Label from "./Label";
+// Fields
+import SortableOrderedItem from "./SortableOrderedItem";
 
 import { cn } from "@/lib/utils";
-
-import SortableOrderedItem from "./SortableOrderedItem";
 import { OrderedEntity, OrderedItem, OrderedFieldProps } from "@/types/ordered";
-import ErrorMessage from "./ErrorMessage";
+import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 
 const OrderedField = <T extends OrderedEntity>({
+  field,
   label,
-  name,
-  instruction,
-  value,
+  items,
   getId,
   getLabel,
   getImageUrl,
+  instruction,
   disabled = false,
   required = true,
   className,
-  error,
-  onChange,
 }: OrderedFieldProps<T>) => {
-  const errorId = error ? `${name}-error` : undefined;
+  const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -56,20 +54,37 @@ const OrderedField = <T extends OrderedEntity>({
     }),
   );
 
+  const fieldValue = field.state.value as string[];
+
+  const error =
+    field.state.meta.isTouched && field.state.meta.errors.length > 0
+      ? String(field.state.meta.errors[0])
+      : undefined;
+
+  const errorId = error ? `${field.name.replace(/\./g, "-")}-error` : undefined;
+
+  const itemMap = React.useMemo(
+    () => new Map(items.map((item) => [getId(item), item])),
+    [items, getId],
+  );
+
   const orderedItems = React.useMemo<OrderedItem[]>(
     () =>
-      [...value]
-        .sort((a, b) => a.display_order - b.display_order)
+      fieldValue
+        .map((id) => itemMap.get(id))
+        .filter((item): item is T => item !== undefined)
         .map((item, index) => ({
           id: getId(item),
           imageUrl: getImageUrl?.(item) ?? null,
           label: getLabel(item),
           display_order: index + 1,
         })),
-    [value, getId, getLabel, getImageUrl],
+    [fieldValue, itemMap, getId, getLabel, getImageUrl],
   );
 
   const handleDragEnd = (event: DragEndEvent) => {
+    if (disabled) return;
+
     const { active, over } = event;
 
     if (!over || active.id === over.id) return;
@@ -82,19 +97,17 @@ const OrderedField = <T extends OrderedEntity>({
 
     const reordered = arrayMove(orderedItems, oldIndex, newIndex);
 
-    const itemMap = new Map(value.map((item) => [getId(item), item]));
+    field.handleChange(reordered.map((item) => item.id));
 
-    onChange(
-      reordered.map((item, index) => ({
-        ...itemMap.get(item.id)!,
-        display_order: index + 1,
-      })),
-    );
+    field.handleBlur();
   };
 
   return (
-    <div className={cn("flex flex-col gap-2", className)}>
-      <Label label={label} required={required} />
+    <Field data-invalid={isInvalid} className={cn(className)}>
+      <FieldLabel htmlFor={field.name}>
+        {label}
+        {required && <span className="text-destructive">*</span>}
+      </FieldLabel>
 
       <div
         className={cn(
@@ -132,8 +145,8 @@ const OrderedField = <T extends OrderedEntity>({
         )}
       </div>
 
-      {error && <ErrorMessage id={errorId} message={error} />}
-    </div>
+      {isInvalid && <FieldError errors={field.state.meta.errors} />}
+    </Field>
   );
 };
 

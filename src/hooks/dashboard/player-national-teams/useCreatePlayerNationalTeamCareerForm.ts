@@ -1,91 +1,75 @@
 "use client";
 
-import { useEntityForm } from "@/hooks/crud";
-import { playerNationalTeamCareerMutationSchema } from "@/lib/validations/player-national-team-careers.schema";
+import { useMemo } from "react";
+import { useForm } from "@tanstack/react-form";
+
 import { PlayerNationalTeamCareerCreateInput } from "@/types/player-national-team-career";
+import {
+  playerNationalTeamCareerFormSchema,
+  PlayerNationalTeamCareerFormValues,
+} from "@/lib/validations/player-national-team-careers/player-national-team-careers-form.schema";
 
-const createEmptyPlayerNationalTeamCareerForm =
-  (): PlayerNationalTeamCareerCreateInput => [
-    {
-      national_team_id: "",
+const createEmptyCareer =
+  (): PlayerNationalTeamCareerFormValues["careers"][number] => ({
+    national_team_id: "",
 
-      career: {
-        joined_at: "",
-        left_at: "",
-      },
-
-      shirt_numbers: [],
+    career: {
+      joined_at: "",
+      left_at: "",
     },
-  ];
 
-export function useCreatePlayerNationalTeamCareerForm() {
-  const { form, setForm, isDirty, canSubmit, resetForm } =
-    useEntityForm<PlayerNationalTeamCareerCreateInput>({
-      initialValue: createEmptyPlayerNationalTeamCareerForm(),
-
-      schema: playerNationalTeamCareerMutationSchema,
-
-      checkDirty: false,
-
-      isDirty: (form) =>
-        form.some(
-          (item) =>
-            item.national_team_id.trim() !== "" ||
-            item.career.joined_at.trim() !== "" ||
-            item.career.left_at?.trim() !== "" ||
-            item.shirt_numbers.some(
-              (shirt) =>
-                shirt.shirt_number !== null ||
-                shirt.start_date.trim() !== "" ||
-                shirt.end_date?.trim() !== "",
-            ),
-        ),
-
-      isFilled: (form) => {
-        return form.every((item) => {
-          const isCareerValid = item.career.joined_at.trim().length > 0;
-
-          const areShirtNumbersValid = item.shirt_numbers.every(
-            (shirtNumber) => {
-              return (
-                shirtNumber.shirt_number !== null &&
-                shirtNumber.shirt_number > 0 &&
-                shirtNumber.start_date.trim().length > 0
-              );
-            },
-          );
-
-          return (
-            item.national_team_id.trim().length > 0 &&
-            isCareerValid &&
-            areShirtNumbersValid
-          );
-        });
+    shirt_numbers: [
+      {
+        shirt_number: null,
+        start_date: "",
+        end_date: "",
       },
-    });
+    ],
+  });
 
-  const buildPayload = (): PlayerNationalTeamCareerCreateInput => {
-    return form.map((item) => ({
-      national_team_id: item.national_team_id,
+const createEmptyForm = (): PlayerNationalTeamCareerFormValues => ({
+  careers: [createEmptyCareer()],
+});
 
-      career: {
-        joined_at: item.career.joined_at,
-        left_at: item.career.left_at || null,
-      },
+interface UseCreatePlayerNationalTeamCareerFormOptions {
+  onSubmit: (payload: PlayerNationalTeamCareerCreateInput) => void;
+}
 
-      shirt_numbers: item.shirt_numbers.map((shirtNumber) => ({
-        ...shirtNumber,
-        end_date: shirtNumber.end_date || null,
-      })),
-    }));
-  };
+export function useCreatePlayerNationalTeamCareerForm({
+  onSubmit,
+}: UseCreatePlayerNationalTeamCareerFormOptions) {
+  const defaultValues = useMemo(() => createEmptyForm(), []);
 
-  return {
-    form,
-    setForm,
-    isDirty,
-    canSubmit,
-    buildPayload,
-    resetForm,
-  };
+  const form = useForm({
+    defaultValues,
+
+    validators: {
+      onMount: playerNationalTeamCareerFormSchema,
+      onChange: playerNationalTeamCareerFormSchema,
+      onSubmit: playerNationalTeamCareerFormSchema,
+    },
+
+    onSubmit: async ({ value }) => {
+      const payload: PlayerNationalTeamCareerCreateInput = value.careers.map(
+        (career) => ({
+          national_team_id: career.national_team_id,
+
+          career: {
+            joined_at: career.career.joined_at,
+            left_at: career.career.left_at || null,
+          },
+
+          shirt_numbers: career.shirt_numbers.map((shirtNumber) => ({
+            shirt_number: shirtNumber.shirt_number,
+            start_date: shirtNumber.start_date,
+            end_date: shirtNumber.end_date || null,
+          })),
+        }),
+      );
+
+      onSubmit(payload);
+    },
+  });
+
+  return form;
 }

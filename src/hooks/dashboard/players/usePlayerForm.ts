@@ -1,17 +1,27 @@
 "use client";
 
 import { useMemo } from "react";
+import { useForm } from "@tanstack/react-form";
+
+import { PlayerEditResponse } from "@/types/player";
+
 import { PreferredFoot } from "@/enums/PreferredFoot";
-import { PlayerEditResponse, UpsertPlayerInput } from "@/types/player";
-import { STORAGE_BUCKETS } from "@/lib/storage";
+
+import { ENTITY_CONFIG } from "@/config/entities";
 import { getImageUrl } from "@/lib/images/image-url";
 import { buildFormData } from "@/lib/forms/buildFormData";
-import { useEntityForm, useImageField } from "@/hooks/crud";
-import { playerMutationSchema } from "@/lib/validations/players.schema";
 
-const createEmptyPlayerForm = (): UpsertPlayerInput => ({
-  id: "",
+import {
+  PlayerFormValues,
+  playerFormSchema,
+} from "@/lib/validations/players/player-form.schema";
 
+interface UsePlayerFormOptions {
+  player?: PlayerEditResponse;
+  onSubmit: (payload: FormData) => void;
+}
+
+const createEmptyPlayerForm = (): PlayerFormValues => ({
   image: null,
   imageUrl: null,
 
@@ -31,12 +41,14 @@ const createEmptyPlayerForm = (): UpsertPlayerInput => ({
   nationalities: [],
 });
 
-function mapPlayer(player: PlayerEditResponse): UpsertPlayerInput {
+function mapPlayer(player: PlayerEditResponse): PlayerFormValues {
   return {
-    id: player.id,
-
-    image: player.image,
-    imageUrl: getImageUrl("player", STORAGE_BUCKETS.PLAYERS, player.image),
+    image: null,
+    imageUrl: getImageUrl(
+      "player",
+      ENTITY_CONFIG["player"]["storageBucket"],
+      player.image,
+    ),
 
     full_name: player.fullName,
     short_name: player.shortName,
@@ -62,107 +74,42 @@ function mapPlayer(player: PlayerEditResponse): UpsertPlayerInput {
   };
 }
 
-export function usePlayerForm(player?: PlayerEditResponse) {
-  const initialValue = useMemo(
+export function usePlayerForm({ player, onSubmit }: UsePlayerFormOptions) {
+  const defaultValues = useMemo(
     () => (player ? mapPlayer(player) : createEmptyPlayerForm()),
     [player],
   );
 
-  const {
-    imageFile,
-    previewUrl,
-    updateImage: setImage,
-  } = useImageField({
-    initialPreviewUrl: initialValue.imageUrl,
-  });
+  const form = useForm({
+    defaultValues,
 
-  const {
-    form,
-    updateField,
-    errors,
-    isDirty,
-    canSubmit,
-    validate,
-    clearFieldError,
-    setFieldError,
-  } = useEntityForm({
-    initialValue,
-    schema: playerMutationSchema,
-
-    dirtyFields: [
-      "full_name",
-      "short_name",
-      "dob",
-      "pob",
-      "preferred_foot",
-      "height",
-      "weight",
-      "market_value",
-      "image",
-      "positions",
-      "nationalities",
-    ],
-
-    requiredFields: [
-      "full_name",
-      "short_name",
-      "dob",
-      "pob",
-      "preferred_foot",
-      "height",
-      "weight",
-      "market_value",
-    ],
-
-    additionalDirty: imageFile !== null,
-  });
-
-  const updateImage = (file: File) => {
-    const result = setImage(file);
-
-    if (!result.success) {
-      setFieldError("image", result.error ?? "Invalid image.");
-      return;
-    }
-
-    clearFieldError("image");
-  };
-
-  const buildPayload = () => {
-    return buildFormData({
-      values: {
-        full_name: form.full_name,
-        short_name: form.short_name,
-        dob: form.dob,
-        pob: form.pob,
-        preferred_foot: form.preferred_foot,
-        height: form.height,
-        weight: form.weight,
-        market_value: form.market_value,
-        positions: form.positions,
-        nationalities: form.nationalities,
-      },
-      existingImage: form.image,
-      imageFile,
-    });
-  };
-
-  return {
-    form: {
-      ...form,
-
-      imageFile,
-      previewUrl,
+    validators: {
+      onMount: playerFormSchema,
+      onChange: playerFormSchema,
+      onSubmit: playerFormSchema,
     },
 
-    isDirty,
-    errors,
+    onSubmit: async ({ value }) => {
+      const payload = buildFormData({
+        values: {
+          full_name: value.full_name,
+          short_name: value.short_name,
+          dob: value.dob,
+          pob: value.pob,
+          preferred_foot: value.preferred_foot,
+          height: value.height,
+          weight: value.weight,
+          market_value: value.market_value,
+          positions: value.positions,
+          nationalities: value.nationalities,
+        },
+        existingImage: value.imageUrl,
+        imageFile: value.image,
+      });
 
-    updateField,
-    updateImage,
+      onSubmit(payload);
+    },
+  });
 
-    validate,
-    canSubmit,
-    buildPayload,
-  };
+  return form;
 }

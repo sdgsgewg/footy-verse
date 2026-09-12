@@ -1,13 +1,14 @@
 "use client";
 
+import { useForm } from "@tanstack/react-form";
+import { useMemo } from "react";
+
 import { TransferType } from "@/enums/TransferType";
-import { useEntityForm } from "@/hooks/crud";
 import { playerClubTeamCareerMutationSchema } from "@/lib/validations/player-club-team-careers.schema";
 import {
   PlayerClubTeamCareerEditResponse,
   UpsertPlayerClubTeamCareerInput,
 } from "@/types/player-club-team-career";
-import { useMemo } from "react";
 
 const createEmptyPlayerClubTeamCareerForm =
   (): UpsertPlayerClubTeamCareerInput => ({
@@ -79,10 +80,16 @@ function mapPlayerClubTeamCareer(
   };
 }
 
-export function usePlayerClubTeamCareerForm(
-  playerClubTeamCareer?: PlayerClubTeamCareerEditResponse,
-) {
-  const initialValue = useMemo(
+interface UsePlayerClubTeamCareerFormOptions {
+  playerClubTeamCareer?: PlayerClubTeamCareerEditResponse;
+  onSubmit: (payload: UpsertPlayerClubTeamCareerInput) => void;
+}
+
+export function usePlayerClubTeamCareerForm({
+  playerClubTeamCareer,
+  onSubmit,
+}: UsePlayerClubTeamCareerFormOptions) {
+  const defaultValues = useMemo(
     () =>
       playerClubTeamCareer
         ? mapPlayerClubTeamCareer(playerClubTeamCareer)
@@ -90,124 +97,48 @@ export function usePlayerClubTeamCareerForm(
     [playerClubTeamCareer],
   );
 
-  function isPlayerClubTeamCareerFormFilled(
-    form: UpsertPlayerClubTeamCareerInput,
-  ) {
-    const isCareerValid = form.career.joined_at.trim().length > 0;
+  const form = useForm({
+    defaultValues,
 
-    const areContractsValid = form.contracts
-      ? form.contracts.every((item) => {
-          return (
-            item.contract_start.trim().length > 0 &&
-            item.contract_end.trim().length > 0 &&
-            item.salary !== null &&
-            item.salary > 0
-          );
-        })
-      : false;
+    validators: {
+      onMount: playerClubTeamCareerMutationSchema,
+      onChange: playerClubTeamCareerMutationSchema,
+      onSubmit: playerClubTeamCareerMutationSchema,
+    },
 
-    const areShirtNumbersValid = form.shirt_numbers
-      ? form.shirt_numbers.every((item) => {
-          return (
-            item.shirt_number !== null &&
-            item.shirt_number > 0 &&
-            item.start_date.trim().length > 0
-          );
-        })
-      : false;
+    onSubmit: async ({ value }) => {
+      const payload: UpsertPlayerClubTeamCareerInput = {
+        club_team_id: value.club_team_id,
+        player_career_id: value.player_career_id,
 
-    const isTransferValid =
-      form.transfer.from_club_team_id.trim().length > 0 &&
-      form.transfer.to_club_team_id.trim().length > 0 &&
-      form.transfer.transfer_type.trim().length > 0 &&
-      form.transfer.transfer_fee !== null &&
-      form.transfer.transfer_fee >= 0 &&
-      form.transfer.transfer_date.trim().length > 0;
+        career: {
+          joined_at: value.career.joined_at,
+          left_at: value.career.left_at ?? null,
+        },
 
-    return (
-      form.club_team_id.trim().length > 0 &&
-      isCareerValid &&
-      areContractsValid &&
-      areShirtNumbersValid &&
-      isTransferValid
-    );
-  }
+        contracts: value.contracts
+          ? value.contracts.map((item) => ({
+              ...item,
+            }))
+          : [],
 
-  const {
-    form,
-    setForm,
-    errors,
-    isDirty,
-    canSubmit,
-    validate,
-    clearFieldError,
-  } = useEntityForm({
-    initialValue,
+        shirt_numbers: value.shirt_numbers
+          ? value.shirt_numbers.map((item) => ({
+              ...item,
+              end_date: item.end_date || null,
+            }))
+          : [],
 
-    schema: playerClubTeamCareerMutationSchema,
+        transfer: value.transfer,
+      };
 
-    dirtyFields: [
-      "club_team_id",
-      "career",
-      "contracts",
-      "shirt_numbers",
-      "transfer",
-    ],
-
-    requiredFields: ["club_team_id"],
-
-    isFilled: isPlayerClubTeamCareerFormFilled,
+      onSubmit(payload);
+    },
   });
 
-  const buildPayload = () => {
-    const {
-      club_team_id,
-      player_career_id,
-      career,
-      contracts,
-      shirt_numbers,
-      transfer,
-    } = form;
-
-    const payload: UpsertPlayerClubTeamCareerInput = {
-      club_team_id,
-      player_career_id,
-
-      career: {
-        joined_at: career.joined_at,
-        left_at: career.left_at ?? null,
-      },
-
-      contracts: contracts
-        ? contracts.map((item) => ({
-            ...item,
-          }))
-        : [],
-
-      shirt_numbers: shirt_numbers
-        ? shirt_numbers.map((item) => ({
-            ...item,
-            end_date: item.end_date || null,
-          }))
-        : [],
-
-      transfer,
-    };
-
-    return payload;
-  };
-
-  return {
-    form,
-    setForm,
-
-    isDirty,
-    errors,
-
-    clearFieldError,
-
-    validate,
-    canSubmit,
-    buildPayload,
-  };
+  return form;
 }
+
+export type PlayerClubTeamCareerForm = ReturnType<
+  typeof usePlayerClubTeamCareerForm
+>;

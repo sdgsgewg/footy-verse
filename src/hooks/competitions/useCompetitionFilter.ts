@@ -1,7 +1,7 @@
 import { useFilters } from "@/hooks/filter";
 import { usePagination } from "@/hooks/pagination";
 import { hasFilterChanged, parseSearchParams } from "@/lib/utils/crud";
-import { competitionsQuerySchema } from "@/lib/validations/competitions.schema";
+import { competitionsQuerySchema } from "@/lib/validations/competitions/competitions.schema";
 import { CompetitionFilter } from "@/types/competition";
 import { useSearchParams } from "next/navigation";
 import { useMemo } from "react";

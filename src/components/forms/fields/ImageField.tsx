@@ -3,44 +3,51 @@
 import Image from "next/image";
 import { useEffect, useRef } from "react";
 import { Upload, ImagePlus } from "lucide-react";
+import type { AnyFieldApi } from "@tanstack/react-form";
 
-import Label from "./Label";
 import { Card, CardContent } from "@/components/ui/card";
-import ErrorMessage from "./ErrorMessage";
+import {
+  Field,
+  FieldDescription,
+  FieldError,
+  FieldLabel,
+} from "@/components/ui/field";
+
+import { useImageField } from "@/hooks/crud/useImageField";
 import { useTranslations } from "next-intl";
+import { cn } from "@/lib/utils";
 
 interface Props {
-  label: string;
-  name: string;
+  field: AnyFieldApi;
 
-  value?: string;
-  onChange: (file: File) => void;
+  label: string;
+  existingImageUrl?: string | null;
 
   required?: boolean;
   readOnly?: boolean;
 
   imageClassName?: string;
-  error?: string;
 }
 
 export default function ImageField({
+  field,
   label,
-  name,
-  value,
-  onChange,
+  existingImageUrl = null,
   required,
   readOnly,
   imageClassName = "object-cover",
-  error,
 }: Props) {
   const t = useTranslations("common.form.fields.image");
 
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const supportedFormats = "PNG, JPG, JPEG, WEBP";
+  const { previewUrl, updatePreview } = useImageField({
+    initialPreviewUrl: existingImageUrl,
+  });
 
-  const errorId = error ? `${name}-error` : undefined;
-  const helpId = `${name}-help`;
+  const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
+
+  const value = previewUrl ?? existingImageUrl;
 
   useEffect(() => {
     if (!value && inputRef.current) {
@@ -48,35 +55,35 @@ export default function ImageField({
     }
   }, [value]);
 
-  function handleChooseFile() {
+  const handleChooseFile = () => {
     if (readOnly) return;
 
     inputRef.current?.click();
-  }
+  };
 
-  function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0];
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
 
     if (!file) return;
 
-    onChange(file);
-  }
+    field.handleChange(file);
+    updatePreview(file);
+  };
 
   return (
-    <div className="space-y-3">
-      <Label
-        label={label}
-        required={required}
-        readOnly={readOnly}
-      />
+    <Field data-invalid={isInvalid}>
+      <FieldLabel>
+        {label}
+        {required && <span className="text-destructive">*</span>}
+      </FieldLabel>
 
       <Card
         onClick={handleChooseFile}
-        className={[
+        className={cn(
           "group w-52 cursor-pointer overflow-hidden p-0 transition",
           !readOnly && "hover:border-primary",
           readOnly && "cursor-default opacity-70",
-        ].join(" ")}
+        )}
       >
         <CardContent className="relative flex aspect-square items-center justify-center overflow-hidden p-0 bg-muted">
           {value ? (
@@ -121,25 +128,20 @@ export default function ImageField({
           <input
             ref={inputRef}
             hidden
-            name={name}
             type="file"
             accept="image/jpeg,image/png,image/webp"
-            aria-invalid={!!error}
-            aria-describedby={[errorId, helpId].filter(Boolean).join(" ")}
             onChange={handleFileChange}
           />
 
-          <div className="space-y-1">
-            {error && <ErrorMessage id={errorId} message={error} />}
-
-            <p id={helpId} className="text-xs text-muted-foreground">
-              {t("supportedFormats", {
-                formats: supportedFormats,
-              })}
-            </p>
-          </div>
+          <FieldDescription>
+            {t("supportedFormats", {
+              formats: "PNG, JPG, JPEG, WEBP",
+            })}
+          </FieldDescription>
         </>
       )}
-    </div>
+
+      {isInvalid && <FieldError errors={field.state.meta.errors} />}
+    </Field>
   );
 }

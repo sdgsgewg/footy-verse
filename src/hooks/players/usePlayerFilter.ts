@@ -4,7 +4,7 @@ import { hasFilterChanged, parseSearchParams } from "@/lib/utils/crud";
 import { usePagination } from "../pagination";
 import { useSearchParams } from "next/navigation";
 import { useMemo } from "react";
-import { playersQuerySchema } from "@/lib/validations/players.schema";
+import { playersQuerySchema } from "@/lib/validations/players/players.schema";
 
 const DEFAULT_FILTER: PlayerFilter = {
   search: "",

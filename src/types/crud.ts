@@ -24,12 +24,10 @@ export type CrudForm = {
 
 // Form
 
-export interface CrudPageFormProps<TForm extends CrudForm> {
-  formFields: CrudFormField[];
+export interface CrudListPageFormProps {
+  children: React.ReactNode;
 
-  form: TForm;
-
-  setForm: Dispatch<SetStateAction<TForm>>;
+  isDirty: boolean;
 
   isEditing: boolean;
 
@@ -131,10 +129,7 @@ export interface CrudPaginationProps extends PaginationProps {
 
 // Page Props
 
-export type CrudFormTablePageProps<
-  TData extends DataRow,
-  TForm extends CrudForm,
-> = {
+export type CrudFormTablePageProps<TData extends DataRow> = {
   title: string;
 
   headerContent?: ReactNode;
@@ -147,7 +142,7 @@ export type CrudFormTablePageProps<
 
   actions: CrudActions<TData>;
 
-  form: CrudFormProps<TForm>;
+  form: ReactNode;
 
   toolbar?: CrudToolbarProps;
 

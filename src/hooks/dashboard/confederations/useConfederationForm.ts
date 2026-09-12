@@ -2,18 +2,16 @@
 
 import { useMemo } from "react";
 import { getImageUrl } from "@/lib/images/image-url";
-import { STORAGE_BUCKETS } from "@/lib/storage";
-import { buildFormData } from "@/lib/forms/buildFormData";
 import {
-  ConfederationEditResponse,
-  UpsertConfederationInput,
-} from "@/types/confederation";
-import { useEntityForm, useImageField } from "@/hooks/crud";
-import { confederationMutationSchema } from "@/lib/validations/confederations.schema";
+  confederationFormSchema,
+  ConfederationFormValues,
+} from "@/lib/validations/confederations/confederation-form.schema";
+import { ConfederationEditResponse } from "@/types/confederation";
+import { ENTITY_CONFIG } from "@/config/entities";
+import { useForm } from "@tanstack/react-form";
+import { buildFormData } from "@/lib/forms/buildFormData";
 
-const createEmptyConfederationForm = (): UpsertConfederationInput => ({
-  id: "",
-
+const createEmptyConfederationForm = (): ConfederationFormValues => ({
   image: null,
   imageUrl: null,
 
@@ -27,28 +25,17 @@ const createEmptyConfederationForm = (): UpsertConfederationInput => ({
 
 function mapConfederation(
   confederation: ConfederationEditResponse,
-): UpsertConfederationInput {
-  const {
-    id,
-    image,
-    name,
-    shortName,
-    founded,
-    headquarters,
-    website,
-    regionId,
-  } = confederation;
+): ConfederationFormValues {
+  const { image, name, shortName, founded, headquarters, website, regionId } =
+    confederation;
 
   return {
-    id,
-
-    image,
+    image: null,
     imageUrl: getImageUrl(
       "confederation",
-      STORAGE_BUCKETS.CONFEDERATIONS,
+      ENTITY_CONFIG["confederation"]["storageBucket"],
       image,
     ),
-
     name,
     short_name: shortName,
     founded,
@@ -59,9 +46,10 @@ function mapConfederation(
 }
 
 export function useConfederationForm(
-  confederation?: ConfederationEditResponse,
+  confederation: ConfederationEditResponse | undefined,
+  onSubmit: (payload: FormData) => void,
 ) {
-  const initialValue = useMemo(
+  const defaultValues = useMemo(
     () =>
       confederation
         ? mapConfederation(confederation)
@@ -69,84 +57,31 @@ export function useConfederationForm(
     [confederation],
   );
 
-  const {
-    imageFile,
-    previewUrl,
-    updateImage: setImage,
-  } = useImageField({
-    initialPreviewUrl: initialValue.imageUrl,
-  });
+  const form = useForm({
+    defaultValues,
 
-  const {
-    form,
-    updateField,
-    errors,
-    isDirty,
-    canSubmit,
-    validate,
-    clearFieldError,
-    setFieldError,
-  } = useEntityForm({
-    initialValue,
-    schema: confederationMutationSchema,
-
-    dirtyFields: [
-      "name",
-      "short_name",
-      "founded",
-      "headquarters",
-      "website",
-      "region_id",
-      "image",
-    ],
-
-    requiredFields: ["name", "short_name", "region_id"],
-
-    additionalDirty: imageFile !== null,
-  });
-
-  const updateImage = (file: File) => {
-    const result = setImage(file);
-
-    if (!result.success) {
-      setFieldError("image", result.error ?? "Invalid image.");
-      return;
-    }
-
-    clearFieldError("image");
-  };
-
-  const buildPayload = () => {
-    return buildFormData({
-      values: {
-        name: form.name,
-        short_name: form.short_name,
-        founded: form.founded,
-        headquarters: form.headquarters,
-        website: form.website,
-        region_id: form.region_id,
-      },
-      existingImage: form.image,
-      imageFile,
-    });
-  };
-
-  return {
-    form: {
-      ...form,
-
-      imageFile,
-      previewUrl,
+    validators: {
+      onMount: confederationFormSchema,
+      onChange: confederationFormSchema,
+      onSubmit: confederationFormSchema,
     },
 
-    isDirty,
-    errors,
+    onSubmit: async ({ value }) => {
+      const payload = buildFormData({
+        values: {
+          name: value.name,
+          short_name: value.short_name,
+          founded: value.founded,
+          headquarters: value.headquarters,
+          website: value.website,
+          region_id: value.region_id,
+        },
+        existingImage: value.imageUrl,
+        imageFile: value.image,
+      });
 
-    updateField,
-    updateImage,
-
-    validate,
-    canSubmit,
-    buildPayload,
-  };
+      onSubmit(payload);
+    },
+  });
+  return form;
 }

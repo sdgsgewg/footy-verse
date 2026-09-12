@@ -4,7 +4,7 @@ import { hasFilterChanged, parseSearchParams } from "@/lib/utils/crud";
 import { usePagination } from "../pagination";
 import { useSearchParams } from "next/navigation";
 import { useMemo } from "react";
-import { clubsQuerySchema } from "@/lib/validations/clubs.schema";
+import { clubsQuerySchema } from "@/lib/validations/clubs/clubs.schema";
 
 const DEFAULT_FILTER: ClubFilter = {
   search: "",

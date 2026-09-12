@@ -1,25 +1,34 @@
 "use client";
 
 import ConnectionErrorAlert from "@/components/feedback/ConnectionErrorAlert";
+import { isLikelyConnectionError } from "@/lib/utils/connection-error";
+import { useTranslations } from "next-intl";
+
 import { CrudFormTablePage } from "@/components/templates/crud";
-import { useCrudPageTitle } from "@/hooks/crud/useCrudPageTitle";
+
+import { DataColumn } from "@/types/table";
+import { CompetitionCategoryListItem } from "@/types/competition-category";
+
+import { createSortHandler } from "@/lib/utils/crud";
 import { useFilterSync } from "@/hooks/filter";
+
+import useCompetitionCategoryFilter from "@/hooks/dashboard/competition-categories/useCompetitionCategoryFilter";
+
 import {
   useCompetitionCategories,
   useCompetitionCategoryActions,
-  useCompetitionCategoryData,
+  useCompetitionCategoryForm,
+  useCompetitionCategorySubmit,
 } from "@/hooks/dashboard/competition-categories";
-import useCompetitionCategoryFilter from "@/hooks/dashboard/competition-categories/useCompetitionCategoryFilter";
-import { isLikelyConnectionError } from "@/lib/utils/connection-error";
-import { createSortHandler } from "@/lib/utils/crud";
-import { CompetitionCategoryListItem } from "@/types/competition-category";
-import { DataColumn } from "@/types/table";
-import { useTranslations } from "next-intl";
+
+import { useCrudPageTitle } from "@/hooks/crud/useCrudPageTitle";
+
+import CompetitionCategoryForm from "@/components/forms/competition-categories/CompetitionCategoryForm";
 
 export default function Page() {
-  const t = useTranslations("dashboard.competitionCategories");
   const tCommon = useTranslations("common");
   const tColumn = useTranslations("dashboard.competitionCategories.columns");
+
   const { getTitle } = useCrudPageTitle();
 
   const {
@@ -36,19 +45,22 @@ export default function Page() {
       search: debouncedFilters.search || undefined,
     });
 
-  const {
-    isEditing,
-    buttonText,
-    isSubmitting,
-    form,
-    setForm,
-    canSubmit,
-    handleSubmit,
-    handleEdit,
-    resetForm,
-  } = useCompetitionCategoryData();
-
   const { handleDelete } = useCompetitionCategoryActions();
+
+  const { isSubmitting, getButtonText, submit } =
+    useCompetitionCategorySubmit();
+
+  const { form, isEditing, handleEdit, resetForm } = useCompetitionCategoryForm(
+    {
+      onSubmit: (payload) => {
+        submit({
+          id: form.getFieldValue("id"),
+          payload,
+          onSuccess: resetForm,
+        });
+      },
+    },
+  );
 
   const columns: DataColumn<CompetitionCategoryListItem>[] = [
     {
@@ -83,32 +95,15 @@ export default function Page() {
           <ConnectionErrorAlert onRetry={retryLoad} retrying={retrying} />
         ) : undefined
       }
-      form={{
-        formFields: [
-          {
-            name: "name",
-            label: t("form.labels.name"),
-            placeholder: t("form.placeholders.name"),
-            type: "text",
-            required: true,
-          },
-          {
-            name: "description",
-            label: t("form.labels.description"),
-            placeholder: t("form.placeholders.description"),
-            type: "text",
-            required: false,
-          },
-        ],
-        form: form,
-        setForm: setForm,
-        canSubmit: canSubmit,
-        onSubmit: handleSubmit,
-        isEditing: isEditing,
-        isSubmitting: isSubmitting,
-        buttonText: buttonText,
-        resetForm: resetForm,
-      }}
+      form={
+        <CompetitionCategoryForm
+          form={form}
+          loading={isSubmitting}
+          isEditing={isEditing}
+          buttonText={getButtonText(isEditing)}
+          resetForm={resetForm}
+        />
+      }
       actions={{
         onEdit: handleEdit,
         onDelete: handleDelete,

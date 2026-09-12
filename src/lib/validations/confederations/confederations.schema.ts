@@ -1,12 +1,11 @@
 import { z } from "zod";
-import { idSchema, slugSchema } from "./primitives.schema";
-import { baseQuerySchema, sortingQuerySchema } from "./query.schema";
-import { confederationSortBySchema } from "./enums.schema";
-import { nullableDate } from "./helpers";
-import { imageSchema } from "./primitives.schema";
+import { idSchema, imageUrlSchema, slugSchema } from "../primitives.schema";
+import { baseQuerySchema, sortingQuerySchema } from "../query.schema";
+import { confederationSortBySchema } from "../enums.schema";
+import { nullableDate } from "../helpers";
 
 export const confederationMutationSchema = z.object({
-  image: imageSchema,
+  image: imageUrlSchema,
   name: z.string().min(1).max(255),
   short_name: z.string().min(1).max(20),
   region_id: idSchema,

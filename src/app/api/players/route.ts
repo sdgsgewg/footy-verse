@@ -44,7 +44,6 @@ export async function POST(request: Request) {
       data,
     });
   } catch (error: unknown) {
-    console.error(error);
     return errorResponse(error);
   }
 }

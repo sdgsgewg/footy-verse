@@ -11,7 +11,7 @@ import { idSchema } from "../validations/primitives.schema";
 import {
   createPlayerNationalTeamCareerSchema,
   updatePlayerNationalTeamCareerSchema,
-} from "../validations/player-national-team-careers.schema";
+} from "../validations/player-national-team-careers/player-national-team-careers.schema";
 import {
   PlayerNationalTeamCareerCreateInput,
   PlayerNationalTeamCareerUpdateInput,

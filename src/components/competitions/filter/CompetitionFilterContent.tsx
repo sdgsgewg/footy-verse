@@ -1,6 +1,6 @@
 "use client";
 
-import { SelectField } from "@/components/forms/fields";
+import { SelectField } from "@/components/shared/fields";
 import { Gender } from "@/enums/Gender";
 import { ParticipantType } from "@/enums/ParticipantType";
 import { useCompetitionFilterOptions } from "@/hooks/competitions";
@@ -14,11 +14,13 @@ interface CompetitionFilterContentProps {
     key: K,
     value: CompetitionFilter[K],
   ) => void;
+  showLabel?: boolean;
 }
 
 export default function CompetitionFilterContent({
   filters,
   updateFilter,
+  showLabel = false,
 }: CompetitionFilterContentProps) {
   const tLabels = useTranslations("dashboard.competitions.form.labels");
   const tPlaceholders = useTranslations(
@@ -37,46 +39,48 @@ export default function CompetitionFilterContent({
     <>
       {/* Competition Category */}
       <SelectField
-        label={tLabels("classification.category")}
+        label={showLabel ? tLabels("classification.category") : undefined}
         name={`competition_category`}
         placeholder={tPlaceholders("classification.category")}
         loading={loading.competitionCategory}
         options={competitionCategoryOptions}
         value={filters.categoryId || ""}
-        onChange={(value) => updateFilter("categoryId", value)}
+        onValueChange={(value) => updateFilter("categoryId", value)}
       />
 
       {/* Competition Scope */}
       <SelectField
-        label={tLabels("scopeAndLocation.scope")}
+        label={showLabel ? tLabels("scopeAndLocation.scope") : undefined}
         name={`competition_scope`}
         placeholder={tPlaceholders("scopeAndLocation.scope")}
         loading={loading.competitionScope}
         options={competitionScopeOptions}
         value={filters.scopeId || ""}
-        onChange={(value) => updateFilter("scopeId", value)}
+        onValueChange={(value) => updateFilter("scopeId", value)}
       />
 
       {/* Participant Type */}
       <SelectField
-        label={tLabels("classification.participantType")}
+        label={
+          showLabel ? tLabels("classification.participantType") : undefined
+        }
         name="participant_type"
         placeholder={tPlaceholders("classification.participantType")}
         options={participantTypeOptions}
         value={filters.participantType || ""}
-        onChange={(value) =>
+        onValueChange={(value) =>
           updateFilter("participantType", value as ParticipantType)
         }
       />
 
       {/* Gender */}
       <SelectField
-        label={tLabels("classification.gender")}
+        label={showLabel ? tLabels("classification.gender") : undefined}
         name="gender"
         placeholder={tPlaceholders("classification.gender")}
         options={genderOptions}
         value={filters.gender || ""}
-        onChange={(value) => updateFilter("gender", value as Gender)}
+        onValueChange={(value) => updateFilter("gender", value as Gender)}
       />
     </>
   );

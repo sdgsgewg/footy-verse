@@ -1,16 +1,13 @@
 "use client";
 
 import { Textarea } from "@/components/ui/textarea";
-import Label from "./Label";
-import ErrorMessage from "./ErrorMessage";
+import { AnyFieldApi } from "@tanstack/react-form";
+import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 
 interface TextAreaFieldProps {
+  field: AnyFieldApi;
+
   label: string;
-  name: string;
-
-  value: string;
-  onChange: (value: string) => void;
-
   placeholder?: string;
 
   required?: boolean;
@@ -19,42 +16,42 @@ interface TextAreaFieldProps {
 
   rows?: number;
   className?: string;
-  error?: string;
 }
 
 export default function TextAreaField({
+  field,
   label,
-  name,
-  value,
-  onChange,
   placeholder,
   required,
   readOnly,
   disabled,
   rows = 4,
   className,
-  error,
 }: TextAreaFieldProps) {
-  const errorId = error ? `${name}-error` : undefined;
+  const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
 
   return (
-    <div className="flex flex-col gap-2">
-      <Label label={label} name={name} required={required} readOnly={readOnly} />
+    <Field data-invalid={isInvalid}>
+      <FieldLabel htmlFor={field.name}>
+        {label}
+        {required && <span className="text-destructive">*</span>}
+      </FieldLabel>
 
       <Textarea
-        name={name}
-        aria-invalid={!!error}
-        aria-describedby={errorId}
-        value={value}
+        id={field.name}
+        name={field.name}
+        value={field.state.value}
         placeholder={placeholder}
         readOnly={readOnly}
         disabled={disabled}
         rows={rows}
         className={className}
-        onChange={(e) => onChange(e.target.value)}
+        aria-invalid={isInvalid}
+        onBlur={field.handleBlur}
+        onChange={(e) => field.handleChange(e.target.value)}
       />
 
-      {error && <ErrorMessage id={errorId} message={error} />}
-    </div>
+      {isInvalid && <FieldError errors={field.state.meta.errors} />}
+    </Field>
   );
 }

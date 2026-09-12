@@ -9,7 +9,7 @@ interface Props {
 const SideBySideFormContentWrapper = ({ left, right }: Props) => {
   return (
     <FormContentWrapper className="flex flex-col gap-5 md:flex-row md:gap-12">
-      <div className="shrink-0">{left}</div>
+      <div className="max-w-52 shrink-0">{left}</div>
       <div className="flex-1 space-y-5">{right}</div>
     </FormContentWrapper>
   );

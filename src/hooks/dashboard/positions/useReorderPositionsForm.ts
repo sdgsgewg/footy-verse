@@ -1,52 +1,66 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useForm, useSelector } from "@tanstack/react-form";
+import { useCallback, useMemo, useState } from "react";
+
+import { reorderPositionsSchema } from "@/lib/validations/positions.schema";
 import { ReorderPositionsInput } from "@/types/position";
 
-const emptyPositionForm: ReorderPositionsInput = {
+const defaultValues: ReorderPositionsInput = {
   position_category_id: "",
   position_ids: [],
 };
 
-export function useReorderPositionsForm() {
-  const [form, setForm] = useState<ReorderPositionsInput>(emptyPositionForm);
+interface UseReorderPositionsFormOptions {
+  onSubmit: (payload: ReorderPositionsInput) => void;
+}
 
-  const setCategory = useCallback((positionCategoryId: string) => {
-    setForm({
-      position_category_id: positionCategoryId,
-      position_ids: [],
-    });
-  }, []);
+export function useReorderPositionsForm({
+  onSubmit,
+}: UseReorderPositionsFormOptions) {
+  const [initialPositionIds, setInitialPositionIds] = useState<string[]>([]);
 
-  const setPositionIds = useCallback((positionIds: string[]) => {
-    setForm((prev) => ({
-      ...prev,
-      position_ids: positionIds,
-    }));
-  }, []);
+  const form = useForm({
+    defaultValues,
 
-  const canSubmit =
-    form.position_category_id.length > 0 && form.position_ids.length > 0;
+    validators: {
+      onMount: reorderPositionsSchema,
+      onChange: reorderPositionsSchema,
+      onSubmit: reorderPositionsSchema,
+    },
 
-  const buildPayload = useCallback(
-    (): ReorderPositionsInput => ({
-      position_category_id: form.position_category_id,
-      position_ids: form.position_ids,
-    }),
+    onSubmit: async ({ value }) => {
+      onSubmit(value);
+    },
+  });
+
+  const positionIds = useSelector(
+    form.store,
+    (state) => state.values.position_ids,
+  );
+
+  const isOrderChanged = useMemo(() => {
+    if (initialPositionIds.length !== positionIds.length) {
+      return true;
+    }
+
+    return initialPositionIds.some((id, index) => id !== positionIds[index]);
+  }, [initialPositionIds, positionIds]);
+
+  const initializePositionIds = useCallback(
+    (positionIds: string[]) => {
+      setInitialPositionIds([...positionIds]);
+
+      form.setFieldValue("position_ids", positionIds);
+    },
     [form],
   );
 
-  const resetForm = useCallback(() => {
-    setForm(emptyPositionForm);
-  }, []);
-
   return {
     form,
-    setForm,
-    setCategory,
-    setPositionIds,
-    canSubmit,
-    buildPayload,
-    resetForm,
+    isOrderChanged,
+    initializePositionIds,
   };
 }
+
+export type ReorderPositionsForm = ReturnType<typeof useReorderPositionsForm>;

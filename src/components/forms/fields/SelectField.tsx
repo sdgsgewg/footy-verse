@@ -1,9 +1,11 @@
 "use client";
 
-import React from "react";
+import Image from "next/image";
+import { Loader2 } from "lucide-react";
+import type { AnyFieldApi } from "@tanstack/react-form";
+import { useTranslations } from "next-intl";
 
-import Label from "./Label";
-
+import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import {
   Select,
   SelectContent,
@@ -12,19 +14,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Option } from "@/types/option";
-import Image from "next/image";
-import ErrorMessage from "./ErrorMessage";
 import { cn } from "@/lib/utils";
-import { Loader2 } from "lucide-react";
-import { useTranslations } from "next-intl";
 
 interface SelectFieldProps {
-  label?: string;
-  name: string;
+  field: AnyFieldApi;
 
-  value: string;
+  label?: string;
   options: Option[];
-  onChange: (value: string) => void;
 
   placeholder?: string;
   allLabel?: string;
@@ -34,44 +30,50 @@ interface SelectFieldProps {
   disabled?: boolean;
 
   className?: string;
-  error?: string;
 }
 
-const SelectField: React.FC<SelectFieldProps> = ({
+export default function SelectField({
+  field,
   label,
-  name,
-
-  value,
   options,
-  onChange,
-
   placeholder = "Select option",
   allLabel,
-
-  disabled = false,
-  loading = false,
   required = false,
-
+  loading = false,
+  disabled = false,
   className,
-  error,
-}) => {
+}: SelectFieldProps) {
   const tCommonStates = useTranslations("common.states");
 
-  const errorId = error ? `${name}-error` : undefined;
+  const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
 
   return (
-    <div className={cn("flex flex-col gap-2", className)}>
-      {label && <Label label={label} name={name} required={required} />}
+    <Field data-invalid={isInvalid} className={cn(className)}>
+      {label && (
+        <FieldLabel htmlFor={field.name}>
+          {label}
+          {required && <span className="text-destructive">*</span>}
+        </FieldLabel>
+      )}
 
       <Select
-        name={name}
-        aria-invalid={!!error}
-        aria-describedby={errorId}
-        value={value || undefined}
+        name={field.name}
+        value={field.state.value || undefined}
         disabled={disabled || loading}
-        onValueChange={onChange}
+        onValueChange={(value) => {
+          field.handleChange(value);
+        }}
+        onOpenChange={(open) => {
+          if (!open) {
+            field.handleBlur();
+          }
+        }}
       >
-        <SelectTrigger id={name} className="w-full rounded-xl">
+        <SelectTrigger
+          id={field.name}
+          className="w-full rounded-xl"
+          aria-invalid={isInvalid}
+        >
           {loading ? (
             <div className="flex items-center gap-2">
               <Loader2 className="size-4 shrink-0 animate-spin opacity-50" />
@@ -110,9 +112,7 @@ const SelectField: React.FC<SelectFieldProps> = ({
         </SelectContent>
       </Select>
 
-      {error && <ErrorMessage id={errorId} message={error} />}
-    </div>
+      {isInvalid && <FieldError errors={field.state.meta.errors} />}
+    </Field>
   );
-};
-
-export default SelectField;
+}

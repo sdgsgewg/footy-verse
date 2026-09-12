@@ -1,7 +1,7 @@
 import { z } from "zod";
-import { idSchema } from "./primitives.schema";
-import { playerCareerMutationSchema } from "./player-careers.schema";
-import { playerShirtNumberMutationSchema } from "./player-shirt-numbers.schema";
+import { idSchema } from "../primitives.schema";
+import { playerCareerMutationSchema } from "../player-careers.schema";
+import { playerShirtNumberMutationSchema } from "../player-shirt-numbers.schema";
 
 export const playerNationalTeamCareerMutationSchema = z.object({
   national_team_id: idSchema,

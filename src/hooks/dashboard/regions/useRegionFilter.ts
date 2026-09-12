@@ -1,6 +1,6 @@
 import { useFilters } from "@/hooks/filter";
 import { parseSearchParams } from "@/lib/utils/crud";
-import { regionsQuerySchema } from "@/lib/validations/regions.schema";
+import { regionsQuerySchema } from "@/lib/validations/regions/regions.schema";
 import { RegionFilter } from "@/types/region";
 import { useSearchParams } from "next/navigation";
 import { useMemo } from "react";

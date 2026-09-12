@@ -10,6 +10,7 @@ import { useEditPlayerNationalTeamCareerForm } from "@/hooks/dashboard/player-na
 import FormContentWrapper from "../../base/FormContentWrapper";
 import PlayerShirtNumberSection from "./PlayerShirtNumberSection";
 import PlayerCareerSection from "./PlayerCareerSection";
+import { useCrudFormState } from "@/hooks/crud";
 
 interface Props {
   playerNationalTeamCareer: PlayerNationalTeamCareerEditResponse;
@@ -22,31 +23,33 @@ const EditPlayerNationalTeamCareerForm = ({
   loading = false,
   onSubmit,
 }: Props) => {
-  const { form, setForm, isDirty, canSubmit, buildPayload } =
-    useEditPlayerNationalTeamCareerForm(playerNationalTeamCareer);
+  const form = useEditPlayerNationalTeamCareerForm({
+    playerNationalTeamCareer,
+    onSubmit,
+  });
 
-  const handleSubmit = () => {
-    onSubmit(buildPayload());
-  };
+  const { isDirty, canSubmit } = useCrudFormState({ form });
 
   return (
     <FormWrapper isDirty={isDirty}>
-      <FormHeader
-        loading={loading}
-        isCreate={false}
-        canSubmit={canSubmit}
-        onSubmit={handleSubmit}
-      />
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          form.handleSubmit();
+        }}
+      >
+        <FormHeader loading={loading} mode="edit" canSubmit={canSubmit} />
 
-      <FormContentWrapper className="space-y-6">
-        <div className="">
-          <PlayerCareerSection form={form} setForm={setForm} />
-        </div>
+        <FormContentWrapper className="space-y-6">
+          <div className="">
+            <PlayerCareerSection form={form} />
+          </div>
 
-        <div className="">
-          <PlayerShirtNumberSection form={form} setForm={setForm} />
-        </div>
-      </FormContentWrapper>
+          <div className="">
+            <PlayerShirtNumberSection form={form} />
+          </div>
+        </FormContentWrapper>
+      </form>
     </FormWrapper>
   );
 };

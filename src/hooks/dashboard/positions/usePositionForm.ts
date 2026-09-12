@@ -1,57 +1,56 @@
 "use client";
 
-import { useEntityForm } from "@/hooks/crud";
 import { positionMutationSchema } from "@/lib/validations/positions.schema";
 import { PositionEditResponse, UpsertPositionInput } from "@/types/position";
+import { useForm } from "@tanstack/react-form";
 import { useMemo } from "react";
 
+interface UsePositionFormOptions {
+  position?: PositionEditResponse;
+  onSubmit: (payload: UpsertPositionInput) => void;
+}
+
 const createEmptyPositionForm = (): UpsertPositionInput => ({
-  id: "",
   name: "",
   position_category_id: "",
 });
 
 function mapPosition(position: PositionEditResponse): UpsertPositionInput {
-  const { id, name, categoryId } = position;
+  const { name, categoryId } = position;
 
   return {
-    id,
     name,
     position_category_id: categoryId,
   };
 }
 
-export function usePositionForm(position?: PositionEditResponse) {
-  const initialValue = useMemo(
+export function usePositionForm({
+  position,
+  onSubmit,
+}: UsePositionFormOptions) {
+  const defaultValues = useMemo(
     () => (position ? mapPosition(position) : createEmptyPositionForm()),
     [position],
   );
 
-  const { form, updateField, errors, isDirty, canSubmit, validate } =
-    useEntityForm({
-      initialValue,
-      schema: positionMutationSchema,
+  const form = useForm({
+    defaultValues,
 
-      dirtyFields: ["name", "position_category_id"],
+    validators: {
+      onMount: positionMutationSchema,
+      onChange: positionMutationSchema,
+      onSubmit: positionMutationSchema,
+    },
 
-      requiredFields: ["name", "position_category_id"],
-    });
+    onSubmit: async ({ value }) => {
+      const payload = {
+        name: value.name,
+        position_category_id: value.position_category_id,
+      };
 
-  const buildPayload = () => ({
-    name: form.name,
-    position_category_id: form.position_category_id,
+      onSubmit(payload);
+    },
   });
 
-  return {
-    form,
-
-    isDirty,
-    errors,
-
-    updateField,
-
-    validate,
-    canSubmit,
-    buildPayload,
-  };
+  return form;
 }

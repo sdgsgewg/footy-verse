@@ -1,4 +1,4 @@
-import { SelectField } from "@/components/forms/fields";
+import { SelectField } from "@/components/shared/fields";
 
 import { getNationalTeamOptions } from "@/lib/national-teams/options";
 
@@ -38,7 +38,9 @@ const NationalityFilterSection = ({
         placeholder={tPlaceholders("nationalTeam")}
         options={nationalTeamOptions}
         value={filters.nationalTeamId ?? ""}
-        onChange={(value) => updateFilter("nationalTeamId", value || undefined)}
+        onValueChange={(value) =>
+          updateFilter("nationalTeamId", value || undefined)
+        }
         className="max-w-48"
       />
     </div>

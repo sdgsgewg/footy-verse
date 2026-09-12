@@ -1,19 +1,19 @@
+import { AnyFieldApi } from "@tanstack/react-form";
+
 import { OrderedEntity } from "./ordered";
 import { Option } from "./option";
 
 export interface OrderedSelectFieldProps<T extends OrderedEntity> {
+  field: AnyFieldApi;
+
   label: string;
-  name: string;
+  placeholder?: string;
 
   options: Option[];
-
-  value: T[];
 
   getId: (item: T) => string;
 
   createValue: (id: string, displayOrder: number) => T;
-
-  placeholder?: string;
 
   instruction: string;
 
@@ -22,7 +22,4 @@ export interface OrderedSelectFieldProps<T extends OrderedEntity> {
   required?: boolean;
 
   className?: string;
-  error?: string;
-
-  onChange: (value: T[]) => void;
 }

@@ -15,7 +15,7 @@ import {
   ClubImageLabel,
   NationalityImageLabel,
 } from "@/components/shared/tables/cells";
-import ClubFilterContent from "@/components/dashboard/clubs/ClubFilterContent";
+import { ClubFilterContent } from "@/components/clubs/filter";
 import { ClubFilter } from "@/types/club";
 import { useCrudFilterDialog } from "@/hooks/crud/useCrudFilterDialog";
 
@@ -134,6 +134,7 @@ export default function ClubsManagementPage() {
           <ClubFilterContent
             filters={draftFilters}
             updateFilter={updateDraftFilter}
+            showLabel
           />
         ),
         open: filterOpen,

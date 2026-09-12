@@ -13,7 +13,7 @@ import {
   nationalitiesQuerySchema,
   createNationalitySchema,
   updateNationalitySchema,
-} from "@/lib/validations/nationalities.schema";
+} from "@/lib/validations/nationalities/nationalities.schema";
 import { idSchema, slugSchema } from "../validations/primitives.schema";
 import {
   uploadImageFromFormData,

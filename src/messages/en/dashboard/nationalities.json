@@ -1,15 +1,11 @@
 {
   "form": {
     "labels": {
-      "image": "Image",
-      "name": "Name",
       "fifaCode": "FIFA Code",
       "confederation": "Confederation"
     },
 
     "placeholders": {
-      "image": "Upload image",
-      "name": "Enter name",
       "fifaCode": "Enter FIFA code (3 uppercase letters)",
       "confederation": "Select a confederation"
     }

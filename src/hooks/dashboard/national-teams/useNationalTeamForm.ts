@@ -3,13 +3,18 @@
 import { AgeGroup } from "@/enums/AgeGroup";
 import { Gender } from "@/enums/Gender";
 import { NationalTeamType } from "@/enums/NationalTeamType";
-import { useEntityForm } from "@/hooks/crud";
 import { nationalTeamMutationSchema } from "@/lib/validations/national-teams.schema";
 import {
   NationalTeamEditResponse,
   UpsertNationalTeamInput,
 } from "@/types/national-team";
+import { useForm } from "@tanstack/react-form";
 import { useMemo } from "react";
+
+interface UseNationalTeamFormOptions {
+  nationalTeam?: NationalTeamEditResponse;
+  onSubmit: (payload: UpsertNationalTeamInput) => void;
+}
 
 const createEmptyNationalTeamForm = (): UpsertNationalTeamInput => ({
   gender: "",
@@ -20,18 +25,20 @@ const createEmptyNationalTeamForm = (): UpsertNationalTeamInput => ({
 function mapNationalTeam(
   nationalTeam: NationalTeamEditResponse,
 ): UpsertNationalTeamInput {
-  const { id, gender, ageGroup, teamType } = nationalTeam;
+  const { gender, ageGroup, teamType } = nationalTeam;
 
   return {
-    id,
     gender: gender as Gender,
     age_group: ageGroup as AgeGroup,
     team_type: teamType as NationalTeamType,
   };
 }
 
-export function useNationalTeamForm(nationalTeam?: NationalTeamEditResponse) {
-  const initialValue = useMemo(
+export function useNationalTeamForm({
+  nationalTeam,
+  onSubmit,
+}: UseNationalTeamFormOptions) {
+  const defaultValues = useMemo(
     () =>
       nationalTeam
         ? mapNationalTeam(nationalTeam)
@@ -39,32 +46,25 @@ export function useNationalTeamForm(nationalTeam?: NationalTeamEditResponse) {
     [nationalTeam],
   );
 
-  const { form, updateField, errors, isDirty, canSubmit, validate } =
-    useEntityForm({
-      initialValue,
-      schema: nationalTeamMutationSchema,
+  const form = useForm({
+    defaultValues,
 
-      dirtyFields: ["gender", "age_group", "team_type"],
+    validators: {
+      onMount: nationalTeamMutationSchema,
+      onChange: nationalTeamMutationSchema,
+      onSubmit: nationalTeamMutationSchema,
+    },
 
-      requiredFields: ["gender", "age_group", "team_type"],
-    });
+    onSubmit: async ({ value }) => {
+      const payload: UpsertNationalTeamInput = {
+        gender: value.gender,
+        age_group: value.age_group,
+        team_type: value.team_type,
+      };
 
-  const buildPayload = () => ({
-    gender: form.gender,
-    age_group: form.age_group,
-    team_type: form.team_type,
+      onSubmit(payload);
+    },
   });
 
-  return {
-    form,
-
-    isDirty,
-    errors,
-
-    updateField,
-
-    validate,
-    canSubmit,
-    buildPayload,
-  };
+  return form;
 }

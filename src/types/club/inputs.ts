@@ -1,12 +1,11 @@
-// zod infer
-
 import {
-  clubMutationSchema,
   clubsQuerySchema,
   createClubSchema,
   updateClubSchema,
-} from "@/lib/validations/clubs.schema";
+} from "@/lib/validations/clubs/clubs.schema";
 import z from "zod";
+
+// zod infer
 
 /**
  * Input dari client (dari URL / API route)
@@ -20,10 +19,3 @@ export type ClubFilter = z.infer<typeof clubsQuerySchema>;
 
 export type ClubCreateInput = z.infer<typeof createClubSchema>;
 export type ClubUpdateInput = z.infer<typeof updateClubSchema>;
-
-// Mutation
-
-export type UpsertClubInput = z.infer<typeof clubMutationSchema> & {
-  id?: string;
-  imageUrl: string | null; // public URL untuk preview
-};

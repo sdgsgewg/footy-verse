@@ -8,9 +8,11 @@ import { useRegionOptions } from "@/hooks/dashboard/regions";
 import { ConfederationEditResponse } from "@/types/confederation";
 import { useConfederationForm } from "@/hooks/dashboard/confederations";
 import { SideBySideFormContentWrapper } from "../base";
+import { useCrudFormState, useCrudFormTranslations } from "@/hooks/crud";
+import { FormMode } from "@/types/form";
 
 interface Props {
-  mode: "create" | "edit";
+  mode: FormMode;
   confederation?: ConfederationEditResponse;
 
   loading?: boolean;
@@ -25,45 +27,32 @@ const ConfederationForm = ({
   onSubmit,
 }: Props) => {
   const tLabels = useTranslations("dashboard.confederations.form.labels");
+
   const tPlaceholders = useTranslations(
     "dashboard.confederations.form.placeholders",
   );
 
-  const {
-    form,
-    isDirty,
-    errors,
-    updateField,
-    updateImage,
-    validate,
-    canSubmit,
-    buildPayload,
-  } = useConfederationForm(confederation);
+  const { tCommonLabels, tCommonPlaceholders } = useCrudFormTranslations();
 
-  const isCreate = mode === "create";
+  const form = useConfederationForm(confederation, onSubmit);
+
+  const { isDirty, canSubmit } = useCrudFormState({ form });
 
   const { regionOptions, loading: isRegionLoading } = useRegionOptions();
-
-  const handleSubmit = () => {
-    if (!validate()) {
-      return;
-    }
-
-    onSubmit(buildPayload());
-  };
 
   const LeftSideContent = () => {
     return (
       <>
         {/* Image */}
-        <ImageField
-          label={tLabels("image")}
-          name="image"
-          value={(form.previewUrl ?? form.imageUrl) as string}
-          onChange={updateImage}
-          imageClassName="object-contain"
-          error={errors.image}
-        />
+        <form.Field name="image">
+          {(field) => (
+            <ImageField
+              field={field}
+              label={tCommonLabels("image")}
+              existingImageUrl={form.state.values.imageUrl}
+            />
+          )}
+        </form.Field>
       </>
     );
   };
@@ -72,80 +61,82 @@ const ConfederationForm = ({
     return (
       <>
         {/* Name */}
-        <TextField
-          label={tLabels("name")}
-          name="name"
-          placeholder={tPlaceholders("name") || ""}
-          value={(form.name as string) ?? ""}
-          onChange={(value) => updateField("name", value)}
-          error={errors.name}
-          required
-        />
+        <form.Field name="name">
+          {(field) => (
+            <TextField
+              field={field}
+              label={tCommonLabels("name")}
+              placeholder={tCommonPlaceholders("name")}
+              required
+            />
+          )}
+        </form.Field>
 
         {/* Short Name */}
-        <TextField
-          label={tLabels("shortName")}
-          name="short_name"
-          placeholder={tPlaceholders("shortName") || ""}
-          value={(form.short_name as string) ?? ""}
-          onChange={(value) => updateField("short_name", value)}
-          error={errors.short_name}
-          required
-        />
+        <form.Field name="short_name">
+          {(field) => (
+            <TextField
+              field={field}
+              label={tCommonLabels("shortName")}
+              placeholder={tCommonPlaceholders("shortName")}
+              required
+            />
+          )}
+        </form.Field>
 
         {/* Region */}
-        <SelectField
-          label={tLabels("region")}
-          name={`region_id`}
-          placeholder={tPlaceholders("region")}
-          loading={isRegionLoading}
-          options={regionOptions}
-          value={form.region_id || ""}
-          onChange={(value) => updateField("region_id", value)}
-          error={errors.region_id}
-        />
+        <form.Field name="region_id">
+          {(field) => (
+            <SelectField
+              field={field}
+              label={tLabels("region")}
+              placeholder={tPlaceholders("region")}
+              loading={isRegionLoading}
+              options={regionOptions}
+              required
+            />
+          )}
+        </form.Field>
 
         {/* Founded Date */}
-        <DateField
-          label={tLabels("founded")}
-          name="founded"
-          placeholder={tPlaceholders("founded") || ""}
-          value={(form.founded as string) ?? ""}
-          onChange={(value) => updateField("founded", value)}
-          error={errors.founded}
-        />
+        <form.Field name="founded">
+          {(field) => (
+            <DateField
+              field={field}
+              label={tLabels("founded")}
+              placeholder={tPlaceholders("founded") || ""}
+            />
+          )}
+        </form.Field>
 
         {/* Headquarters */}
-        <TextField
-          label={tLabels("headquarters")}
-          name="headquarters"
-          placeholder={tPlaceholders("headquarters") || ""}
-          value={(form.headquarters as string) ?? ""}
-          onChange={(value) => updateField("headquarters", value)}
-          error={errors.headquarters}
-        />
+        <form.Field name="headquarters">
+          {(field) => (
+            <TextField
+              field={field}
+              label={tLabels("headquarters")}
+              placeholder={tPlaceholders("headquarters") || ""}
+            />
+          )}
+        </form.Field>
 
         {/* Website */}
-        <TextField
-          label={tLabels("website")}
-          name="website"
-          placeholder={tPlaceholders("website") || ""}
-          value={(form.website as string) ?? ""}
-          onChange={(value) => updateField("website", value)}
-          error={errors.website}
-        />
+        <form.Field name="website">
+          {(field) => (
+            <TextField
+              field={field}
+              label={tLabels("website")}
+              placeholder={tPlaceholders("website") || ""}
+            />
+          )}
+        </form.Field>
       </>
     );
   };
 
   return (
     <FormWrapper isDirty={isDirty}>
-      <FormHeader
-        loading={loading}
-        isCreate={isCreate}
-        canSubmit={canSubmit}
-        onSubmit={handleSubmit}
-      />
+      <FormHeader loading={loading} mode={mode} canSubmit={canSubmit} />
 
       <SideBySideFormContentWrapper
         left={LeftSideContent()}

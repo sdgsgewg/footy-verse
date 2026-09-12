@@ -1,21 +1,16 @@
 "use client";
 
-import { UpsertPlayerNationalTeamCareerInput } from "@/types/player-national-team-career";
-import React, { Dispatch, SetStateAction } from "react";
 import { useTranslations } from "next-intl";
-import DynamicFormSection from "../../base/DynamicFormSection";
-import { DateField, NumberField } from "../../fields";
 
-type ShirtNumber = NonNullable<
-  UpsertPlayerNationalTeamCareerInput["shirt_numbers"]
->[number];
+import { EditPlayerNationalTeamCareerForm } from "@/hooks/dashboard/player-national-teams";
+import { DateField, NumberField } from "../../fields";
+import DynamicFormSection from "../../base/DynamicFormSection";
 
 interface Props {
-  form: UpsertPlayerNationalTeamCareerInput;
-  setForm: Dispatch<SetStateAction<UpsertPlayerNationalTeamCareerInput>>;
+  form: EditPlayerNationalTeamCareerForm;
 }
 
-const PlayerShirtNumberSection = ({ form, setForm }: Props) => {
+const PlayerShirtNumberSection = ({ form }: Props) => {
   const tForm = useTranslations(
     "dashboard.playerNationalTeamCareers.form.shirtNumbers",
   );
@@ -23,71 +18,69 @@ const PlayerShirtNumberSection = ({ form, setForm }: Props) => {
   const tLabels = useTranslations(
     "dashboard.playerNationalTeamCareers.form.labels.shirtNumbers",
   );
+
   const tPlaceholders = useTranslations(
     "dashboard.playerNationalTeamCareers.form.placeholders.shirtNumbers",
   );
 
   return (
-    <DynamicFormSection<ShirtNumber>
-      title={tForm("title")}
-      noData={tForm("noData")}
-      items={form.shirt_numbers ?? []}
-      minItems={1}
-      createItem={() => ({
-        shirt_number: null,
-        start_date:
-          (form.shirt_numbers?.length ?? 0) === 0 ? form.career.joined_at : "",
-        end_date: "",
-      })}
-      onChange={(items) =>
-        setForm((prev) => ({
-          ...prev,
-          shirt_numbers: items,
-        }))
-      }
-      renderItem={(item, index, updateItem) => (
-        <>
-          {/* Shirt Number */}
-          <NumberField
-            label={tLabels("shirtNumber")}
-            name={`shirt-number-${index}`}
-            placeholder={tPlaceholders("shirtNumber") || ""}
-            value={item.shirt_number}
-            onChange={(v) => updateItem(index, "shirt_number", v ?? 1)}
-            required
-          />
+    <form.Field name="shirt_numbers" mode="array">
+      {(field) => (
+        <DynamicFormSection
+          title={tForm("title")}
+          noData={tForm("noData")}
+          itemCount={field.state.value.length}
+          minItems={1}
+          onAdd={() =>
+            field.pushValue({
+              shirt_number: null,
+              start_date: "",
+              end_date: "",
+            })
+          }
+          onRemove={(index) => field.removeValue(index)}
+        >
+          {(shirtIndex) => (
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+              {/* Shirt Number */}
+              <form.Field name={`shirt_numbers[${shirtIndex}].shirt_number`}>
+                {(field) => (
+                  <NumberField
+                    field={field}
+                    label={tLabels("shirtNumber")}
+                    placeholder={tPlaceholders("shirtNumber") || ""}
+                    required
+                  />
+                )}
+              </form.Field>
 
-          {/* Start Date */}
-          <DateField
-            label={tLabels("startDate")}
-            name={`start-date-${index}`}
-            placeholder={tPlaceholders("startDate") || ""}
-            value={item.start_date}
-            onChange={(v) => updateItem(index, "start_date", v)}
-            required
-          />
+              {/* Start Date */}
+              <form.Field name={`shirt_numbers[${shirtIndex}].start_date`}>
+                {(field) => (
+                  <DateField
+                    field={field}
+                    label={tLabels("startDate")}
+                    placeholder={tPlaceholders("startDate") || ""}
+                    required
+                  />
+                )}
+              </form.Field>
 
-          {/* End Date */}
-          <DateField
-            label={tLabels("endDate")}
-            name={`end-date-${index}`}
-            placeholder={tPlaceholders("endDate") || ""}
-            value={item.end_date ?? ""}
-            onChange={(v) => updateItem(index, "end_date", v)}
-            startMonth={
-              item.start_date
-                ? new Date(
-                    Number(item.start_date.slice(0, 4)),
-                    Number(item.start_date.slice(5, 7)) - 1,
-                    Number(item.start_date.slice(8, 10)),
-                  )
-                : undefined
-            }
-            endMonth={new Date(2100, 11, 31)}
-          />
-        </>
+              {/* End Date */}
+              <form.Field name={`shirt_numbers[${shirtIndex}].end_date`}>
+                {(field) => (
+                  <DateField
+                    field={field}
+                    label={tLabels("endDate")}
+                    placeholder={tPlaceholders("endDate") || ""}
+                  />
+                )}
+              </form.Field>
+            </div>
+          )}
+        </DynamicFormSection>
       )}
-    />
+    </form.Field>
   );
 };
 

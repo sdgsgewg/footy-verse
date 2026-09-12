@@ -3,7 +3,7 @@ import { useFilters } from "../filter";
 import { useSearchParams } from "next/navigation";
 import { useMemo } from "react";
 import { hasFilterChanged, parseSearchParams } from "@/lib/utils/crud";
-import { nationalitiesQuerySchema } from "@/lib/validations/nationalities.schema";
+import { nationalitiesQuerySchema } from "@/lib/validations/nationalities/nationalities.schema";
 import { usePagination } from "../pagination";
 
 const DEFAULT_FILTER: NationalityFilter = {

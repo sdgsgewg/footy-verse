@@ -1,3 +1,5 @@
+import { AnyFieldApi } from "@tanstack/react-form";
+
 export interface OrderedEntity {
   display_order: number;
 }
@@ -10,15 +12,14 @@ export interface OrderedItem {
 }
 
 export interface OrderedFieldProps<T extends OrderedEntity> {
-  label: string;
-  name: string;
+  field: AnyFieldApi;
 
-  value: T[];
+  label: string;
+
+  items: T[];
 
   getId: (item: T) => string;
-
   getLabel: (item: T) => string;
-
   getImageUrl?: (item: T) => string | null | undefined;
 
   instruction: string;
@@ -27,7 +28,4 @@ export interface OrderedFieldProps<T extends OrderedEntity> {
   required?: boolean;
 
   className?: string;
-  error?: string;
-
-  onChange: (value: T[]) => void;
 }

@@ -2,6 +2,7 @@
 
 import { IMAGES } from "@/constants/images";
 import { useLightbox } from "@/context/LightboxContext";
+import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { useState } from "react";
 
@@ -69,9 +70,12 @@ export default function ImageWrapper({
               )
           : undefined
       }
-      className={`relative overflow-hidden ${aspectClass} ${
-        clickable ? "cursor-pointer" : ""
-      } ${className?.container || ""}`}
+      className={cn(
+        "relative bg-transparent overflow-hidden",
+        aspectClass,
+        clickable ? "cursor-pointer" : "",
+        className?.container || "",
+      )}
     >
       {isLoading && (
         <div className="absolute inset-0 animate-pulse bg-zinc-200 dark:bg-zinc-800 rounded-lg" />

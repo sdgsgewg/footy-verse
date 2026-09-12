@@ -61,7 +61,9 @@
 
       "name": "Nama",
       "fullName": "Nama Lengkap",
-      "shortName": "Nama Singkat"
+      "shortName": "Nama Singkat",
+
+      "description": "Deskripsi"
     },
 
     "placeholders": {
@@ -69,7 +71,9 @@
 
       "name": "Masukkan nama",
       "fullName": "Masukkan nama lengkap",
-      "shortName": "Masukkan nama singkat"
+      "shortName": "Masukkan nama singkat",
+
+      "description": "Masukkan deskripsi"
     }
   },
 

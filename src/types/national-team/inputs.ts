@@ -26,6 +26,4 @@ export type NationalTeamUpdateInput = z.infer<typeof updateNationalTeamSchema>;
 // Mutation
 export type UpsertNationalTeamInput = z.infer<
   typeof nationalTeamMutationSchema
-> & {
-  id?: string;
-};
+>;

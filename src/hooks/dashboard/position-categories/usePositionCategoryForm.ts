@@ -1,4 +1,7 @@
-import { useEntityForm } from "@/hooks/crud";
+"use client";
+
+import { useForm } from "@tanstack/react-form";
+
 import { positionCategoryMutationSchema } from "@/lib/validations/position-categories.schema";
 import {
   PositionCategoryListItem,
@@ -7,67 +10,55 @@ import {
 import { useState } from "react";
 
 const createEmptyPositionCategoryForm = (): UpsertPositionCategoryInput => ({
+  id: "",
   name: "",
 });
 
-export function usePositionCategoryForm() {
-  const {
-    form,
-    setForm,
-    initialForm,
-    updateField,
-    errors,
-    isDirty,
-    canSubmit,
-    validate,
-    resetForm,
-  } = useEntityForm({
-    initialValue: createEmptyPositionCategoryForm(),
-    schema: positionCategoryMutationSchema,
+interface UsePositionCategoryFormOptions {
+  onSubmit: (payload: UpsertPositionCategoryInput) => void;
+}
 
-    dirtyFields: ["name"],
+export function usePositionCategoryForm({
+  onSubmit,
+}: UsePositionCategoryFormOptions) {
+  const form = useForm({
+    defaultValues: createEmptyPositionCategoryForm(),
 
-    requiredFields: ["name"],
+    validators: {
+      onMount: positionCategoryMutationSchema,
+      onChange: positionCategoryMutationSchema,
+      onSubmit: positionCategoryMutationSchema,
+    },
+
+    onSubmit: async ({ value }) => {
+      const payload: UpsertPositionCategoryInput = {
+        id: value.id,
+        name: value.name,
+      };
+
+      onSubmit(payload);
+    },
   });
 
   const [isEditing, setIsEditing] = useState(false);
 
   const handleEdit = (item: PositionCategoryListItem) => {
-    const mapped: UpsertPositionCategoryInput = {
-      id: item.id,
-      name: item.name,
-    };
-
-    resetForm(mapped);
-
     setIsEditing(true);
+    form.setFieldValue("id", item.id);
+    form.setFieldValue("name", item.name);
   };
 
-  const handleResetForm = () => {
-    resetForm();
+  const resetForm = () => {
     setIsEditing(false);
+    form.reset();
   };
-
-  const buildPayload = () => ({
-    name: form.name,
-  });
 
   return {
     form,
-    initialForm,
-    setForm,
-
-    isDirty,
     isEditing,
-    errors,
-
-    updateField,
     handleEdit,
-
-    validate,
-    canSubmit,
-    buildPayload,
-
-    resetForm: handleResetForm,
+    resetForm,
   };
 }
+
+export type PositionCategoryForm = ReturnType<typeof usePositionCategoryForm>;

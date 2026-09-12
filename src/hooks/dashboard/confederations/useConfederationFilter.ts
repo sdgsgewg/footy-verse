@@ -1,6 +1,6 @@
 import { useFilters } from "@/hooks/filter";
 import { parseSearchParams } from "@/lib/utils/crud";
-import { confederationsQuerySchema } from "@/lib/validations/confederations.schema";
+import { confederationsQuerySchema } from "@/lib/validations/confederations/confederations.schema";
 import { ConfederationFilter } from "@/types/confederation";
 import { useSearchParams } from "next/navigation";
 import { useMemo } from "react";

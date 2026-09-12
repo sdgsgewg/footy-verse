@@ -14,7 +14,7 @@ import {
   confederationsQuerySchema,
   createConfederationSchema,
   updateConfederationSchema,
-} from "../validations/confederations.schema";
+} from "../validations/confederations/confederations.schema";
 import { idSchema, slugSchema } from "../validations/primitives.schema";
 import {
   uploadImageFromFormData,

@@ -6,7 +6,7 @@ import {
   playersQuerySchema,
   playerMutationSchema,
   groupedPlayersQuerySchema,
-} from "@/lib/validations/players.schema";
+} from "@/lib/validations/players/players.schema";
 import { createPlayerPositionSchema } from "@/lib/validations/player-positions.schema";
 import { createPlayerNationalitySchema } from "@/lib/validations/player-nationalities.schema";
 

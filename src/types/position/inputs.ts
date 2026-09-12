@@ -17,6 +17,4 @@ export type ReorderPositionsInput = z.infer<typeof reorderPositionsSchema>;
 
 // Mutation
 
-export type UpsertPositionInput = z.infer<typeof positionMutationSchema> & {
-  id?: string;
-};
+export type UpsertPositionInput = z.infer<typeof positionMutationSchema>;

@@ -3,7 +3,7 @@ import {
   nationalitiesQuerySchema,
   nationalityMutationSchema,
   updateNationalitySchema,
-} from "@/lib/validations/nationalities.schema";
+} from "@/lib/validations/nationalities/nationalities.schema";
 import z from "zod";
 
 // Repo Request (from zod)

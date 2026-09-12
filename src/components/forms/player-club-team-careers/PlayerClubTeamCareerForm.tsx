@@ -12,9 +12,11 @@ import PlayerShirtNumberSection from "./PlayerShirtNumberSection";
 import FormContentWrapper from "../base/FormContentWrapper";
 import PlayerCareerSection from "./PlayerCareerSection";
 import PlayerTransferSection from "./PlayerTransferSection";
+import { useCrudFormState } from "@/hooks/crud";
+import { FormMode } from "@/types/form";
 
 interface Props {
-  mode: "create" | "edit";
+  mode: FormMode;
   playerClubTeamCareer?: PlayerClubTeamCareerEditResponse;
 
   loading?: boolean;
@@ -28,24 +30,25 @@ const PlayerClubTeamCareerForm = ({
   loading = false,
   onSubmit,
 }: Props) => {
-  const { form, setForm, isDirty, errors, validate, canSubmit, buildPayload } =
-    usePlayerClubTeamCareerForm(playerClubTeamCareer);
+  const form = usePlayerClubTeamCareerForm({ playerClubTeamCareer, onSubmit });
 
-  const isCreate = mode === "create";
+  const { isDirty, canSubmit } = useCrudFormState({ form });
 
   const handleSubmit = () => {
-    if (!validate()) {
-      return;
-    }
-
-    onSubmit(buildPayload());
+    form.handleSubmit();
   };
 
   return (
     <FormWrapper isDirty={isDirty}>
+      {/* <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          form.handleSubmit();
+        }}
+      > */}
       <FormHeader
         loading={loading}
-        isCreate={isCreate}
+        mode={mode}
         canSubmit={canSubmit}
         onSubmit={handleSubmit}
       />
@@ -53,40 +56,25 @@ const PlayerClubTeamCareerForm = ({
       <FormContentWrapper className="space-y-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div className="lg:grid-cols-6">
-            <PlayerCareerSection
-              form={form}
-              setForm={setForm}
-              errors={errors}
-            />
+            <PlayerCareerSection form={form} />
           </div>
 
           <div className="lg:grid-cols-6">
-            <PlayerTransferSection
-              form={form}
-              setForm={setForm}
-              errors={errors}
-            />
+            <PlayerTransferSection form={form} />
           </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div className="lg:grid-cols-6">
-            <PlayerContractSection
-              form={form}
-              setForm={setForm}
-              errors={errors}
-            />
+            <PlayerContractSection form={form} />
           </div>
 
           <div className="lg:grid-cols-6">
-            <PlayerShirtNumberSection
-              form={form}
-              setForm={setForm}
-              errors={errors}
-            />
+            <PlayerShirtNumberSection form={form} />
           </div>
         </div>
       </FormContentWrapper>
+      {/* </form> */}
     </FormWrapper>
   );
 };

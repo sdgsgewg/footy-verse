@@ -4,7 +4,7 @@ import {
   competitionsQuerySchema,
   createCompetitionSchema,
   updateCompetitionSchema,
-} from "@/lib/validations/competitions.schema";
+} from "@/lib/validations/competitions/competitions.schema";
 
 // Repo Request (from zod)
 

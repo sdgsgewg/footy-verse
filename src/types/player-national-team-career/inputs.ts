@@ -2,7 +2,7 @@ import {
   createPlayerNationalTeamCareerSchema,
   playerNationalTeamCareerMutationSchema,
   updatePlayerNationalTeamCareerSchema,
-} from "@/lib/validations/player-national-team-careers.schema";
+} from "@/lib/validations/player-national-team-careers/player-national-team-careers.schema";
 import z from "zod";
 
 // Repo Request (from zod)

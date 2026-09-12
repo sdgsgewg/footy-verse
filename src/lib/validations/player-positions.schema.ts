@@ -3,7 +3,7 @@ import { idSchema } from "./primitives.schema";
 
 export const playerPositionMutationSchema = z.object({
   position_id: idSchema,
-  display_order: z.coerce.number().int().min(1).max(99),
+  display_order: z.number().int().min(1).max(99),
 });
 
 export const createPlayerPositionSchema = playerPositionMutationSchema;

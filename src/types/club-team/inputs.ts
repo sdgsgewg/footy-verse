@@ -23,6 +23,4 @@ export type ClubTeamUpdateInput = z.infer<typeof updateClubTeamSchema>;
 
 // Mutation
 
-export type UpsertClubTeamInput = z.infer<typeof clubTeamMutationSchema> & {
-  id?: string;
-};
+export type UpsertClubTeamInput = z.infer<typeof clubTeamMutationSchema>;

@@ -4,7 +4,7 @@ import {
   competitionsQuerySchema,
   createCompetitionSchema,
   updateCompetitionSchema,
-} from "../validations/competitions.schema";
+} from "../validations/competitions/competitions.schema";
 import {
   createCompetitionRepo,
   deleteCompetitionRepo,

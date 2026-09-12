@@ -8,10 +8,9 @@ import FormWrapper from "../base/FormWrapper";
 import FormHeader from "../base/FormHeader";
 import FormContentWrapper from "../base/FormContentWrapper";
 import { SelectField } from "../fields";
-import { SquadType } from "@/enums/SquadType";
-import { AgeGroup } from "@/enums/AgeGroup";
 import { getAgeGroupOptions } from "@/lib/constants/options";
 import { FormMode } from "@/types/form";
+import { useCrudFormState } from "@/hooks/crud";
 
 interface Props {
   mode: FormMode;
@@ -24,64 +23,58 @@ interface Props {
 
 const ClubTeamForm = ({ mode, clubTeam, loading = false, onSubmit }: Props) => {
   const t = useTranslations("");
-  const tClubTeams = useTranslations("dashboard.clubTeams");
 
-  const {
-    form,
-    isDirty,
-    errors,
-    updateField,
-    validate,
-    canSubmit,
-    buildPayload,
-  } = useClubTeamForm(clubTeam);
+  const tLabels = useTranslations("dashboard.clubTeams.form.labels");
+
+  const tPlaceholders = useTranslations(
+    "dashboard.clubTeams.form.placeholders",
+  );
+
+  const form = useClubTeamForm({ clubTeam, onSubmit });
+
+  const { isDirty, canSubmit } = useCrudFormState({ form });
 
   const squadTypeOptions = getSquadTypeOptions(t);
   const ageGroupOptions = getAgeGroupOptions(t);
 
-  const isCreate = mode === "create";
-
-  const handleSubmit = () => {
-    if (!validate()) {
-      return;
-    }
-
-    onSubmit(buildPayload());
-  };
-
   return (
     <FormWrapper isDirty={isDirty}>
-      <FormHeader
-        loading={loading}
-        isCreate={isCreate}
-        canSubmit={canSubmit}
-        onSubmit={handleSubmit}
-      />
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          form.handleSubmit();
+        }}
+      >
+        <FormHeader loading={loading} mode={mode} canSubmit={canSubmit} />
 
-      <FormContentWrapper className="space-y-5">
-        {/* Squad Type */}
-        <SelectField
-          label={tClubTeams("form.labels.squadType")}
-          name="squad_type"
-          placeholder={tClubTeams("form.placeholders.squadType")}
-          options={squadTypeOptions}
-          value={form.squad_type || ""}
-          onChange={(value) => updateField("squad_type", value as SquadType)}
-          error={errors.squad_type}
-          required
-        />
+        <FormContentWrapper className="space-y-5">
+          {/* Squad Type */}
+          <form.Field name="squad_type">
+            {(field) => (
+              <SelectField
+                field={field}
+                label={tLabels("squadType")}
+                placeholder={tPlaceholders("squadType")}
+                options={squadTypeOptions}
+                required
+              />
+            )}
+          </form.Field>
 
-        {/* Age Group */}
-        <SelectField
-          label={tClubTeams("form.labels.ageGroup")}
-          name="age_group"
-          placeholder={tClubTeams("form.placeholders.ageGroup")}
-          options={ageGroupOptions}
-          value={form.age_group || ""}
-          onChange={(value) => updateField("age_group", value as AgeGroup)}
-          error={errors.age_group}
-        />
-      </FormContentWrapper>
+          {/* Age Group */}
+          <form.Field name="age_group">
+            {(field) => (
+              <SelectField
+                field={field}
+                label={tLabels("ageGroup")}
+                placeholder={tPlaceholders("ageGroup")}
+                options={ageGroupOptions}
+                required
+              />
+            )}
+          </form.Field>
+        </FormContentWrapper>
+      </form>
     </FormWrapper>
   );
 };

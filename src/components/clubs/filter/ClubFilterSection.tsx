@@ -1,4 +1,4 @@
-import { SelectField } from "@/components/forms/fields";
+import { SelectField } from "@/components/shared/fields";
 import { getClubTeamOptions } from "@/lib/club-teams/options";
 import { ClubTeamListItem } from "@/types/club-team";
 import { GroupedPlayerFilter } from "@/types/player";
@@ -28,10 +28,12 @@ const ClubFilterSection = ({ clubTeams, filters, updateFilter }: Props) => {
       <SelectField
         label={tLabels("clubTeam")}
         name="club_team"
+        value={filters.clubTeamId}
         placeholder={tPlaceholders("clubTeam")}
         options={clubTeamOptions}
-        value={filters.clubTeamId || ""}
-        onChange={(value) => updateFilter("clubTeamId", value || undefined)}
+        onValueChange={(value) =>
+          updateFilter("clubTeamId", value || undefined)
+        }
         className="max-w-48"
       />
     </div>

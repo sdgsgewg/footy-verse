@@ -14,7 +14,7 @@ import {
   createPlayerSchema,
   updatePlayerSchema,
   groupedPlayersQuerySchema,
-} from "@/lib/validations/players.schema";
+} from "@/lib/validations/players/players.schema";
 import { idSchema, slugSchema } from "../validations/primitives.schema";
 import { GroupedPlayerListItem, PlayerListResponse } from "@/types/player";
 import { ENTITY_CONFIG } from "@/config/entities";
