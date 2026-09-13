@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 import DynamicFormSection from "../base/DynamicFormSection";
 import { DateField, NumberField } from "../fields";
 import { PlayerClubTeamCareerForm } from "@/hooks/dashboard/player-club-team-careers";
+import { parseDateString } from "@/lib/utils/date";
 
 interface Props {
   form: PlayerClubTeamCareerForm;
@@ -43,7 +44,7 @@ const PlayerShirtNumberSection = ({ form }: Props) => {
           onRemove={(index) => field.removeValue(index)}
         >
           {(shirtIndex) => (
-            <div className="grid grid-cols-1 gap-4">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
               {/* Shirt Number */}
               <form.Field name={`shirt_numbers[${shirtIndex}].shirt_number`}>
                 {(field) => (
@@ -57,25 +58,70 @@ const PlayerShirtNumberSection = ({ form }: Props) => {
               </form.Field>
 
               {/* Start Date */}
-              <form.Field name={`shirt_numbers[${shirtIndex}].start_date`}>
-                {(field) => (
-                  <DateField
-                    field={field}
-                    label={tLabels("startDate")}
-                    placeholder={tPlaceholders("startDate") || ""}
-                    required
-                  />
+              <form.Field name={`shirt_numbers[${shirtIndex}].end_date`}>
+                {(endDateField) => (
+                  <form.Field name={`shirt_numbers[${shirtIndex}].start_date`}>
+                    {(startDateField) => (
+                      <form.Field name="career.joined_at">
+                        {(joinedAtField) => (
+                          <form.Field name="career.left_at">
+                            {(leftAtField) => (
+                              <DateField
+                                field={startDateField}
+                                label={tLabels("startDate")}
+                                placeholder={tPlaceholders("startDate") || ""}
+                                startMonth={parseDateString(
+                                  joinedAtField.state.value,
+                                )}
+                                endMonth={
+                                  parseDateString(leftAtField.state.value) ??
+                                  new Date(2100, 11, 31)
+                                }
+                                minDate={parseDateString(
+                                  joinedAtField.state.value,
+                                )}
+                                maxDate={
+                                  parseDateString(endDateField.state.value) ??
+                                  parseDateString(leftAtField.state.value)
+                                }
+                                required
+                              />
+                            )}
+                          </form.Field>
+                        )}
+                      </form.Field>
+                    )}
+                  </form.Field>
                 )}
               </form.Field>
 
               {/* End Date */}
-              <form.Field name={`shirt_numbers[${shirtIndex}].end_date`}>
-                {(field) => (
-                  <DateField
-                    field={field}
-                    label={tLabels("endDate")}
-                    placeholder={tPlaceholders("endDate") || ""}
-                  />
+              <form.Field name={`shirt_numbers[${shirtIndex}].start_date`}>
+                {(startDateField) => (
+                  <form.Field name={`shirt_numbers[${shirtIndex}].end_date`}>
+                    {(endDateField) => (
+                      <form.Field name="career.left_at">
+                        {(leftAtField) => (
+                          <DateField
+                            field={endDateField}
+                            label={tLabels("endDate")}
+                            placeholder={tPlaceholders("endDate") || ""}
+                            startMonth={parseDateString(
+                              startDateField.state.value,
+                            )}
+                            endMonth={
+                              parseDateString(leftAtField.state.value) ??
+                              new Date(2100, 11, 31)
+                            }
+                            minDate={parseDateString(
+                              startDateField.state.value,
+                            )}
+                            maxDate={parseDateString(leftAtField.state.value)}
+                          />
+                        )}
+                      </form.Field>
+                    )}
+                  </form.Field>
                 )}
               </form.Field>
             </div>

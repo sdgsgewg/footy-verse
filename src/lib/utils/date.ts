@@ -65,3 +65,11 @@ export function formatRelativeDate(
 
   return `${diffInYears} year${diffInYears !== 1 ? "s" : ""} ago`;
 }
+
+export function parseDateString(value?: string | null): Date | undefined {
+  if (!value) return undefined;
+
+  const [year, month, day] = value.split("-").map(Number);
+
+  return new Date(year, month - 1, day);
+}

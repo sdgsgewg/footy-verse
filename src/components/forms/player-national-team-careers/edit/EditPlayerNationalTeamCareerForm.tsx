@@ -41,13 +41,8 @@ const EditPlayerNationalTeamCareerForm = ({
         <FormHeader loading={loading} mode="edit" canSubmit={canSubmit} />
 
         <FormContentWrapper className="space-y-6">
-          <div className="">
-            <PlayerCareerSection form={form} />
-          </div>
-
-          <div className="">
-            <PlayerShirtNumberSection form={form} />
-          </div>
+          <PlayerCareerSection form={form} />
+          <PlayerShirtNumberSection form={form} />
         </FormContentWrapper>
       </form>
     </FormWrapper>

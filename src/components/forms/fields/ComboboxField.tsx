@@ -100,7 +100,7 @@ const ComboboxField: React.FC<ComboboxFieldProps> = ({
             aria-expanded={open}
             aria-invalid={isInvalid}
             disabled={disabled || loading}
-            className="h-10 w-full justify-between rounded-xl font-normal"
+            className="w-full justify-between rounded-xl font-normal"
           >
             <div className="flex items-center gap-2 overflow-hidden">
               {selectedOption?.imageUrl && (

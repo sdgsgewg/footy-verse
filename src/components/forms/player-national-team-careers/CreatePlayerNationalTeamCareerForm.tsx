@@ -14,8 +14,9 @@ import { useCreatePlayerNationalTeamCareerForm } from "@/hooks/dashboard/player-
 
 import { useNationalTeams } from "@/hooks/national-teams";
 import { getNationalTeamOptions } from "@/lib/national-teams/options";
-import { useCrudFormState } from "@/hooks/crud";
+import { useCrudFormState, useCrudFormTranslations } from "@/hooks/crud";
 import DynamicFormSection from "../base/DynamicFormSection";
+import { parseDateString } from "@/lib/utils/date";
 
 interface Props {
   loading?: boolean;
@@ -28,12 +29,8 @@ const CreatePlayerNationalTeamCareerForm = ({
 }: Props) => {
   const tForm = useTranslations("dashboard.playerNationalTeamCareers.form");
 
-  const tLabels = useTranslations(
-    "dashboard.playerNationalTeamCareers.form.labels",
-  );
-
-  const tPlaceholders = useTranslations(
-    "dashboard.playerNationalTeamCareers.form.placeholders",
+  const { tLabels, tPlaceholders } = useCrudFormTranslations(
+    "playerNationalTeamCareer",
   );
 
   const form = useCreatePlayerNationalTeamCareerForm({
@@ -101,41 +98,58 @@ const CreatePlayerNationalTeamCareerForm = ({
                     </form.Field>
 
                     {/* Joined Date */}
-                    <form.Field
-                      name={`careers[${careerIndex}].career.joined_at`}
-                      listeners={{
-                        onChange: ({ value }) => {
-                          const firstShirtNumber = form.getFieldValue(
-                            `careers[${careerIndex}].shirt_numbers[0]`,
-                          );
-
-                          if (!firstShirtNumber?.start_date) {
-                            form.setFieldValue(
-                              `careers[${careerIndex}].shirt_numbers[0].start_date`,
-                              value,
-                            );
-                          }
-                        },
-                      }}
-                    >
-                      {(field) => (
-                        <DateField
-                          field={field}
-                          label={tLabels("career.joinedAt")}
-                          placeholder={tPlaceholders("career.joinedAt") || ""}
-                          required
-                        />
+                    <form.Field name={`careers[${careerIndex}].career.left_at`}>
+                      {(leftAtField) => (
+                        <form.Field
+                          name={`careers[${careerIndex}].career.joined_at`}
+                          listeners={{
+                            onChange: ({ value }) => {
+                              form.setFieldValue(
+                                `careers[${careerIndex}].shirt_numbers[0].start_date`,
+                                value,
+                              );
+                            },
+                          }}
+                        >
+                          {(field) => (
+                            <DateField
+                              field={field}
+                              label={tLabels("career.joinedAt")}
+                              placeholder={
+                                tPlaceholders("career.joinedAt") || ""
+                              }
+                              endMonth={new Date(2100, 11, 31)}
+                              maxDate={parseDateString(leftAtField.state.value)}
+                              required
+                            />
+                          )}
+                        </form.Field>
                       )}
                     </form.Field>
 
                     {/* Left Date */}
-                    <form.Field name={`careers[${careerIndex}].career.left_at`}>
-                      {(field) => (
-                        <DateField
-                          field={field}
-                          label={tLabels("career.leftAt")}
-                          placeholder={tPlaceholders("career.leftAt") || ""}
-                        />
+                    <form.Field
+                      name={`careers[${careerIndex}].career.joined_at`}
+                    >
+                      {(joinedAtField) => (
+                        <form.Field
+                          name={`careers[${careerIndex}].career.left_at`}
+                        >
+                          {(field) => (
+                            <DateField
+                              field={field}
+                              label={tLabels("career.leftAt")}
+                              placeholder={tPlaceholders("career.leftAt") || ""}
+                              startMonth={parseDateString(
+                                joinedAtField.state.value,
+                              )}
+                              endMonth={new Date(2100, 11, 31)}
+                              minDate={parseDateString(
+                                joinedAtField.state.value,
+                              )}
+                            />
+                          )}
+                        </form.Field>
                       )}
                     </form.Field>
 
@@ -152,7 +166,7 @@ const CreatePlayerNationalTeamCareerForm = ({
                           minItems={1}
                           onAdd={() =>
                             shirtNumbersField.pushValue({
-                              shirt_number: 1,
+                              shirt_number: null,
                               start_date: "",
                               end_date: "",
                             })
@@ -183,34 +197,103 @@ const CreatePlayerNationalTeamCareerForm = ({
 
                               {/* Start Date */}
                               <form.Field
-                                name={`careers[${careerIndex}].shirt_numbers[${shirtIndex}].start_date`}
+                                name={`careers[${careerIndex}].shirt_numbers[${shirtIndex}].end_date`}
                               >
-                                {(field) => (
-                                  <DateField
-                                    field={field}
-                                    label={tLabels("shirtNumbers.startDate")}
-                                    placeholder={
-                                      tPlaceholders("shirtNumbers.startDate") ||
-                                      ""
-                                    }
-                                    required
-                                  />
+                                {(endDateField) => (
+                                  <form.Field
+                                    name={`careers[${careerIndex}].shirt_numbers[${shirtIndex}].start_date`}
+                                  >
+                                    {(startDateField) => (
+                                      <form.Field
+                                        name={`careers[${careerIndex}].career.joined_at`}
+                                      >
+                                        {(joinedAtField) => (
+                                          <form.Field
+                                            name={`careers[${careerIndex}].career.left_at`}
+                                          >
+                                            {(leftAtField) => (
+                                              <DateField
+                                                field={startDateField}
+                                                label={tLabels(
+                                                  "shirtNumbers.startDate",
+                                                )}
+                                                placeholder={
+                                                  tPlaceholders(
+                                                    "shirtNumbers.startDate",
+                                                  ) || ""
+                                                }
+                                                startMonth={parseDateString(
+                                                  joinedAtField.state.value,
+                                                )}
+                                                endMonth={
+                                                  parseDateString(
+                                                    leftAtField.state.value,
+                                                  ) ?? new Date(2100, 11, 31)
+                                                }
+                                                minDate={parseDateString(
+                                                  joinedAtField.state.value,
+                                                )}
+                                                maxDate={
+                                                  parseDateString(
+                                                    endDateField.state.value,
+                                                  ) ??
+                                                  parseDateString(
+                                                    leftAtField.state.value,
+                                                  )
+                                                }
+                                                required
+                                              />
+                                            )}
+                                          </form.Field>
+                                        )}
+                                      </form.Field>
+                                    )}
+                                  </form.Field>
                                 )}
                               </form.Field>
 
                               {/* End Date */}
                               <form.Field
-                                name={`careers[${careerIndex}].shirt_numbers[${shirtIndex}].end_date`}
+                                name={`careers[${careerIndex}].shirt_numbers[${shirtIndex}].start_date`}
                               >
-                                {(field) => (
-                                  <DateField
-                                    field={field}
-                                    label={tLabels("shirtNumbers.endDate")}
-                                    placeholder={
-                                      tPlaceholders("shirtNumbers.endDate") ||
-                                      ""
-                                    }
-                                  />
+                                {(startDateField) => (
+                                  <form.Field
+                                    name={`careers[${careerIndex}].shirt_numbers[${shirtIndex}].end_date`}
+                                  >
+                                    {(endDateField) => (
+                                      <form.Field
+                                        name={`careers[${careerIndex}].career.left_at`}
+                                      >
+                                        {(leftAtField) => (
+                                          <DateField
+                                            field={endDateField}
+                                            label={tLabels(
+                                              "shirtNumbers.endDate",
+                                            )}
+                                            placeholder={
+                                              tPlaceholders(
+                                                "shirtNumbers.endDate",
+                                              ) || ""
+                                            }
+                                            startMonth={parseDateString(
+                                              startDateField.state.value,
+                                            )}
+                                            endMonth={
+                                              parseDateString(
+                                                leftAtField.state.value,
+                                              ) ?? new Date(2100, 11, 31)
+                                            }
+                                            minDate={parseDateString(
+                                              startDateField.state.value,
+                                            )}
+                                            maxDate={parseDateString(
+                                              leftAtField.state.value,
+                                            )}
+                                          />
+                                        )}
+                                      </form.Field>
+                                    )}
+                                  </form.Field>
                                 )}
                               </form.Field>
                             </div>

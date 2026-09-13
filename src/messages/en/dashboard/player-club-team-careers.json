@@ -34,7 +34,7 @@
       "contracts": {
         "contractStart": "Start Date",
         "contractEnd": "End Date",
-        "salary": "Salary (per year in million euro)"
+        "salary": "Salary"
       },
 
       "shirtNumbers": {
@@ -47,7 +47,7 @@
         "fromClub": "From Club",
         "toClub": "To Club",
         "transferType": "Transfer Type",
-        "transferFee": "Transfer Fee (in million euro)",
+        "transferFee": "Transfer Fee",
         "transferDate": "Transfer Date"
       }
     },
@@ -62,7 +62,7 @@
       "contracts": {
         "contractStart": "Select Start Date",
         "contractEnd": "Select End Date",
-        "salary": "Input Salary (in million euro)"
+        "salary": "Input Salary (in million euro per year)"
       },
 
       "shirtNumbers": {
@@ -75,7 +75,7 @@
         "fromClub": "Select From Club",
         "toClub": "Select To Club",
         "transferType": "Select Transfer Type",
-        "transferFee": "Input Transfer Fee",
+        "transferFee": "Input Transfer Fee (in million euro)",
         "transferDate": "Select Transfer Date"
       }
     },

@@ -34,7 +34,7 @@
       "contracts": {
         "contractStart": "Tanggal Mulai",
         "contractEnd": "Tanggal Akhir",
-        "salary": "Gaji (per tahun dalam juta euro)"
+        "salary": "Gaji"
       },
 
       "shirtNumbers": {
@@ -47,7 +47,7 @@
         "fromClub": "Klub Asal",
         "toClub": "Klub Tujuan",
         "transferType": "Tipe Transfer",
-        "transferFee": "Biaya Transfer (dalam juta euro)",
+        "transferFee": "Biaya Transfer",
         "transferDate": "Tanggal Transfer"
       }
     },
@@ -62,7 +62,7 @@
       "contracts": {
         "contractStart": "Pilih Tanggal Mulai",
         "contractEnd": "Pilih Tanggal Akhir",
-        "salary": "Masukkan gaji (dalam juta euro)"
+        "salary": "Masukkan gaji (per tahun dalam juta euro)"
       },
 
       "shirtNumbers": {
@@ -75,7 +75,7 @@
         "fromClub": "Pilih Klub Asal",
         "toClub": "Pilih Klub Tujuan",
         "transferType": "Pilih Tipe Transfer",
-        "transferFee": "Masukkan Biaya Transfer",
+        "transferFee": "Masukkan Biaya Transfer (dalam juta euro)",
         "transferDate": "Pilih Tanggal Transfer"
       }
     },

@@ -26,6 +26,9 @@ interface DateFieldProps {
   startMonth?: Date;
   endMonth?: Date;
 
+  minDate?: Date;
+  maxDate?: Date;
+
   required?: boolean;
   readOnly?: boolean;
   disabled?: boolean;
@@ -39,6 +42,8 @@ export default function DateField({
   placeholder = "Select date",
   startMonth,
   endMonth,
+  minDate,
+  maxDate,
   required,
   readOnly,
   disabled,
@@ -129,10 +134,19 @@ export default function DateField({
           <Calendar
             mode="single"
             selected={date}
-            defaultMonth={date}
+            defaultMonth={date ?? minDate ?? maxDate}
             captionLayout="dropdown"
             startMonth={startMonth}
             endMonth={endMonth}
+            disabled={(calendarDate) => {
+              if (minDate && calendarDate < minDate) {
+                return true;
+              }
+              if (maxDate && calendarDate > maxDate) {
+                return true;
+              }
+              return false;
+            }}
             onSelect={handleSelect}
           />
         </PopoverContent>

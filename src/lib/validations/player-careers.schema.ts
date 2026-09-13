@@ -3,10 +3,15 @@ import { z } from "zod";
 import { idSchema } from "./primitives.schema";
 import { careerTypeSchema } from "./enums.schema";
 
-export const playerCareerMutationSchema = z.object({
-  joined_at: z.string().min(1),
-  left_at: nullableDate.optional(),
-});
+export const playerCareerMutationSchema = z
+  .object({
+    joined_at: z.string().min(1),
+    left_at: nullableDate.optional(),
+  })
+  .refine(({ joined_at, left_at }) => !left_at || joined_at <= left_at, {
+    message: "Join date must be less than or equal to left date",
+    path: ["joined_at"],
+  });
 
 export const createPlayerCareerSchema = playerCareerMutationSchema;
 
