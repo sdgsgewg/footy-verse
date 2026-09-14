@@ -5,7 +5,7 @@ const withNextIntl = createNextIntlPlugin("./src/i18n.ts");
 
 const nextConfig: NextConfig = {
   images: {
-    domains: ["res.cloudinary.com"],
+    formats: ["image/webp"],
     remotePatterns: [
       {
         protocol: "https",
