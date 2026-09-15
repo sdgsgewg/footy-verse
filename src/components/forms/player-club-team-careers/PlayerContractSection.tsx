@@ -94,29 +94,18 @@ const PlayerContractSection = ({ form }: Props) => {
                 {(contractStartField) => (
                   <form.Field name={`contracts[${contractIndex}].contract_end`}>
                     {(contractEndField) => (
-                      <form.Field name="career.left_at">
-                        {(leftAtField) => (
-                          <DateField
-                            field={contractEndField}
-                            label={tLabels("contractEnd")}
-                            placeholder={tPlaceholders("contractEnd") || ""}
-                            startMonth={parseDateString(
-                              contractStartField.state.value,
-                            )}
-                            endMonth={
-                              parseDateString(leftAtField.state.value) ??
-                              new Date(2100, 11, 31)
-                            }
-                            minDate={parseDateString(
-                              contractStartField.state.value,
-                            )}
-                            maxDate={
-                              parseDateString(leftAtField.state.value)
-                            }
-                            required
-                          />
+                      <DateField
+                        field={contractEndField}
+                        label={tLabels("contractEnd")}
+                        placeholder={tPlaceholders("contractEnd") || ""}
+                        startMonth={parseDateString(
+                          contractStartField.state.value,
                         )}
-                      </form.Field>
+                        minDate={parseDateString(
+                          contractStartField.state.value,
+                        )}
+                        required
+                      />
                     )}
                   </form.Field>
                 )}

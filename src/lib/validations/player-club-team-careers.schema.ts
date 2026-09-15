@@ -51,13 +51,13 @@ export const playerClubTeamCareerMutationSchema = z
       }
 
       // Contract must end before/equal to career left
-      if (left_at && contract_end > left_at) {
-        ctx.addIssue({
-          code: "custom",
-          message: "Contract end cannot be after career left date",
-          path: ["contracts", index, "contract_end"],
-        });
-      }
+      // if (left_at && contract_end > left_at) {
+      //   ctx.addIssue({
+      //     code: "custom",
+      //     message: "Contract end cannot be after career left date",
+      //     path: ["contracts", index, "contract_end"],
+      //   });
+      // }
     });
 
     /*
