@@ -13,3 +13,6 @@ export { default as ComboboxField } from "./ComboboxField";
 
 export { default as OrderedSelectField } from "./OrderedSelectField";
 export { default as OrderedField } from "./OrderedField";
+
+export { default as EmailField } from "./EmailField";
+export { default as PasswordField } from "./PasswordField";

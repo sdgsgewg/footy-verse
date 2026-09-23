@@ -2,10 +2,23 @@ import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
+function getSafeNext(next: string | null) {
+  if (!next || !next.startsWith("/") || next.startsWith("//")) {
+    return "/dashboard";
+  }
+
+  return next;
+}
+
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get("code");
-  const next = searchParams.get("next") ?? "/";
+
+  const locale = searchParams.get("locale") ?? "en";
+  // prevent external urls and to ensure the next only store relative internal paths
+  const next = getSafeNext(searchParams.get("next"));
+
+  const redirectPath = `/${locale}${next}`;
 
   if (code) {
     const cookieStore = await cookies();
@@ -32,7 +45,7 @@ export async function GET(request: Request) {
 
       const { error } = await supabase.auth.exchangeCodeForSession(code);
       if (!error) {
-        return NextResponse.redirect(`${origin}${next}`);
+        return NextResponse.redirect(`${origin}${redirectPath}`);
       }
     }
   }
