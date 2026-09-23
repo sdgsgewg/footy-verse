@@ -8,8 +8,5 @@ export async function registerService(
 ): Promise<RegisterResponse> {
   const parsed = registerSchema.parse(input);
 
-  console.log("SERVICE");
-  console.log("Email redirect to: ", emailRedirectTo);
-
   return await registerRepo(parsed, emailRedirectTo);
 }

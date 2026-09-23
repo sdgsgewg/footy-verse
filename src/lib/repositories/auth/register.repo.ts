@@ -8,9 +8,6 @@ export async function registerRepo(
 ): Promise<RegisterResponse> {
   const supabase = await createClient();
 
-  console.log("REPO");
-  console.log("Email redirect to: ", emailRedirectTo);
-
   const { data, error } = await supabase.auth.signUp({
     email: payload.email,
     password: payload.password,
