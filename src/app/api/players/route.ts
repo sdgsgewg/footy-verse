@@ -1,4 +1,4 @@
-import { getCrudQuery } from "@/lib/api/query";
+import { getQuery } from "@/lib/api/query";
 import {
   createdResponse,
   errorResponse,
@@ -14,7 +14,7 @@ import { PlayerFilter } from "@/types/player";
 
 export async function GET(request: Request) {
   try {
-    const query = getCrudQuery<PlayerFilter>(request, [
+    const query = getQuery<PlayerFilter>(request, [
       "positionId",
       "clubTeamId",
       "nationId",

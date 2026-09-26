@@ -1,11 +1,11 @@
-import { getCrudQuery } from "@/lib/api/query";
+import { getQuery } from "@/lib/api/query";
 import { errorResponse, successResponse } from "@/lib/api/response";
 import { getNationalTeamsService } from "@/lib/services/national-teams.service";
 import { NationalTeamQuery } from "@/types/national-team";
 
 export async function GET(request: Request) {
   try {
-    const query = getCrudQuery<NationalTeamQuery>(request, [
+    const query = getQuery<NationalTeamQuery>(request, [
       "ageGroup",
       "nationId",
       "nationId",

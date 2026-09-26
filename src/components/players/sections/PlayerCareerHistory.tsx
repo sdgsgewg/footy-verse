@@ -73,7 +73,7 @@ const PlayerCareerHistory = ({ player }: Props) => {
             playerLookup={player}
             playerClubTeamCareers={playerClubTeamCareers}
             loading={isPlayerClubTeamCareersLoading}
-            showActions
+            showActions={isDashboard}
           />
         </section>
 
@@ -92,7 +92,7 @@ const PlayerCareerHistory = ({ player }: Props) => {
             playerLookup={player}
             playerNationalTeamCareers={playerNationalTeamCareers}
             loading={isPlayerNationalTeamCareersLoading}
-            showActions
+            showActions={isDashboard}
           />
         </section>
       </div>

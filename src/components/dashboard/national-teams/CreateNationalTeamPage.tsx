@@ -11,7 +11,7 @@ import NationalTeamTable from "@/components/dashboard/nationalities/table/Nation
 import NationalTeamForm from "@/components/forms/national-teams/NationalTeamForm";
 import { useCrudPageTitle } from "@/hooks/crud/useCrudPageTitle";
 import { useRouter } from "@/navigation";
-import { ROUTES } from "@/constants/routes";
+import { ENTITY_CONFIG } from "@/config/entities";
 
 interface Props {
   nationalityLookup: NationalityLookupResponse;
@@ -64,14 +64,14 @@ export default function CreateNationalTeamPage({ nationalityLookup }: Props) {
               payload,
               onSuccess: () => {
                 router.push(
-                  `${ROUTES.DASHBOARD.CONTENT.NATIONALITIES.BASE}/${nationality.slug}`,
+                  `${ENTITY_CONFIG["nationality"]["dashboardRoute"]}/${nationality.slug}`,
                 );
               },
             })
           }
         />
       }
-      backHref={`${ROUTES.DASHBOARD.CONTENT.NATIONALITIES.BASE}/${nationality.slug}`}
+      backHref={`${ENTITY_CONFIG["nationality"]["dashboardRoute"]}/${nationality.slug}`}
     />
   );
 }

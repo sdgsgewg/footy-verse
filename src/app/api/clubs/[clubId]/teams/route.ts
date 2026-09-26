@@ -1,4 +1,4 @@
-import { getCrudQuery } from "@/lib/api/query";
+import { getQuery } from "@/lib/api/query";
 import {
   createdResponse,
   errorResponse,
@@ -17,7 +17,7 @@ type ClubTeamRouteContext = {
 
 export async function GET(request: Request) {
   try {
-    const query = getCrudQuery<ClubTeamQuery>(request, [
+    const query = getQuery<ClubTeamQuery>(request, [
       "squadType",
       "ageGroup",
       "clubId",

@@ -32,4 +32,7 @@ export type DbCompetitionDetailRow = Competition & {
 
 // Helpers
 
-export type DbCompetitionRow = Pick<Competition, "id" | "name" | "image">;
+export type DbCompetitionRow = Pick<
+  Competition,
+  "id" | "name" | "short_name" | "image"
+>;

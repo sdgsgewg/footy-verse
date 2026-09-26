@@ -1,4 +1,5 @@
 import { DbClubTeamRow } from "../club-team";
+import { DbCompetitionRow } from "../competition/query";
 import { DbNationalTeamRow } from "../national-team";
 import { CompetitionSeason } from "./database";
 
@@ -8,8 +9,15 @@ import { CompetitionSeason } from "./database";
 
 export type DbCompetitionSeasonListRow = Pick<
   CompetitionSeason,
-  "id" | "name" | "season_label" | "slug" | "status" | "start_date" | "end_date" | "competition_id"
+  | "id"
+  | "name"
+  | "season_label"
+  | "slug"
+  | "start_date"
+  | "end_date"
+  | "competition_id"
 > & {
+  competition: DbCompetitionRow;
   winnerClubTeam: DbClubTeamRow | null;
   winnerNationalTeam: DbNationalTeamRow | null;
 };

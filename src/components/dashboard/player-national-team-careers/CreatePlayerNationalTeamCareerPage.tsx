@@ -13,7 +13,7 @@ import TableFormLayout from "@/components/layout/dashboard/TableFormLayout";
 import { useCrudPageTitle } from "@/hooks/crud/useCrudPageTitle";
 import { PlayerNationalTeamCareerHistoryTable } from "@/components/players/table";
 import { useRouter } from "@/navigation";
-import { ROUTES } from "@/constants/routes";
+import { ENTITY_CONFIG } from "@/config/entities";
 
 interface Props {
   playerLookup: PlayerLookupResponse;
@@ -75,14 +75,14 @@ export default function CreatePlayerNationalTeamCareerPage({
               payload,
               onSuccess: () => {
                 router.push(
-                  `${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${player.slug}`,
+                  `${ENTITY_CONFIG["player"]["dashboardRoute"]}/${player.slug}`,
                 );
               },
             })
           }
         />
       }
-      backHref={`${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${player.slug}`}
+      backHref={`${ENTITY_CONFIG["player"]["dashboardRoute"]}/${player.slug}`}
     />
   );
 }

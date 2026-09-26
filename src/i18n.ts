@@ -93,6 +93,10 @@ async function getMessages(locale: string) {
     competitions: (
       await import(`./messages/${locale}/dashboard/competitions.json`)
     ).default,
+
+    competitionSeasons: (
+      await import(`./messages/${locale}/dashboard/competition-seasons.json`)
+    ).default,
   };
 
   return {

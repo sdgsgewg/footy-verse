@@ -67,7 +67,10 @@
       "fullName": "Full Name",
       "shortName": "Short Name",
 
-      "description": "Description"
+      "description": "Description",
+
+      "startDate": "Start Date",
+      "endDate": "End Date"
     },
 
     "placeholders": {
@@ -77,7 +80,10 @@
       "fullName": "Enter full name",
       "shortName": "Enter short name",
 
-      "description": "Enter description"
+      "description": "Enter description",
+
+      "startDate": "Select Start Date",
+      "endDate": "Select End Date"
     }
   },
 

@@ -5,11 +5,11 @@ import { notFound } from "next/navigation";
 export default async function Page({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ competitionSlug: string }>;
 }) {
-  const { slug } = await params;
+  const { competitionSlug } = await params;
 
-  const competitionLookup = await getCompetitionLookupService(slug);
+  const competitionLookup = await getCompetitionLookupService(competitionSlug);
 
   if (!competitionLookup) {
     return notFound();

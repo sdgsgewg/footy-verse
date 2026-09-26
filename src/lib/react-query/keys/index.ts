@@ -7,3 +7,5 @@ export * from "./nationalTeamKeys";
 export * from "./searchKeys";
 
 export * from "./statisticKeys";
+
+export * from "./competitons";

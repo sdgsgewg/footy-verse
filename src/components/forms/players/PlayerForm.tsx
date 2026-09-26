@@ -41,15 +41,12 @@ interface Props {
 const PlayerForm = ({ mode, player, loading = false, onSubmit }: Props) => {
   const t = useTranslations("dashboard.players");
 
-  const tLabels = useTranslations("dashboard.players.form.labels");
-
-  const tPlaceholders = useTranslations("dashboard.players.form.placeholders");
-
   const tPrefFoot = useTranslations(
     "dashboard.players.form.options.preferredFoot",
   );
 
-  const { tCommonLabels, tCommonPlaceholders } = useCrudFormTranslations();
+  const { tLabels, tPlaceholders, tCommonLabels, tCommonPlaceholders } =
+    useCrudFormTranslations("player");
 
   const form = usePlayerForm({
     player,

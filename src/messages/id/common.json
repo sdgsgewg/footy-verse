@@ -63,7 +63,10 @@
       "fullName": "Nama Lengkap",
       "shortName": "Nama Singkat",
 
-      "description": "Deskripsi"
+      "description": "Deskripsi",
+
+      "startDate": "Tanggal Mulai",
+      "endDate": "Tanggal Akhir"
     },
 
     "placeholders": {
@@ -73,7 +76,10 @@
       "fullName": "Masukkan nama lengkap",
       "shortName": "Masukkan nama singkat",
 
-      "description": "Masukkan deskripsi"
+      "description": "Masukkan deskripsi",
+
+      "startDate": "Plih Tanggal Mulai",
+      "endDate": "Pilih Tanggal Akhir"
     }
   },
 

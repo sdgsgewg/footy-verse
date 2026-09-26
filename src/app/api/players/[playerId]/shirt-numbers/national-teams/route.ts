@@ -1,4 +1,4 @@
-import { getCrudQuery } from "@/lib/api/query";
+import { getQuery } from "@/lib/api/query";
 import { errorResponse, successResponse } from "@/lib/api/response";
 import { getPlayerNationalTeamShirtNumbersService } from "@/lib/services/player-shirt-numbers.service";
 import { PlayerShirtNumberFilter } from "@/types/player-shirt-number";
@@ -15,7 +15,7 @@ export async function GET(
   try {
     const { playerId } = await context.params;
 
-    const query = getCrudQuery<PlayerShirtNumberFilter>(request, [
+    const query = getQuery<PlayerShirtNumberFilter>(request, [
       "startDate",
       "endDate",
     ]);

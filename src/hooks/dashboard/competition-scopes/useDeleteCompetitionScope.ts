@@ -1,6 +1,6 @@
 import { deleteCompetitionScope } from "@/lib/api/competition-scope";
 import { useCrudMutation } from "../useCrudMutation";
-import { competitionScopeKeys } from "@/lib/react-query/keys/competitionScopeKeys";
+import { competitionScopeKeys } from "@/lib/react-query/keys/competitons/competitionScopeKeys";
 
 interface DeleteCompetitionScopePayload {
   id: string;

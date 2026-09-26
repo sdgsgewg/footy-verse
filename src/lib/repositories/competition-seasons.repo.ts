@@ -34,14 +34,18 @@ const getTable = () => {
 function getCompetitionSeasonsBaseQuery() {
   return `
     id,
-    image,
     name,
     season_label,
     slug,
-    status,
     start_date,
     end_date,
     competition_id,
+
+    competition:competitions!competition_seasons_competition_id_fkey!inner (
+      id,
+      name,
+      short_name
+    ),
 
     winner_club_team:club_teams (
       id,
@@ -222,7 +226,7 @@ export async function createCompetitionSeasonRepo(
 ): Promise<CompetitionSeasonDetailResponse> {
   const supabase = await getSupabase();
 
-  const slug = slugify(competitionSeason.name);
+  const slug = slugify(competitionSeason.season_label);
 
   const { data: insertedCompetitionSeason, error } = await supabase
     .from(getTable())
@@ -263,7 +267,7 @@ export async function updateCompetitionSeasonRepo(
     getLabel(),
   );
 
-  const slug = slugify(competitionSeason.name);
+  const slug = slugify(competitionSeason.season_label);
 
   const { error } = await supabase
     .from(getTable())

@@ -1,11 +1,11 @@
-import { getCrudQuery } from "@/lib/api/query";
+import { getQuery } from "@/lib/api/query";
 import { errorResponse, successResponse } from "@/lib/api/response";
 import { getAllPlayerTransfersService } from "@/lib/services/player-transfers.service";
 import { PlayerTransferFilter } from "@/types/player-transfer";
 
 export async function GET(request: Request) {
   try {
-    const query = getCrudQuery<PlayerTransferFilter>(request, [
+    const query = getQuery<PlayerTransferFilter>(request, [
       "transferDate",
       "transferFee",
       "transferType",

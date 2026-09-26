@@ -15,7 +15,7 @@ import { PlayerClubTeamCareerLookupResponse } from "@/types/player-club-team-car
 import PlayerClubTeamCareerHistoryTable from "@/components/players/table/PlayerClubTeamCareerHistoryTable";
 import { useCrudPageTitle } from "@/hooks/crud/useCrudPageTitle";
 import { useRouter } from "@/navigation";
-import { ROUTES } from "@/constants/routes";
+import { ENTITY_CONFIG } from "@/config/entities";
 
 interface Props {
   playerLookup: PlayerLookupResponse;
@@ -39,13 +39,13 @@ export default function EditPlayerClubTeamCareerPage({
     });
 
   const { playerClubTeamCareers } = usePlayerClubTeamCareers({
-    playerId: player?.id,
+    playerId: playerLookup.id,
   });
 
   const { submit, isSubmitting } = usePlayerClubTeamCareerSubmit(playerLookup);
 
   if (!player && isLoading) {
-    return <EntityLoading entity="playerNationalTeamCareer" />;
+    return <EntityLoading entity="playerClubTeamCareer" />;
   }
 
   if (!player && error) {
@@ -97,14 +97,14 @@ export default function EditPlayerClubTeamCareerPage({
               payload,
               onSuccess: () => {
                 router.push(
-                  `${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${player.slug}`,
+                  `${ENTITY_CONFIG["player"]["dashboardRoute"]}/${player.slug}`,
                 );
               },
             })
           }
         />
       }
-      backHref={`${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${player.slug}`}
+      backHref={`${ENTITY_CONFIG["player"]["dashboardRoute"]}/${player.slug}`}
     />
   );
 }

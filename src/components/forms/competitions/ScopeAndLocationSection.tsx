@@ -62,7 +62,7 @@ const ScopeAndLocationSection = ({ form }: Props) => {
         )}
       </form.Field>
 
-      {/* Nationality */}
+      {/* Country */}
       <form.Field name="nationality_id">
         {(field) => (
           <ComboboxField
@@ -72,7 +72,6 @@ const ScopeAndLocationSection = ({ form }: Props) => {
             options={nationalityOptions}
             placeholder={tPlaceholders("nationality")}
             loading={isNationalityLoading}
-            required
           />
         )}
       </form.Field>

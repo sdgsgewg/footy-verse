@@ -335,7 +335,7 @@ export async function createCompetitionRepo(
 ): Promise<CompetitionDetailResponse> {
   const supabase = await getSupabase();
 
-  const slug = ensureCompetitionUniqueRepo({
+  const slug = await ensureCompetitionUniqueRepo({
     name: competition.name,
   });
 
@@ -381,7 +381,7 @@ export async function updateCompetitionRepo(
     getLabel(),
   );
 
-  const slug = ensureCompetitionUniqueRepo({
+  const slug = await ensureCompetitionUniqueRepo({
     name: competition.name,
     ignoreId: id,
   });

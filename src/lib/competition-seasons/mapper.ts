@@ -9,6 +9,7 @@ import {
 } from "@/types/competition-season";
 import { mapNationalTeamToWinnerResponse } from "../national-teams/mapper";
 import { mapClubTeamToWinnerResponse } from "../club-teams/mapper";
+import { getCompetitionSeasonStatus } from "./selector";
 
 /**
  *
@@ -25,10 +26,12 @@ export function mapCompetitionSeasonListItem(
     slug,
     start_date,
     end_date,
-    status,
+    competition,
     winnerClubTeam,
     winnerNationalTeam,
   } = competitionSeason;
+
+  const competitionName = name ?? competition.short_name ?? competition.name;
 
   const winner = winnerClubTeam
     ? mapClubTeamToWinnerResponse(winnerClubTeam)
@@ -38,13 +41,12 @@ export function mapCompetitionSeasonListItem(
 
   return {
     id,
-    name,
-    seasonLabel: season_label,
+    label: `${competitionName} ${season_label}`,
     slug,
 
     startDate: start_date,
     endDate: end_date,
-    status,
+    status: getCompetitionSeasonStatus(start_date, end_date),
 
     winner,
   };
@@ -59,7 +61,6 @@ export function mapCompetitionSeasonEditResponse(
     season_label,
     start_date,
     end_date,
-    status,
     winner_club_team_id,
     winner_national_team_id,
   } = competitionSeason;
@@ -70,7 +71,6 @@ export function mapCompetitionSeasonEditResponse(
     seasonLabel: season_label,
     startDate: start_date,
     endDate: end_date,
-    status,
     winnerClubTeamId: winner_club_team_id,
     winnerNationalTeamId: winner_national_team_id,
   };
@@ -86,7 +86,6 @@ export function mapCompetitionSeasonDetailResponse(
     slug,
     start_date,
     end_date,
-    status,
     winnerClubTeam,
     winnerNationalTeam,
   } = competitionSeason;
@@ -105,7 +104,7 @@ export function mapCompetitionSeasonDetailResponse(
 
     startDate: start_date,
     endDate: end_date,
-    status,
+    status: getCompetitionSeasonStatus(start_date, end_date),
 
     winner,
   };
@@ -120,6 +119,6 @@ export function mapCompetitionSeasonResponse(
 
   return {
     id,
-    name,
+    name: name ?? "",
   };
 }

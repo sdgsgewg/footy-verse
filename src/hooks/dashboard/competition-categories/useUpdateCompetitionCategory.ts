@@ -1,4 +1,4 @@
-import { competitionCategoryKeys } from "@/lib/react-query/keys/competitionCategoryKeys";
+import { competitionCategoryKeys } from "@/lib/react-query/keys/competitons/competitionCategoryKeys";
 import { useCrudMutation } from "../useCrudMutation";
 import { updateCompetitionCategory } from "@/lib/api/competition-category";
 

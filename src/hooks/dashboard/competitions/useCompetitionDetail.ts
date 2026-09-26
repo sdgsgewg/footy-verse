@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { queryConfig } from "@/lib/react-query/config/queryConfig";
-import { competitionKeys } from "@/lib/react-query/keys/competitionKeys";
+import { competitionKeys } from "@/lib/react-query/keys/competitons/competitionKeys";
 import { fetchCompetitionDetail } from "@/lib/api/competition";
 
 export function useCompetitionDetail(id: string, enabled = true) {

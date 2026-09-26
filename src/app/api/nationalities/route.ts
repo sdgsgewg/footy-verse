@@ -1,4 +1,4 @@
-import { getCrudQuery } from "@/lib/api/query";
+import { getQuery } from "@/lib/api/query";
 import {
   createdResponse,
   errorResponse,
@@ -14,7 +14,7 @@ import { NationalityQuery } from "@/types/nationality";
 
 export async function GET(request: Request) {
   try {
-    const query = getCrudQuery<NationalityQuery>(request, ["confederationId"]);
+    const query = getQuery<NationalityQuery>(request, ["confederationId"]);
 
     const data = await getNationalitiesService(query);
 

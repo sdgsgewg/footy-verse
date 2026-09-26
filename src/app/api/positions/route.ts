@@ -1,4 +1,4 @@
-import { getCrudQuery } from "@/lib/api/query";
+import { getQuery } from "@/lib/api/query";
 import {
   createdResponse,
   errorResponse,
@@ -13,7 +13,7 @@ import { PositionQuery } from "@/types/position";
 
 export async function GET(request: Request) {
   try {
-    const query = getCrudQuery<PositionQuery>(request, ["categoryId"]);
+    const query = getQuery<PositionQuery>(request, ["categoryId"]);
 
     const data = await getPositionsService(query);
 

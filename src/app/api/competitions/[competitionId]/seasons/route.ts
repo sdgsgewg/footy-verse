@@ -1,4 +1,4 @@
-import { getCrudQuery } from "@/lib/api/query";
+import { getQuery } from "@/lib/api/query";
 import {
   createdResponse,
   errorResponse,
@@ -22,12 +22,13 @@ export async function GET(
   try {
     const { competitionId } = await context.params;
 
-    const query = getCrudQuery<CompetitionSeasonQuery>(request);
+    const query = getQuery<CompetitionSeasonQuery>(request);
 
     const data = await getCompetitionSeasonsService(competitionId, query);
 
     return successResponse(data);
   } catch (error) {
+    console.error(error);
     return errorResponse(error);
   }
 }

@@ -1,20 +1,14 @@
 {
   "form": {
     "labels": {
-      "name": "Name",
       "seasonLabel": "Season Label",
-      "startDate": "Start Date",
-      "endDate": "End Date",
       "status": "Status",
       "winnerClubTeam": "Winner Club Team",
       "winnerNationalTeam": "Winner National Team"
     },
 
     "placeholders": {
-      "name": "Input Name",
-      "seasonLabel": "Input Season Label",
-      "startDate": "Select Start Date",
-      "endDate": "Select End Date",
+      "seasonLabel": "Enter Season Label",
       "status": "Select Status",
       "winnerClubTeam": "Select Winner Club Team",
       "winnerNationalTeam": "Select Winner National Team"
@@ -34,7 +28,11 @@
     "title": "Competition Seasons",
 
     "columns": {
-      "name": "Name"
+      "season": "Season",
+      "startDate": "Start Date",
+      "endDate": "End Date",
+      "status": "Status",
+      "winner": "Winner"
     }
   }
 }

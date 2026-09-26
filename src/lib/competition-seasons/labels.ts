@@ -15,20 +15,12 @@ export const getCompetitionSeasonStatusLabel = (
 ): string => {
   switch (status) {
     case CompetitionSeasonStatus.UPCOMING:
-      return t(
-        "dashboard.competitionSeasons.form.options.competitionSeasonStatus.upcoming",
-      );
+      return t("dashboard.competitionSeasons.form.options.status.upcoming");
     case CompetitionSeasonStatus.ONGOING:
-      return t(
-        "dashboard.competitionSeasons.form.options.competitionSeasonStatus.ongoing",
-      );
+      return t("dashboard.competitionSeasons.form.options.status.ongoing");
     case CompetitionSeasonStatus.COMPLETED:
-      return t(
-        "dashboard.competitionSeasons.form.options.competitionSeasonStatus.completed",
-      );
+      return t("dashboard.competitionSeasons.form.options.status.completed");
     case CompetitionSeasonStatus.CANCELLED:
-      return t(
-        "dashboard.competitionSeasons.form.options.competitionSeasonStatus.cancelled",
-      );
+      return t("dashboard.competitionSeasons.form.options.status.cancelled");
   }
 };

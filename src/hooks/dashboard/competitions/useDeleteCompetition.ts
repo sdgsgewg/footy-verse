@@ -1,6 +1,6 @@
 import { deleteCompetition } from "@/lib/api/competition";
 import { useCrudMutation } from "../useCrudMutation";
-import { competitionKeys } from "@/lib/react-query/keys/competitionKeys";
+import { competitionKeys } from "@/lib/react-query/keys/competitons/competitionKeys";
 
 interface DeleteCompetitionPayload {
   id: string;

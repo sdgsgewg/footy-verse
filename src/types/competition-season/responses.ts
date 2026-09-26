@@ -14,8 +14,7 @@ export type CompetitionSeasonWinnerResponse = {
 
 export interface CompetitionSeasonListItem {
   id: string;
-  name: string;
-  seasonLabel: string;
+  label: string;
   slug: string;
 
   startDate: string;
@@ -31,11 +30,10 @@ export interface CompetitionSeasonListItem {
 
 export interface CompetitionSeasonEditResponse {
   id: string;
-  name: string;
+  name: string | null;
   seasonLabel: string;
   startDate: string;
-  endDate: string | null;
-  status: string;
+  endDate: string;
   winnerClubTeamId: string | null;
   winnerNationalTeamId: string | null;
 }
@@ -44,7 +42,7 @@ export interface CompetitionSeasonEditResponse {
 
 export interface CompetitionSeasonDetailResponse {
   id: string;
-  name: string;
+  name: string | null;
   seasonLabel: string;
   slug: string;
 

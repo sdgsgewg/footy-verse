@@ -1,4 +1,4 @@
-import { getCrudQuery } from "@/lib/api/query";
+import { getQuery } from "@/lib/api/query";
 import {
   createdResponse,
   errorResponse,
@@ -13,7 +13,7 @@ import { CompetitionScopeQuery } from "@/types/competition-scope";
 
 export async function GET(request: Request) {
   try {
-    const query = getCrudQuery<CompetitionScopeQuery>(request);
+    const query = getQuery<CompetitionScopeQuery>(request);
 
     const data = await getCompetitionScopesService(query);
 

@@ -1,16 +1,16 @@
 import CompetitionDetailPage from "@/components/competitions/CompetitionDetailPage";
-import { ROUTES } from "@/constants/routes";
+import { ENTITY_CONFIG } from "@/config/entities";
 import { getCompetitionLookupService } from "@/lib/services/competitions.service";
 import { notFound } from "next/navigation";
 
 export default async function Page({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ competitionSlug: string }>;
 }) {
-  const { slug } = await params;
+  const { competitionSlug } = await params;
 
-  const competitionLookup = await getCompetitionLookupService(slug);
+  const competitionLookup = await getCompetitionLookupService(competitionSlug);
 
   if (!competitionLookup) {
     return notFound();
@@ -19,7 +19,7 @@ export default async function Page({
   return (
     <CompetitionDetailPage
       competitionLookup={competitionLookup}
-      returnTo={ROUTES.DASHBOARD.CONTENT.COMPETITIONS.BASE}
+      returnTo={ENTITY_CONFIG["competition"]["dashboardRoute"]}
     />
   );
 }

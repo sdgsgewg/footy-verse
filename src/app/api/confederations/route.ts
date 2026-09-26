@@ -1,4 +1,4 @@
-import { getCrudQuery } from "@/lib/api/query";
+import { getQuery } from "@/lib/api/query";
 import {
   createdResponse,
   errorResponse,
@@ -14,7 +14,7 @@ import { ConfederationQuery } from "@/types/confederation";
 
 export async function GET(request: Request) {
   try {
-    const query = getCrudQuery<ConfederationQuery>(request);
+    const query = getQuery<ConfederationQuery>(request);
 
     const data = await getConfederationsService(query);
 

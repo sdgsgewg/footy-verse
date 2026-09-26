@@ -14,7 +14,7 @@ export const playerMutationSchema = z.object({
   image: imageUrlSchema,
   full_name: z.string().min(1).max(255),
   short_name: z.string().min(1).max(255),
-  dob: z.string(),
+  dob: z.string().min(1),
   pob: z.string().min(1).max(255),
   preferred_foot: z.union([prefFootSchema, z.literal("")]),
   height: z.number().positive().min(100).max(250).nullable(),

@@ -1,4 +1,4 @@
-import { getCrudQuery } from "@/lib/api/query";
+import { getQuery } from "@/lib/api/query";
 import {
   createdResponse,
   errorResponse,
@@ -14,7 +14,7 @@ import { RegionQuery } from "@/types/region";
 
 export async function GET(request: Request) {
   try {
-    const query = getCrudQuery<RegionQuery>(request);
+    const query = getQuery<RegionQuery>(request);
 
     const data = await getRegionsService(query);
 

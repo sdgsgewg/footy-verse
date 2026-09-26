@@ -15,7 +15,7 @@ import ClubTeamForm from "@/components/forms/club-teams/ClubTeamForm";
 import { useCrudPageTitle } from "@/hooks/crud/useCrudPageTitle";
 import { ClubTeamTable } from "@/components/dashboard/clubs/table";
 import { useRouter } from "@/navigation";
-import { ROUTES } from "@/constants/routes";
+import { ENTITY_CONFIG } from "@/config/entities";
 
 interface Props {
   clubLookup: ClubLookupResponse;
@@ -79,14 +79,14 @@ const EditClubTeamPage = ({ clubLookup, clubTeamLookup }: Props) => {
               payload,
               onSuccess: () => {
                 router.push(
-                  `${ROUTES.DASHBOARD.CONTENT.CLUBS.BASE}/${club.slug}`,
+                  `${ENTITY_CONFIG["club"]["dashboardRoute"]}/${club.slug}`,
                 );
               },
             })
           }
         />
       }
-      backHref={`${ROUTES.DASHBOARD.CONTENT.CLUBS.BASE}/${club.slug}`}
+      backHref={`${ENTITY_CONFIG["club"]["dashboardRoute"]}/${club.slug}`}
     />
   );
 };

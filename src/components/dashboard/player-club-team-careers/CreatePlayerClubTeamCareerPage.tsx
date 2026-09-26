@@ -11,7 +11,7 @@ import { usePlayerClubTeamCareers } from "@/hooks/dashboard/player-club-team-car
 import { useCrudPageTitle } from "@/hooks/crud/useCrudPageTitle";
 import { PlayerClubTeamCareerHistoryTable } from "@/components/players/table";
 import { useRouter } from "@/navigation";
-import { ROUTES } from "@/constants/routes";
+import { ENTITY_CONFIG } from "@/config/entities";
 
 interface Props {
   playerLookup: PlayerLookupResponse;
@@ -73,14 +73,14 @@ export default function CreatePlayerClubTeamCareerPage({
               payload,
               onSuccess: () => {
                 router.push(
-                  `${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${player.slug}`,
+                  `${ENTITY_CONFIG["player"]["dashboardRoute"]}/${player.slug}`,
                 );
               },
             })
           }
         />
       }
-      backHref={`${ROUTES.DASHBOARD.CONTENT.PLAYERS.BASE}/${player.slug}`}
+      backHref={`${ENTITY_CONFIG["player"]["dashboardRoute"]}/${player.slug}`}
     />
   );
 }
