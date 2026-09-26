@@ -32,8 +32,6 @@
 
       "scopeAndLocation": {
         "scope": "Competition Scope",
-        "confederation": "Confederation",
-        "region": "Region",
         "nationality": "Country"
       }
     },
@@ -56,8 +54,6 @@
 
       "scopeAndLocation": {
         "scope": "Select Competition Scope",
-        "confederation": "Select Confederation",
-        "region": "Select Region",
         "nationality": "Select Country"
       }
     },

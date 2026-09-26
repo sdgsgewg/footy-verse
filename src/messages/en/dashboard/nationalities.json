@@ -14,6 +14,7 @@
   "columns": {
     "name": "Name",
     "fifaCode": "FIFA Code",
-    "confederation": "Confederation"
+    "confederation": "Confederation",
+    "region": "Region"
   }
 }

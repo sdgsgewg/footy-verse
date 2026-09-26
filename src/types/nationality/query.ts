@@ -1,4 +1,5 @@
 import { DbConfederationRow } from "../confederation";
+import { DbRegionRow } from "../region";
 import { Nationality } from "./database";
 
 // Supabase Query Result
@@ -7,12 +8,14 @@ import { Nationality } from "./database";
 
 export type DbNationalityListRow = Nationality & {
   confederation: DbConfederationRow | null;
+  region: DbRegionRow | null;
 };
 
 // Nationality Detail
 
 export type DbNationalityDetailRow = Nationality & {
   confederation: DbConfederationRow | null;
+  region: DbRegionRow | null;
 };
 
 // Helper

@@ -1,7 +1,5 @@
 "use client";
 
-import { useTranslations } from "next-intl";
-
 import { NationalityEditResponse } from "@/types/nationality";
 import { FormMode } from "@/types/form";
 
@@ -12,6 +10,7 @@ import { ImageField, SelectField, TextField } from "../fields";
 
 import { FormHeader, FormWrapper, SideBySideFormContentWrapper } from "../base";
 import { useCrudFormState, useCrudFormTranslations } from "@/hooks/crud";
+import { useRegionOptions } from "@/hooks/dashboard/regions";
 
 interface Props {
   mode: FormMode;
@@ -28,13 +27,8 @@ const NationalityForm = ({
   loading = false,
   onSubmit,
 }: Props) => {
-  const tLabels = useTranslations("dashboard.nationalities.form.labels");
-
-  const tPlaceholders = useTranslations(
-    "dashboard.nationalities.form.placeholders",
-  );
-
-  const { tCommonLabels, tCommonPlaceholders } = useCrudFormTranslations();
+  const { tLabels, tPlaceholders, tCommonLabels, tCommonPlaceholders } =
+    useCrudFormTranslations("nationality");
 
   const form = useNationalityForm(nationality, onSubmit);
 
@@ -42,6 +36,8 @@ const NationalityForm = ({
 
   const { confederationOptions, loading: isConfederationLoading } =
     useConfederationOptions();
+
+  const { regionOptions, loading: isRegionLoading } = useRegionOptions();
 
   const LeftSideContent = () => {
     return (
@@ -92,11 +88,24 @@ const NationalityForm = ({
           {(field) => (
             <SelectField
               field={field}
-              label={tLabels("confederation")}
-              placeholder={tPlaceholders("confederation")}
+              label={tCommonLabels("confederation")}
+              placeholder={tCommonPlaceholders("confederation")}
               loading={isConfederationLoading}
               options={confederationOptions}
               required
+            />
+          )}
+        </form.Field>
+
+        {/* Region */}
+        <form.Field name="region_id">
+          {(field) => (
+            <SelectField
+              field={field}
+              label={tCommonLabels("region")}
+              placeholder={tCommonPlaceholders("region")}
+              loading={isRegionLoading}
+              options={regionOptions}
             />
           )}
         </form.Field>

@@ -8,6 +8,7 @@ import { useRegionOptions } from "@/hooks/dashboard/regions";
 import { useConfederationOptions } from "@/hooks/confederations/useConfederationOptions";
 import { useCompetitionScopeOptions } from "@/hooks/dashboard/competition-scopes";
 import { CompetitionForm } from "@/hooks/dashboard/competitions";
+import { useCrudFormTranslations } from "@/hooks/crud";
 
 interface Props {
   form: CompetitionForm;
@@ -21,6 +22,8 @@ const ScopeAndLocationSection = ({ form }: Props) => {
   const tPlaceholders = useTranslations(
     "dashboard.competitions.form.placeholders.scopeAndLocation",
   );
+
+  const { tCommonLabels, tCommonPlaceholders } = useCrudFormTranslations();
 
   const { competitionScopeOptions, loading: isCompetitionScopeLoading } =
     useCompetitionScopeOptions();
@@ -54,8 +57,8 @@ const ScopeAndLocationSection = ({ form }: Props) => {
         {(field) => (
           <SelectField
             field={field}
-            label={tLabels("confederation")}
-            placeholder={tPlaceholders("confederation")}
+            label={tCommonLabels("confederation")}
+            placeholder={tCommonPlaceholders("confederation")}
             loading={isConfederationLoading}
             options={confederationOptions}
           />
@@ -81,8 +84,8 @@ const ScopeAndLocationSection = ({ form }: Props) => {
         {(field) => (
           <SelectField
             field={field}
-            label={tLabels("region")}
-            placeholder={tPlaceholders("region")}
+            label={tCommonLabels("region")}
+            placeholder={tCommonPlaceholders("region")}
             loading={isRegionLoading}
             options={regionOptions}
           />

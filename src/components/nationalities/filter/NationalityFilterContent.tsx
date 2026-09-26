@@ -2,8 +2,9 @@
 
 import { ComboboxField } from "@/components/shared/fields";
 import { useConfederationOptions } from "@/hooks/confederations/useConfederationOptions";
+import { useCrudFormTranslations } from "@/hooks/crud";
+import { useRegionOptions } from "@/hooks/dashboard/regions";
 import { NationalityFilter } from "@/types/nationality";
-import { useTranslations } from "next-intl";
 
 interface NationalityFilterContentProps {
   filters: NationalityFilter;
@@ -19,26 +20,37 @@ export default function NationalityFilterContent({
   updateFilter,
   showLabel = false,
 }: NationalityFilterContentProps) {
-  const tLabels = useTranslations("dashboard.nationalities.form.labels");
-  const tPlaceholders = useTranslations(
-    "dashboard.nationalities.form.placeholders",
-  );
+  const { tCommonLabels, tCommonPlaceholders } = useCrudFormTranslations();
 
   const { confederationOptions, loading: isConfederationLoading } =
     useConfederationOptions();
+
+  const { regionOptions, loading: isRegionLoading } = useRegionOptions();
 
   return (
     <>
       {/* Confederation */}
       <ComboboxField
-        label={showLabel ? tLabels("confederation") : undefined}
+        label={showLabel ? tCommonLabels("confederation") : undefined}
         name={`confederation`}
         entityKey="confederation"
         options={confederationOptions}
         loading={isConfederationLoading}
-        placeholder={tPlaceholders("confederation")}
+        placeholder={tCommonPlaceholders("confederation")}
         value={filters.confederationId || null}
         onChange={(value) => updateFilter("confederationId", value)}
+      />
+
+      {/* Region */}
+      <ComboboxField
+        label={showLabel ? tCommonLabels("region") : undefined}
+        name={`region`}
+        entityKey="region"
+        options={regionOptions}
+        loading={isRegionLoading}
+        placeholder={tCommonPlaceholders("region")}
+        value={filters.regionId || null}
+        onChange={(value) => updateFilter("regionId", value)}
       />
     </>
   );

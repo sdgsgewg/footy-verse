@@ -1,5 +1,10 @@
 import { z } from "zod";
-import { idSchema, imageUrlSchema, slugSchema } from "../primitives.schema";
+import {
+  idSchema,
+  imageUrlSchema,
+  nullableIdSchema,
+  slugSchema,
+} from "../primitives.schema";
 import { listQuerySchema } from "../query.schema";
 import { nationalitySortBySchema } from "../enums.schema";
 
@@ -11,6 +16,7 @@ export const nationalityMutationSchema = z.object({
     .trim()
     .regex(/^[A-Z]{3}$/, "FIFA code must be 3 uppercase letters"),
   confederation_id: idSchema,
+  region_id: nullableIdSchema,
 });
 
 export const createNationalitySchema = nationalityMutationSchema;
@@ -28,6 +34,7 @@ export const nationalitiesSchema = z.array(nationalitySchema);
 
 export const nationalitiesQuerySchema = listQuerySchema.extend({
   confederationId: idSchema.optional(),
+  regionId: idSchema.optional(),
 
   sortBy: nationalitySortBySchema.default("name"),
 });

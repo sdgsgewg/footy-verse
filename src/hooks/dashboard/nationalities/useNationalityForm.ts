@@ -18,12 +18,13 @@ const createEmptyNationalityForm = (): NationalityFormValues => ({
   name: "",
   fifa_code: "",
   confederation_id: "",
+  region_id: null,
 });
 
 function mapNationality(
   nationality: NationalityEditResponse,
 ): NationalityFormValues {
-  const { image, name, fifaCode, confederationId } = nationality;
+  const { image, name, fifaCode, confederationId, regionId } = nationality;
 
   return {
     image: null,
@@ -35,6 +36,7 @@ function mapNationality(
     name,
     fifa_code: fifaCode,
     confederation_id: confederationId ?? "",
+    region_id: regionId,
   };
 }
 
@@ -63,6 +65,7 @@ export function useNationalityForm(
           name: value.name,
           fifa_code: value.fifa_code,
           confederation_id: value.confederation_id,
+          region_id: value.region_id,
         },
         existingImage: value.imageUrl,
         imageFile: value.image,

@@ -13,6 +13,8 @@ import { getImageUrl } from "../images/image-url";
 import { STORAGE_BUCKETS } from "../storage";
 import { LocationResponse } from "@/types/competition";
 import { mapConfederationResponse } from "../confederations/mapper";
+import { ENTITY_CONFIG } from "@/config/entities";
+import { mapRegionResponse } from "../regions/mapper";
 
 /**
  *
@@ -22,11 +24,16 @@ import { mapConfederationResponse } from "../confederations/mapper";
 export function mapNationalityListItem(
   nationality: DbNationalityListRow,
 ): NationalityListItem {
-  const { id, image, name, slug, fifa_code, confederation } = nationality;
+  const { id, image, name, slug, fifa_code, confederation, region } =
+    nationality;
 
   return {
     id,
-    imageUrl: getImageUrl("nationality", STORAGE_BUCKETS.NATIONALITIES, image),
+    imageUrl: getImageUrl(
+      "nationality",
+      ENTITY_CONFIG["nationality"]["storageBucket"],
+      image,
+    ),
     name,
     slug,
     fifaCode: fifa_code,
@@ -34,13 +41,16 @@ export function mapNationalityListItem(
     confederation: confederation
       ? mapConfederationResponse(confederation)
       : null,
+
+    region: region ? mapRegionResponse(region) : null,
   };
 }
 
 export function mapNationalityEditResponse(
   nationality: DbNationalityDetailRow,
 ): NationalityEditResponse {
-  const { id, image, name, fifa_code, confederation_id } = nationality;
+  const { id, image, name, fifa_code, confederation_id, region_id } =
+    nationality;
 
   return {
     id,
@@ -48,22 +58,28 @@ export function mapNationalityEditResponse(
     name,
     fifaCode: fifa_code,
     confederationId: confederation_id ?? null,
+    regionId: region_id ?? null,
   };
 }
 
 export function mapNationalityDetailResponse(
   nationality: DbNationalityDetailRow,
 ): NationalityDetailResponse {
-  const { id, image, name, slug, confederation } = nationality;
+  const { id, image, name, slug, confederation, region } = nationality;
 
   return {
     id,
-    imageUrl: getImageUrl("nationality", STORAGE_BUCKETS.NATIONALITIES, image),
+    imageUrl: getImageUrl(
+      "nationality",
+      ENTITY_CONFIG["nationality"]["storageBucket"],
+      image,
+    ),
     name,
     slug,
     confederation: confederation
       ? mapConfederationResponse(confederation)
       : null,
+    region: region ? mapRegionResponse(region) : null,
   };
 }
 

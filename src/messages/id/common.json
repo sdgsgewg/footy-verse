@@ -66,7 +66,10 @@
       "description": "Deskripsi",
 
       "startDate": "Tanggal Mulai",
-      "endDate": "Tanggal Akhir"
+      "endDate": "Tanggal Akhir",
+
+      "region": "Zona Wilayah",
+      "confederation": "Konfederasi"
     },
 
     "placeholders": {
@@ -79,7 +82,10 @@
       "description": "Masukkan deskripsi",
 
       "startDate": "Plih Tanggal Mulai",
-      "endDate": "Pilih Tanggal Akhir"
+      "endDate": "Pilih Tanggal Akhir",
+
+      "region": "Pilih Zona Wilayah",
+      "confederation": "Pilih Konfederasi"
     }
   },
 

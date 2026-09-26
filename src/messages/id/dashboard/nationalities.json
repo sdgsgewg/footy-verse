@@ -14,6 +14,7 @@
   "columns": {
     "name": "Nama",
     "fifaCode": "Kode FIFA ",
-    "confederation": "Konfederasi"
+    "confederation": "Konfederasi",
+    "region": "Zona Wilayah"
   }
 }

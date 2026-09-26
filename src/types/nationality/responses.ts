@@ -1,5 +1,6 @@
 import { PaginatedResponse } from "../api";
 import { ConfederationResponse } from "../confederation";
+import { RegionResponse } from "../region";
 
 // DTO helper
 
@@ -15,6 +16,7 @@ export interface NationalityListItem {
   fifaCode: string;
 
   confederation: ConfederationResponse | null;
+  region: RegionResponse | null;
 }
 
 export type NationalityListResponse = PaginatedResponse<NationalityListItem>;
@@ -29,6 +31,7 @@ export interface NationalityEditResponse {
   name: string;
   fifaCode: string;
   confederationId: string | null;
+  regionId: string | null;
 }
 
 // Model View Detail
@@ -40,6 +43,7 @@ export interface NationalityDetailResponse {
   slug: string;
 
   confederation: ConfederationResponse | null;
+  region: RegionResponse | null;
 }
 
 // Helper for other entity

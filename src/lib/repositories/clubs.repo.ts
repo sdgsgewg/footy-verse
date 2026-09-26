@@ -45,8 +45,12 @@ const getClubTeamTable = () => {
   return ENTITY_CONFIG["clubTeam"]["table"];
 };
 
-function getClubsBaseQuery(options?: { isNationFiltered?: boolean }) {
-  const nationJoin = options?.isNationFiltered ? "!inner" : "";
+function getClubsBaseQuery({
+  isNationFiltered = false,
+}: {
+  isNationFiltered?: boolean;
+}) {
+  const nationJoin = isNationFiltered ? "!inner" : "";
 
   return `
     id,

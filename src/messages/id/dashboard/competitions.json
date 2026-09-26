@@ -32,8 +32,6 @@
 
       "scopeAndLocation": {
         "scope": "Cakupan Kompetisi",
-        "confederation": "Konfederasi",
-        "region": "Zona Wilayah",
         "nationality": "Negara"
       }
     },
@@ -56,8 +54,6 @@
 
       "scopeAndLocation": {
         "scope": "Pilih Cakupan Kompetisi",
-        "confederation": "Pilih Konfederasi",
-        "region": "Pilih Zona Wilayah",
         "nationality": "Pilih Negara"
       }
     },

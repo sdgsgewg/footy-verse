@@ -14,6 +14,7 @@ import { useCrudPageTitle } from "@/hooks/crud/useCrudPageTitle";
 import {
   ConfederationImageLabel,
   NationalityImageLabel,
+  RegionImageLabel,
 } from "@/components/shared/tables/cells";
 import NationalityFilterContent from "@/components/nationalities/filter/NationalityFilterContent";
 import { useCrudFilterDialog } from "@/hooks/crud/useCrudFilterDialog";
@@ -78,10 +79,12 @@ export default function NationalitiesManagementPage() {
 
       sortable: true,
     },
+
     {
       key: "fifaCode",
       label: tColumns("fifaCode"),
     },
+
     {
       key: "confederation",
       label: tColumns("confederation"),
@@ -92,6 +95,24 @@ export default function NationalitiesManagementPage() {
             <ConfederationImageLabel
               imageUrl={nation.confederation.imageUrl}
               label={nation.confederation.name}
+            />
+          ) : (
+            <span>-</span>
+          )}
+        </>
+      ),
+    },
+
+    {
+      key: "region",
+      label: tColumns("region"),
+
+      render: (nation) => (
+        <>
+          {nation.region ? (
+            <RegionImageLabel
+              imageUrl={nation.region.imageUrl}
+              label={nation.region.name}
             />
           ) : (
             <span>-</span>

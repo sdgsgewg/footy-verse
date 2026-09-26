@@ -14,7 +14,10 @@ import { NationalityQuery } from "@/types/nationality";
 
 export async function GET(request: Request) {
   try {
-    const query = getQuery<NationalityQuery>(request, ["confederationId"]);
+    const query = getQuery<NationalityQuery>(request, [
+      "confederationId",
+      "regionId",
+    ]);
 
     const data = await getNationalitiesService(query);
 

@@ -49,17 +49,34 @@ const getNationalTeamTable = () => {
   return ENTITY_CONFIG["nationalTeam"]["table"];
 };
 
-function getNationalitiesBaseQuery() {
+function getNationalitiesBaseQuery({
+  isConfederationFiltered = false,
+  isRegionFiltered = false,
+}: {
+  isConfederationFiltered: boolean;
+  isRegionFiltered: boolean;
+}) {
   return `
     *,
 
-    confederation:confederations (
+    confederation:confederations${isConfederationFiltered ? "!inner" : ""} (
+      id,
+      name,
+      image
+    ),
+
+    region:regions${isRegionFiltered ? "!inner" : ""} (
       id,
       name,
       image
     )
   `;
 }
+
+const sortColumnMap = {
+  name: "name",
+  fifaCode: "fifa_code",
+} as const;
 
 /**
  *
@@ -72,11 +89,15 @@ export async function getNationalitiesRepo(
   const supabase = await getSupabase();
 
   // Base Query
-  let query = supabase
-    .from(getNationalityTable())
-    .select(getNationalitiesBaseQuery(), {
+  let query = supabase.from(getNationalityTable()).select(
+    getNationalitiesBaseQuery({
+      isConfederationFiltered: !!params.confederationId,
+      isRegionFiltered: !!params.regionId,
+    }),
+    {
       count: "exact",
-    });
+    },
+  );
 
   // Filter
   if (params.search) {
@@ -87,9 +108,15 @@ export async function getNationalitiesRepo(
     query = query.eq("confederation_id", params.confederationId);
   }
 
+  if (params.regionId) {
+    query = query.eq("region_id", params.regionId);
+  }
+
   // Sort
 
-  query = query.order(params.sortBy, {
+  const sortColumn = sortColumnMap[params.sortBy];
+
+  query = query.order(sortColumn, {
     ascending: params.sortOrder === "asc",
   });
 
@@ -211,6 +238,12 @@ function getNationalityDetailQuery() {
     *,
 
     confederation:confederations (
+      id,
+      name,
+      image
+    ),
+
+    region: regions (
       id,
       name,
       image

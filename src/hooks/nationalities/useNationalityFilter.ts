@@ -10,6 +10,7 @@ const DEFAULT_FILTER: NationalityFilter = {
   search: "",
 
   confederationId: undefined,
+  regionId: undefined,
 
   page: 1,
   limit: 20,

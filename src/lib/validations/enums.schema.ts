@@ -30,7 +30,7 @@ export const squadTypeSchema = z.enum([
 
 // Nationality
 
-export const nationalitySortBySchema = z.enum(["name", "created_at"]);
+export const nationalitySortBySchema = z.enum(["name", "fifaCode"]);
 
 // Both Club and National Team
 

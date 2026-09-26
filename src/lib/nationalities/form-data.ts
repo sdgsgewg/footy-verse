@@ -6,5 +6,6 @@ export function getNationalityInputFromFormData(formData: FormData) {
     name: parseStringField(formData, "name"),
     fifa_code: parseStringField(formData, "fifa_code"),
     confederation_id: parseNullableStringField(formData, "confederation_id"),
+    region_id: parseNullableStringField(formData, "region_id"),
   };
 }

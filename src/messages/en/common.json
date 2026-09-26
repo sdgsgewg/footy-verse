@@ -70,7 +70,10 @@
       "description": "Description",
 
       "startDate": "Start Date",
-      "endDate": "End Date"
+      "endDate": "End Date",
+
+      "region": "Region",
+      "confederation": "Confederation"
     },
 
     "placeholders": {
@@ -83,7 +86,10 @@
       "description": "Enter description",
 
       "startDate": "Select Start Date",
-      "endDate": "Select End Date"
+      "endDate": "Select End Date",
+
+      "region": "Select Region",
+      "confederation": "Select Confederation"
     }
   },
 

@@ -28,7 +28,6 @@ export async function GET(
 
     return successResponse(data);
   } catch (error) {
-    console.error(error);
     return errorResponse(error);
   }
 }
