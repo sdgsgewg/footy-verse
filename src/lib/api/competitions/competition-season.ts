@@ -3,7 +3,7 @@ import {
   CompetitionSeasonEditResponse,
   CompetitionSeasonListItem,
 } from "@/types/competition-season";
-import { apiClient } from "./client";
+import { apiClient } from "../client";
 
 /**
  *

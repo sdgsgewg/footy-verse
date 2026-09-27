@@ -1,6 +1,6 @@
 import { useFilters } from "@/hooks/filter";
 import { parseSearchParams } from "@/lib/utils/crud";
-import { competitionCategoriesQuerySchema } from "@/lib/validations/competition-categories.schema";
+import { competitionCategoriesQuerySchema } from "@/lib/validations/competitions/competition-categories.schema";
 import { CompetitionCategoryFilter } from "@/types/competition-category";
 import { useSearchParams } from "next/navigation";
 import { useMemo } from "react";

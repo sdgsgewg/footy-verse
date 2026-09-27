@@ -86,9 +86,12 @@ export function mapCompetitionSeasonDetailResponse(
     slug,
     start_date,
     end_date,
+    competition,
     winnerClubTeam,
     winnerNationalTeam,
   } = competitionSeason;
+
+  const competitionName = name ?? competition.short_name ?? competition.name;
 
   const winner = winnerClubTeam
     ? mapClubTeamToWinnerResponse(winnerClubTeam)
@@ -98,8 +101,7 @@ export function mapCompetitionSeasonDetailResponse(
 
   return {
     id,
-    name,
-    seasonLabel: season_label,
+    label: `${competitionName} ${season_label}`,
     slug,
 
     startDate: start_date,

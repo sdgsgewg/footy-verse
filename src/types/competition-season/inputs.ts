@@ -3,7 +3,7 @@ import {
   competitionSeasonsQuerySchema,
   createCompetitionSeasonSchema,
   updateCompetitionSeasonSchema,
-} from "@/lib/validations/competition-seasons.schema";
+} from "@/lib/validations/competitions/competition-seasons.schema";
 import z from "zod";
 
 // Repo Request (from zod)

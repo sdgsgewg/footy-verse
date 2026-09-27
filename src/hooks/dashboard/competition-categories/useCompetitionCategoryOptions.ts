@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { queryConfig } from "@/lib/react-query/config/queryConfig";
 import { competitionCategoryKeys } from "@/lib/react-query/keys/competitons/competitionCategoryKeys";
-import { fetchCompetitionCategoryOptions } from "@/lib/api/competition-category";
+import { fetchCompetitionCategoryOptions } from "@/lib/api/competitions/competition-category";
 
 export function useCompetitionCategoryOptions() {
   const { data, isLoading, isRefetching, error, refetch } = useQuery({

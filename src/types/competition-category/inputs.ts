@@ -3,7 +3,7 @@ import {
   competitionCategoryMutationSchema,
   createCompetitionCategorySchema,
   updateCompetitionCategorySchema,
-} from "@/lib/validations/competition-categories.schema";
+} from "@/lib/validations/competitions/competition-categories.schema";
 import z from "zod";
 
 export type CompetitionCategoryQuery = Partial<

@@ -1,7 +1,7 @@
 import { z } from "zod";
-import { idSchema, slugSchema } from "./primitives.schema";
-import { baseQuerySchema, sortingQuerySchema } from "./query.schema";
-import { competitionScopeSortBySchema } from "./enums.schema";
+import { idSchema, slugSchema } from "../primitives.schema";
+import { baseQuerySchema, sortingQuerySchema } from "../query.schema";
+import { competitionScopeSortBySchema } from "../enums.schema";
 
 export const competitionScopeMutationSchema = z.object({
   name: z.string().min(1).max(255),

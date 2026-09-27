@@ -1,4 +1,4 @@
-import { createCompetition } from "@/lib/api/competition";
+import { createCompetition } from "@/lib/api/competitions/competition";
 import { useCrudMutation } from "../useCrudMutation";
 import { competitionKeys } from "@/lib/react-query/keys/competitons/competitionKeys";
 

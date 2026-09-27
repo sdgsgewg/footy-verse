@@ -8,7 +8,7 @@ import { authorizeManageContent } from "@/lib/auth/api-authorization";
 import {
   createCompetitionSeasonService,
   getCompetitionSeasonsService,
-} from "@/lib/services/competition-seasons.service";
+} from "@/lib/services/competitions/competition-seasons.service";
 import { CompetitionSeasonQuery } from "@/types/competition-season";
 
 type CompetitionSeasonRouteContext = {

@@ -7,13 +7,13 @@ import {
   getCompetitionScopeOptionsRepo,
   getCompetitionScopesRepo,
   updateCompetitionScopeRepo,
-} from "../repositories/competition-scopes.repo";
+} from "@/lib/repositories/competitions/competition-scopes.repo";
 import {
   competitionScopesQuerySchema,
   createCompetitionScopeSchema,
   updateCompetitionScopeSchema,
-} from "../validations/competition-scopes.schema";
-import { idSchema, slugSchema } from "../validations/primitives.schema";
+} from "../../validations/competitions/competition-scopes.schema";
+import { idSchema, slugSchema } from "../../validations/primitives.schema";
 
 export async function getCompetitionScopesService(query: unknown) {
   const parsed = competitionScopesQuerySchema.parse(query);

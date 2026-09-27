@@ -234,6 +234,7 @@ export async function getPlayerClubTeamCareerLookupRepo(
     .select(`id`)
     .eq("id", playerClubTeamCareerId)
     .maybeSingle();
+    
   if (error) throw error;
   if (!data) return null;
 

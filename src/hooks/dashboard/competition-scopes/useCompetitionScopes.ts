@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { queryConfig } from "@/lib/react-query/config/queryConfig";
 import { CompetitionScopeQuery } from "@/types/competition-scope";
 import { competitionScopeKeys } from "@/lib/react-query/keys/competitons/competitionScopeKeys";
-import { fetchCompetitionScopes } from "@/lib/api/competition-scope";
+import { fetchCompetitionScopes } from "@/lib/api/competitions/competition-scope";
 
 export function useCompetitionScopes(params?: CompetitionScopeQuery) {
   const {

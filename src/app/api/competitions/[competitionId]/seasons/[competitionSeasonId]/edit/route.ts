@@ -1,6 +1,6 @@
 import { errorResponse, successResponse } from "@/lib/api/response";
 import { NotFoundError } from "@/lib/errors/http-error";
-import { getCompetitionSeasonEditService } from "@/lib/services/competition-seasons.service";
+import { getCompetitionSeasonEditService } from "@/lib/services/competitions/competition-seasons.service";
 
 type CompetitionSeasonRouteContext = {
   params: Promise<{ competitionId: string; competitionSeasonId: string }>;

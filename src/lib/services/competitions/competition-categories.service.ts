@@ -7,13 +7,13 @@ import {
   getCompetitionCategoryLookupRepo,
   getCompetitionCategoryOptionsRepo,
   updateCompetitionCategoryRepo,
-} from "../repositories/competition-categories.repo";
+} from "@/lib/repositories/competitions/competition-categories.repo";
 import {
   competitionCategoriesQuerySchema,
   createCompetitionCategorySchema,
   updateCompetitionCategorySchema,
-} from "../validations/competition-categories.schema";
-import { idSchema, slugSchema } from "../validations/primitives.schema";
+} from "@/lib/validations/competitions/competition-categories.schema";
+import { idSchema, slugSchema } from "../../validations/primitives.schema";
 
 export async function getCompetitionCategoriesService(query: unknown) {
   const parsed = competitionCategoriesQuerySchema.parse(query);

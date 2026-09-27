@@ -9,7 +9,7 @@ import { getCompetitionInputFromFormData } from "@/lib/competitions/form-data";
 import {
   createCompetitionService,
   getCompetitionsService,
-} from "@/lib/services/competitions.service";
+} from "@/lib/services/competitions/competitions.service";
 import { CompetitionQuery } from "@/types/competition";
 
 export async function GET(request: Request) {

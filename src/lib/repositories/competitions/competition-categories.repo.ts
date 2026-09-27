@@ -1,6 +1,7 @@
 import { createClient } from "@/utils/supabase/server";
-import { requireEntity } from "./helpers/require-entity";
+import { requireEntity } from "../helpers/require-entity";
 import { ENTITY_CONFIG } from "@/config/entities";
+
 import {
   CompetitionCategoryCreateInput,
   CompetitionCategoryDetailResponse,
@@ -14,14 +15,15 @@ import {
   mapCompetitionCategoryDetailResponse,
   mapCompetitionCategoryEditResponse,
   mapCompetitionCategoryListItem,
-} from "../competition-categories/mapper";
+} from "@/lib/competition-categories/mapper";
+
 import { slugify } from "@/lib/utils/slug";
-import { createEntityActivityLog } from "./activity-logs.repo";
+import { ensureUniqueFieldsRepo } from "../helpers/uniqueness";
+import { createEntityActivityLog } from "../activity-logs.repo";
 import { ActivityLogAction } from "@/enums/ActivityLogAction";
-import { getChangedFields } from "./helpers/get-changed-field";
+import { getChangedFields } from "../helpers/get-changed-field";
+import { mapEntityOption } from "@/lib/entities/mapper";
 import { Option } from "@/types/option";
-import { mapEntityOption } from "../entities/mapper";
-import { ensureUniqueFieldsRepo } from "./helpers/uniqueness";
 
 async function getSupabase() {
   return createClient();

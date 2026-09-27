@@ -1,4 +1,4 @@
-import { deleteCompetitionSeason } from "@/lib/api/competition-season";
+import { deleteCompetitionSeason } from "@/lib/api/competitions/competition-season";
 import { useCrudMutation } from "../useCrudMutation";
 import { competitionSeasonKeys } from "@/lib/react-query/keys";
 

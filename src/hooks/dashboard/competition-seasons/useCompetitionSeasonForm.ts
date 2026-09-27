@@ -1,4 +1,4 @@
-import { competitionSeasonMutationSchema } from "@/lib/validations/competition-seasons.schema";
+import { competitionSeasonMutationSchema } from "@/lib/validations/competitions/competition-seasons.schema";
 import {
   CompetitionSeasonCreateInput,
   CompetitionSeasonEditResponse,

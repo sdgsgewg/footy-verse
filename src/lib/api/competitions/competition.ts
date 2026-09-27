@@ -4,7 +4,7 @@ import {
   CompetitionListResponse,
   CompetitionQuery,
 } from "@/types/competition";
-import { apiClient } from "./client";
+import { apiClient } from "../client";
 import { ApiResponse } from "@/types/api";
 
 const baseRoute = `/competitions`;

@@ -1,6 +1,6 @@
 import { useCrudMutation } from "../useCrudMutation";
 import { competitionCategoryKeys } from "@/lib/react-query/keys/competitons/competitionCategoryKeys";
-import { createCompetitionCategory } from "@/lib/api/competition-category";
+import { createCompetitionCategory } from "@/lib/api/competitions/competition-category";
 
 export function useCreateCompetitionCategory(onSuccess?: () => void) {
   return useCrudMutation({

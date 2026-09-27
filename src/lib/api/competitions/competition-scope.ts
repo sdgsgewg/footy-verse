@@ -4,12 +4,12 @@ import {
   CompetitionScopeListItem,
   CompetitionScopeQuery,
 } from "@/types/competition-scope";
-import { apiClient } from "./client";
+import { apiClient } from "../client";
 import { ApiResponse } from "@/types/api";
 import {
   createCompetitionScopeSchema,
   updateCompetitionScopeSchema,
-} from "../validations/competition-scopes.schema";
+} from "@/lib/validations/competitions/competition-scopes.schema";
 import { Option } from "@/types/option";
 
 const baseRoute = "/competitions/scopes";

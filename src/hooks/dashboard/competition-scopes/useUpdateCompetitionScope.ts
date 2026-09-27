@@ -1,4 +1,4 @@
-import { updateCompetitionScope } from "@/lib/api/competition-scope";
+import { updateCompetitionScope } from "@/lib/api/competitions/competition-scope";
 import { useCrudMutation } from "../useCrudMutation";
 import { competitionScopeKeys } from "@/lib/react-query/keys/competitons/competitionScopeKeys";
 

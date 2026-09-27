@@ -1,4 +1,8 @@
+import { createClient } from "@/utils/supabase/server";
 import { ENTITY_CONFIG } from "@/config/entities";
+import { slugify } from "@/lib/utils/slug";
+import { requireEntity } from "../helpers/require-entity";
+
 import {
   CompetitionSeasonCreateInput,
   CompetitionSeasonDetailResponse,
@@ -10,14 +14,11 @@ import {
   DbCompetitionSeasonDetailRow,
   DbCompetitionSeasonListRow,
 } from "@/types/competition-season";
-import { createClient } from "@/utils/supabase/server";
 import {
   mapCompetitionSeasonDetailResponse,
   mapCompetitionSeasonEditResponse,
   mapCompetitionSeasonListItem,
-} from "../competition-seasons/mapper";
-import { slugify } from "@/lib/utils/slug";
-import { requireEntity } from "./helpers/require-entity";
+} from "@/lib/competition-seasons/mapper";
 
 async function getSupabase() {
   return createClient();
@@ -119,6 +120,12 @@ function getCompetitionSeasonDetailBaseQuery() {
   return `
     *,
 
+    competition:competitions!competition_seasons_competition_id_fkey!inner (
+      id,
+      name,
+      short_name
+    ),
+
     winner_club_team:club_teams (
       id,
       squad_type,
@@ -194,18 +201,18 @@ export async function getCompetitionSeasonDetailRepo(
 
 /**
  *
- * @param slug
+ * @param competitionSeasonId
  * @returns CompetitionSeasonLookupResponse | null
  */
 export async function getCompetitionSeasonLookupRepo(
-  slug: string,
+  competitionSeasonId: string,
 ): Promise<CompetitionSeasonLookupResponse | null> {
   const supabase = await getSupabase();
 
   const { data, error } = await supabase
     .from(getTable())
     .select(`id, slug`)
-    .eq("slug", slug)
+    .eq("id", competitionSeasonId)
     .maybeSingle();
 
   if (error) throw error;

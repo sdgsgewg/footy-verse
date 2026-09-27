@@ -1,8 +1,11 @@
 import { searchPlayersRepo } from "./players.repo";
 import { searchClubsRepo } from "./clubs.repo";
-import { searchCompetitionsRepo } from "./competitions.repo";
+import { searchCompetitionsRepo } from "./competitions/competitions.repo";
 import { searchNationalitiesRepo } from "./nationalities.repo";
-import { GlobalSearchResponse, SearchSuggestionsResponse } from "@/types/search";
+import {
+  GlobalSearchResponse,
+  SearchSuggestionsResponse,
+} from "@/types/search";
 import { SearchSuggestionsQuery } from "../validations/search-suggestions.schema";
 
 export async function searchGlobalRepo({

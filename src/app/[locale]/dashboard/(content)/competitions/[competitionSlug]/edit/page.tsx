@@ -1,5 +1,5 @@
 import EditCompetitionPage from "@/components/dashboard/competitions/EditCompetitionPage";
-import { getCompetitionLookupService } from "@/lib/services/competitions.service";
+import { getCompetitionLookupService } from "@/lib/services/competitions/competitions.service";
 import { notFound } from "next/navigation";
 
 export default async function Page({

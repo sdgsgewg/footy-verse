@@ -8,7 +8,7 @@ import { authorizeManageContent } from "@/lib/auth/api-authorization";
 import {
   createCompetitionScopeService,
   getCompetitionScopesService,
-} from "@/lib/services/competition-scopes.service";
+} from "@/lib/services/competitions/competition-scopes.service";
 import { CompetitionScopeQuery } from "@/types/competition-scope";
 
 export async function GET(request: Request) {

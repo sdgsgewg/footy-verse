@@ -1,5 +1,5 @@
 import { errorResponse, successResponse } from "@/lib/api/response";
-import { getCompetitionCategoryOptionsService } from "@/lib/services/competition-categories.service";
+import { getCompetitionCategoryOptionsService } from "@/lib/services/competitions/competition-categories.service";
 
 export async function GET() {
   try {

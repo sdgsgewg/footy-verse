@@ -3,7 +3,7 @@ import {
   competitionScopesQuerySchema,
   createCompetitionScopeSchema,
   updateCompetitionScopeSchema,
-} from "@/lib/validations/competition-scopes.schema";
+} from "@/lib/validations/competitions/competition-scopes.schema";
 import z from "zod";
 
 export type CompetitionScopeQuery = Partial<

@@ -42,8 +42,7 @@ export interface CompetitionSeasonEditResponse {
 
 export interface CompetitionSeasonDetailResponse {
   id: string;
-  name: string | null;
-  seasonLabel: string;
+  label: string;
   slug: string;
 
   startDate: string;

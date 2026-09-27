@@ -4,12 +4,12 @@ import {
   CompetitionCategoryListItem,
   CompetitionCategoryQuery,
 } from "@/types/competition-category";
-import { apiClient } from "./client";
+import { apiClient } from "../client";
 import { ApiResponse } from "@/types/api";
 import {
   createCompetitionCategorySchema,
   updateCompetitionCategorySchema,
-} from "../validations/competition-categories.schema";
+} from "@/lib/validations/competitions/competition-categories.schema";
 import { Option } from "@/types/option";
 
 const baseRoute = "/competitions/categories";

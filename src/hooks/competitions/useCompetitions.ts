@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { queryConfig } from "@/lib/react-query/config/queryConfig";
 import { CompetitionQuery } from "@/types/competition";
 import { competitionKeys } from "@/lib/react-query/keys/competitons/competitionKeys";
-import { fetchCompetitions } from "@/lib/api/competition";
+import { fetchCompetitions } from "@/lib/api/competitions/competition";
 
 export function useCompetitions(params?: CompetitionQuery) {
   const { data, isLoading, isRefetching, error, refetch } = useQuery({

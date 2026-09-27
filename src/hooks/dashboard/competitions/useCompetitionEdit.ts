@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { queryConfig } from "@/lib/react-query/config/queryConfig";
 import { competitionKeys } from "@/lib/react-query/keys/competitons/competitionKeys";
-import { fetchCompetitionEdit } from "@/lib/api/competition";
+import { fetchCompetitionEdit } from "@/lib/api/competitions/competition";
 
 export function useCompetitionEdit(id: string, enabled = true) {
   const query = useQuery({

@@ -1,6 +1,6 @@
 import { errorResponse, successResponse } from "@/lib/api/response";
 import { NotFoundError } from "@/lib/errors/http-error";
-import { getCompetitionScopeEditService } from "@/lib/services/competition-scopes.service";
+import { getCompetitionScopeEditService } from "@/lib/services/competitions/competition-scopes.service";
 
 type CompetitionScopeRouteContext = {
   params: Promise<{ id: string }>;

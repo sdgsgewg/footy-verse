@@ -25,6 +25,7 @@ export type DbCompetitionSeasonListRow = Pick<
 // Competition Season Detail
 
 export type DbCompetitionSeasonDetailRow = CompetitionSeason & {
+  competition: DbCompetitionRow;
   winnerClubTeam: DbClubTeamRow | null;
   winnerNationalTeam: DbNationalTeamRow | null;
 };

@@ -3,7 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { queryConfig } from "@/lib/react-query/config/queryConfig";
 import { competitionSeasonKeys } from "@/lib/react-query/keys";
-import { fetchCompetitionSeasonEdit } from "@/lib/api/competition-season";
+import { fetchCompetitionSeasonEdit } from "@/lib/api/competitions/competition-season";
 
 interface UseCompetitionSeasonEditOptions {
   competitionId: string;

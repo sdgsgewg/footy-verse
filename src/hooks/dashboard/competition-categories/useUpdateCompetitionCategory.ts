@@ -1,6 +1,6 @@
 import { competitionCategoryKeys } from "@/lib/react-query/keys/competitons/competitionCategoryKeys";
 import { useCrudMutation } from "../useCrudMutation";
-import { updateCompetitionCategory } from "@/lib/api/competition-category";
+import { updateCompetitionCategory } from "@/lib/api/competitions/competition-category";
 
 interface UpdateCompetitionCategoryPayload {
   id: string;

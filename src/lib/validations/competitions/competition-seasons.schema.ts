@@ -1,10 +1,8 @@
 import { z } from "zod";
 
-import { idSchema, nullableIdSchema } from "./primitives.schema";
-
-import { baseQuerySchema, sortingQuerySchema } from "./query.schema";
-
-import { competitionSortBySchema } from "./enums.schema";
+import { idSchema, nullableIdSchema } from "../primitives.schema";
+import { baseQuerySchema, sortingQuerySchema } from "../query.schema";
+import { competitionSortBySchema } from "../enums.schema";
 
 export const competitionSeasonMutationSchema = z
   .object({
@@ -26,9 +24,7 @@ export const updateCompetitionSeasonSchema = competitionSeasonMutationSchema;
 
 export const competitionSeasonSchema = competitionSeasonMutationSchema.extend({
   id: idSchema,
-
   created_at: z.string(),
-
   updated_at: z.string().nullable(),
 });
 

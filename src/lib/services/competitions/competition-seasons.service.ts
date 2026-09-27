@@ -1,10 +1,10 @@
 import { CompetitionSeasonListItem } from "@/types/competition-season";
-import { idSchema, slugSchema } from "../validations/primitives.schema";
+import { idSchema, slugSchema } from "../../validations/primitives.schema";
 import {
   competitionSeasonsQuerySchema,
   createCompetitionSeasonSchema,
   updateCompetitionSeasonSchema,
-} from "../validations/competition-seasons.schema";
+} from "../../validations/competitions/competition-seasons.schema";
 import {
   createCompetitionSeasonRepo,
   deleteCompetitionSeasonRepo,
@@ -13,7 +13,7 @@ import {
   getCompetitionSeasonLookupRepo,
   getCompetitionSeasonsRepo,
   updateCompetitionSeasonRepo,
-} from "../repositories/competition-seasons.repo";
+} from "@/lib/repositories/competitions/competition-seasons.repo";
 
 export async function getCompetitionSeasonsService(
   competitionId: string,

@@ -25,7 +25,7 @@ const CompetitionSeasonHistoryTable = ({
 
   const locale = useLocale();
 
-  const { handleEdit, handleDelete } =
+  const { handleView, handleEdit, handleDelete } =
     useCompetitionSeasonActions(competitionLookup);
 
   const columns: DataColumn<CompetitionSeasonListItem>[] = [
@@ -80,6 +80,7 @@ const CompetitionSeasonHistoryTable = ({
       columns={columns}
       loading={loading}
       showActions
+      onView={(season) => handleView(season.id)}
       onEdit={
         showActions
           ? (competitionSeason: CompetitionSeasonListItem) =>

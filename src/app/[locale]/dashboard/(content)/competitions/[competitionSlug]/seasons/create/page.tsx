@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import CreateCompetitionSeasonPage from "@/components/dashboard/competition-seasons/CreateCompetitionSeasonPage";
-import { getCompetitionLookupService } from "@/lib/services/competitions.service";
+import { getCompetitionLookupService } from "@/lib/services/competitions/competitions.service";
 
 export default async function Page({
   params,

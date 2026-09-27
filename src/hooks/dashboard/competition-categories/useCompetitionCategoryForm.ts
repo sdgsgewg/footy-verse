@@ -1,6 +1,6 @@
 "use client";
 
-import { competitionCategoryMutationSchema } from "@/lib/validations/competition-categories.schema";
+import { competitionCategoryMutationSchema } from "@/lib/validations/competitions/competition-categories.schema";
 import {
   CompetitionCategoryListItem,
   UpsertCompetitionCategoryInput,

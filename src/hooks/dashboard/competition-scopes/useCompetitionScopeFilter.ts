@@ -1,6 +1,6 @@
 import { useFilters } from "@/hooks/filter";
 import { parseSearchParams } from "@/lib/utils/crud";
-import { competitionScopesQuerySchema } from "@/lib/validations/competition-scopes.schema";
+import { competitionScopesQuerySchema } from "@/lib/validations/competitions/competition-scopes.schema";
 import { CompetitionScopeFilter } from "@/types/competition-scope";
 import { useSearchParams } from "next/navigation";
 import { useMemo } from "react";

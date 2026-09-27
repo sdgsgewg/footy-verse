@@ -9,7 +9,7 @@ import {
   deleteCompetitionSeasonService,
   getCompetitionSeasonDetailService,
   updateCompetitionSeasonService,
-} from "@/lib/services/competition-seasons.service";
+} from "@/lib/services/competitions/competition-seasons.service";
 
 type CompetitionSeasonRouteContext = {
   params: Promise<{ competitionId: string; competitionSeasonId: string }>;
@@ -21,6 +21,7 @@ export async function GET(
 ) {
   try {
     const { competitionSeasonId } = await context.params;
+
     const data = await getCompetitionSeasonDetailService(competitionSeasonId);
 
     if (!data) {

@@ -1,8 +1,9 @@
 import { createClient } from "@/utils/supabase/server";
-import { STORAGE_BUCKETS } from "../storage";
-import { requireEntity } from "./helpers/require-entity";
+
+import { STORAGE_BUCKETS } from "@/lib/storage";
 import { ENTITY_CONFIG } from "@/config/entities";
 import { slugify } from "@/lib/utils/slug";
+
 import {
   CompetitionCreateInput,
   CompetitionFilter,
@@ -21,16 +22,18 @@ import {
   mapCompetitionDetailResponse,
   mapCompetitionEditResponse,
   mapCompetitionListItem,
-} from "../competitions/mapper";
-import { createPaginatedResponse } from "../pagination";
-import { CompetitionLookupResponse } from "@/types/competition";
-import { createEntityActivityLog } from "./activity-logs.repo";
-import { ActivityLogAction } from "@/enums/ActivityLogAction";
-import { getChangedFields } from "./helpers/get-changed-field";
-import { ensureUniqueFieldsRepo } from "./helpers/uniqueness";
+} from "@/lib/competitions/mapper";
+
 import { SearchResult } from "@/types/search";
 import { DbEntitySearchRow } from "@/types/entity";
-import { mapEntitySearchResult } from "../entities/mapper";
+import { createPaginatedResponse } from "@/lib/pagination";
+import { mapEntitySearchResult } from "@/lib/entities/mapper";
+import { CompetitionLookupResponse } from "@/types/competition";
+import { ensureUniqueFieldsRepo } from "../helpers/uniqueness";
+import { createEntityActivityLog } from "../activity-logs.repo";
+import { ActivityLogAction } from "@/enums/ActivityLogAction";
+import { requireEntity } from "../helpers/require-entity";
+import { getChangedFields } from "../helpers/get-changed-field";
 
 async function getSupabase() {
   return createClient();

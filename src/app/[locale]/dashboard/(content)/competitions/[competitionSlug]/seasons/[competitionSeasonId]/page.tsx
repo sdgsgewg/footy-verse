@@ -1,26 +1,24 @@
-import EditCompetitionSeasonPage from "@/components/dashboard/competition-seasons/EditCompetitionSeasonPage";
+import { notFound } from "next/navigation";
+import CompetitionSeasonDetailPage from "@/components/dashboard/competition-seasons/CompetitionSeasonDetailPage";
 import { getCompetitionSeasonLookupService } from "@/lib/services/competitions/competition-seasons.service";
 import { getCompetitionLookupService } from "@/lib/services/competitions/competitions.service";
-import { notFound } from "next/navigation";
 
 export default async function Page({
   params,
 }: {
-  params: Promise<{ competitionSlug: string; competitonSeasonId: string }>;
+  params: Promise<{ competitionSlug: string; competitionSeasonId: string }>;
 }) {
-  const { competitionSlug, competitonSeasonId } = await params;
+  const { competitionSlug, competitionSeasonId } = await params;
 
   const competitionLookup = await getCompetitionLookupService(competitionSlug);
 
   const competitionSeasonLookup =
-    await getCompetitionSeasonLookupService(competitonSeasonId);
+    await getCompetitionSeasonLookupService(competitionSeasonId);
 
-  if (!competitionLookup || !competitionSeasonLookup) {
-    return notFound();
-  }
+  if (!competitionLookup || !competitionSeasonLookup) notFound();
 
   return (
-    <EditCompetitionSeasonPage
+    <CompetitionSeasonDetailPage
       competitionLookup={competitionLookup}
       competitionSeasonLookup={competitionSeasonLookup}
     />

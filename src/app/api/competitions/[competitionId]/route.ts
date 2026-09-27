@@ -10,7 +10,7 @@ import {
   deleteCompetitionService,
   getCompetitionDetailService,
   updateCompetitionService,
-} from "@/lib/services/competitions.service";
+} from "@/lib/services/competitions/competitions.service";
 
 type CompetitionRouteContext = {
   params: Promise<{ competitionId: string }>;

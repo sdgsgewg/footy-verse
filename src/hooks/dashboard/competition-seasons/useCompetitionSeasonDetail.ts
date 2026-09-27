@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { queryConfig } from "@/lib/react-query/config/queryConfig";
-import { fetchCompetitionSeasonDetail } from "@/lib/api/competition-season";
+import { fetchCompetitionSeasonDetail } from "@/lib/api/competitions/competition-season";
 import { competitionSeasonKeys } from "@/lib/react-query/keys";
 
 interface UseCompetitionSeasonDetailOptions {

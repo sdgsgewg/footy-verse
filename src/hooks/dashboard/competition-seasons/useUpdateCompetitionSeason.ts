@@ -1,4 +1,4 @@
-import { updateCompetitionSeason } from "@/lib/api/competition-season";
+import { updateCompetitionSeason } from "@/lib/api/competitions/competition-season";
 import { useCrudMutation } from "../useCrudMutation";
 import { competitionKeys, competitionSeasonKeys } from "@/lib/react-query/keys";
 import { CompetitionLookupResponse } from "@/types/competition";

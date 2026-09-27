@@ -1,10 +1,10 @@
 import { CompetitionListResponse } from "@/types/competition";
-import { idSchema, slugSchema } from "../validations/primitives.schema";
+import { idSchema, slugSchema } from "../../validations/primitives.schema";
 import {
   competitionsQuerySchema,
   createCompetitionSchema,
   updateCompetitionSchema,
-} from "../validations/competitions/competitions.schema";
+} from "../../validations/competitions/competitions.schema";
 import {
   createCompetitionRepo,
   deleteCompetitionRepo,
@@ -14,15 +14,15 @@ import {
   getCompetitionLookupRepo,
   getCompetitionsRepo,
   updateCompetitionRepo,
-} from "../repositories/competitions.repo";
+} from "@/lib/repositories/competitions/competitions.repo";
 import { ENTITY_CONFIG } from "@/config/entities";
 import {
   uploadImageFromFormData,
   withUpdatedImage,
   withUploadedImage,
-} from "../storage/image";
-import { NotFoundError } from "../errors/http-error";
-import { tryDeleteImage } from "./storage.service";
+} from "../../storage/image";
+import { NotFoundError } from "../../errors/http-error";
+import { tryDeleteImage } from "../storage.service";
 
 const STORAGE_BUCKET = ENTITY_CONFIG["competition"]["storageBucket"];
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { competitionScopeMutationSchema } from "@/lib/validations/competition-scopes.schema";
+import { competitionScopeMutationSchema } from "@/lib/validations/competitions/competition-scopes.schema";
 import {
   CompetitionScopeListItem,
   UpsertCompetitionScopeInput,
