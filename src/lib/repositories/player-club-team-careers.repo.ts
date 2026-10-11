@@ -17,25 +17,8 @@ import {
   mapPlayerClubTeamCareerEditResponse,
   mapPlayerClubTeamCareerListItem,
 } from "../player-club-team-careers/mapper";
-import {
-  createPlayerShirtNumbersRepo,
-  deletePlayerShirtNumberRepo,
-} from "./player-shirt-numbers.repo";
-import {
-  createPlayerCareerRepo,
-  deletePlayerCareerRepo,
-  updatePlayerCareerRepo,
-} from "./player-careers.repo";
-import {
-  createPlayerContractsRepo,
-  deletePlayerContractRepo,
-} from "./player-contracts.repo";
-import {
-  createPlayerTransferRepo,
-  deletePlayerTransferRepo,
-  updatePlayerTransferByPlayerClubTeamCareerIdRepo,
-} from "./player-transfers.repo";
-import { CareerType } from "@/enums/CareerType";
+
+import { deletePlayerCareerRepo } from "./player-careers.repo";
 
 async function getSupabase() {
   return createClient();
@@ -234,7 +217,7 @@ export async function getPlayerClubTeamCareerLookupRepo(
     .select(`id`)
     .eq("id", playerClubTeamCareerId)
     .maybeSingle();
-    
+
   if (error) throw error;
   if (!data) return null;
 
@@ -242,10 +225,7 @@ export async function getPlayerClubTeamCareerLookupRepo(
 }
 
 /**
- *
- * @param playerId
- * @param playerClubTeamCareer
- * @returns PlayerClubTeamCareerDetailResponse
+ * Create Player Club Team Career via Transaction RPC
  */
 export async function createPlayerClubTeamCareerRepo(
   playerId: string,
@@ -256,49 +236,22 @@ export async function createPlayerClubTeamCareerRepo(
   const { club_team_id, career, contracts, shirt_numbers, transfer } =
     playerClubTeamCareer;
 
-  //  Insert player career (table player_careers)
-
-  const insertedPlayerCareer = await createPlayerCareerRepo(
-    playerId,
-    career,
-    CareerType.CLUB,
+  // Jalankan semua operasi dalam 1 transaksi atomik di database
+  const { data: createdId, error } = await supabase.rpc(
+    "create_player_club_team_career_trx",
+    {
+      p_player_id: playerId,
+      p_club_team_id: club_team_id,
+      p_career: career,
+      p_shirt_numbers: shirt_numbers ?? [],
+      p_contracts: contracts ?? [],
+      p_transfer: transfer ?? null,
+    },
   );
 
-  //  Insert player club career (table player_club_team_careers)
+  if (error) throw error;
 
-  const {
-    data: insertedPlayerClubTeamCareer,
-    error: playerClubTeamCareerError,
-  } = await supabase
-    .from(getTable())
-    .insert({
-      player_career_id: insertedPlayerCareer.id,
-      club_team_id,
-    })
-    .select("id")
-    .single();
-
-  if (playerClubTeamCareerError) throw playerClubTeamCareerError;
-
-  //  Insert player shirt numbers (table player_shirt_numbers)
-  if (shirt_numbers && shirt_numbers.length > 0) {
-    await createPlayerShirtNumbersRepo(insertedPlayerCareer.id, shirt_numbers);
-  }
-
-  //  Insert player contracts (table player_contracts)
-  if (contracts && contracts.length > 0) {
-    await createPlayerContractsRepo(insertedPlayerClubTeamCareer.id, contracts);
-  }
-
-  //  Insert player transfer (table player_transfers)
-  if (transfer) {
-    await createPlayerTransferRepo(insertedPlayerClubTeamCareer.id, transfer);
-  }
-
-  const result = await getPlayerClubTeamCareerDetailRepo(
-    insertedPlayerClubTeamCareer.id,
-  );
-
+  const result = await getPlayerClubTeamCareerDetailRepo(createdId);
   if (!result) {
     throw new Error("Failed to retrieve created player club career");
   }
@@ -307,11 +260,7 @@ export async function createPlayerClubTeamCareerRepo(
 }
 
 /**
- *
- * @param playerClubTeamCareerId
- * @param playerId
- * @param playerClubTeamCareer
- * @returns PlayerClubTeamCareerDetailResponse
+ * Update Player Club Team Career via Transaction RPC
  */
 export async function updatePlayerClubTeamCareerRepo(
   playerClubTeamCareerId: string,
@@ -326,66 +275,26 @@ export async function updatePlayerClubTeamCareerRepo(
     getLabel(),
   );
 
-  const {
-    player_career_id,
-    career,
-    contracts,
-    shirt_numbers,
-    transfer,
-    ...rest
-  } = playerClubTeamCareer;
+  const { club_team_id, career, contracts, shirt_numbers, transfer } =
+    playerClubTeamCareer;
 
-  // Player Career: Update existing data with a new data
-
-  const playerCareer = await updatePlayerCareerRepo(
-    player_career_id ?? "",
-    playerId,
-    career,
+  // Jalankan semua update & replace secara atomik di database
+  const { data: updatedId, error } = await supabase.rpc(
+    "update_player_club_team_career_trx",
+    {
+      p_player_club_team_career_id: playerClubTeamCareerId,
+      p_player_id: playerId,
+      p_club_team_id: club_team_id,
+      p_career: career,
+      p_shirt_numbers: shirt_numbers ?? [],
+      p_contracts: contracts ?? [],
+      p_transfer: transfer ?? null,
+    },
   );
 
-  // Player Club Career: Update existing data with a new data
+  if (error) throw error;
 
-  const { error: playerClubTeamCareerError } = await supabase
-    .from(getTable())
-    .update({
-      ...rest,
-      updated_at: new Date().toISOString(),
-    })
-    .eq("id", playerClubTeamCareerId);
-
-  if (playerClubTeamCareerError) throw playerClubTeamCareerError;
-
-  // Shirt Numbers : Delete existing shirt numbers and insert new ones
-
-  await deletePlayerShirtNumberRepo(playerCareer.id);
-
-  if (shirt_numbers && shirt_numbers.length > 0) {
-    await createPlayerShirtNumbersRepo(playerCareer.id, shirt_numbers);
-  }
-
-  // Contracts: Delete existing contracts and insert new ones
-
-  await deletePlayerContractRepo(playerClubTeamCareerId);
-
-  if (contracts && contracts.length > 0) {
-    await createPlayerContractsRepo(playerClubTeamCareerId, contracts);
-  }
-
-  // Player Transfer: Update existing data with a new data
-
-  // Transfer : Delete existing transfer and insert new one
-
-  await updatePlayerTransferByPlayerClubTeamCareerIdRepo(
-    playerClubTeamCareerId,
-    transfer,
-  );
-
-  // Retrieve updated player club career
-
-  const result = await getPlayerClubTeamCareerDetailRepo(
-    playerClubTeamCareerId,
-  );
-
+  const result = await getPlayerClubTeamCareerDetailRepo(updatedId);
   if (!result) {
     throw new Error("Failed to retrieve updated player club career");
   }
@@ -400,8 +309,6 @@ export async function updatePlayerClubTeamCareerRepo(
 export async function deletePlayerClubTeamCareerRepo(
   playerClubTeamCareerId: string,
 ): Promise<void> {
-  const supabase = await getSupabase();
-
   const result = await requireEntity(
     getPlayerClubTeamCareerDetailRepo,
     playerClubTeamCareerId,
@@ -409,19 +316,6 @@ export async function deletePlayerClubTeamCareerRepo(
   );
 
   const { career } = result;
-
-  await deletePlayerShirtNumberRepo(career.id);
-
-  await deletePlayerContractRepo(playerClubTeamCareerId);
-
-  await deletePlayerTransferRepo(playerClubTeamCareerId);
-
-  const { error: deletePlayerClubTeamCareerError } = await supabase
-    .from(getTable())
-    .delete()
-    .eq("id", playerClubTeamCareerId);
-
-  if (deletePlayerClubTeamCareerError) throw deletePlayerClubTeamCareerError;
 
   await deletePlayerCareerRepo(career.id);
 }

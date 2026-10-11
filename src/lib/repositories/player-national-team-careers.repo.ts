@@ -16,16 +16,7 @@ import {
   mapPlayerNationalTeamCareerEditResponse,
   mapPlayerNationalTeamCareerListItem,
 } from "../player-national-team-careers/mapper";
-import {
-  createPlayerCareerRepo,
-  deletePlayerCareerRepo,
-  updatePlayerCareerRepo,
-} from "./player-careers.repo";
-import {
-  createPlayerShirtNumbersRepo,
-  deletePlayerShirtNumberRepo,
-} from "./player-shirt-numbers.repo";
-import { CareerType } from "@/enums/CareerType";
+import { deletePlayerCareerRepo } from "./player-careers.repo";
 
 async function getSupabase() {
   return createClient();
@@ -198,10 +189,8 @@ export async function getPlayerNationalTeamCareerLookupRepo(
 }
 
 /**
- *
- * @param playerId
- * @param playerNationalTeamCareers
- * @returns void
+ * Create Player National Team Careers via Transaction RPC
+ * Menginsert seluruh array dalam 1 transaksi atomik
  */
 export async function createPlayerNationalTeamCareerRepo(
   playerId: string,
@@ -209,54 +198,19 @@ export async function createPlayerNationalTeamCareerRepo(
 ): Promise<void> {
   const supabase = await getSupabase();
 
-  await Promise.all(
-    playerNationalTeamCareers.map(async (careerItem) => {
-      const { career, shirt_numbers, national_team_id } = careerItem;
-
-      /**
-       * Insert player_careers
-       */
-      const insertedPlayerCareer = await createPlayerCareerRepo(
-        playerId,
-        career,
-        CareerType.NATIONAL_TEAM,
-      );
-
-      /**
-       * Insert player_national_team_careers
-       */
-      const { error: nationalTeamCareerError } = await supabase
-        .from(getTable())
-        .insert({
-          player_career_id: insertedPlayerCareer.id,
-          national_team_id,
-        })
-        .select("id")
-        .single();
-
-      if (nationalTeamCareerError) {
-        throw nationalTeamCareerError;
-      }
-
-      /**
-       * Insert player_shirt_numbers
-       */
-      if (shirt_numbers && shirt_numbers.length > 0) {
-        await createPlayerShirtNumbersRepo(
-          insertedPlayerCareer.id,
-          shirt_numbers,
-        );
-      }
-    }),
+  const { error } = await supabase.rpc(
+    "create_player_national_team_careers_trx",
+    {
+      p_player_id: playerId,
+      p_careers: playerNationalTeamCareers,
+    },
   );
+
+  if (error) throw error;
 }
 
 /**
- *
- * @param playerNationalTeamCareerId
- * @param playerId
- * @param playerNationalTeamCareer
- * @returns PlayerNationalTeamCareerDetailResponse
+ * Update Player National Team Career via Transaction RPC
  */
 export async function updatePlayerNationalTeamCareerRepo(
   playerNationalTeamCareerId: string,
@@ -271,43 +225,22 @@ export async function updatePlayerNationalTeamCareerRepo(
     getLabel(),
   );
 
-  const { player_career_id, career, shirt_numbers, ...rest } =
-    playerNationalTeamCareer;
+  const { national_team_id, career, shirt_numbers } = playerNationalTeamCareer;
 
-  // Player Career: Update existing data with a new data
-
-  const playerCareer = await updatePlayerCareerRepo(
-    player_career_id ?? "",
-    playerId,
-    career,
+  const { data: updatedId, error } = await supabase.rpc(
+    "update_player_national_team_career_trx",
+    {
+      p_player_national_team_career_id: playerNationalTeamCareerId,
+      p_player_id: playerId,
+      p_national_team_id: national_team_id,
+      p_career: career,
+      p_shirt_numbers: shirt_numbers ?? [],
+    },
   );
 
-  // Player National Team Career: Update existing data with a new data
+  if (error) throw error;
 
-  const { error: playerNationalTeamCareerError } = await supabase
-    .from(getTable())
-    .update({
-      ...rest,
-      updated_at: new Date().toISOString(),
-    })
-    .eq("id", playerNationalTeamCareerId);
-
-  if (playerNationalTeamCareerError) throw playerNationalTeamCareerError;
-
-  // Shirt Numbers : Delete existing shirt numbers and insert new ones
-
-  await deletePlayerShirtNumberRepo(playerCareer.id);
-
-  if (shirt_numbers && shirt_numbers.length > 0) {
-    await createPlayerShirtNumbersRepo(playerCareer.id, shirt_numbers);
-  }
-
-  // Retrieve updated player national team career
-
-  const result = await getPlayerNationalTeamCareerDetailRepo(
-    playerNationalTeamCareerId,
-  );
-
+  const result = await getPlayerNationalTeamCareerDetailRepo(updatedId);
   if (!result) {
     throw new Error("Failed to retrieve updated player national team career");
   }
@@ -322,8 +255,6 @@ export async function updatePlayerNationalTeamCareerRepo(
 export async function deletePlayerNationalTeamCareerRepo(
   playerNationalTeamCareerId: string,
 ): Promise<void> {
-  const supabase = await getSupabase();
-
   const result = await requireEntity(
     getPlayerNationalTeamCareerDetailRepo,
     playerNationalTeamCareerId,
@@ -331,16 +262,6 @@ export async function deletePlayerNationalTeamCareerRepo(
   );
 
   const { career } = result;
-
-  await deletePlayerShirtNumberRepo(career.id);
-
-  const { error: deletePlayerNationalTeamCareerError } = await supabase
-    .from(getTable())
-    .delete()
-    .eq("id", playerNationalTeamCareerId);
-
-  if (deletePlayerNationalTeamCareerError)
-    throw deletePlayerNationalTeamCareerError;
 
   await deletePlayerCareerRepo(career.id);
 }
