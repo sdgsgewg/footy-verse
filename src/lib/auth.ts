@@ -1,4 +1,5 @@
-import { redirect } from "next/navigation";
+import { redirect } from "@/navigation";
+import { getLocale } from "next-intl/server";
 import { createClient } from "@/utils/supabase/server";
 
 export async function requireRole(roles: string[]) {
@@ -9,7 +10,9 @@ export async function requireRole(roles: string[]) {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    redirect("/login");
+    const locale = await getLocale();
+    redirect({ href: "/login", locale });
+    return null as never;
   }
 
   const { data: profile } = await supabase
@@ -19,7 +22,9 @@ export async function requireRole(roles: string[]) {
     .single();
 
   if (!profile || !roles.includes(profile.role)) {
-    redirect("/");
+    const locale = await getLocale();
+    redirect({ href: "/", locale });
+    return null as never;
   }
 
   return {

@@ -54,22 +54,22 @@ const PlayerClubTeamCareerForm = ({
       />
 
       <FormContentWrapper className="space-y-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div className="lg:grid-cols-6">
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
+          <div className="xl:grid-cols-6">
             <PlayerCareerSection form={form} />
           </div>
 
-          <div className="lg:grid-cols-6">
+          <div className="xl:grid-cols-6">
             <PlayerTransferSection form={form} />
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div className="lg:grid-cols-6">
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
+          <div className="xl:grid-cols-6">
             <PlayerContractSection form={form} />
           </div>
 
-          <div className="lg:grid-cols-6">
+          <div className="xl:grid-cols-6">
             <PlayerShirtNumberSection form={form} />
           </div>
         </div>

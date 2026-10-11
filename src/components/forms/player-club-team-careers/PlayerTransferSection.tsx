@@ -12,6 +12,7 @@ import DateField from "../fields/DateField";
 import { useClubTeams } from "@/hooks/club-teams";
 import { getClubTeamOptions } from "@/lib/club-teams/options";
 import { PlayerClubTeamCareerForm } from "@/hooks/dashboard/player-club-team-careers";
+import { ArrowRight } from "lucide-react";
 
 interface Props {
   form: PlayerClubTeamCareerForm;
@@ -57,35 +58,42 @@ const PlayerTransferSection = ({ form }: Props) => {
   return (
     <FormSection title={tForm("title")}>
       <>
-        {/* From Club */}
-        <form.Field name="transfer.from_club_team_id">
-          {(field) => (
-            <ComboboxField
-              field={field}
-              entityKey="club"
-              label={tLabels("fromClub")}
-              options={fromClubTeamOptions}
-              placeholder={tPlaceholders("fromClub")}
-              loading={isClubTeamLoading}
-              required
-            />
-          )}
-        </form.Field>
+        <div className="grid grid-cols-[1fr_auto_1fr] items-start gap-3">
+          {/* From Club */}
+          <form.Field name="transfer.from_club_team_id">
+            {(field) => (
+              <ComboboxField
+                field={field}
+                entityKey="club"
+                label={tLabels("fromClub")}
+                options={fromClubTeamOptions}
+                placeholder={tPlaceholders("fromClub")}
+                loading={isClubTeamLoading}
+                required
+              />
+            )}
+          </form.Field>
 
-        {/* To Club */}
-        <form.Field name="transfer.to_club_team_id">
-          {(field) => (
-            <ComboboxField
-              field={field}
-              entityKey="club"
-              label={tLabels("toClub")}
-              options={toClubTeamOptions}
-              placeholder={tPlaceholders("toClub")}
-              loading={isClubTeamLoading}
-              required
-            />
-          )}
-        </form.Field>
+          {/* Arrow */}
+          <div className="flex h-13 items-end">
+            <ArrowRight className="size-5 text-muted-foreground" />
+          </div>
+
+          {/* To Club */}
+          <form.Field name="transfer.to_club_team_id">
+            {(field) => (
+              <ComboboxField
+                field={field}
+                entityKey="club"
+                label={tLabels("toClub")}
+                options={toClubTeamOptions}
+                placeholder={tPlaceholders("toClub")}
+                loading={isClubTeamLoading}
+                required
+              />
+            )}
+          </form.Field>
+        </div>
 
         {/* Transfer Type */}
         <form.Field

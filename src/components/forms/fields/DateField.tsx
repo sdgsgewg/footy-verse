@@ -41,7 +41,7 @@ export default function DateField({
   label,
   placeholder = "Select date",
   startMonth,
-  endMonth,
+  endMonth = new Date(2100, 11, 31),
   minDate,
   maxDate,
   required,

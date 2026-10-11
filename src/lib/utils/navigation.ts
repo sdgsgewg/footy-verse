@@ -9,5 +9,5 @@ export function isActivePath(pathname: string, path: string, exact = false) {
 }
 
 export function isDashboardPath(pathname: string) {
-  return pathname.includes(ROUTES.DASHBOARD.BASE)
+  return pathname.includes(ROUTES.DASHBOARD.BASE);
 }

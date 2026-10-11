@@ -8,8 +8,21 @@ const intlMiddleware = createMiddleware({
   defaultLocale: "id",
 });
 
+function createRedirect(url: URL | string, sourceResponse: NextResponse) {
+  const redirectResponse = NextResponse.redirect(url);
+  sourceResponse.cookies.getAll().forEach((cookie) => {
+    redirectResponse.cookies.set(cookie);
+  });
+  return redirectResponse;
+}
+
 export default async function proxy(request: NextRequest) {
   const response = intlMiddleware(request);
+
+  // Jika next-intl sudah menghasilkan redirect (misal redirect ke default locale), langsung return
+  if (response.headers.get("location") || response.status === 307 || response.status === 308) {
+    return response;
+  }
 
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -58,7 +71,7 @@ export default async function proxy(request: NextRequest) {
   // Guest only (auth pages)
   if (matchedPermission.type === "guest") {
     if (user) {
-      return NextResponse.redirect(new URL(`/${locale}`, request.url));
+      return createRedirect(new URL(`/${locale}`, request.url), response);
     }
 
     return response;
@@ -70,7 +83,7 @@ export default async function proxy(request: NextRequest) {
 
     loginUrl.searchParams.set("next", pathname);
 
-    return NextResponse.redirect(loginUrl);
+    return createRedirect(loginUrl, response);
   }
 
   const { data: profile } = await supabase
@@ -80,12 +93,12 @@ export default async function proxy(request: NextRequest) {
     .single();
 
   if (!matchedPermission.check(profile)) {
-    return NextResponse.redirect(new URL(`/${locale}`, request.url));
+    return createRedirect(new URL(`/${locale}`, request.url), response);
   }
 
   return response;
 }
 
 export const config = {
-  matcher: ["/", "/(id|en)/:path*"],
+  matcher: ["/((?!api|_next|_vercel|.*\\..*).*)"],
 };
