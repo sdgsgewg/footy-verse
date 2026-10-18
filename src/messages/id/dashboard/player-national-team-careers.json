@@ -12,7 +12,8 @@
     "shirtNumbers": {
       "title": "Riwayat Nomor Baju",
       "noData": "Nomor baju tidak ditemukan",
-      "instruction": "Mohon tambahkan minimal satu nomor baju"
+      "instruction": "Mohon tambahkan minimal satu nomor baju",
+      "addInstruction": "Lengkapi semua kolom dalam catatan saat ini sebelum menambahkan nomor baju lainnya."
     },
 
     "labels": {

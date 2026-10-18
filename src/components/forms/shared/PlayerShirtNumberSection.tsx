@@ -65,10 +65,21 @@ export default function PlayerShirtNumberSection({
         const canAdd = maxItems === undefined || itemCount < maxItems;
         const canRemove = itemCount > minItems;
 
+        /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+        const isAllFieldsFilled = field.state.value?.every((item: any) => {
+          return (
+            item.shirt_number != null &&
+            item.start_date != "" &&
+            item.end_date != ""
+          );
+        });
+
         const handleAdd = () => {
+          const joinedAt = form.getFieldValue(joinedAtFieldName);
+
           field.pushValue({
             shirt_number: null,
-            start_date: "",
+            start_date: itemCount === 0 ? joinedAt : "",
             end_date: "",
           });
         };
@@ -81,12 +92,18 @@ export default function PlayerShirtNumberSection({
         return (
           <FormSection
             title={title}
+            description={
+              itemCount > 0 && !isAllFieldsFilled
+                ? tForm("addInstruction")
+                : undefined
+            }
             action={
               itemCount > 0 && (
                 <Button
                   type="button"
                   size="sm"
                   onClick={handleAdd}
+                  disabled={!isAllFieldsFilled}
                   className="gap-1.5 cursor-pointer"
                 >
                   <Plus className="h-4 w-4" />
@@ -186,8 +203,7 @@ export default function PlayerShirtNumberSection({
                                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                                 selector={(state: any) => state.values}
                               >
-                                {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-                                {(values: any) => {
+                                {() => {
                                   const joinedAt =
                                     form.getFieldValue(joinedAtFieldName);
                                   const leftAt =
@@ -265,8 +281,7 @@ export default function PlayerShirtNumberSection({
                                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                                 selector={(state: any) => state.values}
                               >
-                                {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-                                {(values: any) => {
+                                {() => {
                                   const joinedAt =
                                     form.getFieldValue(joinedAtFieldName);
                                   const leftAt =

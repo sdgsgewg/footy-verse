@@ -59,10 +59,13 @@ const PlayerClubTeamCareerSection = ({ form }: Props) => {
               name="career.joined_at"
               listeners={{
                 onChange: ({ value }) => {
-                  const transfer = form.getFieldValue(`transfer`);
+                  const firstShirtNumberRecord =
+                    form.getFieldValue("shirt_numbers[0]");
 
-                  if (!transfer.transfer_date) {
-                    form.setFieldValue(`transfer.transfer_date`, value);
+                  form.setFieldValue(`transfer.transfer_date`, value);
+
+                  if (firstShirtNumberRecord) {
+                    form.setFieldValue(`shirt_numbers[0].start_date`, value);
                   }
                 },
               }}

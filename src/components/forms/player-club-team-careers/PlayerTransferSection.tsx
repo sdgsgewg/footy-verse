@@ -13,6 +13,7 @@ import { useClubTeams } from "@/hooks/club-teams";
 import { getClubTeamOptions } from "@/lib/club-teams/options";
 import { PlayerClubTeamCareerForm } from "@/hooks/dashboard/player-club-team-careers";
 import { ArrowRight } from "lucide-react";
+import { parseDateString } from "@/lib/utils/date";
 
 interface Props {
   form: PlayerClubTeamCareerForm;
@@ -135,15 +136,32 @@ const PlayerTransferSection = ({ form }: Props) => {
 
         {/* Transfer Date */}
         <form.Field name="transfer.transfer_date">
-          {(field) => (
-            <DateField
-              field={field}
-              label={tLabels("transferDate")}
-              placeholder={tPlaceholders("transferDate") || ""}
-              startMonth={new Date(1900, 0)}
-              endMonth={new Date()}
-              required
-            />
+          {(transferDatefield) => (
+            <form.Subscribe selector={(state) => state.values}>
+              {() => {
+                const joinedAt = form.getFieldValue(`career.joined_at`);
+                const leftAt = form.getFieldValue(`career.left_at`);
+
+                const joinedAtParsed = parseDateString(joinedAt);
+                const leftAtParsed = parseDateString(leftAt) ?? undefined;
+
+                const minTransferDate = joinedAtParsed;
+                const maxTransferDate = leftAtParsed ?? new Date(2100, 11, 31);
+
+                return (
+                  <DateField
+                    field={transferDatefield}
+                    label={tLabels("transferDate")}
+                    placeholder={tPlaceholders("transferDate") || ""}
+                    startMonth={minTransferDate}
+                    endMonth={maxTransferDate}
+                    minDate={minTransferDate}
+                    maxDate={maxTransferDate}
+                    required
+                  />
+                );
+              }}
+            </form.Subscribe>
           )}
         </form.Field>
       </>

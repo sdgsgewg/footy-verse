@@ -98,7 +98,7 @@ const CreatePlayerNationalTeamCareerForm = ({
                       )}
                     </form.Field>
 
-                    {/* Joined Date */}
+                    {/* Join Date */}
                     <form.Field name={`careers[${careerIndex}].career.left_at`}>
                       {(leftAtField) => (
                         <form.Field

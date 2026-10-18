@@ -12,7 +12,8 @@
     "shirtNumbers": {
       "title": "Shirt Number History",
       "noData": "No shirt number found",
-      "instruction": "Please add at least one shirt number"
+      "instruction": "Please add at least one shirt number",
+      "addInstruction": "Complete all fields in the current record before adding another shirt number."
     },
 
     "labels": {

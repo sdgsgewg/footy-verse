@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 
 interface FormSectionProps {
   title: string;
-  subtitle?: string;
+  description?: string;
   action?: ReactNode;
   children: ReactNode;
   className?: string;
@@ -11,7 +11,7 @@ interface FormSectionProps {
 
 export default function FormSection({
   title,
-  subtitle,
+  description,
   action,
   children,
   className,
@@ -24,8 +24,8 @@ export default function FormSection({
         <div>
           <h2 className="text-lg font-semibold">{title}</h2>
 
-          {subtitle && (
-            <p className="mt-1 text-sm text-muted-foreground">{subtitle}</p>
+          {description && (
+            <p className="mt-1 text-sm text-muted-foreground">{description}</p>
           )}
         </div>
 
