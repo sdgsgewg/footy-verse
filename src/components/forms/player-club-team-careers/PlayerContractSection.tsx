@@ -207,13 +207,6 @@ export default function PlayerContractSection({
                                         const leftAt =
                                           form.getFieldValue(leftAtFieldName);
 
-                                        const previousContractEnd =
-                                          contractIndex > 0
-                                            ? form.getFieldValue(
-                                                `${arrayFieldName}[${contractIndex - 1}].contract_end`,
-                                              )
-                                            : undefined;
-
                                         const contractEnd =
                                           form.getFieldValue(
                                             `${arrayFieldName}[${contractIndex}].contract_end`,
@@ -224,8 +217,6 @@ export default function PlayerContractSection({
                                             `${arrayFieldName}[${contractIndex + 1}].contract_start`,
                                           ) ?? undefined;
 
-                                        const previousContractEndParsed =
-                                          parseDateString(previousContractEnd);
                                         const joinedAtParsed =
                                           parseDateString(joinedAt);
 
@@ -236,13 +227,7 @@ export default function PlayerContractSection({
                                         const leftAtParsed =
                                           parseDateString(leftAt) ?? undefined;
 
-                                        const minContractStart =
-                                          previousContractEndParsed
-                                            ? addDays(
-                                                previousContractEndParsed,
-                                                1,
-                                              )
-                                            : joinedAtParsed;
+                                        const minContractStart = joinedAtParsed;
 
                                         const maxContractStart =
                                           contractEndParsed ??
@@ -288,8 +273,6 @@ export default function PlayerContractSection({
                                       {() => {
                                         const joinedAt =
                                           form.getFieldValue(joinedAtFieldName);
-                                        const leftAt =
-                                          form.getFieldValue(leftAtFieldName);
 
                                         const previousContractEnd =
                                           contractIndex > 0
@@ -301,12 +284,7 @@ export default function PlayerContractSection({
                                         const contractStart =
                                           form.getFieldValue(
                                             `${arrayFieldName}[${contractIndex}].contract_start`,
-                                          );
-
-                                        const nextContractStart =
-                                          form.getFieldValue(
-                                            `${arrayFieldName}[${contractIndex + 1}].contract_start`,
-                                          );
+                                          ) ?? undefined;
 
                                         const contractStartParsed =
                                           parseDateString(contractStart);
@@ -314,11 +292,6 @@ export default function PlayerContractSection({
                                           parseDateString(previousContractEnd);
                                         const joinedAtParsed =
                                           parseDateString(joinedAt);
-
-                                        const nextContractStartParsed =
-                                          parseDateString(nextContractStart);
-                                        const leftAtParsed =
-                                          parseDateString(leftAt) ?? undefined;
 
                                         const minContractEnd =
                                           contractStartParsed
@@ -330,14 +303,7 @@ export default function PlayerContractSection({
                                                 )
                                               : joinedAtParsed;
 
-                                        const maxContractEnd =
-                                          nextContractStartParsed
-                                            ? subDays(
-                                                nextContractStartParsed,
-                                                1,
-                                              )
-                                            : (leftAtParsed ??
-                                              new Date(2100, 11, 31));
+                                        const maxContractEnd = new Date(2100, 11, 31);
 
                                         return (
                                           <DateField
