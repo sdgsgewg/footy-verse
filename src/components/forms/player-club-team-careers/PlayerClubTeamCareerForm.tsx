@@ -64,18 +64,14 @@ const PlayerClubTeamCareerForm = ({
           </div>
         </div>
 
-        <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
-          <div className="xl:grid-cols-6">
-            <PlayerContractSection form={form} />
-          </div>
+        <div className="flex flex-col gap-8">
+          <PlayerContractSection form={form} />
 
-          <div className="xl:grid-cols-6">
-            <PlayerShirtNumberSection
-              form={form}
-              entityType="clubTeam"
-              minItems={0}
-            />
-          </div>
+          <PlayerShirtNumberSection
+            form={form}
+            entityType="clubTeam"
+            minItems={0}
+          />
         </div>
       </FormContentWrapper>
       {/* </form> */}

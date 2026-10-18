@@ -9,7 +9,8 @@
     "contracts": {
       "title": "Riwayat Kontrak",
       "noData": "Kontrak tidak ditemukan",
-      "instruction": "Mohon tambahkan minimal satu kontrak"
+      "instruction": "Mohon tambahkan minimal satu kontrak",
+      "addInstruction": "Lengkapi semua kolom dalam catatan saat ini sebelum menambahkan kontrak lainnya."
     },
 
     "shirtNumbers": {

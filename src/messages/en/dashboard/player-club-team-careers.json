@@ -9,7 +9,8 @@
     "contracts": {
       "title": "Contract History",
       "noData": "No contract found",
-      "instruction": "Please add at least one contract."
+      "instruction": "Please add at least one contract.",
+      "addInstruction": "Complete all fields in the current record before adding another contract."
     },
 
     "shirtNumbers": {

@@ -15,7 +15,7 @@ import { useCreatePlayerNationalTeamCareerForm } from "@/hooks/dashboard/player-
 import { useNationalTeams } from "@/hooks/national-teams";
 import { getNationalTeamOptions } from "@/lib/national-teams/options";
 import { useCrudFormState, useCrudFormTranslations } from "@/hooks/crud";
-import DynamicFormSection from "../base/DynamicFormSection";
+import DynamicFormSection from "../shared/DynamicFormSection";
 import { parseDateString } from "@/lib/utils/date";
 import PlayerShirtNumberSection from "../shared/PlayerShirtNumberSection";
 
