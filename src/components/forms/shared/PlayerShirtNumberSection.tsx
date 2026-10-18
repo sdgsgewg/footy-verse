@@ -2,9 +2,11 @@
 
 import { useTranslations } from "next-intl";
 import { Plus, Trash2, Hash } from "lucide-react";
+import { addDays, subDays } from "date-fns";
 
 import { DateField, NumberField } from "../fields";
 import FormSection from "../base/FormSection";
+
 import {
   Table,
   TableBody,
@@ -13,9 +15,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+
 import { Button } from "@/components/ui/button";
 import { parseDateString } from "@/lib/utils/date";
-import { addDays, subDays } from "date-fns";
 
 export interface PlayerShirtNumberSectionProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -26,12 +28,33 @@ export interface PlayerShirtNumberSectionProps {
   entityType?: "nationalTeam" | "clubTeam";
 }
 
+/**
+ * Mengambil nilai dari nested object berdasarkan dot-separated path.
+ *
+ * Contoh:
+ * getNestedValue(values, "career.shirt_numbers")
+ */
+function getNestedValue(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  obj: any,
+  path: string,
+) {
+  return path
+    .replace(/\[(\d+)\]/g, ".$1")
+    .split(".")
+    .reduce(
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (current: any, key) => current?.[key],
+      obj,
+    );
+}
+
 export default function PlayerShirtNumberSection({
   form,
   namePrefix,
   minItems = 0,
   maxItems,
-  entityType = "nationalTeam",
+  entityType,
 }: PlayerShirtNumberSectionProps) {
   const namespace =
     entityType === "clubTeam"
@@ -60,317 +83,353 @@ export default function PlayerShirtNumberSection({
   return (
     <form.Field name={arrayFieldName} mode="array">
       {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-      {(field: any) => {
-        const itemCount = field.state.value?.length ?? 0;
-        const canAdd = maxItems === undefined || itemCount < maxItems;
-        const canRemove = itemCount > minItems;
+      {(field: any) => (
+        <form.Subscribe
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          selector={(state: any) =>
+            getNestedValue(state.values, arrayFieldName)
+          }
+        >
+          {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+          {(shirtNumbers: any[] | undefined) => {
+            const items = shirtNumbers ?? [];
+            const itemCount = items.length;
 
-        /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-        const isAllFieldsFilled = field.state.value?.every((item: any) => {
-          return (
-            item.shirt_number != null &&
-            item.start_date != "" &&
-            item.end_date != ""
-          );
-        });
+            const canAdd = maxItems === undefined || itemCount < maxItems;
 
-        const handleAdd = () => {
-          const joinedAt = form.getFieldValue(joinedAtFieldName);
+            const canRemove = itemCount > minItems;
 
-          field.pushValue({
-            shirt_number: null,
-            start_date: itemCount === 0 ? joinedAt : "",
-            end_date: "",
-          });
-        };
+            const isAllFieldsFilled = items.every((item) => {
+              return (
+                item.shirt_number != null &&
+                item.start_date != null &&
+                item.start_date !== "" &&
+                item.end_date != null &&
+                item.end_date !== ""
+              );
+            });
 
-        const title =
-          minItems > 0
-            ? `${tForm("title")} (min ${minItems})`
-            : `${tForm("title")} (optional)`;
+            const handleAdd = () => {
+              if (!canAdd || !isAllFieldsFilled) {
+                return;
+              }
 
-        return (
-          <FormSection
-            title={title}
-            description={
-              itemCount > 0 && !isAllFieldsFilled
-                ? tForm("addInstruction")
-                : undefined
-            }
-            action={
-              itemCount > 0 && (
-                <Button
-                  type="button"
-                  size="sm"
-                  onClick={handleAdd}
-                  disabled={!isAllFieldsFilled}
-                  className="gap-1.5 cursor-pointer"
-                >
-                  <Plus className="h-4 w-4" />
-                  {tCommonActions("add")}
-                </Button>
-              )
-            }
-          >
-            {itemCount === 0 ? (
-              <div className="flex flex-col items-center justify-center gap-3 rounded-xl border border-dashed border-border/80 bg-muted/20 p-8 text-center">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-muted">
-                  <Hash className="h-5 w-5 text-muted-foreground" />
-                </div>
-                <div className="space-y-1">
-                  <p className="text-sm font-medium text-foreground">
-                    {tForm("noData")}
-                  </p>
-                  <p className="text-xs text-muted-foreground">
-                    {tForm("instruction")}
-                  </p>
-                </div>
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  onClick={handleAdd}
-                  disabled={!canAdd}
-                  className="mt-2 gap-1.5 cursor-pointer"
-                >
-                  <Plus className="h-4 w-4" />
-                  {tCommonActions("add")}
-                </Button>
-              </div>
-            ) : (
-              <div className="overflow-x-auto rounded-xl border border-border bg-card shadow-xs">
-                <Table>
-                  <TableHeader className="bg-muted/50">
-                    <TableRow>
-                      <TableHead className="w-12 text-center font-semibold">
-                        #
-                      </TableHead>
-                      <TableHead className="min-w-40 font-semibold">
-                        {tLabels("shirtNumber")}{" "}
-                        <span className="text-destructive">*</span>
-                      </TableHead>
-                      <TableHead className="min-w-50 font-semibold">
-                        {tLabels("startDate")}{" "}
-                        <span className="text-destructive">*</span>
-                      </TableHead>
-                      <TableHead className="min-w-50 font-semibold">
-                        {tLabels("endDate")}
-                      </TableHead>
-                      <TableHead className="w-16 text-center font-semibold">
-                        {/* {tCommonActions("remove")} */}
-                      </TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {Array.from({ length: itemCount }, (_, shirtIndex) => (
-                      <TableRow
-                        key={shirtIndex}
-                        className="hover:bg-muted/30 transition-colors"
-                      >
-                        {/* Index */}
-                        <TableCell className="align-top py-3 text-center">
-                          <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-muted text-xs font-semibold text-muted-foreground">
-                            {shirtIndex + 1}
-                          </span>
-                        </TableCell>
+              const joinedAt = form.getFieldValue(joinedAtFieldName);
 
-                        {/* Shirt Number */}
-                        <TableCell className="align-top py-3">
-                          <form.Field
-                            name={`${arrayFieldName}[${shirtIndex}].shirt_number`}
+              field.pushValue({
+                shirt_number: null,
+                start_date: itemCount === 0 ? joinedAt : "",
+                end_date: "",
+              });
+            };
+
+            const title =
+              minItems > 0
+                ? `${tForm("title")} (min ${minItems})`
+                : `${tForm("title")} (optional)`;
+
+            return (
+              <FormSection
+                title={title}
+                description={
+                  itemCount > 0 && !isAllFieldsFilled
+                    ? tForm("addInstruction")
+                    : undefined
+                }
+                action={
+                  itemCount > 0 && (
+                    <Button
+                      type="button"
+                      size="sm"
+                      onClick={handleAdd}
+                      disabled={!canAdd || !isAllFieldsFilled}
+                      className="gap-1.5 cursor-pointer"
+                    >
+                      <Plus className="h-4 w-4" />
+                      {tCommonActions("add")}
+                    </Button>
+                  )
+                }
+              >
+                {itemCount === 0 ? (
+                  <div className="flex flex-col items-center justify-center gap-3 rounded-xl border border-dashed border-border/80 bg-muted/20 p-8 text-center">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-muted">
+                      <Hash className="h-5 w-5 text-muted-foreground" />
+                    </div>
+
+                    <div className="space-y-1">
+                      <p className="text-sm font-medium text-foreground">
+                        {tForm("noData")}
+                      </p>
+
+                      <p className="text-xs text-muted-foreground">
+                        {tForm("instruction")}
+                      </p>
+                    </div>
+
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={handleAdd}
+                      disabled={!canAdd}
+                      className="mt-2 gap-1.5 cursor-pointer"
+                    >
+                      <Plus className="h-4 w-4" />
+                      {tCommonActions("add")}
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="overflow-x-auto rounded-xl border border-border bg-card shadow-xs">
+                    <Table>
+                      <TableHeader className="bg-muted/50">
+                        <TableRow>
+                          <TableHead className="w-12 text-center font-semibold">
+                            #
+                          </TableHead>
+
+                          <TableHead className="min-w-40 font-semibold">
+                            {tLabels("shirtNumber")}{" "}
+                            <span className="text-destructive">*</span>
+                          </TableHead>
+
+                          <TableHead className="min-w-50 font-semibold">
+                            {tLabels("startDate")}{" "}
+                            <span className="text-destructive">*</span>
+                          </TableHead>
+
+                          <TableHead className="min-w-50 font-semibold">
+                            {tLabels("endDate")}
+                          </TableHead>
+
+                          <TableHead className="w-16 text-center font-semibold" />
+                        </TableRow>
+                      </TableHeader>
+
+                      <TableBody>
+                        {Array.from({ length: itemCount }, (_, shirtIndex) => (
+                          <TableRow
+                            key={shirtIndex}
+                            className="hover:bg-muted/30 transition-colors"
                           >
-                            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-                            {(shirtNumberField: any) => (
-                              <NumberField
-                                field={shirtNumberField}
-                                label={tLabels("shirtNumber")}
-                                placeholder={tPlaceholders("shirtNumber") || ""}
-                                required
-                                hideLabel
-                              />
-                            )}
-                          </form.Field>
-                        </TableCell>
+                            {/* Index */}
+                            <TableCell className="align-top py-3 text-center">
+                              <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-muted text-xs font-semibold text-muted-foreground">
+                                {shirtIndex + 1}
+                              </span>
+                            </TableCell>
 
-                        {/* Start Date */}
-                        <TableCell className="align-top py-3">
-                          <form.Field
-                            name={`${arrayFieldName}[${shirtIndex}].start_date`}
-                          >
-                            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-                            {(startDateField: any) => (
-                              <form.Subscribe
-                                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                                selector={(state: any) => state.values}
+                            {/* Shirt Number */}
+                            <TableCell className="align-top py-3">
+                              <form.Field
+                                name={`${arrayFieldName}[${shirtIndex}].shirt_number`}
                               >
-                                {() => {
-                                  const joinedAt =
-                                    form.getFieldValue(joinedAtFieldName);
-                                  const leftAt =
-                                    form.getFieldValue(leftAtFieldName);
+                                {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                                {(shirtNumberField: any) => (
+                                  <NumberField
+                                    field={shirtNumberField}
+                                    label={tLabels("shirtNumber")}
+                                    placeholder={
+                                      tPlaceholders("shirtNumber") || ""
+                                    }
+                                    required
+                                    hideLabel
+                                  />
+                                )}
+                              </form.Field>
+                            </TableCell>
 
-                                  const previousEndDate =
-                                    shirtIndex > 0
-                                      ? form.getFieldValue(
-                                          `${arrayFieldName}[${shirtIndex - 1}].end_date`,
-                                        )
-                                      : undefined;
-
-                                  const endDate =
-                                    form.getFieldValue(
-                                      `${arrayFieldName}[${shirtIndex}].end_date`,
-                                    ) ?? undefined;
-
-                                  const nextStartDate =
-                                    form.getFieldValue(
-                                      `${arrayFieldName}[${shirtIndex + 1}].start_date`,
-                                    ) ?? undefined;
-
-                                  const previousEndDateParsed =
-                                    parseDateString(previousEndDate);
-                                  const joinedAtParsed =
-                                    parseDateString(joinedAt);
-
-                                  const nextStartDateParsed =
-                                    parseDateString(nextStartDate);
-                                  const endDateParsed =
-                                    parseDateString(endDate);
-                                  const leftAtParsed =
-                                    parseDateString(leftAt) ?? undefined;
-
-                                  const minStartDate = previousEndDateParsed
-                                    ? addDays(previousEndDateParsed, 1)
-                                    : joinedAtParsed;
-
-                                  const maxStartDate =
-                                    endDateParsed ??
-                                    (nextStartDateParsed
-                                      ? subDays(nextStartDateParsed, 1)
-                                      : (leftAtParsed ??
-                                        new Date(2100, 11, 31)));
-
-                                  return (
-                                    <DateField
-                                      field={startDateField}
-                                      label={tLabels("startDate")}
-                                      placeholder={
-                                        tPlaceholders("startDate") || ""
-                                      }
-                                      startMonth={minStartDate}
-                                      endMonth={maxStartDate}
-                                      minDate={minStartDate}
-                                      maxDate={maxStartDate}
-                                      required
-                                      hideLabel
-                                    />
-                                  );
-                                }}
-                              </form.Subscribe>
-                            )}
-                          </form.Field>
-                        </TableCell>
-
-                        {/* End Date */}
-                        <TableCell className="align-top py-3">
-                          <form.Field
-                            name={`${arrayFieldName}[${shirtIndex}].end_date`}
-                          >
-                            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-                            {(endDateField: any) => (
-                              <form.Subscribe
-                                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                                selector={(state: any) => state.values}
+                            {/* Start Date */}
+                            <TableCell className="align-top py-3">
+                              <form.Field
+                                name={`${arrayFieldName}[${shirtIndex}].start_date`}
                               >
-                                {() => {
-                                  const joinedAt =
-                                    form.getFieldValue(joinedAtFieldName);
-                                  const leftAt =
-                                    form.getFieldValue(leftAtFieldName);
+                                {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                                {(startDateField: any) => (
+                                  <form.Subscribe
+                                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                                    selector={(state: any) => state.values}
+                                  >
+                                    {() => {
+                                      const joinedAt =
+                                        form.getFieldValue(joinedAtFieldName);
 
-                                  const previousEndDate =
-                                    shirtIndex > 0
-                                      ? form.getFieldValue(
-                                          `${arrayFieldName}[${shirtIndex - 1}].end_date`,
-                                        )
-                                      : undefined;
+                                      const leftAt =
+                                        form.getFieldValue(leftAtFieldName);
 
-                                  const startDate = form.getFieldValue(
-                                    `${arrayFieldName}[${shirtIndex}].start_date`,
-                                  );
+                                      const previousEndDate =
+                                        shirtIndex > 0
+                                          ? form.getFieldValue(
+                                              `${arrayFieldName}[${shirtIndex - 1}].end_date`,
+                                            )
+                                          : undefined;
 
-                                  const nextStartDate = form.getFieldValue(
-                                    `${arrayFieldName}[${shirtIndex + 1}].start_date`,
-                                  );
+                                      const endDate =
+                                        form.getFieldValue(
+                                          `${arrayFieldName}[${shirtIndex}].end_date`,
+                                        ) ?? undefined;
 
-                                  const startDateParsed =
-                                    parseDateString(startDate);
-                                  const previousEndDateParsed =
-                                    parseDateString(previousEndDate);
-                                  const joinedAtParsed =
-                                    parseDateString(joinedAt);
+                                      const nextStartDate =
+                                        form.getFieldValue(
+                                          `${arrayFieldName}[${shirtIndex + 1}].start_date`,
+                                        ) ?? undefined;
 
-                                  const nextStartDateParsed =
-                                    parseDateString(nextStartDate);
-                                  const leftAtParsed =
-                                    parseDateString(leftAt) ?? undefined;
+                                      const previousEndDateParsed =
+                                        parseDateString(previousEndDate);
 
-                                  const minEndDate = startDateParsed
-                                    ? startDateParsed
-                                    : previousEndDateParsed
-                                      ? addDays(previousEndDateParsed, 1)
-                                      : joinedAtParsed;
+                                      const joinedAtParsed =
+                                        parseDateString(joinedAt);
 
-                                  const maxEndDate = nextStartDateParsed
-                                    ? subDays(nextStartDateParsed, 1)
-                                    : (leftAtParsed ?? new Date(2100, 11, 31));
+                                      const nextStartDateParsed =
+                                        parseDateString(nextStartDate);
 
-                                  return (
-                                    <DateField
-                                      field={endDateField}
-                                      label={tLabels("endDate")}
-                                      placeholder={
-                                        tPlaceholders("endDate") || ""
-                                      }
-                                      startMonth={minEndDate}
-                                      endMonth={maxEndDate}
-                                      minDate={minEndDate}
-                                      maxDate={maxEndDate}
-                                      required
-                                      hideLabel
-                                    />
-                                  );
-                                }}
-                              </form.Subscribe>
-                            )}
-                          </form.Field>
-                        </TableCell>
+                                      const endDateParsed =
+                                        parseDateString(endDate);
 
-                        {/* Actions */}
-                        <TableCell className="align-top py-3 text-center">
-                          <Button
-                            type="button"
-                            variant="ghost"
-                            size="icon"
-                            disabled={!canRemove}
-                            onClick={() => field.removeValue(shirtIndex)}
-                            className="text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors cursor-pointer"
-                            title={tCommonActions("remove")}
-                          >
-                            <Trash2 className="h-4 w-4" />
-                            <span className="sr-only">
-                              {tCommonActions("remove")}
-                            </span>
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </div>
-            )}
-          </FormSection>
-        );
-      }}
+                                      const leftAtParsed =
+                                        parseDateString(leftAt) ?? undefined;
+
+                                      const minStartDate = previousEndDateParsed
+                                        ? addDays(previousEndDateParsed, 1)
+                                        : joinedAtParsed;
+
+                                      const maxStartDate =
+                                        endDateParsed ??
+                                        (nextStartDateParsed
+                                          ? subDays(nextStartDateParsed, 1)
+                                          : (leftAtParsed ??
+                                            new Date(2100, 11, 31)));
+
+                                      return (
+                                        <DateField
+                                          field={startDateField}
+                                          label={tLabels("startDate")}
+                                          placeholder={
+                                            tPlaceholders("startDate") || ""
+                                          }
+                                          startMonth={minStartDate}
+                                          endMonth={maxStartDate}
+                                          minDate={minStartDate}
+                                          maxDate={maxStartDate}
+                                          required
+                                          hideLabel
+                                        />
+                                      );
+                                    }}
+                                  </form.Subscribe>
+                                )}
+                              </form.Field>
+                            </TableCell>
+
+                            {/* End Date */}
+                            <TableCell className="align-top py-3">
+                              <form.Field
+                                name={`${arrayFieldName}[${shirtIndex}].end_date`}
+                              >
+                                {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                                {(endDateField: any) => (
+                                  <form.Subscribe
+                                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                                    selector={(state: any) => state.values}
+                                  >
+                                    {() => {
+                                      const joinedAt =
+                                        form.getFieldValue(joinedAtFieldName);
+
+                                      const leftAt =
+                                        form.getFieldValue(leftAtFieldName);
+
+                                      const previousEndDate =
+                                        shirtIndex > 0
+                                          ? form.getFieldValue(
+                                              `${arrayFieldName}[${shirtIndex - 1}].end_date`,
+                                            )
+                                          : undefined;
+
+                                      const startDate = form.getFieldValue(
+                                        `${arrayFieldName}[${shirtIndex}].start_date`,
+                                      );
+
+                                      const nextStartDate = form.getFieldValue(
+                                        `${arrayFieldName}[${shirtIndex + 1}].start_date`,
+                                      );
+
+                                      const startDateParsed =
+                                        parseDateString(startDate);
+
+                                      const previousEndDateParsed =
+                                        parseDateString(previousEndDate);
+
+                                      const joinedAtParsed =
+                                        parseDateString(joinedAt);
+
+                                      const nextStartDateParsed =
+                                        parseDateString(nextStartDate);
+
+                                      const leftAtParsed =
+                                        parseDateString(leftAt) ?? undefined;
+
+                                      const minEndDate = startDateParsed
+                                        ? startDateParsed
+                                        : previousEndDateParsed
+                                          ? addDays(previousEndDateParsed, 1)
+                                          : joinedAtParsed;
+
+                                      const maxEndDate = nextStartDateParsed
+                                        ? subDays(nextStartDateParsed, 1)
+                                        : (leftAtParsed ??
+                                          new Date(2100, 11, 31));
+
+                                      return (
+                                        <DateField
+                                          field={endDateField}
+                                          label={tLabels("endDate")}
+                                          placeholder={
+                                            tPlaceholders("endDate") || ""
+                                          }
+                                          startMonth={minEndDate}
+                                          endMonth={maxEndDate}
+                                          minDate={minEndDate}
+                                          maxDate={maxEndDate}
+                                          required
+                                          hideLabel
+                                        />
+                                      );
+                                    }}
+                                  </form.Subscribe>
+                                )}
+                              </form.Field>
+                            </TableCell>
+
+                            {/* Actions */}
+                            <TableCell className="align-top py-3 text-center">
+                              <Button
+                                type="button"
+                                variant="ghost"
+                                size="icon"
+                                disabled={!canRemove}
+                                onClick={() => field.removeValue(shirtIndex)}
+                                className="text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors cursor-pointer"
+                                title={tCommonActions("remove")}
+                              >
+                                <Trash2 className="h-4 w-4" />
+
+                                <span className="sr-only">
+                                  {tCommonActions("remove")}
+                                </span>
+                              </Button>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+                )}
+              </FormSection>
+            );
+          }}
+        </form.Subscribe>
+      )}
     </form.Field>
   );
 }
