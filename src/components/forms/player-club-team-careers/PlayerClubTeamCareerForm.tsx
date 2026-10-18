@@ -8,12 +8,12 @@ import FormHeader from "../base/FormHeader";
 import FormWrapper from "../base/FormWrapper";
 import { usePlayerClubTeamCareerForm } from "@/hooks/dashboard/player-club-team-careers";
 import PlayerContractSection from "./PlayerContractSection";
-import PlayerShirtNumberSection from "./PlayerShirtNumberSection";
 import FormContentWrapper from "../base/FormContentWrapper";
 import PlayerCareerSection from "./PlayerCareerSection";
 import PlayerTransferSection from "./PlayerTransferSection";
 import { useCrudFormState } from "@/hooks/crud";
 import { FormMode } from "@/types/form";
+import PlayerShirtNumberSection from "../shared/PlayerShirtNumberSection";
 
 interface Props {
   mode: FormMode;
@@ -70,7 +70,11 @@ const PlayerClubTeamCareerForm = ({
           </div>
 
           <div className="xl:grid-cols-6">
-            <PlayerShirtNumberSection form={form} />
+            <PlayerShirtNumberSection
+              form={form}
+              entityType="clubTeam"
+              minItems={0}
+            />
           </div>
         </div>
       </FormContentWrapper>

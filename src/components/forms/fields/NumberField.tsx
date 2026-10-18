@@ -20,6 +20,7 @@ interface NumberFieldProps {
   allowNegative?: boolean;
 
   className?: string;
+  hideLabel?: boolean;
 }
 
 export default function NumberField({
@@ -33,14 +34,18 @@ export default function NumberField({
   decimalScale,
   allowNegative = false,
   className,
+  hideLabel = false,
 }: NumberFieldProps) {
   const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
 
   return (
     <Field data-invalid={isInvalid}>
-      <FieldLabel htmlFor={field.name}>
+      <FieldLabel
+        htmlFor={field.name}
+        className={hideLabel ? "sr-only" : undefined}
+      >
         {label}
-        {required && <span className="text-destructive">*</span>}
+        {!hideLabel && required && <span className="text-destructive">*</span>}
       </FieldLabel>
 
       <NumericFormat

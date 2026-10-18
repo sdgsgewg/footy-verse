@@ -2,8 +2,8 @@
 
 import { useMemo, useState } from "react";
 import type { AnyFieldApi } from "@tanstack/react-form";
-import { CalendarDays } from "lucide-react";
-import { useLocale } from "next-intl";
+import { CalendarDays, X } from "lucide-react";
+import { useLocale, useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -32,8 +32,10 @@ interface DateFieldProps {
   required?: boolean;
   readOnly?: boolean;
   disabled?: boolean;
+  clearable?: boolean;
 
   className?: string;
+  hideLabel?: boolean;
 }
 
 export default function DateField({
@@ -47,9 +49,12 @@ export default function DateField({
   required,
   readOnly,
   disabled,
+  clearable = true,
   className,
+  hideLabel = false,
 }: DateFieldProps) {
   const locale = useLocale();
+  const tCommonActions = useTranslations("common.actions");
 
   const [open, setOpen] = useState(false);
 
@@ -75,9 +80,16 @@ export default function DateField({
       })
     : "";
 
+  const handleClear = (e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    e?.preventDefault();
+    field.handleChange("");
+    field.handleBlur();
+  };
+
   const handleSelect = (selectedDate: Date | undefined) => {
     if (!selectedDate) {
-      field.handleChange("");
+      handleClear();
       setOpen(false);
       return;
     }
@@ -94,9 +106,12 @@ export default function DateField({
 
   return (
     <Field data-invalid={isInvalid}>
-      <FieldLabel htmlFor={field.name}>
+      <FieldLabel
+        htmlFor={field.name}
+        className={hideLabel ? "sr-only" : undefined}
+      >
         {label}
-        {required && <span className="text-destructive">*</span>}
+        {!hideLabel && required && <span className="text-destructive">*</span>}
       </FieldLabel>
 
       <Popover
@@ -111,24 +126,38 @@ export default function DateField({
           }
         }}
       >
-        <PopoverTrigger asChild>
-          <Button
-            id={field.name}
-            name={field.name}
-            type="button"
-            variant="outline"
-            disabled={isDisabled}
-            aria-invalid={isInvalid}
-            className={cn(
-              "w-full flex items-center justify-between font-normal",
-              !date && "text-muted-foreground",
-              className,
-            )}
-          >
-            {formattedDate || placeholder}
-            <CalendarDays />
-          </Button>
-        </PopoverTrigger>
+        <div className="relative w-full">
+          <PopoverTrigger asChild>
+            <Button
+              id={field.name}
+              name={field.name}
+              type="button"
+              variant="outline"
+              disabled={isDisabled}
+              aria-invalid={isInvalid}
+              className={cn(
+                "w-full flex items-center justify-between font-normal",
+                date && !isDisabled && clearable && "pr-8",
+                !date && "text-muted-foreground",
+                className,
+              )}
+            >
+              <span className="truncate">{formattedDate || placeholder}</span>
+              <CalendarDays className="h-4 w-4 shrink-0 text-muted-foreground" />
+            </Button>
+          </PopoverTrigger>
+
+          {date && !isDisabled && clearable && (
+            <button
+              type="button"
+              aria-label={tCommonActions("clear")}
+              onClick={handleClear}
+              className="absolute right-2 top-1/2 -translate-y-1/2 flex h-5 w-5 items-center justify-center rounded-full text-muted-foreground hover:bg-muted hover:text-foreground transition-colors cursor-pointer"
+            >
+              <X className="h-3.5 w-3.5" />
+            </button>
+          )}
+        </div>
 
         <PopoverContent className="w-auto overflow-hidden p-0" align="start">
           <Calendar
@@ -149,6 +178,27 @@ export default function DateField({
             }}
             onSelect={handleSelect}
           />
+
+          {date && !isDisabled && clearable && (
+            <div className="flex items-center justify-between border-t border-border px-3 py-2 bg-muted/20">
+              <span className="text-xs text-muted-foreground">
+                {formattedDate}
+              </span>
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={() => {
+                  handleClear();
+                  setOpen(false);
+                }}
+                className="h-7 px-2 text-xs text-muted-foreground hover:text-destructive hover:bg-destructive/10 gap-1.5 cursor-pointer"
+              >
+                <X className="h-3.5 w-3.5" />
+                {tCommonActions("clear")}
+              </Button>
+            </div>
+          )}
         </PopoverContent>
       </Popover>
 

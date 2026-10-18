@@ -8,9 +8,9 @@ import FormHeader from "../../base/FormHeader";
 import FormWrapper from "../../base/FormWrapper";
 import { useEditPlayerNationalTeamCareerForm } from "@/hooks/dashboard/player-national-teams";
 import FormContentWrapper from "../../base/FormContentWrapper";
-import PlayerShirtNumberSection from "./PlayerShirtNumberSection";
 import PlayerCareerSection from "./PlayerCareerSection";
 import { useCrudFormState } from "@/hooks/crud";
+import PlayerShirtNumberSection from "../../shared/PlayerShirtNumberSection";
 
 interface Props {
   playerNationalTeamCareer: PlayerNationalTeamCareerEditResponse;
@@ -42,7 +42,11 @@ const EditPlayerNationalTeamCareerForm = ({
 
         <FormContentWrapper className="space-y-6">
           <PlayerCareerSection form={form} />
-          <PlayerShirtNumberSection form={form} />
+          <PlayerShirtNumberSection
+            form={form}
+            entityType="nationalTeam"
+            minItems={1}
+          />
         </FormContentWrapper>
       </form>
     </FormWrapper>
