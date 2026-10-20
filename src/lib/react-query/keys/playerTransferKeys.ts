@@ -3,9 +3,9 @@ import { PlayerTransferQuery } from "@/types/player-transfer";
 export const playerTransferKeys = {
   all: ["player-transfers"] as const,
 
+  // Semua transfer
   lists: () => [...playerTransferKeys.all, "list"] as const,
 
-  // Semua transfer
   list: (params?: PlayerTransferQuery) =>
     [...playerTransferKeys.lists(), "all", params] as const,
 

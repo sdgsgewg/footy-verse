@@ -20,7 +20,7 @@ export function useCreatePlayerClubTeamCareer(player: PlayerLookupResponse) {
       { queryKey: playerKeys.lists() },
       { queryKey: playerKeys.details() },
 
-      { queryKey: playerTransferKeys.lists() },
+      { queryKey: playerTransferKeys.playerLists() },
 
       { queryKey: playerShirtNumberKeys.clubTeams() },
       { queryKey: playerShirtNumberKeys.nationalTeams() },
