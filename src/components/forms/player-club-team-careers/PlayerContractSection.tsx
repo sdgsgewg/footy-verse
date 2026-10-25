@@ -227,7 +227,10 @@ export default function PlayerContractSection({
                                         const leftAtParsed =
                                           parseDateString(leftAt) ?? undefined;
 
-                                        const minContractStart = joinedAtParsed;
+                                        const minContractStart =
+                                          contractIndex === 0
+                                            ? new Date(1, 1, 1900)
+                                            : joinedAtParsed;
 
                                         const maxContractStart =
                                           contractEndParsed ??
@@ -303,7 +306,11 @@ export default function PlayerContractSection({
                                                 )
                                               : joinedAtParsed;
 
-                                        const maxContractEnd = new Date(2100, 11, 31);
+                                        const maxContractEnd = new Date(
+                                          2100,
+                                          11,
+                                          31,
+                                        );
 
                                         return (
                                           <DateField

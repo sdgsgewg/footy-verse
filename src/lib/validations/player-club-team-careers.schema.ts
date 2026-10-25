@@ -42,7 +42,7 @@ export const playerClubTeamCareerMutationSchema = z
       }
 
       // Contract must start after/equal to career join
-      if (contract_start < joined_at) {
+      if (index > 0 && contract_start < joined_at) {
         ctx.addIssue({
           code: "custom",
           message: "Contract start cannot be before career join date",
