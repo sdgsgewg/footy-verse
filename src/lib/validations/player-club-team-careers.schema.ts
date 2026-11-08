@@ -33,7 +33,7 @@ export const playerClubTeamCareerMutationSchema = z
       const { contract_start, contract_end } = contract;
 
       // Contract start <= contract end
-      if (contract_start > contract_end) {
+      if (contract_end && contract_start > contract_end) {
         ctx.addIssue({
           code: "custom",
           message: "Contract start must be less than or equal to contract end",
@@ -42,7 +42,7 @@ export const playerClubTeamCareerMutationSchema = z
       }
 
       // Contract must start after/equal to career join
-      if (index > 0 && contract_start < joined_at) {
+      if (index > 0 && contract_start && contract_start < joined_at) {
         ctx.addIssue({
           code: "custom",
           message: "Contract start cannot be before career join date",

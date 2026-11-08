@@ -1,21 +1,12 @@
 import { z } from "zod";
 import { idSchema } from "./primitives.schema";
 
-export const playerContractMutationSchema = z
-  .object({
-    player_club_team_career_id: idSchema.optional(),
-    contract_start: z.string(),
-    contract_end: z.string(),
-    salary: z.number().nonnegative().min(0).nullable(),
-  })
-  .refine(
-    ({ contract_start, contract_end }) =>
-      contract_end || contract_start <= contract_end,
-    {
-      message: "Contract start must be less than or equal to contract end",
-      path: ["contract_start"],
-    },
-  );
+export const playerContractMutationSchema = z.object({
+  player_club_team_career_id: idSchema.optional(),
+  contract_start: z.string(),
+  contract_end: z.string(),
+  salary: z.number().nonnegative().min(0).nullable(),
+});
 
 export const createPlayerContractSchema = playerContractMutationSchema;
 
