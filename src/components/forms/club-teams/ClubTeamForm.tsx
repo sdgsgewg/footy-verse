@@ -11,6 +11,7 @@ import { SelectField } from "../fields";
 import { getAgeGroupOptions } from "@/lib/constants/options";
 import { FormMode } from "@/types/form";
 import { useCrudFormState } from "@/hooks/crud";
+import { SquadType } from "@/enums/SquadType";
 
 interface Props {
   mode: FormMode;
@@ -49,7 +50,16 @@ const ClubTeamForm = ({ mode, clubTeam, loading = false, onSubmit }: Props) => {
 
         <FormContentWrapper className="space-y-5">
           {/* Squad Type */}
-          <form.Field name="squad_type">
+          <form.Field
+            name="squad_type"
+            listeners={{
+              onChange: ({ value }) => {
+                if (value !== SquadType.ACADEMY) {
+                  form.setFieldValue("age_group", null);
+                }
+              },
+            }}
+          >
             {(field) => (
               <SelectField
                 field={field}
@@ -62,17 +72,21 @@ const ClubTeamForm = ({ mode, clubTeam, loading = false, onSubmit }: Props) => {
           </form.Field>
 
           {/* Age Group */}
-          <form.Field name="age_group">
-            {(field) => (
-              <SelectField
-                field={field}
-                label={tLabels("ageGroup")}
-                placeholder={tPlaceholders("ageGroup")}
-                options={ageGroupOptions}
-                required
-              />
+          <form.Subscribe selector={(state) => state.values.squad_type}>
+            {(squadType) => (
+              <form.Field name="age_group">
+                {(field) => (
+                  <SelectField
+                    field={field}
+                    label={tLabels("ageGroup")}
+                    placeholder={tPlaceholders("ageGroup")}
+                    options={ageGroupOptions}
+                    disabled={squadType !== SquadType.ACADEMY}
+                  />
+                )}
+              </form.Field>
             )}
-          </form.Field>
+          </form.Subscribe>
         </FormContentWrapper>
       </form>
     </FormWrapper>

@@ -1,15 +1,38 @@
 import { z } from "zod";
 import { idSchema } from "./primitives.schema";
 import { ageGroupSchema, squadTypeSchema } from "./enums.schema";
+import { SquadType } from "@/enums/SquadType";
 
-export const clubTeamMutationSchema = z.object({
-  squad_type: z.union([squadTypeSchema, z.literal("")]),
-  age_group: z
-    .union([ageGroupSchema, z.literal("")])
-    .nullable()
-    .optional(),
-  club_id: idSchema.optional(),
-});
+export const clubTeamMutationSchema = z
+  .object({
+    squad_type: z.union([squadTypeSchema, z.literal("")]),
+    age_group: z
+      .union([ageGroupSchema, z.literal("")])
+      .nullable()
+      .optional(),
+    club_id: idSchema.optional(),
+  })
+  .superRefine(({ squad_type, age_group }, ctx) => {
+    if (squad_type === SquadType.ACADEMY) {
+      if (!age_group) {
+        ctx.addIssue({
+          code: "custom",
+          message: "Age group is required for Academy squad",
+          path: ["age_group"],
+        });
+      }
+
+      return;
+    }
+
+    if (age_group) {
+      ctx.addIssue({
+        code: "custom",
+        message: "Age group is only allowed for Academy squad",
+        path: ["age_group"],
+      });
+    }
+  });
 
 export const createClubTeamSchema = clubTeamMutationSchema;
 
